@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DesignTable_General_Title" xml:space="preserve">
+    <value>Design table</value>
+  </data>
+  <data name="DesignTable_InputData_DesignTableLabel" xml:space="preserve">
+    <value>Design table</value>
+  </data>
+  <data name="DesignTable_InputData_PartCatalogDirectoryLabel" xml:space="preserve">
+    <value>Catalog parts directory</value>
+  </data>
+  <data name="DesignTable_InputData_Title" xml:space="preserve">
+    <value>Input datas</value>
+  </data>
+  <data name="DesignTable_Link_NoDesignTable" xml:space="preserve">
+    <value>No design table selected</value>
+  </data>
+  <data name="DesignTable_Link_Title" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="DesignTable_PartSelection_NoDirectory" xml:space="preserve">
+    <value>No directory selected</value>
+  </data>
+  <data name="DesignTable_PartSelection_Title" xml:space="preserve">
+    <value>Parts management</value>
+  </data>
+  <data name="Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Language_French" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="MainWindow_CatalogPart_Title" xml:space="preserve">
+    <value>Apply the marking to a part catalog ?</value>
+  </data>
+  <data name="MainWindow_General_Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="MainWindow_General_Title" xml:space="preserve">
+    <value>Create a new 3D marking !</value>
+  </data>
+  <data name="MainWindow_MarkingData_CharacterHeightLabel" xml:space="preserve">
+    <value>Characters height</value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightLabel" xml:space="preserve">
+    <value>Extrusion height</value>
+  </data>
+  <data name="MainWindow_MarkingData_FontLabel" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="MainWindow_MarkingData_NoFont" xml:space="preserve">
+    <value>No font</value>
+  </data>
+  <data name="MainWindow_MarkingData_ParameterLinked" xml:space="preserve">
+    <value>Parameter linked</value>
+  </data>
+  <data name="MainWindow_MarkingData_TextLabel" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MainWindow_MarkingData_Title" xml:space="preserve">
+    <value>Marking data</value>
+  </data>
+  <data name="MainWindow_Position_CurveLabel" xml:space="preserve">
+    <value>Tracking curve</value>
+  </data>
+  <data name="MainWindow_Position_LocalAxisSystemLabel" xml:space="preserve">
+    <value>Local axis system</value>
+  </data>
+  <data name="MainWindow_Position_LocalAxisSystemTooltipLine1" xml:space="preserve">
+    <value>Axis system defining marking directions.</value>
+  </data>
+  <data name="MainWindow_Position_LocalAxisSystemTooltipLine2" xml:space="preserve">
+    <value>"Axis system" must have an unique name.</value>
+  </data>
+  <data name="MainWindow_Position_LocalAxisSystemTooltipLine3" xml:space="preserve">
+    <value>The axis system origin must be "Start Point".</value>
+  </data>
+  <data name="MainWindow_Position_LocalAxisSystemTooltipLine4" xml:space="preserve">
+    <value>- The X axis must be the tangent to "Tracking curve" passing by its origin. Its direction points the marking direction.</value>
+  </data>
+  <data name="MainWindow_Position_LocalAxisSystemTooltipLine5" xml:space="preserve">
+    <value>- The Y axis is the results of X and Z axis. Its direction points the characters direction.</value>
+  </data>
+  <data name="MainWindow_Position_LocalAxisSystemTooltipLine6" xml:space="preserve">
+    <value>- The Z axis must be the normal to "Projection surface" passing by its origin. Its direction points the material adding direction.</value>
+  </data>
+  <data name="MainWindow_Position_StartPointLabel" xml:space="preserve">
+    <value>Start point</value>
+  </data>
+  <data name="MainWindow_Position_SurfaceLabel" xml:space="preserve">
+    <value>Projection surface</value>
+  </data>
+  <data name="MainWindow_Position_Title" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="MainWindow_SelectPart_NoPart" xml:space="preserve">
+    <value>No .CATPart</value>
+  </data>
+  <data name="MainWindow_SelectPart_Title" xml:space="preserve">
+    <value>Select the working part</value>
+  </data>
+  <data name="ParameterCategory_NoType" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ParameterCategory_Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="ParameterCategory_Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="Settings_About_Licenses" xml:space="preserve">
+    <value>Licenses</value>
+  </data>
+  <data name="Settings_About_Title" xml:space="preserve">
+    <value>About us</value>
+  </data>
+  <data name="Settings_FontManagement_3DFontDirectoryLabel" xml:space="preserve">
+    <value>3D font directory</value>
+  </data>
+  <data name="Settings_FontManagement_CatiaFontDirectoryLabel" xml:space="preserve">
+    <value>Catia font directory</value>
+  </data>
+  <data name="Settings_FontManagement_Title" xml:space="preserve">
+    <value>Font file management</value>
+  </data>
+  <data name="Settings_General_LanguageLabel" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings_General_Title" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="Status_CatiaException_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Status_CatiaException_Title" xml:space="preserve">
+    <value>Catia seems to have a problem.</value>
+  </data>
+  <data name="Status_Finised_Title" xml:space="preserve">
+    <value>Done !</value>
+  </data>
+  <data name="Status_Finished_ContinueButton" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="Status_Finished_QuitButton" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="Status_GeneralException_Title" xml:space="preserve">
+    <value>A wild exception has appeared.</value>
+  </data>
+  <data name="Status_InProgress_Title" xml:space="preserve">
+    <value>Process in progress !</value>
+  </data>
+</root>
