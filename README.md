@@ -1,4 +1,3 @@
 # Graphy
 
-## Objective
-For those stucked with Catia V5, Graphy permits to write 3D texts easily.
+For those stucked with Catia V5, like me, Graphy allows to write 3D texts easily.
