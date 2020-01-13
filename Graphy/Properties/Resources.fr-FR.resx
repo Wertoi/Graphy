@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CheckBox_No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="CheckBox_Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
   <data name="DesignTable_General_Title" xml:space="preserve">
     <value>Table de paramétrage</value>
   </data>
@@ -201,8 +207,32 @@
   <data name="MainWindow_Position_LocalAxisSystemTooltipLine6" xml:space="preserve">
     <value>- L'axe Z doit être la normale à la "Surface de projection" passant par son origine. Son sens indique le sens d'ajout de matière.</value>
   </data>
+  <data name="MainWindow_Position_ProjectionSurfaceTooltip1" xml:space="preserve">
+    <value>Surface de projection du marquage.</value>
+  </data>
+  <data name="MainWindow_Position_ProjectionSurfaceTooltip2" xml:space="preserve">
+    <value>"Surface de projection" doit avoir un nom unique.</value>
+  </data>
+  <data name="MainWindow_Position_ProjectionSurfaceTooltip3" xml:space="preserve">
+    <value>/!\ Selection depuis un volume non prise en charge.</value>
+  </data>
+  <data name="MainWindow_Position_ProjectionSurfaceTooltip4" xml:space="preserve">
+    <value>/!\ Toutes les surfaces formant la "Surface de projection" doivent avoir la même normale naturelle.</value>
+  </data>
   <data name="MainWindow_Position_StartPointLabel" xml:space="preserve">
     <value>Point de départ</value>
+  </data>
+  <data name="MainWindow_Position_StartPointTooltip1" xml:space="preserve">
+    <value>Point de départ du marquage.</value>
+  </data>
+  <data name="MainWindow_Position_StartPointTooltip2" xml:space="preserve">
+    <value>"Point de départ" doit avoir un nom unique.</value>
+  </data>
+  <data name="MainWindow_Position_StartPointTooltip3" xml:space="preserve">
+    <value>Le point doit se trouver sur la "Courbe de suivi" et sur la "Surface de projection".</value>
+  </data>
+  <data name="MainWindow_Position_StartPointTooltip4" xml:space="preserve">
+    <value>/!\ Selection depuis un volume non prise en charge.</value>
   </data>
   <data name="MainWindow_Position_SurfaceLabel" xml:space="preserve">
     <value>Surface de projection</value>
@@ -210,11 +240,41 @@
   <data name="MainWindow_Position_Title" xml:space="preserve">
     <value>Position</value>
   </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip1" xml:space="preserve">
+    <value>Courbe de suivi du marquage.</value>
+  </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip2" xml:space="preserve">
+    <value>"Courbe de suivi" doit avoir un nom unique.</value>
+  </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip3" xml:space="preserve">
+    <value>La courbe doit se trouver sur la "Surface de projection".</value>
+  </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip4" xml:space="preserve">
+    <value>/!\ Selection depuis un volume non prise en charge.</value>
+  </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip5" xml:space="preserve">
+    <value>/!\ Tous les segments formant la "Courbe de suivi" doivent avoir la même direction naturelle.</value>
+  </data>
   <data name="MainWindow_SelectPart_NoPart" xml:space="preserve">
     <value>Aucune .CATPart</value>
   </data>
   <data name="MainWindow_SelectPart_Title" xml:space="preserve">
     <value>Sélectionner le document de travail</value>
+  </data>
+  <data name="NewFont_CharacterList_FontNonComputed" xml:space="preserve">
+    <value>Police non calculée</value>
+  </data>
+  <data name="NewFont_CharacterList_Title" xml:space="preserve">
+    <value>Liste des charactères disponibles</value>
+  </data>
+  <data name="NewFont_FontLabel" xml:space="preserve">
+    <value>Police</value>
+  </data>
+  <data name="NewFont_Generate" xml:space="preserve">
+    <value>Générer</value>
+  </data>
+  <data name="NewFont_Title" xml:space="preserve">
+    <value>Ajouter une police</value>
   </data>
   <data name="ParameterCategory_NoType" xml:space="preserve">
     <value>-</value>
@@ -230,6 +290,9 @@
   </data>
   <data name="Settings_About_Title" xml:space="preserve">
     <value>A propos</value>
+  </data>
+  <data name="Settings_AddNewFont" xml:space="preserve">
+    <value>Créer une nouvelle police</value>
   </data>
   <data name="Settings_FontManagement_3DFontDirectoryLabel" xml:space="preserve">
     <value>Répertoire police 3D</value>

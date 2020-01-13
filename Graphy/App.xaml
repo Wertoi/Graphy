@@ -494,11 +494,11 @@
 
         <!-- YES NO CHECKBOX STYLE -->
         <Style x:Key="YesNoCheckBox" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource NormalCheckBox}">
-            <Setter Property="Content" Value="Non"/>
+            <Setter Property="Content" Value="{local:Loc CheckBox_No}"/>
 
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Content" Value="Oui"/>
+                    <Setter Property="Content" Value="{local:Loc CheckBox_Yes}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>

@@ -55,10 +55,10 @@ namespace Graphy.Model.Generator
 
         public void Generate(CatiaEnv catiaEnv, Font font, string savePath)
         {
-            CatiaDrawingDocument catiaDrawingDocument = new CatiaDrawingDocument(catiaEnv.AddNewDocument(CatiaGenericDocument.CatiaDocumentFormat.Drawing));
+            CatiaDrawingDocument catiaDrawingDocument = new CatiaDrawingDocument((CatiaDocument.CatiaGenericDocument)catiaEnv.AddNewDocument(CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat.Drawing));
             DrawingView drawingView = catiaDrawingDocument.DrawingDocument.Sheets.ActiveSheet.Views.ActiveView;
 
-            CatiaPartDocument catiaPartDocument = new CatiaPartDocument(catiaEnv.AddNewDocument(CatiaGenericDocument.CatiaDocumentFormat.CATPart));
+            CatiaPartDocument catiaPartDocument = new CatiaPartDocument((CatiaDocument.CatiaGenericDocument)catiaEnv.AddNewDocument(CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat.CATPart));
 
             // Create .dxf set
             HybridBody importSet = catiaPartDocument.PartDocument.Part.HybridBodies.Add();
@@ -98,7 +98,7 @@ namespace Graphy.Model.Generator
 
                 if (System.IO.File.Exists(tempFullPath))
                 {
-                    CatiaGenericDocument tempGenericDocument = catiaEnv.OpenDocument(new CatiaFile(tempFullPath));
+                    CatiaDocument.CatiaGenericDocument tempGenericDocument = catiaEnv.OpenDocument(new CatiaFile(tempFullPath));
                     CatiaDrawingDocument tempDrawingDocument = new CatiaDrawingDocument(catiaEnv)
                     {
                         DrawingDocument = (DrawingDocument)catiaEnv.Application.ActiveDocument
@@ -378,7 +378,7 @@ namespace Graphy.Model.Generator
 
             foreach (CatiaContour contour in extContourList)
             {
-                HybridShape tempShape = CatiaGenericShape.CopyShape(contour.ShapeReference, (HybridShapeFactory)partDocument.Part.HybridShapeFactory);
+                HybridShape tempShape = CatiaShape.CatiaGenericShape.CopyShape(contour.ShapeReference, (HybridShapeFactory)partDocument.Part.HybridShapeFactory);
                 tempSet.AppendHybridShape(tempShape);
                 GetCurvePointList(pointList, partDocument, tempShape);
             }

@@ -116,14 +116,14 @@ namespace Graphy.Model
         /// </summary>
         /// <param name="catiaDocumentFormat"></param>
         /// <returns></returns>
-        public CatiaGenericDocument AddNewDocument(CatiaGenericDocument.CatiaDocumentFormat catiaDocumentFormat)
+        public CatiaGenericDocument AddNewDocument(CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat catiaDocumentFormat)
         {
-            CatiaGenericDocument newCatiaDocument = new CatiaGenericDocument(this);
+            CatiaDocument.CatiaGenericDocument newCatiaDocument = new CatiaDocument.CatiaGenericDocument(this);
             bool isDocumentCollectionEmpty = Application.Documents.Count == 0 ? true : false;
 
             if (isDocumentCollectionEmpty)
             {
-                newCatiaDocument.Document = Application.Documents.Add(CatiaGenericDocument.GetDocumentFormatName(catiaDocumentFormat));
+                newCatiaDocument.Document = Application.Documents.Add(CatiaDocument.CatiaGenericDocument.GetDocumentFormatName(catiaDocumentFormat));
 
                 do
                 {
@@ -134,7 +134,7 @@ namespace Graphy.Model
             else
             {
                 Document previousActiveDocument = Application.ActiveDocument;
-                newCatiaDocument.Document = Application.Documents.Add(CatiaGenericDocument.GetDocumentFormatName(catiaDocumentFormat));
+                newCatiaDocument.Document = Application.Documents.Add(CatiaDocument.CatiaGenericDocument.GetDocumentFormatName(catiaDocumentFormat));
 
                 do
                 {
@@ -154,7 +154,7 @@ namespace Graphy.Model
         /// <returns></returns>
         public CatiaGenericDocument OpenDocument(CatiaFile file)
         {
-            CatiaGenericDocument newCatiaDocument = new CatiaGenericDocument(this);
+            CatiaDocument.CatiaGenericDocument newCatiaDocument = new CatiaDocument.CatiaGenericDocument(this);
             bool isDocumentCollectionEmpty = Application.Documents.Count == 0 ? true : false;
 
             // If there is no document already open

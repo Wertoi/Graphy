@@ -121,7 +121,6 @@ namespace Graphy.Model.Generator
 
         public void Run(CatiaEnv catiaEnv, PartDocument partDocument, MarkingData markingData)
         {
-            test(partDocument, markingData);
             ProgressRate = 0;
 
             List<CatiaChar> characterList = new List<CatiaChar>();
@@ -811,50 +810,6 @@ namespace Graphy.Model.Generator
 
 
 
-
-        /// <summary>
-        /// Disassemble a curve with differents domains. Detect the exterior contour and the interior ones. Fill catiaChar.
-        /// </summary>
-        /// <param name="partDocument">PartDocument of the curve to be extracted.</param>
-        /// <param name="curveShape">Curve to be extracted.</param>
-        /// <param name="catiaChar">CatiaChar where the exterior contour and the interior contour list will be stored.</param>
-        /*private static void GetContours(PartDocument partDocument, HybridShape curveShape, CatiaChar catiaChar)
-        {
-            List<HybridShape> SubCurveList = new List<HybridShape>();
-
-            DisassembleCurve(partDocument, curveShape, SubCurveList);
-
-            // Get the max length of contours
-            double maxLength = 0;
-            HybridShapeFactory factory = (HybridShapeFactory)partDocument.Part.HybridShapeFactory;
-            foreach (HybridShape curve in SubCurveList)
-            {
-                if (curve != null)
-                {
-                    Reference curveRef = partDocument.Part.CreateReferenceFromObject(curve);
-                    double length = GetCurveLenght(partDocument, curveRef);
-
-                    if (length > maxLength)
-                        maxLength = length;
-                }
-            }
-
-            // Store separatly exterior and interiors contours
-            foreach (HybridShape curve in SubCurveList)
-            {
-                if (curve != null)
-                {
-                    Reference curveRef = partDocument.Part.CreateReferenceFromObject(curve);
-                    double length = GetCurveLenght(partDocument, curveRef);
-
-                    if (length == maxLength)
-                        catiaChar.ExteriorContourList = curve;
-                    else
-                        catiaChar.InteriorContourList.Add(curve);
-                }
-            }
-        }*/
-
         /// <summary>
         /// Get the type of the shape.
         /// </summary>
@@ -868,6 +823,8 @@ namespace Graphy.Model.Generator
         }
 
 
+        // TEST NEW METHOD TO GENERATE CHARACTERS
+
         public void test(PartDocument partDocument, MarkingData markingData)
         {
             System.Windows.Media.FormattedText formattedText = new System.Windows.Media.FormattedText("Input test", new CultureInfo("en-US"),
@@ -880,8 +837,6 @@ namespace Graphy.Model.Generator
 
             System.Windows.Media.PathGeometry pathGeometry = geometry.GetFlattenedPathGeometry(0.001, System.Windows.Media.ToleranceType.Relative);
 
-
-            // --- TEST ---
 
             List<CatiaSurface> catiaSurfaceList = new List<CatiaSurface>();
             Reference planeXYReference = partDocument.Part.CreateReferenceFromObject(partDocument.Part.OriginElements.PlaneXY);
@@ -906,13 +861,6 @@ namespace Graphy.Model.Generator
                         smallestParentContourIndex = j;
                     }
                 }
-
-                // Create a temp catia contour
-                // Draw contour and store it in the temp catia contour
-
-                // Store in the surface collection with code below
-
-                // Then write name
 
 
                 // >--- FILL THE SURFACE COLLECTION ---
@@ -964,11 +912,6 @@ namespace Graphy.Model.Generator
             }
 
 
-
-
-            // --- FIN TEST ----
-
-
             System.Windows.Rect bounds = pathGeometry.Bounds;
             double height = bounds.Height;
             double width = bounds.Width;
@@ -982,91 +925,6 @@ namespace Graphy.Model.Generator
                     DrawPathGeometry(partDocument, tempset, surface.InternalContourList[j].PathGeometry);
                 }
             }
-
-
-            /*foreach (System.Windows.Media.PathGeometry subPathGeometry in separatePathGeometryCollection)
-            {
-                foreach (System.Windows.Media.PathSegment segment in subPathGeometry.Figures.First().Segments)
-                {
-                    List<Reference> pointReferenceList = new List<Reference>();
-                    List<Line> lineList = new List<Line>();
-
-                    if (segment.GetType() == typeof(System.Windows.Media.PolyLineSegment))
-                    {
-                        foreach (System.Windows.Point point in ((System.Windows.Media.PolyLineSegment)segment).Points)
-                        {
-                            HybridShape pointShape = hybridShapeFactory.AddNewPointCoord(point.X, point.Y, 0);
-                            pointShape.Compute();
-                            Reference pointShapeRef = partDocument.Part.CreateReferenceFromObject(pointShape);
-
-                            pointReferenceList.Add(pointShapeRef);
-                        }
-
-                        for (int i = 0; i < pointReferenceList.Count(); i++)
-                        {
-                            HybridShape line;
-                            if (i == 0)
-                                line = hybridShapeFactory.AddNewLinePtPt(pointReferenceList[i], pointReferenceList[pointReferenceList.Count - 1]);
-                            else
-                                line = hybridShapeFactory.AddNewLinePtPt(pointReferenceList[i - 1], pointReferenceList[i]);
-
-                            line.Compute();
-                            //lineList.Add(line);
-                            tempset.AppendHybridShape(line);
-                        }
-                    }
-                    else
-                    {
-                        if (segment.GetType() == typeof(System.Windows.Media.PolyBezierSegment))
-                        {
-                            HybridShapeSpline curve = hybridShapeFactory.AddNewSpline();
-                            foreach (System.Windows.Point point in ((System.Windows.Media.PolyBezierSegment)segment).Points)
-                            {
-                                HybridShape pointShape = hybridShapeFactory.AddNewPointCoord(point.X, point.Y, 0);
-                                pointShape.Compute();
-                                Reference pointShapeRef = partDocument.Part.CreateReferenceFromObject(pointShape);
-
-                                pointReferenceList.Add(pointShapeRef);
-
-                                curve.AddPoint(pointShapeRef);
-                                curve.Compute();
-                            }
-
-                            tempset.AppendHybridShape(curve);
-                        }
-                        else
-                        {
-                            if (segment.GetType() == typeof(System.Windows.Media.LineSegment))
-                            {
-                                Reference startPointShapeRef;
-                                if (pointReferenceList.Count != 0)
-                                {
-                                    startPointShapeRef = pointReferenceList.Last();
-                                }
-                                else
-                                {
-                                    System.Windows.Point startPoint = subPathGeometry.Figures.First().StartPoint;
-                                    HybridShape startPointShape = hybridShapeFactory.AddNewPointCoord(startPoint.X, startPoint.Y, 0);
-                                    startPointShape.Compute();
-                                    startPointShapeRef = partDocument.Part.CreateReferenceFromObject(startPointShape);
-
-                                    pointReferenceList.Add(startPointShapeRef);
-                                }
-
-                                System.Windows.Point point = ((System.Windows.Media.LineSegment)segment).Point;
-                                HybridShape pointShape = hybridShapeFactory.AddNewPointCoord(point.X, point.Y, 0);
-                                pointShape.Compute();
-                                Reference pointShapeRef = partDocument.Part.CreateReferenceFromObject(pointShape);
-
-                                pointReferenceList.Add(pointShapeRef);
-
-                                HybridShape line = hybridShapeFactory.AddNewLinePtPt(startPointShapeRef, pointShapeRef);
-
-                                tempset.AppendHybridShape(line);
-                            }
-                        }
-
-                    }*/
         }
 
         private void DrawPathGeometry(PartDocument partDocument, HybridBody tempSet, System.Windows.Media.PathGeometry pathGeometry)

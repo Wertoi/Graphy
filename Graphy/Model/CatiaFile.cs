@@ -65,21 +65,21 @@ namespace Graphy.Model
             }
         }
 
-        public CatiaGenericDocument.CatiaDocumentFormat GetDocumentFormat()
+        public CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat GetDocumentFormat()
         {
             switch (System.IO.Path.GetExtension(FullPath))
             {
                 case PART_DOCUMENT_FILE_EXTENSION:
-                    return CatiaGenericDocument.CatiaDocumentFormat.CATPart;
+                    return CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat.CATPart;
 
                 case PRODUCT_DOCUMENT_FILE_EXTENSION:
-                    return CatiaGenericDocument.CatiaDocumentFormat.CATProduct;
+                    return CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat.CATProduct;
 
                 case DRAWING_DOCUMENT_FILE_EXTENSION:
-                    return CatiaGenericDocument.CatiaDocumentFormat.Drawing;
+                    return CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat.Drawing;
 
                 default:
-                    return CatiaGenericDocument.CatiaDocumentFormat.Unidentified;
+                    return CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat.Unidentified;
             }
         }
     }

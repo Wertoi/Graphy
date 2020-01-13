@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CheckBox_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="CheckBox_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
   <data name="DesignTable_General_Title" xml:space="preserve">
     <value>Design table</value>
   </data>
@@ -201,8 +207,32 @@
   <data name="MainWindow_Position_LocalAxisSystemTooltipLine6" xml:space="preserve">
     <value>- The Z axis must be the normal to "Projection surface" passing by its origin. Its direction points the material adding direction.</value>
   </data>
+  <data name="MainWindow_Position_ProjectionSurfaceTooltip1" xml:space="preserve">
+    <value>Marking projection surface.</value>
+  </data>
+  <data name="MainWindow_Position_ProjectionSurfaceTooltip2" xml:space="preserve">
+    <value>"Projection surface" must have an unique name.</value>
+  </data>
+  <data name="MainWindow_Position_ProjectionSurfaceTooltip3" xml:space="preserve">
+    <value>/!\ Selection from volumes not handled.</value>
+  </data>
+  <data name="MainWindow_Position_ProjectionSurfaceTooltip4" xml:space="preserve">
+    <value>/!\ All "Projection surface" sub surfaces must have the same natural normal.</value>
+  </data>
   <data name="MainWindow_Position_StartPointLabel" xml:space="preserve">
     <value>Start point</value>
+  </data>
+  <data name="MainWindow_Position_StartPointTooltip1" xml:space="preserve">
+    <value>Marking start point.</value>
+  </data>
+  <data name="MainWindow_Position_StartPointTooltip2" xml:space="preserve">
+    <value>"Start point" must have an unique name.</value>
+  </data>
+  <data name="MainWindow_Position_StartPointTooltip3" xml:space="preserve">
+    <value>"Start point" must be on the "Tracking curve" and on the "Projection surface".</value>
+  </data>
+  <data name="MainWindow_Position_StartPointTooltip4" xml:space="preserve">
+    <value>/!\ Selection from volumes not handled.</value>
   </data>
   <data name="MainWindow_Position_SurfaceLabel" xml:space="preserve">
     <value>Projection surface</value>
@@ -210,11 +240,41 @@
   <data name="MainWindow_Position_Title" xml:space="preserve">
     <value>Position</value>
   </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip1" xml:space="preserve">
+    <value>Marking tracking curve.</value>
+  </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip2" xml:space="preserve">
+    <value>"Tracking curve" must have an unique name.</value>
+  </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip3" xml:space="preserve">
+    <value>"Tracking curve" must be on "Projection surface".</value>
+  </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip4" xml:space="preserve">
+    <value>/!\ Selection from volumes not handled.</value>
+  </data>
+  <data name="MainWindow_Position_TrackingCurveTooltip5" xml:space="preserve">
+    <value>/!\ All "Tracking curve" segments must have the same natural direction.</value>
+  </data>
   <data name="MainWindow_SelectPart_NoPart" xml:space="preserve">
     <value>No .CATPart</value>
   </data>
   <data name="MainWindow_SelectPart_Title" xml:space="preserve">
     <value>Select the working part</value>
+  </data>
+  <data name="NewFont_CharacterList_FontNonComputed" xml:space="preserve">
+    <value>Font is non computed</value>
+  </data>
+  <data name="NewFont_CharacterList_Title" xml:space="preserve">
+    <value>Available characters list</value>
+  </data>
+  <data name="NewFont_FontLabel" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="NewFont_Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="NewFont_Title" xml:space="preserve">
+    <value>Add a font</value>
   </data>
   <data name="ParameterCategory_NoType" xml:space="preserve">
     <value>-</value>
@@ -230,6 +290,9 @@
   </data>
   <data name="Settings_About_Title" xml:space="preserve">
     <value>About us</value>
+  </data>
+  <data name="Settings_AddNewFont" xml:space="preserve">
+    <value>Create a new font</value>
   </data>
   <data name="Settings_FontManagement_3DFontDirectoryLabel" xml:space="preserve">
     <value>3D font directory</value>

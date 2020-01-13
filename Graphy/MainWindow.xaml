@@ -308,7 +308,12 @@
 
                         <Viewbox Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                             <Viewbox.ToolTip>
-                                <TextBlock><Run Text="Surface de projection du marquage."/><LineBreak/><Run Text="&quot;Surface de projection&quot; doit avoir un nom unique."/><LineBreak/><Run Text="/!\ Selection depuis un volume non prise en charge."/><LineBreak/><Run Text="/!\ Toutes les surfaces formant la &quot;Surface de projection&quot; doivent avoir la même normale naturelle."/></TextBlock>
+                                <TextBlock>
+                                    <Run Text="{local:Loc MainWindow_Position_ProjectionSurfaceTooltip1}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_ProjectionSurfaceTooltip2}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_ProjectionSurfaceTooltip3}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_ProjectionSurfaceTooltip4}"/>
+                                </TextBlock>
                             </Viewbox.ToolTip>
                             <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
                                 <Path Style="{StaticResource InfoIcon}"/>
@@ -334,7 +339,13 @@
 
                         <Viewbox Grid.Row="1" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                             <Viewbox.ToolTip>
-                                <TextBlock><Run Text="Courbe de suivi du marquage."/><LineBreak/><Run Text="&quot;Courbe de suivi&quot; doit avoir un nom unique."/><LineBreak/><Run Text="La courbe doit se trouver sur la &quot;Surface de projection&quot;."/><LineBreak/><Run Text="/!\ Selection depuis un volume non prise en charge."/><LineBreak/><Run Text="/!\ Tous les segments formant la &quot;Courbe de suivi&quot; doivent avoir la même direction naturelle."/></TextBlock>
+                                <TextBlock>
+                                    <Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip1}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip2}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip3}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip4}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip5}"/>
+                                </TextBlock>
                             </Viewbox.ToolTip>
                             <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
                                 <Path Style="{StaticResource InfoIcon}"/>
@@ -358,7 +369,12 @@
 
                         <Viewbox Grid.Row="2" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                             <Viewbox.ToolTip>
-                                <TextBlock><Run Text="Point de départ du marquage."/><LineBreak/><Run Text="&quot;Point de départ&quot; doit avoir un nom unique."/><LineBreak/><Run Text="Le point doit se trouver sur la &quot;Courbe de suivi&quot; et sur la &quot;Surface de projection&quot;."/><LineBreak/><Run Text="/!\ Selection depuis un volume non prise en charge."/></TextBlock>
+                                <TextBlock>
+                                    <Run Text="{local:Loc MainWindow_Position_StartPointTooltip1}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_StartPointTooltip2}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_StartPointTooltip3}"/>
+                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_StartPointTooltip4}"/>
+                                </TextBlock>
                             </Viewbox.ToolTip>
                             <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
                                 <Path Style="{StaticResource InfoIcon}"/>

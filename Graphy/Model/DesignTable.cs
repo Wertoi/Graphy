@@ -69,7 +69,7 @@ namespace Graphy.Model
                 {
                     CatiaFile tempCatiaFile = new CatiaFile(fileFullPath);
 
-                    if (tempCatiaFile.GetDocumentFormat() == CatiaGenericDocument.CatiaDocumentFormat.CATPart)
+                    if (tempCatiaFile.GetDocumentFormat() == CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat.CATPart)
                     {
                         PartCollection.Add(tempCatiaFile);
                     } 

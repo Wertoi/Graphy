@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Graphy.View"
+             xmlns:local="clr-namespace:Graphy"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
-    
+
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -26,55 +26,55 @@
                 </Viewbox>
             </Button>
 
-            <TextBlock Text="Ajouter une police"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}" VerticalAlignment="Center" Margin="20,0,0,0"/>
+            <TextBlock Text="{local:Loc NewFont_Title}"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}" VerticalAlignment="Center" Margin="20,0,0,0"/>
         </StackPanel>
-        
+
         <!-- MAIN CONTENT -->
         <ScrollViewer Grid.Row="1" Margin="15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Style="{StaticResource LabelFormTextBlock}" Text="Police"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource Locator}, Path=FontViewModel.ClassicFontCollection}"
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource LabelFormTextBlock}" Text="{local:Loc NewFont_FontLabel}"/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource Locator}, Path=FontViewModel.ClassicFontCollection}"
                           SelectedItem="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedClassicFont}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-            </StackPanel>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
 
-                <TextBlock Text="Liste des charactères disponibles" Margin="0,20,0,0" FontSize="16" Foreground="{StaticResource PrimaryColor}"/>
+                <TextBlock Text="{local:Loc NewFont_CharacterList_Title}" Margin="0,20,0,0" FontSize="16" Foreground="{StaticResource PrimaryColor}"/>
 
                 <TextBlock Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedClassicFont.SupportedCharacterList}" TextWrapping="Wrap"
                        Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedClassicFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}"
                        FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedClassicFont.FontFamily}"
                        Style="{StaticResource LabelFormTextBlock}" />
 
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
                         Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedClassicFont.IsCalculated, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
 
-                        <TextBlock Text="Police non calculée" VerticalAlignment="Center" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Text="{local:Loc NewFont_CharacterList_FontNonComputed}" VerticalAlignment="Center" Style="{StaticResource LabelFormTextBlock}"/>
 
-                        <!-- BUTTON TO COMPUTE IF NOT LOADED-->
-                        <Button Style="{StaticResource NormalButton}"
+                    <!-- BUTTON TO COMPUTE IF NOT LOADED-->
+                    <Button Style="{StaticResource NormalButton}"
                         Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.ComputeCharacterListCommand}" 
                         CommandParameter="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedClassicFont}">
-                            <Viewbox Style="{StaticResource IconViewBox}">
-                                <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource UpdateButtonIcon}"/>
-                                </Canvas>
-                            </Viewbox>
-                            <Button.ToolTip>
-                                <TextBlock>
+                        <Viewbox Style="{StaticResource IconViewBox}">
+                            <Canvas Style="{StaticResource IconCanvas}">
+                                <Path Style="{StaticResource UpdateButtonIcon}"/>
+                            </Canvas>
+                        </Viewbox>
+                        <Button.ToolTip>
+                            <TextBlock>
                             <Run Text="Liste des charactères supportés non trouvée."/>
                             <LineBreak/>
                             <Run Text="Cliquer pour la recalculer."/>
-                                </TextBlock>
-                            </Button.ToolTip>
-                        </Button>
-                    </StackPanel>
+                            </TextBlock>
+                        </Button.ToolTip>
+                    </Button>
+                </StackPanel>
 
             </StackPanel>
 
@@ -82,7 +82,7 @@
 
         <!-- ACTION BOTTOM PANEL -->
         <Grid Grid.Row="2" Background="#FFF2F2F2">
-            <Button HorizontalAlignment="Right" Content="Générer" Style="{StaticResource NormalButtonDarker}"
+            <Button HorizontalAlignment="Right" Content="{local:Loc NewFont_Generate}" Style="{StaticResource NormalButtonDarker}"
                     Margin="0,10,15,10" FontSize="14" Padding="15,5"
                     Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.GenerateFontCommand}"
                     CommandParameter="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedClassicFont}"/>

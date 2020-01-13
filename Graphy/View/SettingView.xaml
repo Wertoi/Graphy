@@ -86,7 +86,7 @@
                 </Grid>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Créer une nouvelle police" VerticalAlignment="Center" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Text="{local:Loc Settings_AddNewFont}" VerticalAlignment="Center" Style="{StaticResource LabelFormTextBlock}"/>
                     <Button x:Name="AddNewFontButton" Style="{StaticResource NormalButton}" Click="AddNewFontButton_Click"
                             IsEnabled="{Binding Source={StaticResource Locator},Path=FontViewModel.IsClassicFontCollectionEmpty, Converter={StaticResource InvertBooleanConverter}}">
                         <Viewbox Style="{StaticResource IconViewBox}">
