@@ -13,7 +13,7 @@ namespace Graphy.Model
     {
         public MarkingData(string textValue, double charactereHeightValue, double extrusionHeightValue)
         {
-            Font = new GeneratedFont();
+            Font = new SelectableFont(new System.Windows.Media.FontFamily("Arial"));
             Text = new LinkableData<string>()
             {
                 Value = textValue
@@ -37,7 +37,7 @@ namespace Graphy.Model
 
         private string _name;
         private LinkableData<string> _text;
-        private GeneratedFont _font;
+        private SelectableFont _font;
         private LinkableData<double> _characterHeight;
         private LinkableData<double> _extrusionHeight;
         private string _trackingCurveName = "No curve selected";
@@ -63,7 +63,7 @@ namespace Graphy.Model
             }
         }
 
-        public GeneratedFont Font
+        public SelectableFont Font
         {
             get => _font;
             set

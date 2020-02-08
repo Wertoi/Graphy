@@ -147,6 +147,24 @@
   <data name="DesignTable_PartSelection_Title" xml:space="preserve">
     <value>Parts management</value>
   </data>
+  <data name="Font_selectedFontSupportedCharacters" xml:space="preserve">
+    <value>List of supported characters:</value>
+  </data>
+  <data name="Font_SortAscending" xml:space="preserve">
+    <value>Ascending order</value>
+  </data>
+  <data name="Font_SortButton" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="Font_SortDescending" xml:space="preserve">
+    <value>Descending order</value>
+  </data>
+  <data name="Font_SortFavorite" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="Font_Title" xml:space="preserve">
+    <value>Font management</value>
+  </data>
   <data name="Language_English" xml:space="preserve">
     <value>English</value>
   </data>
@@ -261,21 +279,6 @@
   <data name="MainWindow_SelectPart_Title" xml:space="preserve">
     <value>Select the working part</value>
   </data>
-  <data name="NewFont_CharacterList_FontNonComputed" xml:space="preserve">
-    <value>Font is non computed</value>
-  </data>
-  <data name="NewFont_CharacterList_Title" xml:space="preserve">
-    <value>Available characters list</value>
-  </data>
-  <data name="NewFont_FontLabel" xml:space="preserve">
-    <value>Font</value>
-  </data>
-  <data name="NewFont_Generate" xml:space="preserve">
-    <value>Generate</value>
-  </data>
-  <data name="NewFont_Title" xml:space="preserve">
-    <value>Add a font</value>
-  </data>
   <data name="ParameterCategory_NoType" xml:space="preserve">
     <value>-</value>
   </data>
@@ -290,18 +293,6 @@
   </data>
   <data name="Settings_About_Title" xml:space="preserve">
     <value>About us</value>
-  </data>
-  <data name="Settings_AddNewFont" xml:space="preserve">
-    <value>Create a new font</value>
-  </data>
-  <data name="Settings_FontManagement_3DFontDirectoryLabel" xml:space="preserve">
-    <value>3D font directory</value>
-  </data>
-  <data name="Settings_FontManagement_CatiaFontDirectoryLabel" xml:space="preserve">
-    <value>Catia font directory</value>
-  </data>
-  <data name="Settings_FontManagement_Title" xml:space="preserve">
-    <value>Font file management</value>
   </data>
   <data name="Settings_General_LanguageLabel" xml:space="preserve">
     <value>Language</value>
@@ -331,6 +322,6 @@
     <value>A wild exception has appeared.</value>
   </data>
   <data name="Status_InProgress_Title" xml:space="preserve">
-    <value>Process in progress !</value>
+    <value>In progress !</value>
   </data>
 </root>

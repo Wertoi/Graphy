@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graphy"
+        xmlns:cc="clr-namespace:Graphy.CustomControl"
         xmlns:view="clr-namespace:Graphy.View"
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Graphy.MainWindow"
         mc:Ignorable="d"
-        Title="Graphy" Height="720" Width="500" WindowStartupLocation="CenterScreen" Icon="Icon/Graphy_Icon.ico">
+        Title="Graphy" Height="720" Width="450" WindowStartupLocation="CenterScreen" Icon="Icon/Graphy_Icon.ico">
 
     <Grid UseLayoutRounding="True">
 
@@ -17,7 +18,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer Margin="20,25,20,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer Margin="20,25,20,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
 
                     <TextBlock Text="{local:Loc MainWindow_General_Title}" FontSize="18" Foreground="{StaticResource PrimaryColorDark}"/>
@@ -26,6 +27,7 @@
                         <Run Text=">" Foreground="{StaticResource SecondaryColor}" FontWeight="Bold" />
                         <Run Text="{local:Loc MainWindow_SelectPart_Title}" />
                     </TextBlock>
+                    
                     <StackPanel Orientation="Horizontal" Margin="0">
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0"
@@ -109,7 +111,8 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="InputFieldColumnGroup"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
@@ -122,13 +125,13 @@
                         <TextBox Grid.Column="1" Style="{StaticResource NormalTextBox}"
                                  Text="{Binding InputDataViewModel.MarkingData.Text.Value, Mode=TwoWay, Source={StaticResource Locator}}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.Text.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"
-                                 FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont.FontFamily}"/>
+                                 FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.FontFamily}"/>
 
                         <!-- Police d'écriture -->
                         <TextBlock Grid.Row="1" Text="{local:Loc MainWindow_MarkingData_FontLabel}" Style="{StaticResource LabelFormTextBlock}"/>
 
                         <Border Grid.Row="1" Grid.Column="1" Margin="0,5,10,5" BorderThickness="0,0,0,1" BorderBrush="#FFACACAC"
-                                Visibility="{Binding FontViewModel.IsGeneratedFontCollectionEmpty, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}">
+                                Visibility="{Binding FontViewModel.FontCollection.View.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}">
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 
@@ -143,104 +146,34 @@
                             </StackPanel>
                         </Border>
 
-                        <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,5,5,5"
-                              ItemsSource="{Binding FontViewModel.GeneratedFontCollection, Source={StaticResource Locator}}"
-                              SelectedItem="{Binding FontViewModel.SelectedGeneratedFont, Mode=TwoWay, Source={StaticResource Locator}}" VerticalContentAlignment="Center" Padding="5,8,15,8"
-                              Visibility="{Binding FontViewModel.IsGeneratedFontCollectionEmpty, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}">
+                        <ComboBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  Margin="0,5,5,5"
+                                  VerticalContentAlignment="Center"
+                                  Padding="5,8,15,8"
+                                  ItemsSource="{Binding FontViewModel.FontCollection.View, Source={StaticResource Locator}}"
+                                  SelectedItem="{Binding FontViewModel.SelectedFont, Mode=TwoWay, Source={StaticResource Locator}}"
+                                  Visibility="{Binding FontViewModel.FontCollection.View.IsEmpty, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                                        <TextBlock Text="{Binding GeneratedFileVersion}" VerticalAlignment="Center" Foreground="{StaticResource Gray127}"/>
-                                    </StackPanel>
+                                    <TextBlock Text="{Binding FontFamily}" VerticalAlignment="Center"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <!-- INFO ABOUT FONT SUPPORTED CHARACTERS -->
-                        <Grid Grid.Row="1" Grid.Column="2"
-                              Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.IsGeneratedFontCollectionEmpty, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
-
-                            <!-- BUTTON TO COMPUTE IF NOT LOADED-->
-                            <Button Style="{StaticResource NormalButton}"
-                                    Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont.IsCalculated, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
-                                    Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.ComputeCharacterListCommand}"
-                                    CommandParameter="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont}">
-                                <Viewbox Style="{StaticResource IconViewBox}">
-                                    <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource UpdateButtonIcon}"/>
-                                    </Canvas>
-                                </Viewbox>
-                                <Button.ToolTip>
-                                    <TextBlock>
-                                        <Run Text="Liste des charactères supportés non trouvée."/>
-                                        <LineBreak/>
-                                        <Run Text="Cliquer pour la recalculer."/>
-                                    </TextBlock>
-                                </Button.ToolTip>
-                            </Button>
-
-
-                            <!-- TOOLTIP IF INFORMATION IS AVALAIBLE -->
-                            <ToggleButton x:Name="m_moreActionsToggleButton" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" Margin="0,6,3,6"
-                                          IsHitTestVisible="{Binding ElementName=m_moreActionsPopup, Path=IsOpen,  Converter={StaticResource InvertBooleanConverter}}"
-                                          HorizontalAlignment="Right" Style="{StaticResource NormalToggleButton}"
-                                          Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Viewbox Style="{StaticResource IconViewBox}">
-                                    <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource InfoIcon}"/>
-                                    </Canvas>
-                                </Viewbox>
-                            </ToggleButton>
-
-                            <!-- Menu Popup -->
-                            <Popup x:Name="m_moreActionsPopup" IsOpen="{Binding ElementName=m_moreActionsToggleButton, Path=IsChecked, Mode=TwoWay}" Placement="Left"
-                                   PlacementTarget="{Binding ElementName=m_moreActionsToggleButton}" StaysOpen="False" AllowsTransparency="True"
-                                   HorizontalOffset="10" VerticalOffset="20" PopupAnimation="Fade" MinWidth="100">
-
-                                <!-- Main Border -->
-                                <Border x:Name="m_popupBorder" CornerRadius="5" Margin="0,0,4,4">
-                                    <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="2" Color="#FF757575"/>
-                                    </Border.Effect>
-
-                                    <Grid>
-                                        <!-- Mask Border -->
-                                        <Border x:Name="m_maskBorder" Background="White" CornerRadius="{Binding ElementName=m_popupBorder, Path=CornerRadius}" BorderThickness="0.5"/>
-
-                                        <!-- Content -->
-                                        <StackPanel Orientation="Vertical" Margin="10">
-                                            <StackPanel.OpacityMask>
-                                                <VisualBrush Visual="{Binding ElementName=m_maskBorder}"/>
-                                            </StackPanel.OpacityMask>
-
-                                            <TextBlock Text="Charactères supportés :"/>
-                                            <TextBox Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont.SupportedCharacterList}"
-                                                     FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont.FontFamily}" 
-                                                     TextWrapping="Wrap" MaxWidth="250" Foreground="{StaticResource Gray127}"
-                                                     Style="{StaticResource ReadOnlyTextBox}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
-                            </Popup>
-
-
-                            <!--<Viewbox Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000"
-                                     Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Viewbox.ToolTip>
-                                    <TextBlock TextWrapping="Wrap" MaxWidth="200"
-                                               FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont.FontFamily}">
-                                    <Run Text="Charactères supportés :"/>
-                                    <LineBreak/>
-                                    <Run Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedGeneratedFont.SupportedCharacterList}"/>
-                                    </TextBlock>
-                                </Viewbox.ToolTip>
-                                <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
-                                    <Path Style="{StaticResource InfoIcon}"/>
+                        <!-- TOOLTIP IF INFORMATION IS AVALAIBLE -->
+                        <Button x:Name="FontButton"
+                                Grid.Row="1" Grid.Column="2"
+                                Style="{StaticResource NormalButton}"
+                                Click="FontButton_Click"
+                                Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SendSelectedFontCommand}"
+                                CommandParameter="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont}">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource FontIcon}"/>
                                 </Canvas>
-                            </Viewbox>-->
-
-                        </Grid>
+                            </Viewbox>
+                        </Button>
 
 
                         <!-- Hauteur de caractère -->
@@ -249,7 +182,7 @@
                         <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.CharacterHeight.IsLinkOn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
-                        <local:TextBoxWithUnit Grid.Row="2" Grid.Column="1" Margin="0,0,10,0" VerticalContentAlignment="Center" MinWidth="140" Unit="mm"
+                        <cc:TextBoxWithUnit Grid.Row="2" Grid.Column="1" Margin="0,0,10,0" VerticalContentAlignment="Center" MinWidth="140" Unit="mm"
                                                Text="{Binding InputDataViewModel.MarkingData.CharacterHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}" VerticalAlignment="Center"
                                                Visibility="{Binding InputDataViewModel.MarkingData.CharacterHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
@@ -260,7 +193,7 @@
                         <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
-                        <local:TextBoxWithUnit Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" Margin="0,0,10,0" Unit="mm"
+                        <cc:TextBoxWithUnit Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="0,0,10,0" Unit="mm"
                                                Text="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}" VerticalAlignment="Center"
                                                Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
@@ -286,7 +219,7 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="InputFieldColumnGroup"/>
+                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
@@ -440,14 +373,13 @@
         </Grid>
 
         <view:SettingView x:Name="SettingView" Visibility="Collapsed"
-                          BackButtonClicked="SettingView_BackButtonClicked"
-                          ShowAddNewFont="SettingView_ShowAddNewFont" />
+                          BackButtonClicked="SettingView_BackButtonClicked" />
 
-        <view:NewFontView x:Name="NewFontView" Visibility="Collapsed" BackButtonClicked="NewFontView_BackButtonClicked"/>
+        <view:FontView x:Name="FontView" Visibility="Collapsed" BackButtonClicked="FontView_BackButtonClicked"/>
 
         <view:DesignTableView x:Name="DesignTableView" Visibility="Collapsed" BackButtonClicked="DesignTableView_BackButtonClicked" />
 
-        <view:StateView x:Name="StateView" QuitButtonClicked="StateView_QuitButtonClicked"
+        <view:StateView x:Name="StateView"
                         Visibility="{Binding StatusViewModel.IsOneStateActivated, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
     </Grid>

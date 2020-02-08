@@ -1,13 +1,14 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Graphy">
+    xmlns:local="clr-namespace:Graphy"
+    xmlns:cc="clr-namespace:Graphy.CustomControl" >
 
 
-    <Style TargetType="{x:Type local:TextBoxWithUnit}">
+    <Style TargetType="{x:Type cc:TextBoxWithUnit}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:TextBoxWithUnit}">
+                <ControlTemplate TargetType="{x:Type cc:TextBoxWithUnit}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
@@ -16,4 +17,5 @@
             </Setter.Value>
         </Setter>
     </Style>
+
 </ResourceDictionary>

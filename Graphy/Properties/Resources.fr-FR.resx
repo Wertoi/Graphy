@@ -147,6 +147,24 @@
   <data name="DesignTable_PartSelection_Title" xml:space="preserve">
     <value>Pièces à traiter</value>
   </data>
+  <data name="Font_selectedFontSupportedCharacters" xml:space="preserve">
+    <value>Liste des caractères supportés :</value>
+  </data>
+  <data name="Font_SortAscending" xml:space="preserve">
+    <value>Ordre alphabétique</value>
+  </data>
+  <data name="Font_SortButton" xml:space="preserve">
+    <value>Trier</value>
+  </data>
+  <data name="Font_SortDescending" xml:space="preserve">
+    <value>Ordre alphabétique inverse</value>
+  </data>
+  <data name="Font_SortFavorite" xml:space="preserve">
+    <value>Favoris</value>
+  </data>
+  <data name="Font_Title" xml:space="preserve">
+    <value>Gestion des polices</value>
+  </data>
   <data name="Language_English" xml:space="preserve">
     <value>English</value>
   </data>
@@ -163,7 +181,7 @@
     <value>Création d'un nouveau marquage 3D !</value>
   </data>
   <data name="MainWindow_MarkingData_CharacterHeightLabel" xml:space="preserve">
-    <value>Hauteur de charactères</value>
+    <value>Hauteur de caractères</value>
   </data>
   <data name="MainWindow_MarkingData_ExtrusionHeightLabel" xml:space="preserve">
     <value>Hauteur d'extrusion</value>
@@ -202,7 +220,7 @@
     <value>- L'axe X doit être la tangente à la "Courbe de suivi" passant par son origine. Son sens indique le sens du marquage.</value>
   </data>
   <data name="MainWindow_Position_LocalAxisSystemTooltipLine5" xml:space="preserve">
-    <value>- L'axe Y est la résultante des axes X et Z. Son sens indique l'orientation des charactères.</value>
+    <value>- L'axe Y est la résultante des axes X et Z. Son sens indique l'orientation des caractères.</value>
   </data>
   <data name="MainWindow_Position_LocalAxisSystemTooltipLine6" xml:space="preserve">
     <value>- L'axe Z doit être la normale à la "Surface de projection" passant par son origine. Son sens indique le sens d'ajout de matière.</value>
@@ -265,16 +283,7 @@
     <value>Police non calculée</value>
   </data>
   <data name="NewFont_CharacterList_Title" xml:space="preserve">
-    <value>Liste des charactères disponibles</value>
-  </data>
-  <data name="NewFont_FontLabel" xml:space="preserve">
-    <value>Police</value>
-  </data>
-  <data name="NewFont_Generate" xml:space="preserve">
-    <value>Générer</value>
-  </data>
-  <data name="NewFont_Title" xml:space="preserve">
-    <value>Ajouter une police</value>
+    <value>Liste des caractères disponibles</value>
   </data>
   <data name="ParameterCategory_NoType" xml:space="preserve">
     <value>-</value>
@@ -290,18 +299,6 @@
   </data>
   <data name="Settings_About_Title" xml:space="preserve">
     <value>A propos</value>
-  </data>
-  <data name="Settings_AddNewFont" xml:space="preserve">
-    <value>Créer une nouvelle police</value>
-  </data>
-  <data name="Settings_FontManagement_3DFontDirectoryLabel" xml:space="preserve">
-    <value>Répertoire police 3D</value>
-  </data>
-  <data name="Settings_FontManagement_CatiaFontDirectoryLabel" xml:space="preserve">
-    <value>Répertoire police Catia</value>
-  </data>
-  <data name="Settings_FontManagement_Title" xml:space="preserve">
-    <value>Gestion des fichiers de police</value>
   </data>
   <data name="Settings_General_LanguageLabel" xml:space="preserve">
     <value>Langue</value>

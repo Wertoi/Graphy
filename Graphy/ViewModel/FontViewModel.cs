@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Graphy.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Media;
@@ -12,6 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Graphy.Model.Generator;
+using System.Drawing;
+using System.Drawing.Text;
+using Graphy.Model;
+using System.Windows.Data;
 
 namespace Graphy.ViewModel
 {
@@ -20,117 +23,151 @@ namespace Graphy.ViewModel
         // CONSTRUCTOR
         public FontViewModel()
         {
-            // INITILIAZE COLLECTIONS
-            GeneratedFontCollection = new ObservableCollection<GeneratedFont>();
-            ClassicFontCollection = new ObservableCollection<Font>();
+            // RETRIEVES THE WINDOWS FONT COLLECTION
+            InstalledFontCollection installedFontCollection = new InstalledFontCollection();
+            Collection<SelectableFont> tempFontCollection = new Collection<SelectableFont>();
 
-            // INITIALIZE PRIVATE ATTRIBUT
-            _computedFontCollection = new List<Font>();
+            foreach (System.Drawing.FontFamily fontFamily in installedFontCollection.Families)
+            {
+                if(fontFamily.Name == DEFAULT_FONT)
+                    tempFontCollection.Add(new SelectableFont(new System.Windows.Media.FontFamily(fontFamily.Name), true));
+                else
+                    tempFontCollection.Add(new SelectableFont(new System.Windows.Media.FontFamily(fontFamily.Name), false));
+
+                tempFontCollection.Last().PropertyChanged += FontViewModel_PropertyChanged;
+            }
+
+            // FONT COLLECTION INITIALIZATION
+            FontCollection = new CollectionViewSource();
+            FontCollection.Filter += FontCollection_Filter;
+            FontCollection.Source = tempFontCollection;
+
+            // SETTINGS FONT COLLECTION INITIALIZATION
+            SettingsFontCollection = new CollectionViewSource();
+            SettingsFontCollection.Filter += SettingsFontCollection_Filter;
+            SettingsFontCollection.Source = tempFontCollection;
+
+            SettingsSelectedFont = tempFontCollection.First();
+
+            // END OF FONT COLLECTION INITIALIZATION
 
             // MESSENGER REGISTRATION
-            MessengerInstance.Register<string>(this, Enum.SettingToken.GeneratedFontDirectoryPathChanged, (path) => GeneratedFontDirectoryChanged(path));
-            MessengerInstance.Register<List<Font>>(this, Enum.SettingToken.ComputedFontCollectionChanged, (computedFontCollection) => ComputedFontCollectionChanged(computedFontCollection));
+            MessengerInstance.Register<List<string>>(this, Enum.SettingToken.UserPreferencesChanged, (selectedFontList) => ReadUserPreferences(selectedFontList));
+
 
             // COMMANDS INITIALIZATION
-            ComputeCharacterListCommand = new RelayCommand<Font>((selectedFont) => ComputeCharacterListCommandAction(selectedFont));
-            GenerateFontCommand = new RelayCommand<Font>((selectedFont) => GenerateFontCommandAction(selectedFont));
-
-            // LOAD COLLECTIONS
-            LoadClassicLoadCollection();
+            ComputeCharacterListCommand = new RelayCommand<SelectableFont>((selectedFont) => ComputeCharacterListCommandAction(selectedFont));
+            SortByNameCommand = new RelayCommand<bool>((isAscending) => SortByNameCommandAction(isAscending));
+            SortByFavoriteCommand = new RelayCommand(() => SortByFavoriteCommandAction());
+            SendSelectedFontCommand = new RelayCommand<SelectableFont>((selectedFont) => SendSelectedFontCommandAction(selectedFont));
+            ClearSearchCommand = new RelayCommand(() => { SearchText = "";  });
         }
 
-        // OBSERVABLE ATTRIBUTS
-        private ObservableCollection<GeneratedFont> _generatedFontCollection;
-        private GeneratedFont _selectedGeneratedFont;
-        private bool _isGeneratedFontCollectionEmpty = true;
+        // CONSTANTS
+        private const string DEFAULT_FONT = "Monospac821 BT";
 
-        private ObservableCollection<Font> _classicFontCollection;
-        private Font _selectedclassicFont;
-        private bool _isClassicFontCollectionEmpty = true;
+        // ATTRIBUTS
+        private CollectionViewSource _fontCollection;
+        private CollectionViewSource _settingsFontCollection;
+        private SelectableFont _selectedFont;
+        private SelectableFont _settingsSelectedFont;
+        private string _searchText;
 
-        // PRIVATE ATTRIBUTS
-        private string _generatedFontDirectoryPath;
-        private List<Font> _computedFontCollection;
-
-
-        public ObservableCollection<GeneratedFont> GeneratedFontCollection
+        public CollectionViewSource FontCollection
         {
-            get => _generatedFontCollection;
+            get => _fontCollection;
             set
             {
-                Set(() => GeneratedFontCollection, ref _generatedFontCollection, value);
-            }
-        }
-
-        public GeneratedFont SelectedGeneratedFont
-        {
-            get => _selectedGeneratedFont;
-            set
-            {
-                Set(() => SelectedGeneratedFont, ref _selectedGeneratedFont, value);
-                MessengerInstance.Send(SelectedGeneratedFont, Enum.InputDataToken.SelectedFontChanged);
-            }
-        }
-
-        public bool IsGeneratedFontCollectionEmpty
-        {
-            get => _isGeneratedFontCollectionEmpty;
-            set
-            {
-                Set(() => IsGeneratedFontCollectionEmpty, ref _isGeneratedFontCollectionEmpty, value);
-            }
-        }
-
-        public ObservableCollection<Font> ClassicFontCollection
-        {
-            get => _classicFontCollection;
-            set
-            {
-                Set(() => ClassicFontCollection, ref _classicFontCollection, value);
+                Set(() => FontCollection, ref _fontCollection, value);
             }
         }
 
 
-        public Font SelectedClassicFont
+        public CollectionViewSource SettingsFontCollection
         {
-            get => _selectedclassicFont;
+            get => _settingsFontCollection;
             set
             {
-                Set(() => SelectedClassicFont, ref _selectedclassicFont, value);
+                Set(() => SettingsFontCollection, ref _settingsFontCollection, value);
             }
         }
 
-        public bool IsClassicFontCollectionEmpty
+
+        public SelectableFont SelectedFont
         {
-            get => _isClassicFontCollectionEmpty;
+            get => _selectedFont;
             set
             {
-                Set(() => IsClassicFontCollectionEmpty, ref _isClassicFontCollectionEmpty, value);
+                Set(() => SelectedFont, ref _selectedFont, value);
+
+                MessengerInstance.Send<SelectableFont>(SelectedFont, Enum.InputDataToken.SelectedFontChanged);
             }
         }
+
+        public SelectableFont SettingsSelectedFont
+        {
+            get => _settingsSelectedFont;
+            set
+            {
+                Set(() => SettingsSelectedFont, ref _settingsSelectedFont, value);
+            }
+        }
+
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                Set(() => SearchText, ref _searchText, value);
+                SettingsFontCollection.View.Refresh();
+
+                if(!SettingsFontCollection.View.IsEmpty)
+                    SettingsFontCollection.View.MoveCurrentToFirst();
+            }
+        }
+
 
 
         // COMMANDS
-        private RelayCommand<Font> _computeCharacterListCommand;
-        public RelayCommand<Font> ComputeCharacterListCommand { get => _computeCharacterListCommand; set => _computeCharacterListCommand = value; }
+        private RelayCommand<SelectableFont> _computeCharacterListCommand;
+        public RelayCommand<SelectableFont> ComputeCharacterListCommand { get => _computeCharacterListCommand; set => _computeCharacterListCommand = value; }
 
-        private async void ComputeCharacterListCommandAction(Font selectedFont)
+        private async void ComputeCharacterListCommandAction(SelectableFont selectedFont)
         {
-            SupportedCharGenerator supportedCharGenerator = new SupportedCharGenerator();
-            supportedCharGenerator.ProgressRateChanged += SupportedCharGenerator_ProgressRateChanged;
-
-            MessengerInstance.Send("Récupération de la liste des caractères supportés.", Enum.ProcessToken.Started);
+            MessengerInstance.Send("Génération du marquage.", Enum.ProcessToken.Started);
 
             await Task.Run(() =>
             {
-                _computedFontCollection.Add(new Font(selectedFont.FontFamily, supportedCharGenerator.GenerateSupportedCharacters(selectedFont)));
 
-                AddSupportedCharacterToCollection(true, true);
+                SupportedCharGenerator supportedCharGenerator = new SupportedCharGenerator();
+                supportedCharGenerator.ProgressRateChanged += SupportedCharGenerator_ProgressRateChanged; ;
 
-                MessengerInstance.Send(_computedFontCollection, Enum.FontToken.SupportedCharacterComputed);
+                try
+                {
+                    selectedFont.SupportedCharacterList = supportedCharGenerator.ComputeSupportedCharacterList(selectedFont.FontFamily);
 
-                MessengerInstance.Send("Liste des caractères supportés récupérée.", Enum.ProcessToken.Finished);
+
+                    MessengerInstance.Send<bool>(true, Enum.ProcessToken.Finished);
+                }
+                catch (Exception ex)
+                {
+                    MessengerInstance.Send(ex.Message, Enum.ProcessToken.Failed);
+                }
+
             });
+        }
+
+
+        private RelayCommand<SelectableFont> _sendSelectedFontCommand;
+        public RelayCommand<SelectableFont> SendSelectedFontCommand { get => _sendSelectedFontCommand; set => _sendSelectedFontCommand = value; }
+
+        private void SendSelectedFontCommandAction(SelectableFont selectedFont)
+        {
+            if(!selectedFont.IsCalculated)
+                ComputeCharacterListCommandAction(selectedFont);
+
+            SearchText = selectedFont.FontFamily.Source;
         }
 
         private void SupportedCharGenerator_ProgressRateChanged(object sender, ProgressRateChangedEventArgs e)
@@ -139,135 +176,88 @@ namespace Graphy.ViewModel
         }
 
 
-        // COMMANDS
 
-        private RelayCommand<Font> _generateFontCommand;
-        public RelayCommand<Font> GenerateFontCommand { get => _generateFontCommand; set => _generateFontCommand = value; }
+        private RelayCommand<bool> _sortByNameCommand;
+        public RelayCommand<bool> SortByNameCommand { get => _sortByNameCommand; set => _sortByNameCommand = value; }
 
-        private void GenerateFontCommandAction(Font selectedFont)
+        private void SortByNameCommandAction(bool isAscending)
         {
-            MessengerInstance.Send(selectedFont, Enum.FontToken.GenerateNewFont);
+            SettingsFontCollection.SortDescriptions.Clear();
+            if(isAscending)
+                SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Ascending));
+            else
+                SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Descending));
         }
 
+
+        private RelayCommand _sortByFavoriteCommand;
+        public RelayCommand SortByFavoriteCommand { get => _sortByFavoriteCommand; set => _sortByFavoriteCommand = value; }
+
+        private void SortByFavoriteCommandAction()
+        {
+            SettingsFontCollection.SortDescriptions.Clear();
+            SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("IsSelected", ListSortDirection.Descending));
+        }
+
+        private RelayCommand _clearSearchCommand;
+        public RelayCommand ClearSearchCommand { get => _clearSearchCommand; set => _clearSearchCommand = value; }
+
+        // EVENTS
+        private void FontViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "IsSelected")
+            {
+                SelectableFont oldSelectedFontFamily = (SelectableFont)FontCollection.View.CurrentItem;
+                FontCollection.View.Refresh();
+
+                if (!FontCollection.View.Contains(oldSelectedFontFamily))
+                    FontCollection.View.MoveCurrentToFirst();
+
+                MessengerInstance.Send<ICollectionView>(FontCollection.View, Enum.FontToken.FavoriteFontListChanged);
+            }
+        }
+
+
+        private void FontCollection_Filter(object sender, FilterEventArgs e)
+        {
+            SelectableFont font = (SelectableFont)e.Item;
+            if (font == null)
+                e.Accepted = false;
+            else
+                e.Accepted = font.IsSelected ? true : false;
+        }
+
+        private void SettingsFontCollection_Filter(object sender, FilterEventArgs e)
+        {
+            SelectableFont font = (SelectableFont)e.Item;
+            if (font == null)
+                e.Accepted = false;
+            else
+            {
+                if (SearchText != "" && SearchText != null)
+                    e.Accepted = font.FontFamily.Source.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ? true : false;
+                else
+                    e.Accepted = true;
+            }
+        }
 
 
         // PRIVATE METHODS
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="path"></param>
-        private void GeneratedFontDirectoryChanged(string path)
+        private void ReadUserPreferences(List<string> selectedFontList)
         {
-            _generatedFontDirectoryPath = path;
-
-            // RESET FONT COLLECTION
-            GeneratedFontCollection.Clear();
-
-            // LOAD CUSTOM FONTS AND MERGE THEM WITH CATIA FONT
-            if (System.IO.Directory.Exists(_generatedFontDirectoryPath))
+            Collection<SelectableFont> tempFontCollection = (Collection<SelectableFont>)FontCollection.Source;
+            foreach (string fontName in selectedFontList)
             {
-                string[] fileList = Directory.GetFiles(_generatedFontDirectoryPath, "*.CATPart");
-                foreach (string file in fileList)
+                foreach (SelectableFont font in tempFontCollection)
                 {
-                    GeneratedFont tempFont = new GeneratedFont()
+                    if (font.FontFamily.Source == fontName)
                     {
-                        FontFamily = GeneratedFont.GetFontFamilyFromName(file),
-                        GeneratedFileFullPath = file,
-                    };
-
-                    if (tempFont.IsGeneratedFileOK)
-                    {
-                        GeneratedFontCollection.Add(tempFont);
-                    }
-                }
-            }
-
-            // SELECT THE FIRST ELEMENT OF FONT COLLECTION IF NOT EMPTY
-            if (GeneratedFontCollection.Count > 0)
-            {
-                IsGeneratedFontCollectionEmpty = false;
-                SelectedGeneratedFont = GeneratedFontCollection.First();
-            }
-            else
-                IsGeneratedFontCollectionEmpty = true;
-
-            // ADD SUPPORTED CHARACTERS
-            AddSupportedCharacterToCollection(false, true);
-        }
-
-
-        private void LoadClassicLoadCollection()
-        {
-            System.Drawing.Text.InstalledFontCollection installedFontCollection = new System.Drawing.Text.InstalledFontCollection();
-
-            foreach (System.Drawing.FontFamily fontFamily in installedFontCollection.Families)
-            {
-                Font tempFont = new Font() { FontFamily = new FontFamily(fontFamily.Name) };
-
-                if (!ClassicFontCollection.Any(font => font.Name == tempFont.Name))
-                    ClassicFontCollection.Add(tempFont);
-            }
-
-            // SELECT THE FIRST ELEMENT OF CLASSIC FONT COLLECTION IF NOT EMPTY
-            if (ClassicFontCollection.Count > 0)
-            {
-                IsClassicFontCollectionEmpty = false;
-                SelectedClassicFont = ClassicFontCollection.First();
-            }
-            else
-                IsClassicFontCollectionEmpty = true;
-
-            // ADD SUPPORTED CHARACTERS
-            AddSupportedCharacterToCollection(true, false);
-        }
-
-
-        private void ComputedFontCollectionChanged(List<Font> computedFontCollection)
-        {
-            _computedFontCollection = computedFontCollection;
-
-            AddSupportedCharacterToCollection(true, true);
-        }
-
-
-        private void AddSupportedCharacterToCollection(bool ToClassicFontCollection, bool ToGeneratedFontCollection)
-        {
-            if(ToClassicFontCollection)
-            {
-                foreach (Font font in ClassicFontCollection)
-                {
-                    // Reset the supported character list in order to avoid datas which does not exist anymore.
-                    font.SupportedCharacterList = "";
-
-                    foreach (Font computedFont in _computedFontCollection)
-                    {
-                        if (computedFont.Name == font.Name)
-                        {
-                            font.SupportedCharacterList = computedFont.SupportedCharacterList;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if(ToGeneratedFontCollection)
-            {
-                foreach (GeneratedFont generatedFont in GeneratedFontCollection)
-                {
-                    // Reset the supported character list in order to avoid datas which does not exist anymore.
-                    generatedFont.SupportedCharacterList = "";
-
-                    foreach (Font computedFont in _computedFontCollection)
-                    {
-                        if (computedFont.Name == generatedFont.Name)
-                        {
-                            generatedFont.SupportedCharacterList = computedFont.SupportedCharacterList;
-                            break;
-                        }
+                        font.IsSelected = true;
+                        break;
                     }
                 }
             }
         }
+
     }
 }

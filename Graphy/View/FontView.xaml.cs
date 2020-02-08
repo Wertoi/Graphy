@@ -18,9 +18,9 @@ namespace Graphy.View
     /// <summary>
     /// Logique d'interaction pour FontView.xaml
     /// </summary>
-    public partial class NewFontView : UserControl
+    public partial class FontView : UserControl
     {
-        public NewFontView()
+        public FontView()
         {
             InitializeComponent();
         }
@@ -29,6 +29,11 @@ namespace Graphy.View
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             BackButtonClicked?.Invoke(sender, new EventArgs());
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ClearSearchButton.Visibility = SearchTextBox.Text == "" ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

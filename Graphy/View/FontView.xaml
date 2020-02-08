@@ -1,0 +1,248 @@
+﻿<UserControl x:Class="Graphy.View.FontView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Graphy"
+             xmlns:cc="clr-namespace:Graphy.CustomControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="450">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER STACK PANEL -->
+        <StackPanel Orientation="Horizontal" Margin="15,15,0,15">
+
+            <!-- BACK BUTTON -->
+            <Button x:Name="BackButton" Style="{StaticResource NormalButton}" Click="BackButton_Click">
+                <Viewbox Style="{StaticResource IconViewBox}">
+                    <Canvas Style="{StaticResource IconCanvas}">
+                        <Path Style="{StaticResource BackIcon}"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
+
+            <TextBlock Text="{local:Loc Font_Title}"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}" VerticalAlignment="Center" Margin="20,0,0,0"/>
+        </StackPanel>
+
+        <!-- MAIN CONTENT -->
+
+        <Grid Grid.Row="1" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ToggleButton Style="{StaticResource NormalToggleButton}"
+                              x:Name="SortButton"
+                              IsHitTestVisible="{Binding ElementName=m_moreActionsPopup, Path=IsOpen,  Converter={StaticResource InvertBooleanConverter}}" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Style="{StaticResource IconViewBox}">
+                            <Canvas Style="{StaticResource IconCanvas}">
+                                <Path Style="{StaticResource SortIcon}"/>
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="{local:Loc Font_SortButton}" VerticalAlignment="Center" Margin="5,0"/>
+                    </StackPanel>
+                </ToggleButton>
+
+                <!-- Menu Popup -->
+                <Popup x:Name="FilterPopup"
+                       Style="{StaticResource NormalPopupStyle}"
+                       IsOpen="{Binding ElementName=SortButton, Path=IsChecked, Mode=TwoWay}"
+                       PlacementTarget="{Binding ElementName=SortButton}" >
+
+                    <!-- Main Border -->
+                    <Border x:Name="PopupBorder" CornerRadius="5" Margin="0,0,4,4" BorderBrush="Black">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" Color="#FF757575"/>
+                        </Border.Effect>
+
+                        <Grid>
+                            <!-- Mask Border -->
+                            <Border x:Name="MaskBorder" Background="White" CornerRadius="{Binding ElementName=PopupBorder, Path=CornerRadius}" BorderThickness="0.5"/>
+
+                            <!-- Content -->
+                            <StackPanel Orientation="Vertical" Margin="10">
+                                <StackPanel.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=MaskBorder}"/>
+                                </StackPanel.OpacityMask>
+
+                                <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                                             Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByNameCommand}"
+                                             CommandParameter="{StaticResource True}"
+                                             IsChecked="True" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Viewbox Style="{StaticResource IconViewBox}">
+                                            <Canvas Style="{StaticResource IconCanvas}">
+                                                <Path Style="{StaticResource SortByAscendingIcon}"/>
+                                            </Canvas>
+                                        </Viewbox>
+
+                                        <TextBlock Text="{local:Loc Font_SortAscending}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+
+                                <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                                             Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByNameCommand}"
+                                             CommandParameter="{StaticResource False}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Viewbox Style="{StaticResource IconViewBox}">
+                                            <Canvas Style="{StaticResource IconCanvas}">
+                                                <Path Style="{StaticResource SortByDescendingIcon}"/>
+                                            </Canvas>
+                                        </Viewbox>
+
+                                        <TextBlock Text="{local:Loc Font_SortDescending}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+
+                                <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                                             Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByFavoriteCommand}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Viewbox Style="{StaticResource IconViewBox}">
+                                            <Canvas Style="{StaticResource IconCanvas}">
+                                                <Path Style="{StaticResource FavoriteToggleButtonIcon}"/>
+                                            </Canvas>
+                                        </Viewbox>
+
+                                        <TextBlock Text="{local:Loc Font_SortFavorite}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Popup>
+
+                <!-- SEARCH TEXT BOX -->
+                <!-- (Can be improved but works) -->
+                <TextBox x:Name="SearchTextBox" Grid.Column="1" MinWidth="200" HorizontalAlignment="Right"
+                         Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         TextChanged="SearchTextBox_TextChanged" >
+                    <TextBox.Style>
+                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource NormalTextBox}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ClearSearchButton, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="BorderBrush" Value="{StaticResource SecondaryColor}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <Button x:Name="ClearSearchButton" Grid.Column="1" HorizontalAlignment="Right"
+                        Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.ClearSearchCommand}"
+                        Margin="0,0,10,0" VerticalAlignment="Center" Style="{StaticResource NormalButton}">
+                    <Viewbox Style="{StaticResource IconViewBox}" Width="16" Height="16">
+                        <Canvas Style="{StaticResource IconCanvas}">
+                            <Path Style="{StaticResource ClearIcon}"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+
+                <Viewbox Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource IconViewBox}">
+                    <Canvas Style="{StaticResource IconCanvas}">
+                        <Path Style="{StaticResource SearchIcon}"/>
+                    </Canvas>
+                </Viewbox>
+                
+                <!-- END OF SEARCH TEXT BOX -->
+
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" MinWidth="150" MaxWidth="350"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <ListBox Grid.Row="1" Grid.Column="0" BorderBrush="Transparent"
+                         ItemsSource="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsFontCollection.View}"
+                         SelectedItem="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont, Mode=TwoWay}"
+                         HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="{Binding FontFamily}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                                <ToggleButton Grid.Column="1"
+                                          Style="{StaticResource TransparentToggleButton}"
+                                          IsChecked="{Binding IsSelected, Mode=TwoWay}" >
+
+                                    <Viewbox Style="{StaticResource IconViewBox}">
+                                        <Canvas Style="{StaticResource IconCanvas}">
+                                            <Path Style="{StaticResource FavoriteToggleButtonIcon}"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                </ToggleButton>
+
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+
+                <GridSplitter Grid.Row="1" Grid.Column="1" Width="2" ResizeDirection="Columns" HorizontalAlignment="Left" Margin="5,0,0,0" Background="{StaticResource SecondaryColorLight}"/>
+
+                <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto">
+
+                    <StackPanel  Orientation="Vertical">
+                        <TextBlock Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.FontFamily}"
+                                   FontSize="16" Foreground="{StaticResource PrimaryColor}"
+                                   Margin="15,0,0,15"/>
+
+                        <Button Style="{StaticResource NormalButton}"
+                                Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.IsCalculated, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
+                                Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.ComputeCharacterListCommand}"
+                                CommandParameter="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont}">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource UpdateButtonIcon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+
+                        <TextBlock Text="{local:Loc Font_selectedFontSupportedCharacters}"
+                                   Margin="15,0,0,5"
+                                   Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                        <TextBox  Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.SupportedCharacterList}"
+                                  TextWrapping="Wrap"
+                                  Foreground="{StaticResource Gray127}"
+                                  Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                  FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.FontFamily}"
+                                  BorderBrush="Transparent"
+                                  IsReadOnly="True"
+                                  Margin="15,0,0,0" />
+
+                    </StackPanel>
+
+                </ScrollViewer>
+
+            </Grid>
+            
+        </Grid>
+
+    </Grid>
+</UserControl>

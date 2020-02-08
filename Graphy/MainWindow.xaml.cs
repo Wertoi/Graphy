@@ -26,15 +26,14 @@ namespace Graphy
             InitializeComponent();
         }
 
-        private void StateView_QuitButtonClicked(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void SelectionButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
         }
+
+
+
+        // ***** SETTING VIEW MANAGEMENT *****
 
         private void SettingView_BackButtonClicked(object sender, EventArgs e)
         {
@@ -46,6 +45,13 @@ namespace Graphy
             SettingView.Visibility = Visibility.Visible;
         }
 
+        // ***** END OF SETTING VIEW MANAGEMENT *****
+
+
+
+
+        // ***** DESIGN TABLE VIEW MANAGEMENT *****
+
         private void DesignTableView_BackButtonClicked(object sender, EventArgs e)
         {
             DesignTableView.Visibility = Visibility.Collapsed;
@@ -56,14 +62,23 @@ namespace Graphy
             DesignTableView.Visibility = Visibility.Visible;
         }
 
-        private void SettingView_ShowAddNewFont(object sender, EventArgs e)
+        // ***** END OF DESIGN TABLE VIEW MANAGEMENT *****
+
+
+
+
+        // ***** FONT VIEW MANAGEMENT *****
+
+        private void FontView_BackButtonClicked(object sender, EventArgs e)
         {
-            NewFontView.Visibility = Visibility.Visible;
+            FontView.Visibility = Visibility.Collapsed;
         }
 
-        private void NewFontView_BackButtonClicked(object sender, EventArgs e)
+        private void FontButton_Click(object sender, RoutedEventArgs e)
         {
-            NewFontView.Visibility = Visibility.Collapsed;
+            FontView.Visibility = Visibility.Visible;
         }
+
+        // ***** END OF FONT VIEW MANAGEMENT *****
     }
 }

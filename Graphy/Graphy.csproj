@@ -93,24 +93,20 @@
     <Compile Include="Model\CatiaDocument\CatiaGenericDocument.cs" />
     <Compile Include="Model\CatiaDocument\CatiaPartDocument.cs" />
     <Compile Include="Model\CatiaFile.cs" />
+    <Compile Include="Model\CatiaShape\CatiaCharacter.cs" />
     <Compile Include="Model\CatiaShape\CatiaContour.cs" />
     <Compile Include="Model\CatiaShape\CatiaGenericShape.cs" />
     <Compile Include="Model\CatiaShape\CatiaSurface.cs" />
-    <Compile Include="Model\Font.cs" />
-    <Compile Include="Model\Generator\FontGenerator.cs" />
-    <Compile Include="Model\Contour.cs" />
-    <Compile Include="Model\DesignTable.cs" />
     <Compile Include="Model\DesignTableParameter.cs" />
     <Compile Include="Model\Generator\IGenerator.cs" />
     <Compile Include="Model\LinkableData.cs" />
     <Compile Include="Model\Generator\SupportedCharGenerator.cs" />
-    <Compile Include="TextBoxWithUnit.cs" />
+    <Compile Include="Model\SelectableFont.cs" />
+    <Compile Include="CustomControl\TextBoxWithUnit.cs" />
     <Compile Include="Enum\ViewModelToken.cs" />
     <Compile Include="Model\Generator\MarkingGenerator.cs" />
     <Compile Include="Model\CatiaEnv.cs" />
-    <Compile Include="Model\CatiaChar.cs" />
     <Compile Include="Model\CatiaShape\CatiaPoint.cs" />
-    <Compile Include="Model\GeneratedFont.cs" />
     <Compile Include="Model\MarkingData.cs" />
     <Compile Include="TranslationSource.cs" />
     <Compile Include="ViewModel\CatiaViewModel.cs" />
@@ -123,8 +119,8 @@
     <Compile Include="View\DesignTableView.xaml.cs">
       <DependentUpon>DesignTableView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\NewFontView.xaml.cs">
-      <DependentUpon>NewFontView.xaml</DependentUpon>
+    <Compile Include="View\FontView.xaml.cs">
+      <DependentUpon>FontView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
@@ -153,7 +149,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\NewFontView.xaml">
+    <Page Include="View\FontView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

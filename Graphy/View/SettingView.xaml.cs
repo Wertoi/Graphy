@@ -36,11 +36,5 @@ namespace Graphy.View
         {
             BackButtonClicked?.Invoke(sender, new EventArgs());
         }
-
-        public event EventHandler ShowAddNewFont;
-        private void AddNewFontButton_Click(object sender, RoutedEventArgs e)
-        {
-            ShowAddNewFont?.Invoke(sender, new EventArgs());
-        }
     }
 }

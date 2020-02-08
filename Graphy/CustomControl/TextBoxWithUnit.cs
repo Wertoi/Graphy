@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Graphy
+namespace Graphy.CustomControl
 {
     /// <summary>
     /// Suivez les étapes 1a ou 1b puis 2 pour utiliser ce contrôle personnalisé dans un fichier XAML.
@@ -60,7 +60,6 @@ namespace Graphy
         // Using a DependencyProperty as the backing store for Unit.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty UnitProperty =
             DependencyProperty.Register("Unit", typeof(string), typeof(TextBoxWithUnit), new PropertyMetadata(""));
-
 
     }
 }

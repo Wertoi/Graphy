@@ -155,7 +155,7 @@ namespace Graphy.ViewModel
                             designTableReader.CloseDesignTable();
 
                             // Update the status view
-                            MessengerInstance.Send("Lecture de la table terminée !", Enum.ProcessToken.Finished);
+                            MessengerInstance.Send<bool>(true, Enum.ProcessToken.Finished);
                         }
                         else
                         {

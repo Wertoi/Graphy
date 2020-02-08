@@ -23,11 +23,10 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<string>(this, Enum.ProcessToken.Failed, (msg) => ProcessFailed(msg));
             MessengerInstance.Register<double>(this, Enum.ProcessToken.Refresh, (rate) => { ProgressRate = rate; });
             MessengerInstance.Register<string>(this, Enum.ProcessToken.Started, (msg) => ProcessStarted(msg));
-            MessengerInstance.Register<string>(this, Enum.ProcessToken.Finished, (msg) => ProcessFinished(msg));
+            MessengerInstance.Register<bool>(this, Enum.ProcessToken.Finished, (closeDirectly) => ProcessFinished(closeDirectly));
 
             // FONT TOKEN
-            MessengerInstance.Register<string>(this, Enum.FontToken.FileReadingFailed, (msg) => FontFileReadingFailed(msg));
-            MessengerInstance.Register<string>(this, Enum.FontToken.DirectoryNotFound, (msg) => FontDirectoryNotFound(msg));
+
 
             // SETTING TOKEN
             MessengerInstance.Register<string>(this, Enum.SettingToken.SettingFileReadingFailed, (msg) => SettingFileReadingFailed(msg));
@@ -247,10 +246,12 @@ namespace Graphy.ViewModel
             ManageStates();
         }
 
-        private void ProcessFinished(string msg)
+        private void ProcessFinished(bool closeDirectly)
         {
-            IsFinished = true;
-            ProcessMessage = msg;
+            IsInProgress = false;
+
+            if (!closeDirectly)
+                IsFinished = true;
 
             ManageStates();
         }
@@ -259,22 +260,6 @@ namespace Graphy.ViewModel
         {
             IsGeneralExceptionRaised = true;
             ExceptionMessage = "Process error. Input datas must be reviewed.\r\n\r\nError report: \r\n" + msg;
-
-            ManageStates();
-        }
-
-        private void FontFileReadingFailed(string msg)
-        {
-            IsGeneralExceptionRaised = true;
-            ExceptionMessage = "An error occured during font file reading. Font file must be verified.\r\n\r\nError report: \r\n" + msg;
-
-            ManageStates();
-        }
-
-        private void FontDirectoryNotFound(string msg)
-        {
-            IsGeneralExceptionRaised = true;
-            ExceptionMessage = "Font folder not found. See settings to modify it.\r\n\r\nSelected folder: \r\n" + msg;
 
             ManageStates();
         }

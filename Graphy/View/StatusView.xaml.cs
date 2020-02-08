@@ -22,19 +22,7 @@ namespace Graphy.View
     {
         public StateView()
         {
-            // To remove
-            //System.Windows.MessageBox.Show("Initialisation StatusView.");
-
             InitializeComponent();
-
-            // To remove
-            //System.Windows.MessageBox.Show("Fin initialisation StatusView.");
-        }
-
-        public event EventHandler QuitButtonClicked;
-        private void QuitButton_Click(object sender, RoutedEventArgs e)
-        {
-            QuitButtonClicked?.Invoke(sender, new EventArgs());
         }
     }
 }

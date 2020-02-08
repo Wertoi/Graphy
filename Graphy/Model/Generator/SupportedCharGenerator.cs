@@ -48,10 +48,45 @@ namespace Graphy.Model.Generator
         }
 
         // PUBLIC METHODS
-        public string GenerateSupportedCharacters(Font font)
+        public string ComputeSupportedCharacterList(FontFamily fontFamily)
         {
             string supportedCharacterList = "";
-            foreach (UnicodeCategory unicodeCategory in Font.GetUnicodeCategoryCollection())
+
+            if (fontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            {
+                for (ushort i = 0; i < ushort.MaxValue; i++)
+                {
+                    if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(i, out ushort glyphIndex))
+                        supportedCharacterList += Convert.ToChar(i);
+
+                    ProgressRate += 1d / (double)glyphTypeFace.CharacterToGlyphMap.Count();
+                }
+            }
+
+            return supportedCharacterList;
+        }
+
+        public string GenerateSupportedCharacters(SelectableFont font)
+        {
+            string supportedCharacterList = "";
+
+            // test
+
+            for(ushort i = 0; i < ushort.MaxValue; i++)
+            {
+                if (IsCharacterSupported(Convert.ToChar(i), font.FontFamily))
+                    supportedCharacterList += Convert.ToChar(i);
+            }
+
+            /*font.FontFamily.GetTypefaces().First().TryGetGlyphTypeface(out System.Windows.Media.GlyphTypeface glyph);
+            foreach(KeyValuePair<int, ushort> character in glyph.CharacterToGlyphMap)
+            {
+                supportedCharacterList += Convert.ToChar(Convert.ToUInt16(character.Key));
+            }*/
+
+            // fin test
+
+            /*foreach (UnicodeCategory unicodeCategory in Font.GetUnicodeCategoryCollection())
             {
                 foreach (char c in GetCharsByUnicodeCategory(unicodeCategory))
                 {
@@ -60,7 +95,7 @@ namespace Graphy.Model.Generator
                 }
 
                 ProgressRate += (1d / (double)Font.GetUnicodeCategoryCollection().Count());
-            }
+            }*/
 
             return supportedCharacterList.ToString();
         }
@@ -70,7 +105,7 @@ namespace Graphy.Model.Generator
         {
             int unicodeValue = Convert.ToUInt16(characterToCheck);
 
-            fontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyph);
+            fontFamily.GetTypefaces().First().TryGetGlyphTypeface(out System.Windows.Media.GlyphTypeface glyph);
             if (glyph != null && glyph.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
             {
                 return true;

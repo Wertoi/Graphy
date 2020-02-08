@@ -29,7 +29,7 @@ namespace Graphy.ViewModel
             MarkingData.PropertyChanged += MarkingData_PropertyChanged;
 
             // MESSENGER REGISTRATION
-            MessengerInstance.Register<GeneratedFont>(this, Enum.InputDataToken.SelectedFontChanged, (font) => { MarkingData.Font = font; });
+            MessengerInstance.Register<SelectableFont>(this, Enum.InputDataToken.SelectedFontChanged, (font) => { MarkingData.Font = font; });
             MessengerInstance.Register<CatiaPartDocument>(this, Enum.InputDataToken.WorkingPartDocumentChanged, (partDoc) => { _workingPartDocument = partDoc; });
             MessengerInstance.Register<CatiaEnv>(this, Enum.CatiaToken.Open, (catiaEnv) => { _catiaEnv = catiaEnv; });
             MessengerInstance.Register<string>(this, Enum.DesignTableToken.DesignTableLoaded, (fullPath) => DesignTableLoaded(fullPath));
@@ -278,8 +278,9 @@ namespace Graphy.ViewModel
 
                     try
                     {
-                    // If the design table mode is selected
-                    if (IsDesignTableActivated)
+
+                        // If the design table mode is selected
+                        if (IsDesignTableActivated)
                         {
                             markingGenerator.RunForCatalogPart(_catiaEnv, MarkingData, _designTableFullPath, _partList);
                         }
@@ -288,7 +289,7 @@ namespace Graphy.ViewModel
                             markingGenerator.Run(_catiaEnv, _workingPartDocument.PartDocument, MarkingData);
                         }
 
-                        MessengerInstance.Send("Génération du marquage terminée !", Enum.ProcessToken.Finished);
+                        MessengerInstance.Send<bool>(false, Enum.ProcessToken.Finished);
                     }
                     catch (Exception ex)
                     {

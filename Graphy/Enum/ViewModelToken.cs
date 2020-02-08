@@ -16,10 +16,7 @@ namespace Graphy.Enum
 
     public enum FontToken
     {
-        DirectoryNotFound,
-        FileReadingFailed,
-        GenerateNewFont,
-        SupportedCharacterComputed
+        FavoriteFontListChanged
     };
 
     public enum InputDataToken
@@ -39,12 +36,12 @@ namespace Graphy.Enum
 
     public enum SettingToken
     {
+        UserPreferencesChanged,
         GeneratedFontDirectoryPathChanged,
         ClassicFontDirectoryPathChanged,
         SettingFileReadingFailed,
         SettingFileWritingFailed,
-        LicenceFileReadingFailed,
-        ComputedFontCollectionChanged,
+        LicenceFileReadingFailed
     }
 
     public enum DesignTableToken

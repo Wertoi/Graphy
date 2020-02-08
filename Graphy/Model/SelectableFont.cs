@@ -1,41 +1,31 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Windows.Media;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace Graphy.Model
 {
-    public class Font : ObservableObject
+    public class SelectableFont : ObservableObject
     {
-        public Font()
-        {
-
-        }
-
-        public Font(FontFamily fontFamily, string supportedCharacterList = "")
+        public SelectableFont(FontFamily fontFamily, bool isDefault = false)
         {
             FontFamily = fontFamily;
-            SupportedCharacterList = supportedCharacterList;
+            IsDefault = isDefault;
+
+            if (IsDefault)
+                IsSelected = true;
         }
 
-        private string _name;
+        // ATTRIBUTS
         private FontFamily _fontFamily;
-        private bool _isCalculated = false;
+        private bool _isSelected;
+        private bool _isCalculated;
         private string _supportedCharacterList;
+        private bool _isDefault;
 
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                Set(() => Name, ref _name, value);
-            }
-        }
 
         public FontFamily FontFamily
         {
@@ -43,8 +33,18 @@ namespace Graphy.Model
             set
             {
                 Set(() => FontFamily, ref _fontFamily, value);
-                FontFamily.FamilyNames.TryGetValue(System.Windows.Markup.XmlLanguage.GetLanguage("en-us"), out string familyName);
-                Name = familyName;
+            }
+        }
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if(!IsDefault || (IsDefault && value))
+                {
+                    Set(() => IsSelected, ref _isSelected, value);
+                }
             }
         }
 
@@ -64,28 +64,47 @@ namespace Graphy.Model
             {
                 Set(() => SupportedCharacterList, ref _supportedCharacterList, value);
 
-                if (SupportedCharacterList != "")
-                    IsCalculated = true;
-                else
-                    IsCalculated = false;
+                IsCalculated = SupportedCharacterList != "" ? true : false;
             }
         }
 
-
-        // METHODS
-
-        public static List<UnicodeCategory> GetUnicodeCategoryCollection()
+        public bool IsDefault
         {
-            List<UnicodeCategory> unicodeCategoryCollection = new List<UnicodeCategory>();
-
-            // FILL UNICODE CATEGORY COLLECTION
-            foreach (UnicodeCategory category in System.Enum.GetValues(typeof(UnicodeCategory)))
+            get => _isDefault;
+            set
             {
-                if (category != UnicodeCategory.PrivateUse)
-                    unicodeCategoryCollection.Add(category);
+                Set(() => IsDefault, ref _isDefault, value);
             }
+        }
 
-            return unicodeCategoryCollection;
+        // PUBLIC METHODS
+        public void ComputeSupportedCharacterList()
+        {
+            if (!IsCalculated && FontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            {
+                for (ushort i = 0; i < ushort.MaxValue; i++)
+                {
+                    if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(i, out ushort glyphIndex))
+                        SupportedCharacterList += Convert.ToChar(i);
+                }
+            }
+        }
+
+        public PathGeometry GetCharacterGeometry(char c)
+        {
+            int unicodeValue = Convert.ToUInt16(c);
+
+            if (FontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            {
+                if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
+                {
+                    return glyphTypeFace.GetGlyphOutline(glyphIndex, 16, 1).GetFlattenedPathGeometry(0.001, System.Windows.Media.ToleranceType.Relative);
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
         }
 
 
@@ -127,17 +146,6 @@ namespace Graphy.Model
 
         public double GetWidth(char c)
         {
-            /*int unicodeValue = Convert.ToUInt16(c);
-
-            var typefaces = FontFamily.GetTypefaces();
-            if (typefaces.First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
-            {
-                glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex);
-                return glyphTypeFace.AdvanceWidths[glyphIndex];
-            }
-            else
-                return 0;*/
-
             int unicodeValue = Convert.ToUInt16(c);
 
             if (FontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
@@ -154,35 +162,5 @@ namespace Graphy.Model
         }
 
 
-        // *************************************
-
-        public override bool Equals(object obj)
-        {
-            // Is null?
-            if (Object.ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            // Is the same object?
-            if (Object.ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            // Is the same type?
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            Font font = (Font)obj;
-            return (Name == font.Name);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
     }
 }

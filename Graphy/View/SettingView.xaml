@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Graphy"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="500">
+             d:DesignHeight="720" d:DesignWidth="450">
 
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -29,10 +29,10 @@
 
         </StackPanel>
         
-        <ScrollViewer Grid.Row="1" Margin="15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" Margin="15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
 
-                <TextBlock Text="{local:Loc Settings_General_Title}" FontSize="14" Foreground="{StaticResource PrimaryColor}" Margin="0,0,0,5"/>
+                <TextBlock Text="{local:Loc Settings_General_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,0,0,5"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -56,58 +56,17 @@
                     </ComboBox>
                 </Grid>
 
-                <TextBlock Grid.Row="2" Text="{local:Loc Settings_FontManagement_Title}" FontSize="14" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,20,0,5"/>
+                <TextBlock Grid.Row="2" Text="{local:Loc Settings_About_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,35,0,5"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="InputFieldColumnGroup"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="{local:Loc Settings_FontManagement_3DFontDirectoryLabel}" Style="{StaticResource LabelFormTextBlock}" />
-
-                    <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
-                             Text="{Binding Source={StaticResource Locator}, Path=SettingViewModel.GeneratedFontDirectoryPath}" />
-
-                    <Button Grid.Column="2" Style="{StaticResource NormalButton}"
-                            Command="{Binding Source={StaticResource Locator}, Path=SettingViewModel.SelectGeneratedFontDirectoryPathCommand}"
-                            CommandParameter="{Binding Source={StaticResource Locator}, Path=SettingViewModel.GeneratedFontDirectoryPath}">
-                        <Viewbox Style="{StaticResource IconViewBox}">
-                            <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource OpenFolderIcon}"/>
-                            </Canvas>
-                        </Viewbox>
-                    </Button>
-
-                </Grid>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{local:Loc Settings_AddNewFont}" VerticalAlignment="Center" Style="{StaticResource LabelFormTextBlock}"/>
-                    <Button x:Name="AddNewFontButton" Style="{StaticResource NormalButton}" Click="AddNewFontButton_Click"
-                            IsEnabled="{Binding Source={StaticResource Locator},Path=FontViewModel.IsClassicFontCollectionEmpty, Converter={StaticResource InvertBooleanConverter}}">
-                        <Viewbox Style="{StaticResource IconViewBox}">
-                            <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource AddIcon}"/>
-                            </Canvas>
-                        </Viewbox>
-                    </Button>
-                </StackPanel>
-
-
-                <Rectangle Height="1" Width="150" HorizontalAlignment="Left" Margin="0,25,0,20" Fill="{StaticResource Gray217}"/>
-
-                <TextBlock Grid.Row="2" Text="{local:Loc Settings_About_Title}" FontSize="14" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,0,0,5"/>
-
-                <TextBlock TextWrapping="Wrap" Width="350" HorizontalAlignment="Left" TextAlignment="Justify">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Justify" HorizontalAlignment="Left">
                     <Run Text="Graphy" Foreground="{StaticResource SecondaryColor}"/>
-                    <Run Text="is a completly open source and free software which allows you to write 3D texts easily in Catia V5."/>
+                    <Run Text="is an open source and free software which allows you to write 3D texts easily in Catia V5."/>
                     <LineBreak/>
                     <LineBreak/>
-                    <Run Text="Develop by :"/>
+                    <Run Text="Version: 3.0"/>
+                    <LineBreak/>
+                    <LineBreak/>
+                    <Run Text="Developped by :"/>
                     <LineBreak/>
                     <Run Text="- Guillaume ANDRIEU" Foreground="#FFA6A6A6"/>
                     <LineBreak/>

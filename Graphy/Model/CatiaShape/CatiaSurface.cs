@@ -1,4 +1,5 @@
-﻿using INFITF;
+﻿using HybridShapeTypeLib;
+using INFITF;
 using MECMOD;
 using System;
 using System.Collections.Generic;
@@ -17,23 +18,14 @@ namespace Graphy.Model.CatiaShape
 
         private CatiaContour _externalContour;
         private List<CatiaContour> _internalContourList;
-        private bool _isInternalContourListEmpty;
-        private double _area;
-        private Reference _internalContourListAssembledReference;
 
 
         public CatiaContour ExternalContour { get => _externalContour; set => _externalContour = value; }
         public List<CatiaContour> InternalContourList
         {
             get => _internalContourList;
-            set
-            {
-                _internalContourList = value;
-
-                IsInternalContourListEmpty = InternalContourList.Count > 0 ? false : true;
-            }
+            set => _internalContourList = value;
         }
-        public bool IsInternalContourListEmpty { get => _isInternalContourListEmpty; set => _isInternalContourListEmpty = value; }
 
         new public HybridShape Shape
         {
@@ -43,21 +35,116 @@ namespace Graphy.Model.CatiaShape
                 _shape = value;
                 ShapeReference = PartDocument.Part.CreateReferenceFromObject(Shape);
 
-                if (GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Surface)
+                /*if (GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Surface)
                 {
-                    // Retrieves the surface area
-                    SPATypeLib.Measurable measurable = SPAWorkbench.GetMeasurable(ShapeReference);
 
-                    Area = measurable.Area;
                 }
                 else
                 {
                     throw new InvalidShapeException("Shape must be a surface.");
-                }
+                }*/
             }
         }
 
-        public double Area { get => _area; set => _area = value; }
-        public Reference InternalContourListAssembledReference { get => _internalContourListAssembledReference; set => _internalContourListAssembledReference = value; }
+
+
+
+        public void ComputeSurface(Reference projectionSurfaceRef)
+        {
+            // Initialize splitOrientation
+            int splitOrientation = 1;
+
+            // Create exterior split surface
+            HybridShapeSplit exteriorSplitSurface;
+
+            HybridShapeSplit tempSplit = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, splitOrientation);
+            tempSplit.Compute();
+            Reference tempSplitRef = PartDocument.Part.CreateReferenceFromObject(tempSplit);
+
+
+            if (!IsSplitOrientationOK(PartDocument, tempSplitRef, ExternalContour.ShapeReference, HybridShapeFactory, projectionSurfaceRef))
+            {
+                exteriorSplitSurface = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, -splitOrientation);
+            }
+            else
+            {
+                exteriorSplitSurface = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, splitOrientation);
+                splitOrientation = -1;
+            }
+
+            exteriorSplitSurface.Compute();
+
+
+            if (InternalContourList.Count > 0)
+            {
+                Reference internalContourListAssembledRef;
+                // Assemble interior contours
+                if (InternalContourList.Count > 1)
+                {
+                    HybridShapeAssemble interiorContourAssy = HybridShapeFactory.AddNewJoin(InternalContourList[0].ShapeReference, InternalContourList[1].ShapeReference);
+                    interiorContourAssy.SetConnex(false);
+                    foreach (CatiaContour intContour in InternalContourList)
+                    {
+                        interiorContourAssy.AddElement(intContour.ShapeReference);
+                    }
+
+                    interiorContourAssy.Compute();
+                    internalContourListAssembledRef = PartDocument.Part.CreateReferenceFromObject(interiorContourAssy);
+                }
+                else
+                {
+                    internalContourListAssembledRef = InternalContourList[0].ShapeReference;
+                }
+
+
+                // Cut surface result by interior contours
+                Reference exteriorSplitSurfaceRef = PartDocument.Part.CreateReferenceFromObject(exteriorSplitSurface);
+                Shape = HybridShapeFactory.AddNewHybridSplit(exteriorSplitSurfaceRef, internalContourListAssembledRef, -splitOrientation);
+                Shape.Compute();
+
+                // Hide
+                HybridShapeFactory.GSMVisibility(internalContourListAssembledRef, 0);
+                HybridShapeFactory.GSMVisibility(exteriorSplitSurfaceRef, 0);
+            }
+            else
+            {
+                Shape = exteriorSplitSurface;
+            }
+
+            
+        }
+
+
+        /// <summary>
+        /// Check if the orientation of the split should be inverted by comparing split surface area and the character filled surface area.
+        /// </summary>
+        /// <param name="partDocument">Part of the working document.</param>
+        /// <param name="cutSurfaceRef">Reference of the splited surface.</param>
+        /// <param name="characterContourRef">Reference of the contour which split the surface.</param>
+        /// <param name="factory">HybridShapeFactory of the working part.</param>
+        /// <param name="supportRef">Reference of the surface before split.</param>
+        /// <returns></returns>
+        private bool IsSplitOrientationOK(PartDocument partDocument, Reference cutSurfaceRef, Reference characterContourRef, HybridShapeFactory factory, Reference supportRef)
+        {
+            SPATypeLib.Measurable measurable = SPAWorkbench.GetMeasurable(cutSurfaceRef);
+            double cutArea = measurable.Area;
+
+            // Create a filled contour
+            HybridShapeFill filledContour = factory.AddNewFill();
+            filledContour.AddBound(characterContourRef);
+            filledContour.AddSupportAtBound(characterContourRef, supportRef);
+            filledContour.Compute();
+
+            Reference filledContourRef = partDocument.Part.CreateReferenceFromObject(filledContour);
+
+            SPATypeLib.Measurable measurable2 = SPAWorkbench.GetMeasurable(filledContourRef);
+            double charArea = measurable2.Area;
+
+            // If the difference between areas are equal with a marge of 10% => OK
+            if (Math.Abs(cutArea - charArea) < 0.1 * charArea)
+                return true;
+            else
+                return false;
+        }
     }
 }

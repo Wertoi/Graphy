@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Graphy"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="500">
+             d:DesignHeight="720" d:DesignWidth="450">
 
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -29,7 +29,7 @@
 
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1" Margin="15,20,15,15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" Margin="15,20,15,15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical"  Grid.IsSharedSizeScope="True">
 
                 <TextBlock Text="{local:Loc DesignTable_InputData_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,0,0,5"/>
@@ -37,7 +37,7 @@
                 <Grid Margin="0,5,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
@@ -80,7 +80,7 @@
                     <TextBlock Grid.Row="1" Text="{local:Loc DesignTable_InputData_PartCatalogDirectoryLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
                     <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"
-                                 Text="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.PartFolderPath}" VerticalAlignment="Center" />
+                                 Text="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.PartFolderPath}" />
 
                     <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource NormalButton}"
                             Command="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.SelectCatalogPartFolderCommand}">

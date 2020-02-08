@@ -21,8 +21,9 @@ namespace Graphy.Model.CatiaShape
         private Reference _supportReference;
         private HybridShape _smoothedShape;
         private Reference _smoothedShapeReference;
+        private bool _isSmoothedShapeComputed = false;
         private double _area;
-        private System.Windows.Media.PathGeometry _pathGeometry;
+        private PathGeometry _pathGeometry;
 
         // Modify property Shape
         new public HybridShape Shape
@@ -33,7 +34,9 @@ namespace Graphy.Model.CatiaShape
                 _shape = value;
                 ShapeReference = PartDocument.Part.CreateReferenceFromObject(Shape);
 
-                if (GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Curve || GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Circle)
+                IsSmoothedShapeComputed = false;
+
+               /* if (GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Curve || GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Circle)
                 {
                     // Check if the contour is closed
                     if (IsContourClosed(PartDocument, HybridShapeFactory, ShapeReference, SupportReference))
@@ -51,7 +54,7 @@ namespace Graphy.Model.CatiaShape
                 else
                 {
                     throw new InvalidShapeException("Shape must be a curve.");
-                }
+                }*/
             }
         }
 
@@ -71,13 +74,14 @@ namespace Graphy.Model.CatiaShape
         public Reference SupportReference { get => _supportReference; set => _supportReference = value; }
         public double Area { get => _area; set => _area = value; }
         public PathGeometry PathGeometry { get => _pathGeometry; set => _pathGeometry = value; }
+        public bool IsSmoothedShapeComputed { get => _isSmoothedShapeComputed; set => _isSmoothedShapeComputed = value; }
 
         public void ComputeSmoothedShape()
         {
             // Smooth the sub curve
             HybridShapeCurveSmooth smoothSubCurve = HybridShapeFactory.AddNewCurveSmooth(ShapeReference);
             smoothSubCurve.CorrectionMode = 3;
-            smoothSubCurve.SetMaximumDeviation(0.001);
+            smoothSubCurve.SetMaximumDeviation(0.01);
             smoothSubCurve.TopologySimplificationActivity = true;
             smoothSubCurve.MaximumDeviationActivity = true;
             smoothSubCurve.Support = SupportReference;
@@ -89,11 +93,13 @@ namespace Graphy.Model.CatiaShape
             smoothSubCurveWithoutHistoric.Compute();
 
             SmoothedShape = (HybridShape)smoothSubCurveWithoutHistoric;
+
+            IsSmoothedShapeComputed = true;
         }
 
         public void ComputeInnerSurfaceArea()
         {
-            if(SmoothedShape == null)
+            if(!IsSmoothedShapeComputed)
             {
                 ComputeSmoothedShape();
             }
@@ -135,6 +141,138 @@ namespace Graphy.Model.CatiaShape
 
             return true;
         }
+
+
+        public void DrawContour(HybridBody set)
+        {
+            List<Reference> lineList = new List<Reference>();
+
+            foreach (PathSegment segment in PathGeometry.Figures.First().Segments)
+            {
+                if (segment.GetType() == typeof(PolyLineSegment))
+                {
+                    List<CatiaPoint> tempPointList = new List<CatiaPoint>();
+                    foreach (System.Windows.Point point in ((PolyLineSegment)segment).Points)
+                    {
+                        tempPointList.Add(new CatiaPoint(PartDocument, point.X, -point.Y, 0));
+                        tempPointList.Last().ComputePointShape();
+                    }
+
+
+                    for (int i = 0; i < tempPointList.Count() - 1; i++)
+                    {
+                        HybridShape line = HybridShapeFactory.AddNewLinePtPt(tempPointList[i].ShapeReference, tempPointList[i + 1].ShapeReference);
+
+                        line.Compute();
+                        lineList.Add(PartDocument.Part.CreateReferenceFromObject(line));
+                    }
+
+                    HybridShapeLinePtPt lastLine = HybridShapeFactory.AddNewLinePtPt(tempPointList.Last().ShapeReference, tempPointList.First().ShapeReference);
+                    lastLine.Compute();
+                    lineList.Add(PartDocument.Part.CreateReferenceFromObject(lastLine));
+                }
+                /*else
+                {
+                    if (segment.GetType() == typeof(PolyBezierSegment))
+                    {
+                        HybridShapeSpline curve = HybridShapeFactory.AddNewSpline();
+                        foreach (System.Windows.Point point in ((PolyBezierSegment)segment).Points)
+                        {
+                            pointList.Add(new CatiaPoint(PartDocument, point.X, point.Y, 0));
+                            pointList.Last().ComputePointShape();
+
+                            pointReferenceList.Add(pointShapeRef);
+
+                            curve.AddPoint(pointList.Last().ShapeReference);
+                            curve.Compute();
+                        }
+
+                        tempSet.AppendHybridShape(curve);
+                    }
+                    else
+                    {
+                        if (segment.GetType() == typeof(System.Windows.Media.LineSegment))
+                        {
+                            Reference startPointShapeRef;
+                            if (pointReferenceList.Count != 0)
+                            {
+                                startPointShapeRef = pointReferenceList.Last();
+                            }
+                            else
+                            {
+                                System.Windows.Point startPoint = character.PathGeometry.Figures.First().StartPoint;
+                                HybridShape startPointShape = hybridShapeFactory.AddNewPointCoord(startPoint.X, startPoint.Y, 0);
+                                startPointShape.Compute();
+                                startPointShapeRef = partDocument.Part.CreateReferenceFromObject(startPointShape);
+
+                                pointReferenceList.Add(startPointShapeRef);
+                            }
+
+                            System.Windows.Point point = ((System.Windows.Media.LineSegment)segment).Point;
+                            HybridShape pointShape = hybridShapeFactory.AddNewPointCoord(point.X, point.Y, 0);
+                            pointShape.Compute();
+                            Reference pointShapeRef = partDocument.Part.CreateReferenceFromObject(pointShape);
+
+                            pointReferenceList.Add(pointShapeRef);
+
+                            HybridShape line = hybridShapeFactory.AddNewLinePtPt(startPointShapeRef, pointShapeRef);
+                            lineList.Add(partDocument.Part.CreateReferenceFromObject(line));
+                        }
+                    }
+                }*/
+            }
+
+            HybridShapeAssemble assemblyShape = HybridShapeFactory.AddNewJoin(lineList.First(), lineList[1]);
+            for (int i = 2; i < lineList.Count; i++)
+            {
+                assemblyShape.AddElement(lineList[i]);
+            }
+
+            assemblyShape.Compute();
+
+            Shape = assemblyShape;
+            ComputeSmoothedShape();
+
+            set.AppendHybridShape(SmoothedShape);
+        }
+
+
+        public void Scale(double scaleRatio, Reference scaleCenterPointRef)
+        {
+            HybridShapeScaling scaledShape;
+            if (IsSmoothedShapeComputed)
+                scaledShape = HybridShapeFactory.AddNewHybridScaling(SmoothedShapeReference, scaleCenterPointRef, scaleRatio);
+            else
+                scaledShape = HybridShapeFactory.AddNewHybridScaling(ShapeReference, scaleCenterPointRef, scaleRatio);
+
+            scaledShape.Compute();
+            Shape = (HybridShape)scaledShape;
+        }
+
+        public void Move(Reference referenceAxisRef, Reference targetAxisRef)
+        {
+            HybridShapeAxisToAxis movedShape;
+            if (IsSmoothedShapeComputed)
+                movedShape = HybridShapeFactory.AddNewAxisToAxis(SmoothedShapeReference, referenceAxisRef, targetAxisRef);
+            else
+                movedShape = HybridShapeFactory.AddNewAxisToAxis(ShapeReference, referenceAxisRef, targetAxisRef);
+
+            movedShape.Compute();
+            Shape = (HybridShape)movedShape;
+        }
+
+        public void Project(Reference projectionSurfaceRef)
+        {
+            HybridShapeProject projectedShape;
+            if (IsSmoothedShapeComputed)
+                projectedShape = HybridShapeFactory.AddNewProject(SmoothedShapeReference, projectionSurfaceRef);
+            else
+                projectedShape = HybridShapeFactory.AddNewProject(ShapeReference, projectionSurfaceRef);
+
+            projectedShape.Compute();
+            Shape = (HybridShape)projectedShape;
+        }
+
 
         public class ContourNotClosed : Exception
         {
