@@ -30,17 +30,30 @@ namespace Graphy.ViewModel
             // INITIALIZE SETTINGS
             InitializeLanguage();
             ReadUserPreference();
+
+            MarkingDataSettings = new MarkingData.MarkingDataSettings();
+            MarkingDataSettings.PropertyChanged += MarkingDataSetting_PropertyChanged;
+
+            MarkingDataSettings.ToleranceFactor = 0.001;
+            MarkingDataSettings.KeepHistory = true;
+            MarkingDataSettings.CreateVolume = true;
+        }
+
+        private void MarkingDataSetting_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            MessengerInstance.Send<MarkingData.MarkingDataSettings>(MarkingDataSettings, Enum.SettingToken.MarkingDateSettingChange);
         }
 
         // PRIVATE CONST
         private const string USER_PREFERENCE_FILE_NAME = "USER_PREFERENCES.txt";
-        private const string LICENCE_FILE_NAME = "LICENSES.txt";
+        private const string LICENCE_LINK = "https://github.com/Wertoi/Graphy/blob/master/LICENSE";
 
         // PRIVATE ATTRIBUTS
 
 
         // PUBLIC ATTRIBUTS
         private Language _selectedLanguage;
+        private MarkingData.MarkingDataSettings _markingDataSettings;
 
         public Language SelectedLanguage
         {
@@ -66,6 +79,14 @@ namespace Graphy.ViewModel
             }
         }
 
+        public MarkingData.MarkingDataSettings MarkingDataSettings
+        {
+            get => _markingDataSettings;
+            set
+            {
+                Set(() => MarkingDataSettings, ref _markingDataSettings, value);
+            }
+        }
 
 
         // COMMANDS
@@ -75,22 +96,13 @@ namespace Graphy.ViewModel
 
         private void ShowLicenceCommandAction()
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory;
-
-            if (System.IO.File.Exists(path + LICENCE_FILE_NAME))
+            try
             {
-                try
-                {
-                    System.Diagnostics.Process.Start(path + LICENCE_FILE_NAME);
-                }
-                catch (Exception ex)
-                {
-                    MessengerInstance.Send(ex.Message, Enum.SettingToken.LicenceFileReadingFailed);
-                }
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LICENCE_LINK));
             }
-            else
+            catch(Exception ex)
             {
-                MessengerInstance.Send("License file should be in the .exe directory.", Enum.SettingToken.LicenceFileReadingFailed);
+                MessengerInstance.Send(ex.Message, Enum.SettingToken.LicenceFileReadingFailed);
             }
         }
 

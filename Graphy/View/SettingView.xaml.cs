@@ -22,13 +22,7 @@ namespace Graphy.View
     {
         public SettingView()
         {
-            // To remove
-            //System.Windows.MessageBox.Show("Initialisation SettingView.");
-
             InitializeComponent();
-            
-            // To remove
-            //System.Windows.MessageBox.Show("Fin initialisation SettingView.");
         }
 
         public event EventHandler BackButtonClicked;

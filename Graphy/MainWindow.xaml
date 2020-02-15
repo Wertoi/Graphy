@@ -182,9 +182,9 @@
                         <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.CharacterHeight.IsLinkOn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
-                        <cc:TextBoxWithUnit Grid.Row="2" Grid.Column="1" Margin="0,0,10,0" VerticalContentAlignment="Center" MinWidth="140" Unit="mm"
-                                               Text="{Binding InputDataViewModel.MarkingData.CharacterHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}" VerticalAlignment="Center"
-                                               Visibility="{Binding InputDataViewModel.MarkingData.CharacterHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
+                        <cc:TextBoxWithUnit Grid.Row="2" Grid.Column="1" Unit="mm"
+                                            Text="{Binding InputDataViewModel.MarkingData.CharacterHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}"
+                                            Visibility="{Binding InputDataViewModel.MarkingData.CharacterHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
 
                         <!-- Hauteur d'extrusion -->
@@ -193,9 +193,9 @@
                         <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
-                        <cc:TextBoxWithUnit Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="0,0,10,0" Unit="mm"
-                                               Text="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}" VerticalAlignment="Center"
-                                               Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
+                        <cc:TextBoxWithUnit Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Unit="mm"
+                                            Text="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}"
+                                            Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
                         <Viewbox Grid.Row="3" Grid.Column="4" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                             <Viewbox.ToolTip>

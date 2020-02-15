@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Graphy"
+             xmlns:cc="clr-namespace:Graphy.CustomControl"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="450">
 
@@ -37,7 +38,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="InputFieldColumnGroup"/>
+                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -56,29 +57,56 @@
                     </ComboBox>
                 </Grid>
 
-                <TextBlock Grid.Row="2" Text="{local:Loc Settings_About_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,35,0,5"/>
+                <TextBlock Text="Marquage" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,35,0,5"/>
 
-                <TextBlock TextWrapping="Wrap" TextAlignment="Justify" HorizontalAlignment="Left">
-                    <Run Text="Graphy" Foreground="{StaticResource SecondaryColor}"/>
-                    <Run Text="is an open source and free software which allows you to write 3D texts easily in Catia V5."/>
-                    <LineBreak/>
-                    <LineBreak/>
-                    <Run Text="Version: 3.0"/>
-                    <LineBreak/>
-                    <LineBreak/>
-                    <Run Text="Developped by :"/>
-                    <LineBreak/>
-                    <Run Text="- Guillaume ANDRIEU" Foreground="#FFA6A6A6"/>
-                    <LineBreak/>
-                    <Run Text="- Xavier BETBEDER" Foreground="#FFA6A6A6"/>
-                </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}" Text="Facteur de tolérance"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource NormalTextBox}"
+                             Text="{Binding Source={StaticResource Locator}, Path=SettingViewModel.MarkingDataSettings.ToleranceFactor, Mode=TwoWay}"/>
+                    <Viewbox Grid.Row="0" Grid.Column="2" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
+                        <Viewbox.ToolTip>
+                            <TextBlock>
+                                <Run Text="Distance entre 2 points relative à l'aide du caractère."/>
+                            </TextBlock>
+                        </Viewbox.ToolTip>
+                        <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
+                            <Path Style="{StaticResource InfoIcon}"/>
+                        </Canvas>
+                    </Viewbox>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}" Text="Garder l'historique de construction"/>
+                    <CheckBox Grid.Row="1" Grid.Column="1" Style="{StaticResource YesNoCheckBox}" Margin="0,7"
+                              IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.MarkingDataSettings.KeepHistory, Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}" Text="Créer un volume de marquage"/>
+                    <CheckBox Grid.Row="2" Grid.Column="1" Style="{StaticResource YesNoCheckBox}" Margin="0,7"
+                              IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.MarkingDataSettings.CreateVolume, Mode=TwoWay}"/>
+
+                </Grid>
 
             </StackPanel>
         </ScrollViewer>
 
         <Grid Grid.Row="2" Margin="15,0,15,10">
-            <TextBlock HorizontalAlignment="Left" Text="© Graphy, 2019"/>
-            <TextBlock HorizontalAlignment="Right">
+            <TextBlock HorizontalAlignment="Left" Foreground="{StaticResource Gray127}">
+                <Run Text="© Graphy, 2019"/>
+                <LineBreak/>
+                <Run Text="By Guillaume Andrieu"/>
+                <LineBreak/>
+                <Run Text="v3.1"/>
+            </TextBlock>
+            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <Hyperlink Command="{Binding Source={StaticResource Locator}, Path=SettingViewModel.ShowLicenceCommand}">
                     <TextBlock Text="{local:Loc Settings_About_Licenses}"/>
                 </Hyperlink>

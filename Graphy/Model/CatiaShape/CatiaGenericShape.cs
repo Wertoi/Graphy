@@ -68,18 +68,6 @@ namespace Graphy.Model.CatiaShape
         public SPAWorkbench SPAWorkbench { get => _SPAWorkbench; set => _SPAWorkbench = value; }
         public HybridShapeFactory HybridShapeFactory { get => _hybridShapeFactory; set => _hybridShapeFactory = value; }
 
-        public static ShapeType GetShapeType(HybridShapeFactory hybridShapeFactory, Reference shapeReference)
-        {
-            return (ShapeType)hybridShapeFactory.GetGeometricalFeatureType(shapeReference);
-        }
-
-        public static HybridShape CopyShape(Reference shapeReference,  HybridShapeFactory hybridShapeFactory)
-        {
-            HybridShape shapeCopy = (HybridShape)hybridShapeFactory.AddNewCurveDatum(shapeReference);
-            shapeCopy.Compute();
-
-            return shapeCopy;
-        }
 
         // EQUALS OVERRIDE
         public override bool Equals(object obj)

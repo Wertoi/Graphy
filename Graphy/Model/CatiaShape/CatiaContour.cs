@@ -17,7 +17,6 @@ namespace Graphy.Model.CatiaShape
             SupportReference = supportReference;
         }
 
-        private double _perimeter;
         private Reference _supportReference;
         private HybridShape _smoothedShape;
         private Reference _smoothedShapeReference;
@@ -35,30 +34,8 @@ namespace Graphy.Model.CatiaShape
                 ShapeReference = PartDocument.Part.CreateReferenceFromObject(Shape);
 
                 IsSmoothedShapeComputed = false;
-
-               /* if (GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Curve || GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Circle)
-                {
-                    // Check if the contour is closed
-                    if (IsContourClosed(PartDocument, HybridShapeFactory, ShapeReference, SupportReference))
-                    {
-                        SPATypeLib.Measurable measurable = SPAWorkbench.GetMeasurable(ShapeReference);
-
-                        // Retrieves the contour perimeter
-                        Perimeter = measurable.Length;
-                    }
-                    else
-                    {
-                        throw new ContourNotClosed("Contour is not closed.");
-                    }
-                }
-                else
-                {
-                    throw new InvalidShapeException("Shape must be a curve.");
-                }*/
             }
         }
-
-        public double Perimeter { get => _perimeter; set => _perimeter = value; }
 
         public HybridShape SmoothedShape
         {
@@ -97,135 +74,139 @@ namespace Graphy.Model.CatiaShape
             IsSmoothedShapeComputed = true;
         }
 
-        public void ComputeInnerSurfaceArea()
-        {
-            if(!IsSmoothedShapeComputed)
-            {
-                ComputeSmoothedShape();
-            }
-
-            HybridShape tempShape = CopyShape(SmoothedShapeReference, HybridShapeFactory);
-            Reference tempShapeReference = PartDocument.Part.CreateReferenceFromObject(tempShape);
-
-            // Create a filled contour from tempShape
-            HybridShapeFill filledContour = HybridShapeFactory.AddNewFill();
-            filledContour.AddBound(tempShapeReference);
-            filledContour.AddSupportAtBound(tempShapeReference, SupportReference);
-            filledContour.Compute();
-
-            Reference filledContourReference = PartDocument.Part.CreateReferenceFromObject(filledContour);
-
-            SPATypeLib.Measurable measurable = SPAWorkbench.GetMeasurable(filledContourReference);
-
-            Area = measurable.Area;
-        }
-
-
-        public static bool IsContourClosed(PartDocument partDocument, HybridShapeFactory hybridShapeFactory, Reference shapeReference, Reference supportReference)
-        {
-            HybridShape tempShape = CopyShape(shapeReference, hybridShapeFactory);
-            Reference tempShapeReference = partDocument.Part.CreateReferenceFromObject(tempShape);
-
-            try
-            {
-                // Create a filled contour from tempShape
-                HybridShapeFill filledContour = hybridShapeFactory.AddNewFill();
-                filledContour.AddBound(tempShapeReference);
-                filledContour.AddSupportAtBound(tempShapeReference, supportReference);
-                filledContour.Compute();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
 
         public void DrawContour(HybridBody set)
         {
-            List<Reference> lineList = new List<Reference>();
+            List<Reference> segmentRefList = new List<Reference>();
 
-            foreach (PathSegment segment in PathGeometry.Figures.First().Segments)
+            for(int i = 0; i < PathGeometry.Figures.First().Segments.Count; i++)
             {
+                PathSegment segment = PathGeometry.Figures.First().Segments[i];
+
+                // *** If the segment is a multi lines segment ***
                 if (segment.GetType() == typeof(PolyLineSegment))
                 {
+                    // Create a list of point
                     List<CatiaPoint> tempPointList = new List<CatiaPoint>();
+
+                    // For each point in the multi lines segment
                     foreach (System.Windows.Point point in ((PolyLineSegment)segment).Points)
                     {
+                        // Get the point and store it in the list
                         tempPointList.Add(new CatiaPoint(PartDocument, point.X, -point.Y, 0));
                         tempPointList.Last().ComputePointShape();
                     }
 
-
-                    for (int i = 0; i < tempPointList.Count() - 1; i++)
+                    // For each point in the list
+                    for (int j = 0; j < tempPointList.Count() - 1; j++)
                     {
-                        HybridShape line = HybridShapeFactory.AddNewLinePtPt(tempPointList[i].ShapeReference, tempPointList[i + 1].ShapeReference);
-
+                        // Create the line between point i and point i+1 and add it to the segment List
+                        HybridShape line = HybridShapeFactory.AddNewLinePtPt(tempPointList[j].ShapeReference, tempPointList[j + 1].ShapeReference);
                         line.Compute();
-                        lineList.Add(PartDocument.Part.CreateReferenceFromObject(line));
+                        segmentRefList.Add(PartDocument.Part.CreateReferenceFromObject(line));
                     }
 
+                    // Create the line between last point and first point to close the contour and add it to the segment list
                     HybridShapeLinePtPt lastLine = HybridShapeFactory.AddNewLinePtPt(tempPointList.Last().ShapeReference, tempPointList.First().ShapeReference);
                     lastLine.Compute();
-                    lineList.Add(PartDocument.Part.CreateReferenceFromObject(lastLine));
+                    segmentRefList.Add(PartDocument.Part.CreateReferenceFromObject(lastLine));
                 }
-                /*else
+
+                /* RETEX: ToleranceType.Relative when getting the PathGeometry seems to only generate PolyLineSegment.
+                 * I keep the other segment type generations for information.
+                else
                 {
+                    // *** If the semgnet is a Bezier curve ***
                     if (segment.GetType() == typeof(PolyBezierSegment))
                     {
-                        HybridShapeSpline curve = HybridShapeFactory.AddNewSpline();
+                        // Create a spline
+                        HybridShapeSpline spline = HybridShapeFactory.AddNewSpline();
+                        
+                        // Create a list of point
+                        List<CatiaPoint> tempPointList = new List<CatiaPoint>();
+
+                        // For each point in the multi lines segment
                         foreach (System.Windows.Point point in ((PolyBezierSegment)segment).Points)
                         {
-                            pointList.Add(new CatiaPoint(PartDocument, point.X, point.Y, 0));
-                            pointList.Last().ComputePointShape();
+                            // Get the point and store it in the list
+                            tempPointList.Add(new CatiaPoint(PartDocument, point.X, -point.Y, 0));
+                            tempPointList.Last().ComputePointShape();
 
-                            pointReferenceList.Add(pointShapeRef);
-
-                            curve.AddPoint(pointList.Last().ShapeReference);
-                            curve.Compute();
+                            // Add the point to the spline
+                            spline.AddPoint(tempPointList.Last().ShapeReference);
+                            spline.Compute();
                         }
 
-                        tempSet.AppendHybridShape(curve);
+                        spline.SetClosing(1);
+
+                        // Add the spline to the segment list
+                        segmentRefList.Add(PartDocument.Part.CreateReferenceFromObject(spline));
                     }
                     else
                     {
-                        if (segment.GetType() == typeof(System.Windows.Media.LineSegment))
+                        // *** If the segment is a simple line ***
+                        if (segment.GetType() == typeof(LineSegment))
                         {
-                            Reference startPointShapeRef;
-                            if (pointReferenceList.Count != 0)
+                            CatiaPoint startPoint = new CatiaPoint(PartDocument);
+                            if(i != 0)
                             {
-                                startPointShapeRef = pointReferenceList.Last();
+                                PathSegment previousSegment = PathGeometry.Figures.First().Segments[i - 1];
+                                if (previousSegment.GetType() == typeof(PolyLineSegment))
+                                {
+                                    System.Windows.Point polyLineSegmentLastPoint = ((PolyLineSegment)previousSegment).Points.Last();
+                                    startPoint.X = polyLineSegmentLastPoint.X;
+                                    startPoint.Y = -polyLineSegmentLastPoint.Y;
+                                    startPoint.Z = 0;
+                                    startPoint.ComputePointShape();
+                                }
+                                else
+                                {
+                                    if(previousSegment.GetType() == typeof(PolyBezierSegment))
+                                    {
+                                        System.Windows.Point polyBezierSegmentLastPoint = ((PolyBezierSegment)previousSegment).Points.Last();
+                                        startPoint.X = polyBezierSegmentLastPoint.X;
+                                        startPoint.Y = -polyBezierSegmentLastPoint.Y;
+                                        startPoint.Z = 0;
+                                        startPoint.ComputePointShape();
+                                    }
+                                    else if(segment.GetType() == typeof(LineSegment))
+                                    {
+                                        System.Windows.Point lineSegmentPoint = ((LineSegment)previousSegment).Point;
+                                        startPoint.X = lineSegmentPoint.X;
+                                        startPoint.Y = -lineSegmentPoint.Y;
+                                        startPoint.Z = 0;
+                                        startPoint.ComputePointShape();
+                                    }
+                                }
+                                    
                             }
                             else
                             {
-                                System.Windows.Point startPoint = character.PathGeometry.Figures.First().StartPoint;
-                                HybridShape startPointShape = hybridShapeFactory.AddNewPointCoord(startPoint.X, startPoint.Y, 0);
-                                startPointShape.Compute();
-                                startPointShapeRef = partDocument.Part.CreateReferenceFromObject(startPointShape);
-
-                                pointReferenceList.Add(startPointShapeRef);
+                                System.Windows.Point segmentStartPoint = PathGeometry.Figures.First().StartPoint;
+                                startPoint.X = segmentStartPoint.X;
+                                startPoint.Y = -segmentStartPoint.Y;
+                                startPoint.Z = 0;
+                                startPoint.ComputePointShape();
                             }
 
-                            System.Windows.Point point = ((System.Windows.Media.LineSegment)segment).Point;
-                            HybridShape pointShape = hybridShapeFactory.AddNewPointCoord(point.X, point.Y, 0);
-                            pointShape.Compute();
-                            Reference pointShapeRef = partDocument.Part.CreateReferenceFromObject(pointShape);
+                            System.Windows.Point point = ((LineSegment)segment).Point;
+                            CatiaPoint lastPoint = new CatiaPoint(PartDocument, point.X, -point.Y, 0);
+                            lastPoint.ComputePointShape();
 
-                            pointReferenceList.Add(pointShapeRef);
+                            // Create the line between last point and first point to close the contour and add it to the segment list
+                            HybridShapeLinePtPt line = HybridShapeFactory.AddNewLinePtPt(startPoint.ShapeReference, lastPoint.ShapeReference);
+                            line.Compute();
+                            segmentRefList.Add(PartDocument.Part.CreateReferenceFromObject(line));
 
-                            HybridShape line = hybridShapeFactory.AddNewLinePtPt(startPointShapeRef, pointShapeRef);
-                            lineList.Add(partDocument.Part.CreateReferenceFromObject(line));
                         }
                     }
                 }*/
             }
 
-            HybridShapeAssemble assemblyShape = HybridShapeFactory.AddNewJoin(lineList.First(), lineList[1]);
-            for (int i = 2; i < lineList.Count; i++)
+            HybridShapeAssemble assemblyShape = HybridShapeFactory.AddNewJoin(segmentRefList.First(), segmentRefList[1]);
+            for (int i = 2; i < segmentRefList.Count; i++)
             {
-                assemblyShape.AddElement(lineList[i]);
+                assemblyShape.AddElement(segmentRefList[i]);
             }
 
             assemblyShape.Compute();
@@ -274,21 +255,22 @@ namespace Graphy.Model.CatiaShape
         }
 
 
-        public class ContourNotClosed : Exception
+        public CatiaContour Copy()
         {
-            public ContourNotClosed()
-            {
-            }
+            CatiaContour copyContour = new CatiaContour(PartDocument, SupportReference);
 
-            public ContourNotClosed(string message)
-                : base(message)
+            if(ShapeReference != null)
             {
-            }
+                HybridShape copyShape = (HybridShape)HybridShapeFactory.AddNewCurveDatum(ShapeReference);
+                copyShape.Compute();
 
-            public ContourNotClosed(string message, Exception inner)
-                : base(message, inner)
-            {
+                copyContour.Shape = copyShape;
             }
+            
+            copyContour.PathGeometry = PathGeometry.Clone();
+
+            return copyContour;
         }
+
     }
 }

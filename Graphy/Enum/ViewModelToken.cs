@@ -41,7 +41,8 @@ namespace Graphy.Enum
         ClassicFontDirectoryPathChanged,
         SettingFileReadingFailed,
         SettingFileWritingFailed,
-        LicenceFileReadingFailed
+        LicenceFileReadingFailed,
+        MarkingDateSettingChange
     }
 
     public enum DesignTableToken

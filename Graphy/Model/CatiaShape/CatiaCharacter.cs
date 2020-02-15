@@ -31,7 +31,6 @@ namespace Graphy.Model.CatiaShape
             set
             {
                 _pathGeometry = value;
-                FillSurfaceList();
             }
         }
 
@@ -52,7 +51,7 @@ namespace Graphy.Model.CatiaShape
         }
 
 
-        private void FillSurfaceList()
+        public void FillSurfaceList()
         {
             SurfaceList.Clear();
 
@@ -165,6 +164,19 @@ namespace Graphy.Model.CatiaShape
             {
                 Shape = SurfaceList.First().Shape;
             }
+        }
+
+        public CatiaCharacter Clone()
+        {
+            CatiaCharacter copyCharacter = new CatiaCharacter(PartDocument, Value);
+            copyCharacter.PathGeometry = PathGeometry.Clone();
+            copyCharacter.IsSpaceCharacter = IsSpaceCharacter;
+            foreach(CatiaSurface surface in SurfaceList)
+            {
+                copyCharacter.SurfaceList.Add(surface.Copy());
+            }
+
+            return copyCharacter;
         }
 
 

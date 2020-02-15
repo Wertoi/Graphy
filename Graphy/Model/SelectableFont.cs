@@ -90,7 +90,7 @@ namespace Graphy.Model
             }
         }
 
-        public PathGeometry GetCharacterGeometry(char c)
+        public PathGeometry GetCharacterGeometry(char c, double toleranceValue)
         {
             int unicodeValue = Convert.ToUInt16(c);
 
@@ -98,7 +98,7 @@ namespace Graphy.Model
             {
                 if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
                 {
-                    return glyphTypeFace.GetGlyphOutline(glyphIndex, 16, 1).GetFlattenedPathGeometry(0.001, System.Windows.Media.ToleranceType.Relative);
+                    return glyphTypeFace.GetGlyphOutline(glyphIndex, 16, 1).GetFlattenedPathGeometry(toleranceValue, System.Windows.Media.ToleranceType.Relative);
                 }
                 else
                     return null;

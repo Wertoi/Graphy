@@ -40,22 +40,15 @@ namespace Graphy.Model.CatiaShape
                 _shape = value;
                 ShapeReference = PartDocument.Part.CreateReferenceFromObject(Shape);
 
-                if(GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Point)
-                {
-                    // Retrieves the point coordinates
-                    SPATypeLib.Measurable measurable = SPAWorkbench.GetMeasurable(ShapeReference);
+                // Retrieves the point coordinates
+                SPATypeLib.Measurable measurable = SPAWorkbench.GetMeasurable(ShapeReference);
 
-                    object[] pointCoordinate = new object[3];
-                    measurable.GetPoint(pointCoordinate);
+                object[] pointCoordinate = new object[3];
+                measurable.GetPoint(pointCoordinate);
 
-                    X = (double)pointCoordinate[0];
-                    Y = (double)pointCoordinate[1];
-                    Z = (double)pointCoordinate[2];
-                }
-                else
-                {
-                    throw new InvalidShapeException("Shape must be a point.");
-                }
+                X = (double)pointCoordinate[0];
+                Y = (double)pointCoordinate[1];
+                Z = (double)pointCoordinate[2];
             }
         }
 

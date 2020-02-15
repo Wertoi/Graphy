@@ -27,23 +27,24 @@ namespace Graphy.Model.CatiaShape
             set => _internalContourList = value;
         }
 
-        new public HybridShape Shape
+        public CatiaSurface Copy()
         {
-            get => _shape;
-            set
+            CatiaSurface copySurface = new CatiaSurface(PartDocument);
+            copySurface.ExternalContour = ExternalContour.Copy();
+            foreach(CatiaContour internalContour in InternalContourList)
             {
-                _shape = value;
-                ShapeReference = PartDocument.Part.CreateReferenceFromObject(Shape);
-
-                /*if (GetShapeType(HybridShapeFactory, ShapeReference) == ShapeType.Surface)
-                {
-
-                }
-                else
-                {
-                    throw new InvalidShapeException("Shape must be a surface.");
-                }*/
+                copySurface.InternalContourList.Add(internalContour.Copy());
             }
+
+            if(ShapeReference != null)
+            {
+                HybridShape copyShape = (HybridShape)HybridShapeFactory.AddNewSurfaceDatum(ShapeReference);
+                copyShape.Compute();
+
+                copySurface.Shape = copyShape;
+            }
+
+            return copySurface;
         }
 
 

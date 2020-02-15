@@ -21,7 +21,7 @@ namespace Graphy.ViewModel
         // CONSTRUCTOR
         public InputDataViewModel()
         {
-            MarkingData = new MarkingData("Input text", 1.6, 0.1)
+            MarkingData = new MarkingData("Hello World !", 1.6, 0.1)
             {
                 Name = "NewMarking"
             };
@@ -34,6 +34,7 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<CatiaEnv>(this, Enum.CatiaToken.Open, (catiaEnv) => { _catiaEnv = catiaEnv; });
             MessengerInstance.Register<string>(this, Enum.DesignTableToken.DesignTableLoaded, (fullPath) => DesignTableLoaded(fullPath));
             MessengerInstance.Register<List<CatiaFile>>(this, Enum.DesignTableToken.SelectedPartCollectionChanged, (partList) => { _partList = partList; CheckIfCanGenerate(); });
+            MessengerInstance.Register<MarkingData.MarkingDataSettings>(this, Enum.SettingToken.MarkingDateSettingChange, (Action<MarkingData.MarkingDataSettings>)((markingDataSetting) => { MarkingData.Settings = markingDataSetting; }));
 
             // COMMANDS INITIALIZATION
             SelectTrackingCurveCommand = new RelayCommand(SelectTrackingCurveCommandAction);
@@ -286,7 +287,7 @@ namespace Graphy.ViewModel
                         }
                         else
                         {
-                            markingGenerator.Run(_catiaEnv, _workingPartDocument.PartDocument, MarkingData);
+                            markingGenerator.Run(_catiaEnv, _workingPartDocument.PartDocument, MarkingData, new List<Model.CatiaShape.CatiaCharacter>());
                         }
 
                         MessengerInstance.Send<bool>(false, Enum.ProcessToken.Finished);

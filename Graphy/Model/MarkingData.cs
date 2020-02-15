@@ -28,6 +28,11 @@ namespace Graphy.Model
             {
                 Value = extrusionHeightValue
             };
+
+            TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
+            StartPointName = DEFAULT_START_POINT_NAME;
+            ProjectionSurfaceName = DEFAULT_PROJECTION_SURFACE_NAME;
+            AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME;
         }
 
         public const string DEFAULT_TRACKING_CURVE_NAME = "No curve selected";
@@ -40,10 +45,12 @@ namespace Graphy.Model
         private SelectableFont _font;
         private LinkableData<double> _characterHeight;
         private LinkableData<double> _extrusionHeight;
-        private string _trackingCurveName = "No curve selected";
-        private string _startPointName = "No point selected";
-        private string _projectionSurfaceName = "No surface selected";
-        private string _axisSystemName = "No axis system selected";
+        private string _trackingCurveName;
+        private string _startPointName;
+        private string _projectionSurfaceName;
+        private string _axisSystemName;
+        private MarkingDataSettings _settings;
+        
 
         public string Name
         {
@@ -125,5 +132,55 @@ namespace Graphy.Model
                 Set(() => AxisSystemName, ref _axisSystemName, value);
             }
         }
+
+        public MarkingDataSettings Settings
+        {
+            get => _settings;
+            set
+            {
+                Set(() => Settings, ref _settings, value);
+            }
+        }
+
+
+        public class MarkingDataSettings : ObservableObject
+        {
+            public MarkingDataSettings()
+            {
+
+            }
+
+            private double _toleranceFactor;
+            private bool _keepHistory;
+            private bool _createVolume;
+
+            public double ToleranceFactor
+            {
+                get => _toleranceFactor;
+                set
+                {
+                    Set(() => ToleranceFactor, ref _toleranceFactor, value);
+                }
+            }
+
+            public bool KeepHistory
+            {
+                get => _keepHistory;
+                set
+                {
+                    Set(() => KeepHistory, ref _keepHistory, value);
+                }
+            }
+
+            public bool CreateVolume
+            {
+                get => _createVolume;
+                set
+                {
+                    Set(() => CreateVolume, ref _createVolume, value);
+                }
+            }
+        }
+
     }
 }
