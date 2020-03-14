@@ -22,7 +22,7 @@ namespace Graphy.ViewModel
                 ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
                 // Pour info : "true" permet de contrôler l'ordre d'initialisation des view models
-                SimpleIoc.Default.Register<StatusViewModel>(true);
+                SimpleIoc.Default.Register<ProcessViewModel>(true);
                 SimpleIoc.Default.Register<InputDataViewModel>(true);
                 SimpleIoc.Default.Register<FontViewModel>(true);
                 SimpleIoc.Default.Register<SettingViewModel>(true);
@@ -55,11 +55,11 @@ namespace Graphy.ViewModel
             }
         }
 
-        public StatusViewModel StatusViewModel
+        public ProcessViewModel StatusViewModel
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<StatusViewModel>();
+                return ServiceLocator.Current.GetInstance<ProcessViewModel>();
             }
         }
 

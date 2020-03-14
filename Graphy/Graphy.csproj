@@ -87,6 +87,9 @@
     <Compile Include="Attribute\LocalizationKeyAttribute.cs" />
     <Compile Include="Converter\EnumToCollectionConverter.cs" />
     <Compile Include="Converter\LocalizedEnumToStringConverter.cs" />
+    <Compile Include="CustomControl\LoadingBox.xaml.cs">
+      <DependentUpon>LoadingBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Enum\Language.cs" />
     <Compile Include="DesignTableReader.cs" />
     <Compile Include="Model\CatiaDocument\CatiaGenericDocument.cs" />
@@ -97,7 +100,6 @@
     <Compile Include="Model\CatiaShape\CatiaGenericShape.cs" />
     <Compile Include="Model\CatiaShape\CatiaSurface.cs" />
     <Compile Include="Model\DesignTableParameter.cs" />
-    <Compile Include="Model\Generator\IGenerator.cs" />
     <Compile Include="Model\LinkableData.cs" />
     <Compile Include="Model\Generator\SupportedCharGenerator.cs" />
     <Compile Include="Model\SelectableFont.cs" />
@@ -112,7 +114,7 @@
     <Compile Include="ViewModel\DesignTableViewModel.cs" />
     <Compile Include="ViewModel\FontViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
-    <Compile Include="ViewModel\StatusViewModel.cs" />
+    <Compile Include="ViewModel\ProcessViewModel.cs" />
     <Compile Include="ViewModel\InputDataViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\DesignTableView.xaml.cs">
@@ -124,9 +126,13 @@
     <Compile Include="View\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StatusView.xaml.cs">
-      <DependentUpon>StatusView.xaml</DependentUpon>
+    <Compile Include="View\ProcessView.xaml.cs">
+      <DependentUpon>ProcessView.xaml</DependentUpon>
     </Compile>
+    <Page Include="CustomControl\LoadingBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -156,7 +162,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\StatusView.xaml">
+    <Page Include="View\ProcessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

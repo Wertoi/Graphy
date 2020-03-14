@@ -61,10 +61,9 @@
         </Style>
 
         <!-- *** ICON FOR BUTTON *** -->
-
-        <!-- LINK ICON PATH STYLE -->
-        <Style x:Key="LinkIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"/>
+        
+        <!-- BASE BUTTON ICON STYLE -->
+        <Style x:Key="BaseButtonIconStyle" TargetType="{x:Type Path}">
             <Setter Property="Fill" Value="Black"/>
             <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
             <Style.Triggers>
@@ -75,201 +74,88 @@
                     <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
                 </DataTrigger>
             </Style.Triggers>
+        </Style>
+
+        <!-- LINK ICON PATH STYLE -->
+        <Style x:Key="LinkIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,
+                    7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"/>
         </Style>
 
         <!-- REFRESH ICON PATH STYLE -->
-        <Style x:Key="RefreshIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M19,8L15,12H18A6,6 0 0,1 12,18C11,18 10.03,17.75 9.2,17.3L7.74,18.76C8.97,19.54 10.43,20 12,20A8,8 0 0,0 20,12H23M6,12A6,6 0 0,1 12,6C13,6 13.97,6.25 14.8,6.7L16.26,5.24C15.03,4.46 13.57,4 12,4A8,8 0 0,0 4,12H1L5,16L9,12"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="RefreshIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M19,8L15,12H18A6,6 0 0,1 12,18C11,18 10.03,17.75 9.2,17.3L7.74,18.76C8.97,19.54 10.43,20 12,20A8,8 0 0,0 20,12H23M6,12A6,6 0 0,1 
+                    12,6C13,6 13.97,6.25 14.8,6.7L16.26,5.24C15.03,4.46 13.57,4 12,4A8,8 0 0,0 4,12H1L5,16L9,12"/>
         </Style>
 
         <!-- CLEAR ICON PATH STYLE -->
-        <Style x:Key="ClearIcon" TargetType="{x:Type Path}">
+        <Style x:Key="ClearIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
             <Setter Property="Data" Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
         </Style>
 
         <!-- FONT ICON PATH STYLE -->
-        <Style x:Key="FontIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M20.06,18C20,17.83 19.91,17.54 19.86,17.11C19.19,17.81 18.38,18.16 17.45,18.16C16.62,18.16 15.93,17.92 15.4,17.45C14.87,17 14.6,16.39 14.6,15.66C14.6,14.78 14.93,14.1 15.6,13.61C16.27,13.12 17.21,12.88 18.43,12.88H19.83V12.24C19.83,11.75 19.68,11.36 19.38,11.07C19.08,10.78 18.63,10.64 18.05,10.64C17.53,10.64 17.1,10.76 16.75,11C16.4,11.25 16.23,11.54 16.23,11.89H14.77C14.77,11.46 14.92,11.05 15.22,10.65C15.5,10.25 15.93,9.94 16.44,9.71C16.95,9.5 17.5,9.36 18.13,9.36C19.11,9.36 19.87,9.6 20.42,10.09C20.97,10.58 21.26,11.25 21.28,12.11V16C21.28,16.8 21.38,17.42 21.58,17.88V18H20.06M17.66,16.88C18.11,16.88 18.54,16.77 18.95,16.56C19.35,16.35 19.65,16.07 19.83,15.73V14.16H18.7C16.93,14.16 16.04,14.63 16.04,15.57C16.04,16 16.19,16.3 16.5,16.53C16.8,16.76 17.18,16.88 17.66,16.88M5.46,13.71H9.53L7.5,8.29L5.46,13.71M6.64,6H8.36L13.07,18H11.14L10.17,15.43H4.82L3.86,18H1.93L6.64,6Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="FontIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M20.06,18C20,17.83 19.91,17.54 19.86,17.11C19.19,17.81 18.38,18.16 17.45,18.16C16.62,18.16 15.93,17.92 15.4,17.45C14.87,17 14.6,16.39 14.6,
+                    15.66C14.6,14.78 14.93,14.1 15.6,13.61C16.27,13.12 17.21,12.88 18.43,12.88H19.83V12.24C19.83,11.75 19.68,11.36 19.38,11.07C19.08,10.78 18.63,10.64 18.05,10.64C17.53,
+                    10.64 17.1,10.76 16.75,11C16.4,11.25 16.23,11.54 16.23,11.89H14.77C14.77,11.46 14.92,11.05 15.22,10.65C15.5,10.25 15.93,9.94 16.44,9.71C16.95,9.5 17.5,9.36 
+                    18.13,9.36C19.11,9.36 19.87,9.6 20.42,10.09C20.97,10.58 21.26,11.25 21.28,12.11V16C21.28,16.8 21.38,17.42 21.58,17.88V18H20.06M17.66,16.88C18.11,16.88 18.54,16.77
+                    18.95,16.56C19.35,16.35 19.65,16.07 19.83,15.73V14.16H18.7C16.93,14.16 16.04,14.63 16.04,15.57C16.04,16 16.19,16.3 16.5,16.53C16.8,16.76 17.18,16.88 17.66,
+                    16.88M5.46,13.71H9.53L7.5,8.29L5.46,13.71M6.64,6H8.36L13.07,18H11.14L10.17,15.43H4.82L3.86,18H1.93L6.64,6Z"/>
         </Style>
 
         <!-- SEARCH ICON PATH STYLE -->
-        <Style x:Key="SearchIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="SearchIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,
+                    16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
         </Style>
 
         <!-- SORT ICON PATH STYLE -->
-        <Style x:Key="SortIcon" TargetType="{x:Type Path}">
+        <Style x:Key="SortIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
             <Setter Property="Data" Value="M3,13H15V11H3M3,6V8H21V6M3,18H9V16H3V18Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
         </Style>
 
         <!-- PARAMETERS ICON PATH STYLE -->
-        <Style x:Key="ParameterIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="ParameterIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5
+                    ,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,
+                    5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,
+                    8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,
+                    19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,
+                    18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
         </Style>
 
         <!-- SELECT ICON PATH STYLE -->
-        <Style x:Key="SelectIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="SelectIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,
+                    7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z"/>
         </Style>
 
         <!-- UPDATE ICON -->
-        <Style x:Key="UpdateButtonIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M21,10.12H14.22L16.96,7.3C14.23,4.6 9.81,4.5 7.08,7.2C4.35,9.91 4.35,14.28 7.08,17C9.81,19.7 14.23,19.7 16.96,17C18.32,15.65 19,14.08 19,12.1H21C21,14.08 20.12,16.65 18.36,18.39C14.85,21.87 9.15,21.87 5.64,18.39C2.14,14.92 2.11,9.28 5.62,5.81C9.13,2.34 14.76,2.34 18.27,5.81L21,3V10.12M12.5,8V12.25L16,14.33L15.28,15.54L11,13V8H12.5Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="UpdateButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M21,10.12H14.22L16.96,7.3C14.23,4.6 9.81,4.5 7.08,7.2C4.35,9.91 4.35,14.28 7.08,17C9.81,19.7 14.23,19.7 16.96,17C18.32,15.65 
+                    19,14.08 19,12.1H21C21,14.08 20.12,16.65 18.36,18.39C14.85,21.87 9.15,21.87 5.64,18.39C2.14,14.92 2.11,9.28 5.62,5.81C9.13,2.34 14.76,2.34 18.27,5.81L21,
+                    3V10.12M12.5,8V12.25L16,14.33L15.28,15.54L11,13V8H12.5Z"/>
         </Style>
 
         <!-- SELECT ALL BUTTON ICON PATH STYLE -->
-        <Style x:Key="SelectAllIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M9,9H15V15H9M7,17H17V7H7M15,5H17V3H15M15,21H17V19H15M19,17H21V15H19M19,9H21V7H19M19,21A2,2 0 0,0 21,19H19M19,13H21V11H19M11,21H13V19H11M9,3H7V5H9M3,17H5V15H3M5,21V19H3A2,2 0 0,0 5,21M19,3V5H21A2,2 0 0,0 19,3M13,3H11V5H13M3,9H5V7H3M7,21H9V19H7M3,13H5V11H3M3,5H5V3A2,2 0 0,0 3,5Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- UNSELECT ALL BUTTON ICON PATH STYLE -->
-        <Style x:Key="UnselectAllIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M22,3H7C6.31,3 5.77,3.35 5.41,3.88L0,12L5.41,20.11C5.77,20.64 6.31,21 7,21H22A2,2 0 0,0 24,19V5A2,2 0 0,0 22,3M19,15.59L17.59,17L14,13.41L10.41,17L9,15.59L12.59,12L9,8.41L10.41,7L14,10.59L17.59,7L19,8.41L15.41,12"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="SelectAllIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M9,9H15V15H9M7,17H17V7H7M15,5H17V3H15M15,21H17V19H15M19,17H21V15H19M19,9H21V7H19M19,21A2,2 0 0,0 21,19H19M19,13H21V11H19M11,
+                    21H13V19H11M9,3H7V5H9M3,17H5V15H3M5,21V19H3A2,2 0 0,0 5,21M19,3V5H21A2,2 0 0,0 19,3M13,3H11V5H13M3,9H5V7H3M7,21H9V19H7M3,13H5V11H3M3,5H5V3A2,2 0 0,0 3,5Z"/>
         </Style>
 
         <!-- BACK ICON PATH STYLE -->
-        <Style x:Key="BackIcon" TargetType="{x:Type Path}">
+        <Style x:Key="BackIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
             <Setter Property="Data" Value="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
         </Style>
 
         <!-- OPEN DOCUMENT PATH STYLE -->
-        <Style x:Key="OpenDocumentIcon" TargetType="{x:Type Path}">
+        <Style x:Key="OpenDocumentIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
             <Setter Property="Data" Value="M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
         </Style>
 
         <!-- OPEN FOLDER ICON PATH STYLE -->
-        <Style x:Key="OpenFolderIcon" TargetType="{x:Type Path}">
+        <Style x:Key="OpenFolderIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
             <Setter Property="Data" Value="M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
         </Style>
 
 
@@ -321,32 +207,36 @@
 
         <!-- *** ICON ONLY *** -->
 
-        <!-- NO DOCUMENTATION ICON PATH STYLE -->
-        <Style x:Key="NoDocumentIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M19,5A2,2 0 0,0 17,3H10L7.66,5.34L19,16.68V5M3.65,3.88L2.38,5.15L5,7.77V19A2,2 0 0,0 7,21H17C17.36,21 17.68,20.9 17.97,20.74L19.85,22.62L21.12,21.35L3.65,3.88Z"/>
+        <!-- BASE ICON STYLE -->
+        <Style x:Key="BaseIconStyle" TargetType="{x:Type Path}">
             <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
+            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- NO DOCUMENTATION ICON PATH STYLE -->
+        <Style x:Key="NoDocumentIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
+            <Setter Property="Data" Value="M19,5A2,2 0 0,0 17,3H10L7.66,5.34L19,16.68V5M3.65,3.88L2.38,5.15L5,7.77V19A2,2 0 0,0 7,21H17C17.36,21 17.68,20.9 17.97,20.74L19.85,22.62L21.12,21.35L3.65,3.88Z"/>
+            <Setter Property="IsEnabled" Value="False"/>
         </Style>
 
         <!-- IN PROGRESS ICON PATH STYLE -->
-        <Style x:Key="InProgressIcon" TargetType="{x:Type Path}">
+        <Style x:Key="InProgressIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
             <Setter Property="Data" Value="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.24,7.76C15.07,6.58 13.53,6 12,6V12L7.76,16.24C10.1,18.58 13.9,18.58 16.24,16.24C18.59,13.9 18.59,10.1 16.24,7.76Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
         </Style>
 
         <!-- CHECK OK ICON PATH STYLE -->
-        <Style x:Key="CheckIcon" TargetType="{x:Type Path}">
+        <Style x:Key="CheckIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
             <Setter Property="Data" Value="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
         </Style>
 
         <!-- INFO ICON PATH STYLE -->
-        <Style x:Key="InfoIcon" TargetType="{x:Type Path}">
+        <Style x:Key="InfoIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
             <Setter Property="Data" Value="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
         </Style>
 
         <!-- ***** END OF ICONS ***** -->
@@ -362,6 +252,11 @@
             <Setter Property="Margin" Value="0,0,20,0"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Foreground" Value="#FF262626"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.56"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
 
@@ -467,13 +362,15 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Border x:Name="border" Grid.ColumnSpan="2" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True"/>
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Opacity="{TemplateBinding Opacity}"/>
+
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Opacity="{TemplateBinding Opacity}"/>
+
                             <TextBlock Grid.Column="1" Text="{Binding Unit, RelativeSource={RelativeSource AncestorType={x:Type cc:TextBoxWithUnit}, Mode=FindAncestor}}" VerticalAlignment="Center"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                <Setter Property="Opacity" Value="0.56"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="BorderBrush" Value="{StaticResource SecondaryColor}"/>
@@ -538,6 +435,22 @@
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{StaticResource Gray166}" />
                     <Setter Property="BorderBrush" Value="{StaticResource Gray127}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- HIGHLIGHT BUTTON STYLE -->
+        <Style x:Key="HighlightButton" TargetType="{x:Type Button}" BasedOn="{StaticResource NormalButton}">
+            <Setter Property="Background" Value="{StaticResource SecondaryColorLight}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SecondaryColor}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource SecondaryColorDark}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SecondaryColorDark}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource SecondaryColorDark}" />
                 </Trigger>
             </Style.Triggers>
         </Style>

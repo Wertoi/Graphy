@@ -27,7 +27,7 @@ namespace Graphy.ViewModel
 
             // MESSENGER REGISTRATION
             MessengerInstance.Register<SelectableFont>(this, Enum.InputDataToken.SelectedFontChanged, (font) => { MarkingData.Font = font; });
-            MessengerInstance.Register<CatiaPartDocument>(this, Enum.CatiaToken.SelectedPartDocumentChanged, (partDoc) => { _selectedPartDocument = partDoc; });
+            MessengerInstance.Register<CatiaPartDocument>(this, Enum.CatiaToken.SelectedPartDocumentChanged, (partDoc) => { _selectedPartDocument = partDoc; CheckIfCanGenerate(); });
 
             MessengerInstance.Register<string>(this, Enum.DesignTableToken.DesignTableLoaded, (fullPath) => DesignTableLoaded(fullPath));
             MessengerInstance.Register<List<CatiaFile>>(this, Enum.DesignTableToken.SelectedPartCollectionChanged, (partList) => { _partList = partList; CheckIfCanGenerate(); });
@@ -272,12 +272,15 @@ namespace Graphy.ViewModel
         {
             if (IsNameUnique(MarkingData.ProjectionSurfaceName) && IsNameUnique(MarkingData.StartPointName) && IsNameUnique(MarkingData.TrackingCurveName) && IsNameUnique(MarkingData.AxisSystemName))
             {
-                MessengerInstance.Send("Génération du marquage.", Enum.ProcessToken.Started);
+                if(IsDesignTableActivated)
+                    MessengerInstance.Send<int>(_partList.Count, Enum.ProcessToken.ComplexStarted);
+                else
+                    MessengerInstance.Send<int>(1, Enum.ProcessToken.ComplexStarted);
 
                 await Task.Run(() =>
                 {
                     MarkingGenerator markingGenerator = new MarkingGenerator();
-                    markingGenerator.ProgressRateChanged += MarkingGenerator_ProgressRateChanged;
+                    markingGenerator.ProgressUpdated += MarkingGenerator_ProgressUpdated; ;
 
                     try
                     {
@@ -292,7 +295,7 @@ namespace Graphy.ViewModel
                             markingGenerator.Run(_selectedPartDocument, MarkingData, new List<Model.CatiaShape.CatiaCharacter>(), _toleranceFactor, _keepHistoric, _createVolume);
                         }
 
-                        MessengerInstance.Send<bool>(false, Enum.ProcessToken.Finished);
+                        MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
                     }
                     catch (Exception ex)
                     {
@@ -306,10 +309,11 @@ namespace Graphy.ViewModel
                 MessengerInstance.Send("", Enum.InputDataToken.SelectionIncorrect);
         }
 
-        private void MarkingGenerator_ProgressRateChanged(object sender, ProgressRateChangedEventArgs e)
+        private void MarkingGenerator_ProgressUpdated(object sender, (double progressRate, int currentStep) e)
         {
-            MessengerInstance.Send(e.ProgressRate * 100, Enum.ProcessToken.Refresh);
+            MessengerInstance.Send<(double, int)>((e.progressRate * 100, e.currentStep), Enum.ProcessToken.Refresh);
         }
+
 
         #endregion
 
@@ -332,8 +336,11 @@ namespace Graphy.ViewModel
 
         private void CheckIfCanGenerate()
         {
-            if (MarkingData.Font != null && MarkingData.ProjectionSurfaceName != MarkingData.DEFAULT_PROJECTION_SURFACE_NAME &&
-                MarkingData.TrackingCurveName != MarkingData.DEFAULT_TRACKING_CURVE_NAME && MarkingData.StartPointName != MarkingData.DEFAULT_START_POINT_NAME &&
+            if (MarkingData.Font != null &&
+                _selectedPartDocument != null &&
+                MarkingData.ProjectionSurfaceName != MarkingData.DEFAULT_PROJECTION_SURFACE_NAME &&
+                MarkingData.TrackingCurveName != MarkingData.DEFAULT_TRACKING_CURVE_NAME &&
+                MarkingData.StartPointName != MarkingData.DEFAULT_START_POINT_NAME &&
                 MarkingData.AxisSystemName != MarkingData.DEFAULT_AXIS_SYSTEM_NAME)
             {
                 if (IsDesignTableActivated)

@@ -27,6 +27,7 @@ namespace Graphy.Model
         private bool _isApplicationOpen = false;
         private string _errorLog = "";
         private string _lengthUnitSymbol;
+        private string _fullVersion;
 
         public Application Application
         {
@@ -64,6 +65,8 @@ namespace Graphy.Model
             }
         }
 
+        public string FullVersion { get => _fullVersion; set => _fullVersion = value; }
+
 
         // METHODS
 
@@ -88,9 +91,14 @@ namespace Graphy.Model
             {
                 IsApplicationOpen = true;
                 LengthUnitSymbol = GetLengthUnitSymbol();
+                FullVersion = "V" + Application.SystemConfiguration.Version + "R" + Application.SystemConfiguration.Release;
             }
             else
+            {
                 IsApplicationOpen = false;
+                LengthUnitSymbol = "No unit";
+                FullVersion = "/";
+            }
         }
 
 

@@ -1,14 +1,15 @@
 ﻿using System;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using INFITF;
 
 namespace Graphy.ViewModel
 {
-    public class StatusViewModel : ViewModelBase
+    public class ProcessViewModel : ViewModelBase
     {
         // CONSTRUCTOR
-        public StatusViewModel()
+        public ProcessViewModel()
         {
             // MESSENGER REGISTRATION
 
@@ -17,32 +18,37 @@ namespace Graphy.ViewModel
 
             // PROCESS TOKEN
             MessengerInstance.Register<string>(this, Enum.ProcessToken.Failed, (msg) => ProcessFailed(msg));
-            MessengerInstance.Register<double>(this, Enum.ProcessToken.Refresh, (rate) => { ProgressRate = rate; });
-            MessengerInstance.Register<string>(this, Enum.ProcessToken.Started, (msg) => ProcessStarted(msg));
-            MessengerInstance.Register<bool>(this, Enum.ProcessToken.Finished, (closeDirectly) => ProcessFinished(closeDirectly));
 
-            // FONT TOKEN
+            MessengerInstance.Register<(double progressRate, int currentStep)>(this, Enum.ProcessToken.Refresh,
+                (progressInfo) => ProcessRefresh(progressInfo.progressRate, progressInfo.currentStep));
 
+            MessengerInstance.Register<object>(this, Enum.ProcessToken.SimpleStarted, (x) => ProcessSimpleStarted());
+            MessengerInstance.Register<int>(this, Enum.ProcessToken.ComplexStarted, (maximumStep) => ProcessComplexStarted(maximumStep));
+
+            MessengerInstance.Register<object>(this, Enum.ProcessToken.Finished, (x) => ProcessFinished());
 
             // SETTING TOKEN
             MessengerInstance.Register<string>(this, Enum.SettingToken.LicenceFileReadingFailed, (msg) => LicenceFileReadingFailed(msg));
 
             // *** END MESSENGER REGISTRATION ***
 
+
+
             // Commands initialization
             ResetExceptionCommand = new RelayCommand(ResetExceptionCommandAction);
-            TerminateCommand = new RelayCommand(TerminateCommandAction);
         }
 
 
         // ATTRIBUTS
         private bool _isOneStateActivated;
         private bool _isInProgress = false;
-        private bool _isFinished = false;
+        private double _progressRate = 0;
+        private bool _isProgressRateAvailable = false;
+        private int _currentStep;
+        private int _maximumStep;
+
         private bool _isGeneralExceptionRaised = false;
         private string _exceptionMessage = "";
-        private string _processMessage = "";
-        private double _progressRate = 0;
 
 
         public bool IsOneStateActivated
@@ -60,15 +66,6 @@ namespace Graphy.ViewModel
             set
             {
                 Set(() => IsInProgress, ref _isInProgress, value);
-            }
-        }
-
-        public bool IsFinished
-        {
-            get => _isFinished;
-            set
-            {
-                Set(() => IsFinished, ref _isFinished, value);     
             }
         }
 
@@ -91,21 +88,39 @@ namespace Graphy.ViewModel
             }
         }
 
-        public string ProcessMessage
-        {
-            get => _processMessage;
-            set
-            {
-                Set(() => ProcessMessage, ref _processMessage, value);
-            }
-        }
-
         public double ProgressRate
         {
             get => _progressRate;
             set
             {
                 Set(() => ProgressRate, ref _progressRate, value);
+            }
+        }
+
+        public bool IsProgressRateAvailable
+        {
+            get => _isProgressRateAvailable;
+            set
+            {
+                Set(() => IsProgressRateAvailable, ref _isProgressRateAvailable, value);
+            }
+        }
+
+        public int MaximumStep
+        {
+            get => _maximumStep;
+            set
+            {
+                Set(() => MaximumStep, ref _maximumStep, value);
+            }
+        }
+
+        public int CurrentStep
+        {
+            get => _currentStep;
+            set
+            {
+                Set(() => CurrentStep, ref _currentStep, value);
             }
         }
 
@@ -128,17 +143,6 @@ namespace Graphy.ViewModel
         }
 
 
-        // TERMINATE COMMAND
-        private RelayCommand _terminateCommand;
-        public RelayCommand TerminateCommand { get => _terminateCommand; set => _terminateCommand = value; }
-
-        private void TerminateCommandAction()
-        {
-            IsFinished = false;
-
-            ManageStates();
-        }
-
 
         // METHODS
 
@@ -151,20 +155,12 @@ namespace Graphy.ViewModel
                 IsOneStateActivated = false;
             else
             {
-                if (IsFinished)
+                if (IsGeneralExceptionRaised)
                 {
                     IsInProgress = false;
-                    IsGeneralExceptionRaised = false;
-                }
-                else
-                {
-                    if (IsGeneralExceptionRaised)
-                    {
-                        IsInProgress = false;
-                    }
                 }
 
-                if (IsFinished || IsGeneralExceptionRaised || IsInProgress)
+                if (IsGeneralExceptionRaised || IsInProgress)
                     IsOneStateActivated = true;
                 else
                     IsOneStateActivated = false;
@@ -179,21 +175,34 @@ namespace Graphy.ViewModel
             ManageStates();
         }
 
-        private void ProcessStarted(string msg)
+        private void ProcessSimpleStarted()
         {
             IsInProgress = true;
-            ProgressRate = 0;
-            ProcessMessage = msg;
+            IsProgressRateAvailable = false;
 
             ManageStates();
         }
 
-        private void ProcessFinished(bool closeDirectly)
+        private void ProcessComplexStarted(int maximumStep)
+        {
+            IsInProgress = true;
+            IsProgressRateAvailable = true;
+            ProgressRate = 0;
+            MaximumStep = maximumStep;
+
+
+            ManageStates();
+        }
+
+        private void ProcessRefresh(double progressRate, int currentStep)
+        {
+            ProgressRate = progressRate;
+            CurrentStep = currentStep;
+        }
+
+        private void ProcessFinished()
         {
             IsInProgress = false;
-
-            if (!closeDirectly)
-                IsFinished = true;
 
             ManageStates();
         }
@@ -202,22 +211,6 @@ namespace Graphy.ViewModel
         {
             IsGeneralExceptionRaised = true;
             ExceptionMessage = "Process error. Input datas must be reviewed.\r\n\r\nError report: \r\n" + msg;
-
-            ManageStates();
-        }
-
-        private void SettingFileReadingFailed(string msg)
-        {
-            IsGeneralExceptionRaised = true;
-            ExceptionMessage = "An error occured during parameters loading.\r\nParameters will be reset.\r\n\r\nError report:\r\n" + msg;
-
-            ManageStates();
-        }
-
-        private void SettingFileWritingFailed(string msg)
-        {
-            IsGeneralExceptionRaised = true;
-            ExceptionMessage = "An error occured during parameters saving.\r\n\r\nError report: \r\n" + msg;
 
             ManageStates();
         }

@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Graphy.CustomControl.LoadingBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Graphy.CustomControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="45" d:DesignWidth="45">
+    
+    <Viewbox Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Canvas RenderTransformOrigin="0.5,0.5"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Width="120"
+              Height="120"
+              Loaded="OnCanvasLoaded"
+              Unloaded="OnCanvasUnloaded">
+
+                <Ellipse x:Name="_circle0" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="1.0"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Ellipse x:Name="_circle1" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="0.9"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Ellipse x:Name="_circle2" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="0.8"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Ellipse x:Name="_circle3" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="0.7"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Ellipse x:Name="_circle4" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="0.6"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Ellipse x:Name="_circle5" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="0.5"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Ellipse x:Name="_circle6" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="0.4"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Ellipse x:Name="_circle7" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="0.3"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Ellipse x:Name="_circle8" Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Opacity="0.2"
+                         Fill="{Binding LoadingColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LoadingBox}}}" />
+
+                <Canvas.RenderTransform>
+                    <RotateTransform x:Name="_spinnerRotate" Angle="0" />
+                </Canvas.RenderTransform>
+            </Canvas>
+        </Grid>
+    </Viewbox>
+</UserControl>

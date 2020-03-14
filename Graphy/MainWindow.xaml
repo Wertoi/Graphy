@@ -56,7 +56,7 @@
                         <Rectangle Width="1" Fill="#FFBFBFBF" Margin="10,2,5,2"/>
 
                         <Button Style="{StaticResource NormalButton}" Margin="5,0,0,0"
-                            Command="{Binding CatiaViewModel.OpenDocumentCommand, Source={StaticResource Locator}}"
+                                Command="{Binding CatiaViewModel.OpenDocumentCommand, Source={StaticResource Locator}}"
                                 IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
@@ -181,7 +181,8 @@
 
 
                         <!-- Hauteur d'extrusion -->
-                        <TextBlock Grid.Row="3" Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                        <TextBlock Grid.Row="3" Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightLabel}" Style="{StaticResource LabelFormTextBlock}"
+                                   IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
 
                         <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
@@ -189,11 +190,20 @@
                         <cc:TextBoxWithUnit Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center"
                                             Unit="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.LengthUnitSymbol}"
                                             Text="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}"
-                                            Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
+                                            Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}" 
+                                            IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
 
                         <Viewbox Grid.Row="3" Grid.Column="4" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                             <Viewbox.ToolTip>
-                                <TextBlock><Run Text="&quot;+&quot; pour ajouter le résultat au corps principal."/><LineBreak/><Run Text="&quot;-&quot; pour retirer le résultat au corps principal."/><LineBreak/><Run Text="/!\ Le sens d'extrusion se fait par rapport au sens de l'axe Z du &quot;Repère local&quot;."/></TextBlock>
+                                <TextBlock>
+                                    <Run Text="L'option &quot;Créer un volume de marquage&quot; doit être activée."/>
+                                    <LineBreak/>
+                                    <Run Text="&quot;+&quot; pour ajouter le résultat au corps principal."/>
+                                    <LineBreak/>
+                                    <Run Text="&quot;-&quot; pour retirer le résultat au corps principal."/>
+                                    <LineBreak/>
+                                    <Run Text="/!\ Le sens d'extrusion se fait par rapport au sens de l'axe Z du &quot;Repère local&quot;."/>
+                                </TextBlock>
                             </Viewbox.ToolTip>
                             <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
                                 <Path Style="{StaticResource InfoIcon}"/>
@@ -370,9 +380,16 @@
                             </Style>
                         </Run.Style>
                     </Run>
+                    
                     <LineBreak/>
-                    <Run Text="Last refresh: " Foreground="#FF595959"/>
-                    <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.LastRefreshTime, StringFormat=u}" Foreground="{StaticResource Gray127}"/>
+                    
+                    <Run Text="Last refresh: " FontSize="10"/>
+                    <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.LastRefreshTime, StringFormat=u}" Foreground="{StaticResource Gray127}" FontSize="10"/>
+                    
+                    <LineBreak/>
+                    
+                    <Run Text="Version:" FontSize="10"/>
+                    <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.FullVersion}" FontSize="10" Foreground="{StaticResource Gray127}"/>
 
                 </TextBlock>
 
@@ -406,12 +423,13 @@
                                     </Canvas>
                                 </Viewbox>
 
-                                <TextBlock Text="Rafraichir" VerticalAlignment="Center" Margin="2,0,7,0"/>
+                                <!--<TextBlock Text="Rafraichir" VerticalAlignment="Center" Margin="2,0,7,0"/>-->
 
                             </StackPanel>
                         </Button>
 
-                        <Button Grid.Column="2" Style="{StaticResource NormalButtonDarker}" Content="{local:Loc MainWindow_General_Generate}"
+                        <Button Grid.Column="2" Style="{StaticResource HighlightButton}"
+                                Content="{local:Loc MainWindow_General_Generate}"
                                 FontSize="14" Padding="15,5" HorizontalAlignment="Right"
                                 IsEnabled="{Binding InputDataViewModel.CanGenerate, Source={StaticResource Locator}}"
                                 Command="{Binding InputDataViewModel.GenerateCommand, Source={StaticResource Locator}}"/>
@@ -430,7 +448,7 @@
 
         <view:DesignTableView x:Name="DesignTableView" Visibility="Collapsed" BackButtonClicked="DesignTableView_BackButtonClicked" />
 
-        <view:StateView x:Name="StateView"
+        <view:ProcessView x:Name="StateView"
                         Visibility="{Binding StatusViewModel.IsOneStateActivated, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
     </Grid>

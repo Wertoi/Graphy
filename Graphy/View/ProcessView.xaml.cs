@@ -18,9 +18,9 @@ namespace Graphy.View
     /// <summary>
     /// Logique d'interaction pour StateView.xaml
     /// </summary>
-    public partial class StateView : UserControl
+    public partial class ProcessView : UserControl
     {
-        public StateView()
+        public ProcessView()
         {
             InitializeComponent();
         }

@@ -16,7 +16,6 @@ namespace Graphy
 
         }
 
-        private double _progressRate = 0;
         private string _exceptionMessage;
 
         private Excel.Application _excelApplication;
@@ -24,15 +23,6 @@ namespace Graphy
         private Excel.Worksheet _excelWorksheet;
 
         private bool _isOpen = false;
-
-        public double ProgressRate
-        {
-            get => _progressRate;
-            set
-            {
-                Set(() => ProgressRate, ref _progressRate, value);
-            }
-        }
 
         public string ExceptionMessage
         {
@@ -114,8 +104,6 @@ namespace Graphy
                                 }
                             }
                         }
-
-                        ProgressRate += 1 / (double)_excelWorksheet.Columns.Count;
                     }
                 }
                 catch (Exception ex)

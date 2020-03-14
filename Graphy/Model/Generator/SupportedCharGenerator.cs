@@ -8,43 +8,12 @@ using System.Windows.Media;
 
 namespace Graphy.Model.Generator
 {
-    public class SupportedCharGenerator : IGenerator
+    public class SupportedCharGenerator
     {
-        public event EventHandler<ProgressRateChangedEventArgs> ProgressRateChanged;
-        public event EventHandler<ProgressRateChangedEventArgs> StepProgressRateChanged;
 
         public SupportedCharGenerator()
         {
 
-        }
-
-        private double _progressRate;
-        private int _stepProgressRate;
-
-        public double ProgressRate
-        {
-            get => _progressRate;
-            set
-            {
-                if (value != ProgressRate)
-                {
-                    _progressRate = value;
-                    ProgressRateChanged?.Invoke(this, new ProgressRateChangedEventArgs(ProgressRate));
-                }
-            }
-        }
-
-        public int StepProgressRate
-        {
-            get => _stepProgressRate;
-            set
-            {
-                if (value != StepProgressRate)
-                {
-                    _stepProgressRate = value;
-                    StepProgressRateChanged?.Invoke(this, new ProgressRateChangedEventArgs(StepProgressRate));
-                }
-            }
         }
 
         // PUBLIC METHODS
@@ -58,8 +27,6 @@ namespace Graphy.Model.Generator
                 {
                     if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(i, out ushort glyphIndex))
                         supportedCharacterList += Convert.ToChar(i);
-
-                    ProgressRate += 1d / (double)glyphTypeFace.CharacterToGlyphMap.Count();
                 }
             }
 

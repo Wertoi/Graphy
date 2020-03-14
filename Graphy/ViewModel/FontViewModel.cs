@@ -136,20 +136,19 @@ namespace Graphy.ViewModel
 
         private async void ComputeCharacterListCommandAction(SelectableFont selectedFont)
         {
-            MessengerInstance.Send("Génération du marquage.", Enum.ProcessToken.Started);
+            MessengerInstance.Send<object>(null, Enum.ProcessToken.SimpleStarted);
 
             await Task.Run(() =>
             {
 
                 SupportedCharGenerator supportedCharGenerator = new SupportedCharGenerator();
-                supportedCharGenerator.ProgressRateChanged += SupportedCharGenerator_ProgressRateChanged; ;
 
                 try
                 {
                     selectedFont.SupportedCharacterList = supportedCharGenerator.ComputeSupportedCharacterList(selectedFont.FontFamily);
 
 
-                    MessengerInstance.Send<bool>(true, Enum.ProcessToken.Finished);
+                    MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
                 }
                 catch (Exception ex)
                 {
@@ -169,11 +168,6 @@ namespace Graphy.ViewModel
                 ComputeCharacterListCommandAction(selectedFont);
 
             SearchText = selectedFont.FontFamily.Source;
-        }
-
-        private void SupportedCharGenerator_ProgressRateChanged(object sender, ProgressRateChangedEventArgs e)
-        {
-            MessengerInstance.Send(e.ProgressRate * 100, Enum.ProcessToken.Refresh);
         }
 
 

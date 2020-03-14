@@ -25,7 +25,8 @@ namespace Graphy.Enum
 
     public enum ProcessToken
     {
-        Started,
+        SimpleStarted,
+        ComplexStarted,
         Refresh,
         Failed,
         Finished
@@ -38,7 +39,6 @@ namespace Graphy.Enum
         ToleranceFactorChanged,
         KeepHistoricChanged,
         CreateVolumeChanged
-
     }
 
     public enum DesignTableToken

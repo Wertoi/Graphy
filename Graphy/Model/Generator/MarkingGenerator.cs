@@ -14,10 +14,9 @@ using Graphy.Model.CatiaDocument;
 
 namespace Graphy.Model.Generator
 {
-    public class MarkingGenerator : IGenerator
+    public class MarkingGenerator
     {
-        public event EventHandler<ProgressRateChangedEventArgs> ProgressRateChanged;
-        public event EventHandler<ProgressRateChangedEventArgs> StepProgressRateChanged;
+        public event EventHandler<(double progressRate, int currentStep)> ProgressUpdated;
 
         public MarkingGenerator()
         {
@@ -25,7 +24,7 @@ namespace Graphy.Model.Generator
         }
 
         private double _progressRate;
-        private int _stepProgressRate;
+        private int _step;
 
         public double ProgressRate
         {
@@ -35,20 +34,20 @@ namespace Graphy.Model.Generator
                 if (value != ProgressRate)
                 {
                     _progressRate = value;
-                    ProgressRateChanged?.Invoke(this, new ProgressRateChangedEventArgs(ProgressRate));
+                    ProgressUpdated?.Invoke(this, (ProgressRate, Step));
                 }
             }
         }
 
-        public int StepProgressRate
+        public int Step
         {
-            get => _stepProgressRate;
+            get => _step;
             set
             {
-                if (value != StepProgressRate)
+                if (value != Step)
                 {
-                    _stepProgressRate = value;
-                    StepProgressRateChanged?.Invoke(this, new ProgressRateChangedEventArgs(StepProgressRate));
+                    _step = value;
+                    ProgressUpdated?.Invoke(this, (ProgressRate, Step));
                 }
             }
         }
@@ -60,6 +59,7 @@ namespace Graphy.Model.Generator
             DesignTableReader designTableReader = new DesignTableReader();
             if (designTableReader.OpenDesignTable(designTableFullPath))
             {
+                Step = 1;
                 foreach (CatiaFile part in partList)
                 {
                     // Check if the part is in the design table excel file
@@ -96,7 +96,13 @@ namespace Graphy.Model.Generator
                             // Run the marking generation without linked values
                             Run(catiaPartDocument, markingData, characterList, toleranceFactor, keepHistoric, createVolume);
                         }
+
+                        // Save and close the document
+                        catiaPartDocument.Document.Save();
+                        catiaPartDocument.Document.Close();
                     }
+
+                    Step++;
                 }
 
                 // Close the design table Excel file
@@ -111,6 +117,9 @@ namespace Graphy.Model.Generator
         public void Run(CatiaPartDocument partDocument, MarkingData markingData, List<CatiaCharacter> characterList, double toleranceFactor, bool keepHistoric, bool createVolume)
         {
             ProgressRate = 0;
+
+            if (Step == 0)
+                Step = 1;
 
 
             // ***** PREPARE MARKING ***** //
@@ -158,6 +167,10 @@ namespace Graphy.Model.Generator
             // Creates the origin point
             HybridShapePointCoord originPoint = hybridShapeFactory.AddNewPointCoord(0, 0, 0);
             Reference originPointRef = partDocument.PartDocument.Part.CreateReferenceFromObject(originPoint);
+
+            // Creates the marking body
+            Body markingBody = partDocument.PartDocument.Part.Bodies.Add();
+            markingBody.set_Name("MARKING BODY");
 
 
             // Updates
@@ -311,28 +324,13 @@ namespace Graphy.Model.Generator
                     // IF SETTING CREATE VOLUME IS CHECKED
                     if (createVolume)
                     {
-                        // ADD THICKNESS TO THE ASSEMBLED SURFACE
-
-                        // Creates the marking body
-                        Body markingBody = partDocument.PartDocument.Part.Bodies.Add();
-                        markingBody.set_Name("MARKING BODY");
-
-
-                        // Add or remove marking body from main body
-                        partDocument.PartDocument.Part.InWorkObject = partDocument.PartDocument.Part.MainBody;
-                        if (markingData.ExtrusionHeight.Value > 0)
-                        {
-                            Add addBody = shapeFactory.AddNewAdd(markingBody);
-                        }
-                        else
-                        {
-                            Remove removeBody = shapeFactory.AddNewRemove(markingBody);
-                        }
-
                         int thickSurfaceDirection = GetThickSurfaceDirection(localAxisSystem, associatedCatiaCharacter.ShapeReference, localPointRef, hybridShapeFactory);
                         partDocument.PartDocument.Part.InWorkObject = markingBody;
                         ThickSurface characterThickSurface = shapeFactory.AddNewThickSurface(associatedCatiaCharacter.ShapeReference, thickSurfaceDirection, markingData.ExtrusionHeight.Value, 0);
                     }
+                    else
+                        // Delete the marking Body
+                        hybridShapeFactory.DeleteObjectForDatum(partDocument.PartDocument.Part.CreateReferenceFromObject(markingBody));
 
 
                     currentLength += scaleRatio * associatedCatiaCharacter.PathGeometry.Bounds.Width * (0.5d + markingData.Font.GetRightSideBearing(character) / markingData.Font.GetWidth(character));
@@ -350,6 +348,20 @@ namespace Graphy.Model.Generator
                 hybridShapeFactory.DeleteObjectForDatum(partDocument.PartDocument.Part.CreateReferenceFromObject(pointSet));
                 hybridShapeFactory.DeleteObjectForDatum(partDocument.PartDocument.Part.CreateReferenceFromObject(localAxisSet));
                 hybridShapeFactory.DeleteObjectForDatum(originAxisSystemRef);
+            }
+
+            if(createVolume)
+            {
+                // Add or remove marking body from main body
+                partDocument.PartDocument.Part.InWorkObject = partDocument.PartDocument.Part.MainBody;
+                if (markingData.ExtrusionHeight.Value > 0)
+                {
+                    Add addBody = shapeFactory.AddNewAdd(markingBody);
+                }
+                else
+                {
+                    Remove removeBody = shapeFactory.AddNewRemove(markingBody);
+                }
             }
 
 

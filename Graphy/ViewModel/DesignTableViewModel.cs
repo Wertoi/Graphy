@@ -129,10 +129,9 @@ namespace Graphy.ViewModel
 
                 // Create a design table reader
                 DesignTableReader designTableReader = new DesignTableReader();
-                designTableReader.PropertyChanged += DesignTableReader_PropertyChanged;
 
                 // Update the status view
-                MessengerInstance.Send("Lecture de la table de paramétrage.", Enum.ProcessToken.Started);
+                MessengerInstance.Send<object>(null, Enum.ProcessToken.SimpleStarted);
 
                 // Necessary to update the progress bar view correctly
                 await Task.Run(() =>
@@ -155,7 +154,7 @@ namespace Graphy.ViewModel
                             designTableReader.CloseDesignTable();
 
                             // Update the status view
-                            MessengerInstance.Send<bool>(true, Enum.ProcessToken.Finished);
+                            MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
                         }
                         else
                         {
@@ -177,11 +176,6 @@ namespace Graphy.ViewModel
                     ParameterCollection.Add(parameter);
                 }
             }
-        }
-
-        private void DesignTableReader_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            MessengerInstance.Send(((DesignTableReader)sender).ProgressRate * 100, Enum.ProcessToken.Refresh);
         }
 
         // SELECT CATALOG PART FOLDER COMMAND
