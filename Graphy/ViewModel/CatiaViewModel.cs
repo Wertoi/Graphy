@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Command;
 using INFITF;
 using MECMOD;
 using Graphy.Model.CatiaDocument;
+using System;
 
 namespace Graphy.ViewModel
 {
@@ -34,7 +35,8 @@ namespace Graphy.ViewModel
         private CatiaEnv _catiaEnv;
         private CatiaPartDocument _selectedPartDocument;
         private ObservableCollection<CatiaPartDocument> _partDocumentCollection;
-        private bool _isPartDocumentCollectionEmpty;
+        private DateTime _lastRefreshTime;
+        private bool _isPartDocumentCollectionEmpty = true;
 
         public CatiaEnv CatiaEnv
         {
@@ -55,7 +57,7 @@ namespace Graphy.ViewModel
                 if(SelectedPartDocument != null)
                 {
                     // We send the selected part document
-                    MessengerInstance.Send<CatiaPartDocument>(SelectedPartDocument, Enum.InputDataToken.WorkingPartDocumentChanged);
+                    MessengerInstance.Send<CatiaPartDocument>(SelectedPartDocument, Enum.CatiaToken.SelectedPartDocumentChanged);
 
                     SelectedPartDocument.Document.Activate();
                 } 
@@ -68,6 +70,16 @@ namespace Graphy.ViewModel
             set
             {
                 Set(() => PartDocumentCollection, ref _partDocumentCollection, value);
+            }
+        }
+
+
+        public DateTime LastRefreshTime
+        {
+            get => _lastRefreshTime;
+            set
+            {
+                Set(() => LastRefreshTime, ref _lastRefreshTime, value);
             }
         }
 
@@ -91,20 +103,15 @@ namespace Graphy.ViewModel
         {
             CatiaEnv.Initialize();
 
+            LastRefreshTime = DateTime.Now;
+
+            // CLEAR PARTDOCUMENT COLLECTION
+            PartDocumentCollection.Clear();
+            IsPartDocumentCollectionEmpty = true;
+
             if (CatiaEnv.IsApplicationOpen)
             {
-                // WE SEND APPLICATION
-                MessengerInstance.Send(CatiaEnv, Enum.CatiaToken.Open);
-
-                // CLEAR PARTDOCUMENT COLLECTION
-                PartDocumentCollection.Clear();
-
-                // CHECK IF LENGTH UNIT IS MILLIMETER
-                if (CatiaEnv.LengthUnit.Length < 6 || (CatiaEnv.LengthUnit.Length > 6 && CatiaEnv.LengthUnit.Substring(0, 6) != "Millim"))
-                {
-                    MessengerInstance.Send(CatiaEnv.LengthUnit, Enum.CatiaToken.IncorrectLengthUnit);
-                }
-
+                
                 foreach (Document document in CatiaEnv.Application.Documents)
                 {
                     CatiaGenericDocument tempGenericDocument = new CatiaGenericDocument(CatiaEnv)
@@ -114,15 +121,14 @@ namespace Graphy.ViewModel
 
                     if (tempGenericDocument.DocumentFormat == CatiaGenericDocument.CatiaDocumentFormat.CATPart)
                     {
-                        PartDocumentCollection.Add(new CatiaPartDocument(tempGenericDocument));
+                        PartDocumentCollection.Add(new CatiaPartDocument(CatiaEnv, tempGenericDocument));
                     }
                 }
 
                 // IF THERE IS NOT PART DOCUMENT, WE SEND "NULL" TO AVOID WORKING ON PART WHICH DOES NOT EXIST
                 if (PartDocumentCollection.Count == 0)
                 {
-                    MessengerInstance.Send<PartDocument>(null, Enum.InputDataToken.WorkingPartDocumentChanged);
-                    IsPartDocumentCollectionEmpty = true;
+                    MessengerInstance.Send<CatiaPartDocument>(null, Enum.CatiaToken.SelectedPartDocumentChanged);
                 }
                 else
                 {
@@ -159,10 +165,6 @@ namespace Graphy.ViewModel
                     }
                 }
             }
-            else
-            {
-                MessengerInstance.Send(CatiaEnv.ErrorLog, Enum.CatiaToken.Close);
-            }
         }
 
 
@@ -180,7 +182,7 @@ namespace Graphy.ViewModel
 
             if ((bool)openFileDialog.ShowDialog())
             {
-                SelectedPartDocument = new CatiaPartDocument(CatiaEnv.OpenDocument(new CatiaFile(openFileDialog.FileName)));
+                SelectedPartDocument = new CatiaPartDocument(CatiaEnv, CatiaEnv.OpenDocument(new CatiaFile(openFileDialog.FileName)));
             }
 
             RefreshCatiaApplicationCommandAction();

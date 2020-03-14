@@ -18,7 +18,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer Margin="20,25,20,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer Margin="20,25,20,10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
 
                     <TextBlock Text="{local:Loc MainWindow_General_Title}" FontSize="18" Foreground="{StaticResource PrimaryColorDark}"/>
@@ -27,7 +27,7 @@
                         <Run Text=">" Foreground="{StaticResource SecondaryColor}" FontWeight="Bold" />
                         <Run Text="{local:Loc MainWindow_SelectPart_Title}" />
                     </TextBlock>
-                    
+
                     <StackPanel Orientation="Horizontal" Margin="0">
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0"
@@ -55,17 +55,9 @@
 
                         <Rectangle Width="1" Fill="#FFBFBFBF" Margin="10,2,5,2"/>
 
-                        <Button Style="{StaticResource NormalButton}"
-                            Command="{Binding CatiaViewModel.RefreshCatiaApplicationCommand, Source={StaticResource Locator}}">
-                            <Viewbox Style="{StaticResource IconViewBox}">
-                                <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource RefreshIcon}"/>
-                                </Canvas>
-                            </Viewbox>
-                        </Button>
-
                         <Button Style="{StaticResource NormalButton}" Margin="5,0,0,0"
-                            Command="{Binding CatiaViewModel.OpenDocumentCommand, Source={StaticResource Locator}}">
+                            Command="{Binding CatiaViewModel.OpenDocumentCommand, Source={StaticResource Locator}}"
+                                IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource OpenDocumentIcon}"/>
@@ -182,7 +174,8 @@
                         <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.CharacterHeight.IsLinkOn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
-                        <cc:TextBoxWithUnit Grid.Row="2" Grid.Column="1" Unit="mm"
+                        <cc:TextBoxWithUnit Grid.Row="2" Grid.Column="1"
+                                            Unit="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.LengthUnitSymbol}"
                                             Text="{Binding InputDataViewModel.MarkingData.CharacterHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}"
                                             Visibility="{Binding InputDataViewModel.MarkingData.CharacterHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
@@ -193,7 +186,8 @@
                         <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
-                        <cc:TextBoxWithUnit Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Unit="mm"
+                        <cc:TextBoxWithUnit Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center"
+                                            Unit="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.LengthUnitSymbol}"
                                             Text="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.Value, Mode=TwoWay, Source={StaticResource Locator}}"
                                             Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
@@ -230,8 +224,9 @@
                                Text="{Binding InputDataViewModel.MarkingData.ProjectionSurfaceName, Source={StaticResource Locator}}"/>
 
                         <Button Grid.Column="2" Style="{DynamicResource NormalButton}"
-                            Command="{Binding InputDataViewModel.SelectProjectionSurfaceCommand, Source={StaticResource Locator}}"
-                            Click="SelectionButton_Click">
+                                Command="{Binding InputDataViewModel.SelectProjectionSurfaceCommand, Source={StaticResource Locator}}"
+                                IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}"
+                                Click="SelectionButton_Click">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource SelectIcon}"/>
@@ -261,8 +256,9 @@
                                  Text="{Binding InputDataViewModel.MarkingData.TrackingCurveName, Source={StaticResource Locator}}"/>
 
                         <Button Grid.Row="1" Grid.Column="2"  Style="{DynamicResource NormalButton}"
-                            Command="{Binding InputDataViewModel.SelectTrackingCurveCommand, Source={StaticResource Locator}}"
-                            Click="SelectionButton_Click">
+                                Command="{Binding InputDataViewModel.SelectTrackingCurveCommand, Source={StaticResource Locator}}"
+                                IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}"
+                                Click="SelectionButton_Click">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource SelectIcon}"/>
@@ -291,8 +287,9 @@
                                  Text="{Binding InputDataViewModel.MarkingData.StartPointName, Source={StaticResource Locator}}"/>
 
                         <Button Grid.Row="2" Grid.Column="2" Style="{DynamicResource NormalButton}"
-                            Command="{Binding InputDataViewModel.SelectStartPointCommand, Source={StaticResource Locator}}"
-                            Click="SelectionButton_Click">
+                                Command="{Binding InputDataViewModel.SelectStartPointCommand, Source={StaticResource Locator}}"
+                                IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}"
+                                Click="SelectionButton_Click">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource SelectIcon}"/>
@@ -320,8 +317,9 @@
                                  Text="{Binding InputDataViewModel.MarkingData.AxisSystemName, Source={StaticResource Locator}}"/>
 
                         <Button Grid.Row="3" Grid.Column="2" Style="{DynamicResource NormalButton}"
-                            Command="{Binding InputDataViewModel.SelectLocalAxisSystemCommand, Source={StaticResource Locator}}"
-                            Click="SelectionButton_Click">
+                                Command="{Binding InputDataViewModel.SelectLocalAxisSystemCommand, Source={StaticResource Locator}}"
+                                IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}"
+                                Click="SelectionButton_Click">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource SelectIcon}"/>
@@ -347,29 +345,82 @@
                     </Grid>
 
                 </StackPanel>
+
             </ScrollViewer>
 
-            <Rectangle Grid.Row="1" Height="1" Fill="#FFD9D9D9"/>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <Grid Grid.Row="2" Background="#FFF2F2F2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
+                <TextBlock Margin="20,0,0,5">
+                    <Run Text="Catia status: "/>
+                    <Run>
+                        <Run.Style>
+                            <Style TargetType="{x:Type Run}">
+                                <Setter Property="Text" Value="Disconnected"/>
+                                <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
+                                        <Setter Property="Text" Value="Connected"/>
+                                        <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Run.Style>
+                    </Run>
+                    <LineBreak/>
+                    <Run Text="Last refresh: " Foreground="#FF595959"/>
+                    <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.LastRefreshTime, StringFormat=u}" Foreground="{StaticResource Gray127}"/>
 
-                <Button x:Name="SettingButton" Margin="15,5,0,5" Style="{StaticResource NormalButtonDarker}" Click="SettingButton_Click" HorizontalAlignment="Left">
-                    <Viewbox Style="{StaticResource IconViewBox}">
-                        <Canvas Style="{StaticResource IconCanvas}">
-                            <Path Style="{StaticResource ParameterIcon}"/>
-                        </Canvas>
-                    </Viewbox>
-                </Button>
+                </TextBlock>
 
-                <Button Grid.Column="1" Style="{StaticResource NormalButtonDarker}" Content="{local:Loc MainWindow_General_Generate}"
-                        Margin="0,10,15,10" FontSize="14" Padding="15,5" HorizontalAlignment="Right"
-                        IsEnabled="{Binding InputDataViewModel.CanGenerate, Source={StaticResource Locator}}"
-                        Command="{Binding InputDataViewModel.GenerateCommand, Source={StaticResource Locator}}"/>
+                <Border Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Gray217}" Background="{StaticResource Gray242}">
+
+                    <Grid Margin="15,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="SettingButton"
+                                Style="{StaticResource NormalButtonDarker}"
+                                Click="SettingButton_Click">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource ParameterIcon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+
+                        <Button Grid.Column="1"
+                                Style="{StaticResource NormalButtonDarker}"
+                                Command="{Binding CatiaViewModel.RefreshCatiaApplicationCommand, Source={StaticResource Locator}}" Margin="5,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource RefreshIcon}"/>
+                                    </Canvas>
+                                </Viewbox>
+
+                                <TextBlock Text="Rafraichir" VerticalAlignment="Center" Margin="2,0,7,0"/>
+
+                            </StackPanel>
+                        </Button>
+
+                        <Button Grid.Column="2" Style="{StaticResource NormalButtonDarker}" Content="{local:Loc MainWindow_General_Generate}"
+                                FontSize="14" Padding="15,5" HorizontalAlignment="Right"
+                                IsEnabled="{Binding InputDataViewModel.CanGenerate, Source={StaticResource Locator}}"
+                                Command="{Binding InputDataViewModel.GenerateCommand, Source={StaticResource Locator}}"/>
+                    </Grid>
+
+                </Border>
+
             </Grid>
+
         </Grid>
 
         <view:SettingView x:Name="SettingView" Visibility="Collapsed"

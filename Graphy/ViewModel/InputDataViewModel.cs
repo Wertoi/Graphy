@@ -21,20 +21,20 @@ namespace Graphy.ViewModel
         // CONSTRUCTOR
         public InputDataViewModel()
         {
-            MarkingData = new MarkingData("Hello World !", 1.6, 0.1)
-            {
-                Name = "NewMarking"
-            };
+            MarkingData = new MarkingData("Hello World !", 1.6, 0.1);
 
             MarkingData.PropertyChanged += MarkingData_PropertyChanged;
 
             // MESSENGER REGISTRATION
             MessengerInstance.Register<SelectableFont>(this, Enum.InputDataToken.SelectedFontChanged, (font) => { MarkingData.Font = font; });
-            MessengerInstance.Register<CatiaPartDocument>(this, Enum.InputDataToken.WorkingPartDocumentChanged, (partDoc) => { _workingPartDocument = partDoc; });
-            MessengerInstance.Register<CatiaEnv>(this, Enum.CatiaToken.Open, (catiaEnv) => { _catiaEnv = catiaEnv; });
+            MessengerInstance.Register<CatiaPartDocument>(this, Enum.CatiaToken.SelectedPartDocumentChanged, (partDoc) => { _selectedPartDocument = partDoc; });
+
             MessengerInstance.Register<string>(this, Enum.DesignTableToken.DesignTableLoaded, (fullPath) => DesignTableLoaded(fullPath));
             MessengerInstance.Register<List<CatiaFile>>(this, Enum.DesignTableToken.SelectedPartCollectionChanged, (partList) => { _partList = partList; CheckIfCanGenerate(); });
-            MessengerInstance.Register<MarkingData.MarkingDataSettings>(this, Enum.SettingToken.MarkingDateSettingChange, (Action<MarkingData.MarkingDataSettings>)((markingDataSetting) => { MarkingData.Settings = markingDataSetting; }));
+
+            MessengerInstance.Register<double>(this, Enum.SettingToken.ToleranceFactorChanged, (toleranceFactor) => { _toleranceFactor = toleranceFactor; });
+            MessengerInstance.Register<bool>(this, Enum.SettingToken.KeepHistoricChanged, (keepHistoric) => { _keepHistoric = keepHistoric; });
+            MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
 
             // COMMANDS INITIALIZATION
             SelectTrackingCurveCommand = new RelayCommand(SelectTrackingCurveCommandAction);
@@ -55,10 +55,12 @@ namespace Graphy.ViewModel
         private bool _isDesignTableActivated = false;
 
         // PRIVATE ATTRIBUTS
-        private CatiaEnv _catiaEnv;
-        private CatiaPartDocument _workingPartDocument;
+        private CatiaPartDocument _selectedPartDocument;
         private string _designTableFullPath;
         private List<CatiaFile> _partList;
+        private double _toleranceFactor;
+        private bool _keepHistoric;
+        private bool _createVolume;
 
         private DesignTableParameter _tempTextParameter;
         private DesignTableParameter _tempCharacterHeightParameter;
@@ -123,11 +125,11 @@ namespace Graphy.ViewModel
         {
             MessengerInstance.Send<object>(null, Enum.CatiaToken.Refresh);
 
-            if (_catiaEnv != null && _workingPartDocument != null)
+            if (_selectedPartDocument != null)
             {
                 object filterStr = new object[1] { "MonoDim" };
 
-                Selection selection = _workingPartDocument.PartDocument.Selection;
+                Selection selection = _selectedPartDocument.PartDocument.Selection;
                 selection.Clear();
                 string selectionStatus = selection.SelectElement2((Array)filterStr, "Sélectionner dans l'arbre la courbe de suivi.", false);
 
@@ -160,11 +162,11 @@ namespace Graphy.ViewModel
         {
             MessengerInstance.Send<object>(null, Enum.CatiaToken.Refresh);
 
-            if (_catiaEnv != null && _workingPartDocument != null)
+            if (_selectedPartDocument != null)
             {
                 object filterStr = new object[1] { "ZeroDim" };
 
-                Selection selection = _workingPartDocument.PartDocument.Selection;
+                Selection selection = _selectedPartDocument.PartDocument.Selection;
                 selection.Clear();
                 string selectionStatus = selection.SelectElement2((Array)filterStr, "Sélectionner dans l'arbre le point de départ.", false);
 
@@ -196,11 +198,11 @@ namespace Graphy.ViewModel
         {
             MessengerInstance.Send<object>(null, Enum.CatiaToken.Refresh);
 
-            if (_catiaEnv != null && _workingPartDocument != null)
+            if (_selectedPartDocument != null)
             {
                 object filterStr = new object[1] { "BiDim" };
 
-                Selection selection = _workingPartDocument.PartDocument.Selection;
+                Selection selection = _selectedPartDocument.PartDocument.Selection;
                 selection.Clear();
                 string selectionStatus = selection.SelectElement2((Array)filterStr, "Sélectionner dans l'arbre la surface support.", false);
 
@@ -233,11 +235,11 @@ namespace Graphy.ViewModel
         {
             MessengerInstance.Send<object>(null, Enum.CatiaToken.Refresh);
 
-            if (_catiaEnv != null && _workingPartDocument != null)
+            if (_selectedPartDocument != null)
             {
                 object filterStr = new object[1] { "AxisSystem" };
 
-                Selection selection = _workingPartDocument.PartDocument.Selection;
+                Selection selection = _selectedPartDocument.PartDocument.Selection;
                 selection.Clear();
                 string selectionStatus = selection.SelectElement2((Array)filterStr, "Sélectionner dans l'arbre le repère local.", false);
 
@@ -283,11 +285,11 @@ namespace Graphy.ViewModel
                         // If the design table mode is selected
                         if (IsDesignTableActivated)
                         {
-                            markingGenerator.RunForCatalogPart(_catiaEnv, MarkingData, _designTableFullPath, _partList);
+                            markingGenerator.RunForCatalogPart(_selectedPartDocument.CatiaEnv, MarkingData, _designTableFullPath, _partList, _toleranceFactor, _keepHistoric, _createVolume);
                         }
                         else
                         {
-                            markingGenerator.Run(_catiaEnv, _workingPartDocument.PartDocument, MarkingData, new List<Model.CatiaShape.CatiaCharacter>());
+                            markingGenerator.Run(_selectedPartDocument, MarkingData, new List<Model.CatiaShape.CatiaCharacter>(), _toleranceFactor, _keepHistoric, _createVolume);
                         }
 
                         MessengerInstance.Send<bool>(false, Enum.ProcessToken.Finished);
@@ -330,7 +332,7 @@ namespace Graphy.ViewModel
 
         private void CheckIfCanGenerate()
         {
-            if (MarkingData.Font != null && MarkingData.Name != "" && MarkingData.ProjectionSurfaceName != MarkingData.DEFAULT_PROJECTION_SURFACE_NAME &&
+            if (MarkingData.Font != null && MarkingData.ProjectionSurfaceName != MarkingData.DEFAULT_PROJECTION_SURFACE_NAME &&
                 MarkingData.TrackingCurveName != MarkingData.DEFAULT_TRACKING_CURVE_NAME && MarkingData.StartPointName != MarkingData.DEFAULT_START_POINT_NAME &&
                 MarkingData.AxisSystemName != MarkingData.DEFAULT_AXIS_SYSTEM_NAME)
             {
@@ -380,7 +382,7 @@ namespace Graphy.ViewModel
 
         private bool IsNameUnique(string name)
         {
-            Selection selection = _workingPartDocument.PartDocument.Selection;
+            Selection selection = _selectedPartDocument.PartDocument.Selection;
             selection.Clear();
             selection.Search("Name=" + name + ",all");
 

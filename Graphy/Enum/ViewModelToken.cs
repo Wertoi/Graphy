@@ -8,9 +8,7 @@ namespace Graphy.Enum
 {
     public enum CatiaToken
     {
-        Open,
-        Close,
-        IncorrectLengthUnit,
+        SelectedPartDocumentChanged,
         Refresh
     };
 
@@ -22,7 +20,6 @@ namespace Graphy.Enum
     public enum InputDataToken
     {
         SelectedFontChanged,
-        WorkingPartDocumentChanged,
         SelectionIncorrect
     };
 
@@ -37,12 +34,11 @@ namespace Graphy.Enum
     public enum SettingToken
     {
         UserPreferencesChanged,
-        GeneratedFontDirectoryPathChanged,
-        ClassicFontDirectoryPathChanged,
-        SettingFileReadingFailed,
-        SettingFileWritingFailed,
         LicenceFileReadingFailed,
-        MarkingDateSettingChange
+        ToleranceFactorChanged,
+        KeepHistoricChanged,
+        CreateVolumeChanged
+
     }
 
     public enum DesignTableToken

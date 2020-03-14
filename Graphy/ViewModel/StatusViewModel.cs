@@ -12,10 +12,6 @@ namespace Graphy.ViewModel
         {
             // MESSENGER REGISTRATION
 
-            // CATIA TOKEN
-            MessengerInstance.Register<string>(this, Enum.CatiaToken.Close, (str) => CatiaApplicationIsClose(str));
-            MessengerInstance.Register<string>(this, Enum.CatiaToken.IncorrectLengthUnit, (catiaLengthUnit) => IncorrectLengthUnit(catiaLengthUnit));
-
             // INPUT DATA TOKEN
             MessengerInstance.Register<string>(this, Enum.InputDataToken.SelectionIncorrect, (dataTypeName) => SelectionIncorrect(dataTypeName));
 
@@ -29,8 +25,6 @@ namespace Graphy.ViewModel
 
 
             // SETTING TOKEN
-            MessengerInstance.Register<string>(this, Enum.SettingToken.SettingFileReadingFailed, (msg) => SettingFileReadingFailed(msg));
-            MessengerInstance.Register<string>(this, Enum.SettingToken.SettingFileWritingFailed, (msg) => SettingFileWritingFailed(msg));
             MessengerInstance.Register<string>(this, Enum.SettingToken.LicenceFileReadingFailed, (msg) => LicenceFileReadingFailed(msg));
 
             // *** END MESSENGER REGISTRATION ***
@@ -38,7 +32,6 @@ namespace Graphy.ViewModel
             // Commands initialization
             ResetExceptionCommand = new RelayCommand(ResetExceptionCommandAction);
             TerminateCommand = new RelayCommand(TerminateCommandAction);
-            ResetCatiaExceptionCommand = new RelayCommand(ResetCatiaExceptionCommandAction);
         }
 
 
@@ -46,7 +39,6 @@ namespace Graphy.ViewModel
         private bool _isOneStateActivated;
         private bool _isInProgress = false;
         private bool _isFinished = false;
-        private bool _isCatiaExceptionRaised = false;
         private bool _isGeneralExceptionRaised = false;
         private string _exceptionMessage = "";
         private string _processMessage = "";
@@ -77,15 +69,6 @@ namespace Graphy.ViewModel
             set
             {
                 Set(() => IsFinished, ref _isFinished, value);     
-            }
-        }
-
-        public bool IsCatiaExceptionRaised
-        {
-            get => _isCatiaExceptionRaised;
-            set
-            {
-                Set(() => IsCatiaExceptionRaised, ref _isCatiaExceptionRaised, value);
             }
         }
 
@@ -136,7 +119,6 @@ namespace Graphy.ViewModel
         private void ResetExceptionCommandAction()
         {
             IsGeneralExceptionRaised = false;
-            IsCatiaExceptionRaised = false;
             ExceptionMessage = "";
 
             if (IsInProgress)
@@ -145,23 +127,6 @@ namespace Graphy.ViewModel
             ManageStates();
         }
 
-        // REFRESH CATIA EXCEPTION COMMAND
-        private RelayCommand _resetCatiaExceptionCommand;
-        public RelayCommand ResetCatiaExceptionCommand { get => _resetCatiaExceptionCommand; set => _resetCatiaExceptionCommand = value; }
-
-        private void ResetCatiaExceptionCommandAction()
-        {
-            IsGeneralExceptionRaised = false;
-            IsCatiaExceptionRaised = false;
-            ExceptionMessage = "";
-
-            if (IsInProgress)
-                IsInProgress = false;
-
-            MessengerInstance.Send<Model.CatiaDocument.CatiaPartDocument>(null, Enum.CatiaToken.Refresh);
-
-            ManageStates();
-        }
 
         // TERMINATE COMMAND
         private RelayCommand _terminateCommand;
@@ -190,43 +155,20 @@ namespace Graphy.ViewModel
                 {
                     IsInProgress = false;
                     IsGeneralExceptionRaised = false;
-                    IsCatiaExceptionRaised = false;
                 }
                 else
                 {
-                    if (IsCatiaExceptionRaised)
-                    {
-                        IsInProgress = false;
-                        IsGeneralExceptionRaised = false;
-                    }
-                    else if (IsGeneralExceptionRaised)
+                    if (IsGeneralExceptionRaised)
                     {
                         IsInProgress = false;
                     }
                 }
 
-                if (IsFinished || IsCatiaExceptionRaised || IsGeneralExceptionRaised || IsInProgress)
+                if (IsFinished || IsGeneralExceptionRaised || IsInProgress)
                     IsOneStateActivated = true;
                 else
                     IsOneStateActivated = false;
             }
-        }
-
-
-        private void IncorrectLengthUnit(string catiaLengthUnit)
-        {
-            IsCatiaExceptionRaised = true;
-            ExceptionMessage = "Catia length unit must be the millimeter (mm).\r\nActual length unit: " + catiaLengthUnit;
-
-            ManageStates();
-        }
-
-        private void CatiaApplicationIsClose(string errorMsg)
-        {
-            IsCatiaExceptionRaised = true;
-            ExceptionMessage = "No Catia application has been detected.\r\n\r\nError message:\r\n" + errorMsg;
-
-            ManageStates();
         }
 
         private void SelectionIncorrect(string dataTypeName)

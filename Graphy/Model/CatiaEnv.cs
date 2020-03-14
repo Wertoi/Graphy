@@ -26,7 +26,7 @@ namespace Graphy.Model
         private Application _application;
         private bool _isApplicationOpen = false;
         private string _errorLog = "";
-        private string _lengthUnit;
+        private string _lengthUnitSymbol;
 
         public Application Application
         {
@@ -55,12 +55,12 @@ namespace Graphy.Model
             }
         }
 
-        public string LengthUnit
+        public string LengthUnitSymbol
         {
-            get => _lengthUnit;
+            get => _lengthUnitSymbol;
             set
             {
-                Set(() => LengthUnit, ref _lengthUnit, value);
+                Set(() => LengthUnitSymbol, ref _lengthUnitSymbol, value);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Graphy.Model
             if (Application != null)
             {
                 IsApplicationOpen = true;
-                LengthUnit = GetLengthUnit();
+                LengthUnitSymbol = GetLengthUnitSymbol();
             }
             else
                 IsApplicationOpen = false;
@@ -99,51 +99,41 @@ namespace Graphy.Model
         /// Returns Catia current length unit name.
         /// </summary>
         /// <returns></returns>
-        private string GetLengthUnit()
+        private string GetLengthUnitSymbol()
         {
             UnitsSheetSettingAtt unitSetting = (UnitsSheetSettingAtt)Application.SettingControllers.Item("CATLieUnitsSheetSettingCtrl");
             string unitName = "";
-            double decimalWrite;
-            double decimalRead;
-            unitSetting.GetMagnitudeValues("LENGTH", ref unitName, out decimalWrite, out decimalRead);
+            unitSetting.GetMagnitudeValues("LENGTH", ref unitName, out double decimalWrite, out double decimalRead);
 
-            return unitName;
-        }
-
-
-        /// <summary>
-        /// Create a new document of the specified type.
-        /// </summary>
-        /// <param name="catiaDocumentFormat"></param>
-        /// <returns></returns>
-        public CatiaGenericDocument AddNewDocument(CatiaDocument.CatiaGenericDocument.CatiaDocumentFormat catiaDocumentFormat)
-        {
-            CatiaDocument.CatiaGenericDocument newCatiaDocument = new CatiaDocument.CatiaGenericDocument(this);
-            bool isDocumentCollectionEmpty = Application.Documents.Count == 0 ? true : false;
-
-            if (isDocumentCollectionEmpty)
+            switch(unitName)
             {
-                newCatiaDocument.Document = Application.Documents.Add(CatiaDocument.CatiaGenericDocument.GetDocumentFormatName(catiaDocumentFormat));
+                case string str when str.Contains("Micro"):
+                    return "μm";
 
-                do
-                {
-                    newCatiaDocument.Document.Activate();
-                }
-                while (Application.Documents.Count == 0);
+                case string str when str.Contains("Millim"):
+                    return "mm";
+
+                case string str when str.Contains("Centim"):
+                    return "cm";
+
+                case "Mètre":
+                case "Meter":
+                    return "m";
+
+                case string str when str.Contains("Kilom"):
+                    return "km";
+
+                case "Pouce":
+                case "Inch":
+                    return "in";
+
+                case "Pied":
+                case "Foot":
+                    return "ft";
+
+                default:
+                    return unitName;
             }
-            else
-            {
-                Document previousActiveDocument = Application.ActiveDocument;
-                newCatiaDocument.Document = Application.Documents.Add(CatiaDocument.CatiaGenericDocument.GetDocumentFormatName(catiaDocumentFormat));
-
-                do
-                {
-                    newCatiaDocument.Document.Activate();
-                }
-                while (Application.ActiveDocument == previousActiveDocument);
-            }
-
-            return newCatiaDocument;
         }
 
 

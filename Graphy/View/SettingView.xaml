@@ -73,7 +73,7 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}" Text="Facteur de tolérance"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource NormalTextBox}"
-                             Text="{Binding Source={StaticResource Locator}, Path=SettingViewModel.MarkingDataSettings.ToleranceFactor, Mode=TwoWay}"/>
+                             Text="{Binding Source={StaticResource Locator}, Path=SettingViewModel.ToleranceFactor, Mode=TwoWay}"/>
                     <Viewbox Grid.Row="0" Grid.Column="2" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                         <Viewbox.ToolTip>
                             <TextBlock>
@@ -87,11 +87,11 @@
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}" Text="Garder l'historique de construction"/>
                     <CheckBox Grid.Row="1" Grid.Column="1" Style="{StaticResource YesNoCheckBox}" Margin="0,7"
-                              IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.MarkingDataSettings.KeepHistory, Mode=TwoWay}"/>
+                              IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.KeepHistoric, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}" Text="Créer un volume de marquage"/>
                     <CheckBox Grid.Row="2" Grid.Column="1" Style="{StaticResource YesNoCheckBox}" Margin="0,7"
-                              IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.MarkingDataSettings.CreateVolume, Mode=TwoWay}"/>
+                              IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume, Mode=TwoWay}"/>
 
                 </Grid>
 

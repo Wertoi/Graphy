@@ -23,7 +23,7 @@ namespace Graphy.Model.CatiaDocument
 
         public CatiaGenericDocument(CatiaEnv catiaEnv)
         {
-            CatiaEnv = CatiaEnv;
+            CatiaEnv = catiaEnv;
         }
 
         private const string PART_DOCUMENT_FORMAT_NAME = "Part";

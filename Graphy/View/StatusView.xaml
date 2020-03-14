@@ -55,32 +55,6 @@
             </StackPanel>
         </Border>
 
-        <!-- CATIA EXCEPTION STATE -->
-        <Border Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="10" BorderThickness="1" BorderBrush="#FF262626" MaxWidth="400"
-                Visibility="{Binding Source={StaticResource Locator}, Path=StatusViewModel.IsCatiaExceptionRaised, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <StackPanel Orientation="Vertical" Margin="20,10">
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,0,0,15">
-                    <Run Text="Oups !" FontSize="16" Foreground="{StaticResource PrimaryColor}"/>
-                    <LineBreak/>
-                    <Run Text="{main:Loc Status_CatiaException_Title}"  FontSize="14" Foreground="#FF262626"/>
-                    <LineBreak/>
-                    <Run Text="{Binding Source={StaticResource Locator}, Path=StatusViewModel.ExceptionMessage}" Foreground="#FFA6A6A6" FontSize="14"/>
-                </TextBlock>
-
-                <Button Style="{StaticResource NormalButton}"
-                        Command="{Binding Source={StaticResource Locator}, Path=StatusViewModel.ResetCatiaExceptionCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{main:Loc Status_CatiaException_Refresh}" VerticalAlignment="Center" Margin="10,0"/>
-                        <Viewbox Style="{StaticResource IconViewBox}">
-                            <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource RefreshIcon}"/>
-                            </Canvas>
-                        </Viewbox>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </Border>
-
         <!-- GENERAL EXCEPTION STATE -->
         <Border Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="10" BorderThickness="1" BorderBrush="#FF262626" MaxWidth="400"
                 Visibility="{Binding Source={StaticResource Locator}, Path=StatusViewModel.IsGeneralExceptionRaised, Converter={StaticResource BooleanToVisibilityConverter}}">

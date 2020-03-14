@@ -15,7 +15,7 @@ namespace Graphy.Model.CatiaDocument
 
         }
 
-        public CatiaPartDocument(CatiaGenericDocument catiaGenericDocument) : base(catiaGenericDocument.CatiaEnv)
+        public CatiaPartDocument(CatiaEnv catiaEnv, CatiaGenericDocument catiaGenericDocument) : base(catiaEnv)
         {
             Name = catiaGenericDocument.Name;
             Document = catiaGenericDocument.Document;

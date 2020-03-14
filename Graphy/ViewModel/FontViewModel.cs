@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Drawing.Text;
 using Graphy.Model;
 using System.Windows.Data;
+using System.Collections.Specialized;
 
 namespace Graphy.ViewModel
 {
@@ -52,7 +53,7 @@ namespace Graphy.ViewModel
             // END OF FONT COLLECTION INITIALIZATION
 
             // MESSENGER REGISTRATION
-            MessengerInstance.Register<List<string>>(this, Enum.SettingToken.UserPreferencesChanged, (selectedFontList) => ReadUserPreferences(selectedFontList));
+            MessengerInstance.Register<StringCollection>(this, Enum.SettingToken.UserPreferencesChanged, (selectedFontList) => ReadUserPreferences(selectedFontList));
 
 
             // COMMANDS INITIALIZATION
@@ -203,6 +204,12 @@ namespace Graphy.ViewModel
         public RelayCommand ClearSearchCommand { get => _clearSearchCommand; set => _clearSearchCommand = value; }
 
         // EVENTS
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FontViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsSelected")
@@ -213,11 +220,15 @@ namespace Graphy.ViewModel
                 if (!FontCollection.View.Contains(oldSelectedFontFamily))
                     FontCollection.View.MoveCurrentToFirst();
 
-                MessengerInstance.Send<ICollectionView>(FontCollection.View, Enum.FontToken.FavoriteFontListChanged);
+                MessengerInstance.Send<List<SelectableFont>>(FontCollection.View.Cast<SelectableFont>().ToList(), Enum.FontToken.FavoriteFontListChanged);
             }
         }
 
-
+        /// <summary>
+        /// Filter the Font Collection depending on property IsSelected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FontCollection_Filter(object sender, FilterEventArgs e)
         {
             SelectableFont font = (SelectableFont)e.Item;
@@ -227,6 +238,11 @@ namespace Graphy.ViewModel
                 e.Accepted = font.IsSelected ? true : false;
         }
 
+        /// <summary>
+        /// Filter the Settings Font Collection function of the Search Text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SettingsFontCollection_Filter(object sender, FilterEventArgs e)
         {
             SelectableFont font = (SelectableFont)e.Item;
@@ -243,10 +259,10 @@ namespace Graphy.ViewModel
 
 
         // PRIVATE METHODS
-        private void ReadUserPreferences(List<string> selectedFontList)
+        private void ReadUserPreferences(StringCollection favoriteFontNameCollection)
         {
             Collection<SelectableFont> tempFontCollection = (Collection<SelectableFont>)FontCollection.Source;
-            foreach (string fontName in selectedFontList)
+            foreach (string fontName in favoriteFontNameCollection)
             {
                 foreach (SelectableFont font in tempFontCollection)
                 {

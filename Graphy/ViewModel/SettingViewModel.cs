@@ -25,35 +25,25 @@ namespace Graphy.ViewModel
             ShowLicenceCommand = new RelayCommand(ShowLicenceCommandAction);
 
             // MESSENGER REGISTRATION
-            MessengerInstance.Register<ICollectionView>(this, Enum.FontToken.FavoriteFontListChanged, (collection) => WriteUserPreference(collection));
+            MessengerInstance.Register<List<SelectableFont>>(this, Enum.FontToken.FavoriteFontListChanged, (collection) => SaveFavoriteFontCollection(collection));
 
             // INITIALIZE SETTINGS
             InitializeLanguage();
             ReadUserPreference();
-
-            MarkingDataSettings = new MarkingData.MarkingDataSettings();
-            MarkingDataSettings.PropertyChanged += MarkingDataSetting_PropertyChanged;
-
-            MarkingDataSettings.ToleranceFactor = 0.001;
-            MarkingDataSettings.KeepHistory = true;
-            MarkingDataSettings.CreateVolume = true;
         }
 
-        private void MarkingDataSetting_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            MessengerInstance.Send<MarkingData.MarkingDataSettings>(MarkingDataSettings, Enum.SettingToken.MarkingDateSettingChange);
-        }
 
         // PRIVATE CONST
-        private const string USER_PREFERENCE_FILE_NAME = "USER_PREFERENCES.txt";
         private const string LICENCE_LINK = "https://github.com/Wertoi/Graphy/blob/master/LICENSE";
 
         // PRIVATE ATTRIBUTS
-
+        private bool _isReadingUserPreferenceFlag;
 
         // PUBLIC ATTRIBUTS
         private Language _selectedLanguage;
-        private MarkingData.MarkingDataSettings _markingDataSettings;
+        private double _toleranceFactor;
+        private bool _keepHistoric;
+        private bool _createVolume;
 
         public Language SelectedLanguage
         {
@@ -79,12 +69,54 @@ namespace Graphy.ViewModel
             }
         }
 
-        public MarkingData.MarkingDataSettings MarkingDataSettings
+        public double ToleranceFactor
         {
-            get => _markingDataSettings;
+            get => _toleranceFactor;
             set
             {
-                Set(() => MarkingDataSettings, ref _markingDataSettings, value);
+                Set(() => ToleranceFactor, ref _toleranceFactor, value);
+
+                if(!_isReadingUserPreferenceFlag)
+                {
+                    Properties.Settings.Default.ToleranceFactor = ToleranceFactor;
+                    Properties.Settings.Default.Save();
+                }
+
+                MessengerInstance.Send(ToleranceFactor, Enum.SettingToken.ToleranceFactorChanged);
+            }
+        }
+
+        public bool KeepHistoric
+        {
+            get => _keepHistoric;
+            set
+            {
+                Set(() => KeepHistoric, ref _keepHistoric, value);
+
+                if (!_isReadingUserPreferenceFlag)
+                {
+                    Properties.Settings.Default.KeepHistoric = KeepHistoric;
+                    Properties.Settings.Default.Save();
+                }
+
+                MessengerInstance.Send(KeepHistoric, Enum.SettingToken.KeepHistoricChanged);
+            }
+        }
+
+        public bool CreateVolume
+        {
+            get => _createVolume;
+            set
+            {
+                Set(() => CreateVolume, ref _createVolume, value);
+
+                if (!_isReadingUserPreferenceFlag)
+                {
+                    Properties.Settings.Default.CreateVolume = CreateVolume;
+                    Properties.Settings.Default.Save();
+                }
+
+                MessengerInstance.Send(CreateVolume, Enum.SettingToken.CreateVolumeChanged);
             }
         }
 
@@ -127,60 +159,29 @@ namespace Graphy.ViewModel
 
         private void ReadUserPreference()
         {
-            string userPreferenceFullPath = App.GetExeDirectory() + Path.DirectorySeparatorChar + USER_PREFERENCE_FILE_NAME;
-            if (System.IO.File.Exists(userPreferenceFullPath))
-            {
-                try
-                {
-                    List<string> selectedFontList = new List<string>();
+            _isReadingUserPreferenceFlag = true;
 
-                    using (StreamReader sr = new StreamReader(userPreferenceFullPath))
-                    {
-                        while (!sr.EndOfStream)
-                        {
-                            string line = sr.ReadLine();
+            ToleranceFactor = Properties.Settings.Default.ToleranceFactor;
+            KeepHistoric = Properties.Settings.Default.KeepHistoric;
+            CreateVolume = Properties.Settings.Default.CreateVolume;
 
-                            selectedFontList.Add(line);
-                        }
-                    }
+            MessengerInstance.Send(Properties.Settings.Default.FavoriteFontCollection, Enum.SettingToken.UserPreferencesChanged);
 
-                    MessengerInstance.Send<List<string>>(selectedFontList, Enum.SettingToken.UserPreferencesChanged);
-                }
-                catch (Exception e)
-                {
-                    MessengerInstance.Send<string>(e.Message, Enum.SettingToken.SettingFileReadingFailed);
-                }
-            }
-            else
-            {
-                System.Windows.Data.CollectionView fontCollection = new System.Windows.Data.CollectionView(new List<SelectableFont>()
-                {
-                    new SelectableFont(new FontFamily("Monospac821 BT"))
-                }) ;
-                WriteUserPreference(fontCollection);
-            }
+            _isReadingUserPreferenceFlag = false;
         }
 
 
-        private void WriteUserPreference(ICollectionView collection)
+        private void SaveFavoriteFontCollection(List<SelectableFont> favoriteFontCollection)
         {
-            try
+            System.Collections.Specialized.StringCollection stringCollection = new System.Collections.Specialized.StringCollection();
+            foreach (SelectableFont font in favoriteFontCollection)
             {
-                using (StreamWriter sw = new StreamWriter(App.GetExeDirectory() + Path.DirectorySeparatorChar + USER_PREFERENCE_FILE_NAME, false))
-                {
-                    foreach (SelectableFont font in collection)
-                    {
-                        if (font.IsSelected)
-                            sw.WriteLine(font.FontFamily.Source);
-                    }
-                }
+                stringCollection.Add(font.FontFamily.Source);
             }
-            catch (IOException e)
-            {
-                MessengerInstance.Send(e.Message, Enum.SettingToken.SettingFileWritingFailed);
-            }
-        }
 
+            Properties.Settings.Default.FavoriteFontCollection = stringCollection;
+            Properties.Settings.Default.Save();
+        }
 
     }
 }

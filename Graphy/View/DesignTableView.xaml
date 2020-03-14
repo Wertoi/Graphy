@@ -194,22 +194,56 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
 
-                    <ListView Grid.Row="1" ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.PartCollection}" SelectionMode="Multiple"
-                              BorderThickness="0,0,1,0" MaxHeight="150" MinHeight="100">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource NormalButton}" Command="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.SelectAllPartCommand}">
+                            
+                            <StackPanel Orientation="Horizontal">
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource SelectAllIcon}"/>
+                                    </Canvas>
+                                </Viewbox>
+
+                                <TextBlock Text="Tout sélectionner" VerticalAlignment="Center" Margin="2,0,7,0"/>
+                                
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource NormalButton}" Command="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.UnselectAllPartCommand}" Margin="5,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource ClearIcon}"/>
+                                    </Canvas>
+                                </Viewbox>
+
+                                <TextBlock Text="Tout dé-sélectionner" VerticalAlignment="Center" Margin="2,0,7,0"/>
+
+                            </StackPanel>
+                        </Button>
+                        
+                    </StackPanel>
+
+                    <ListView Grid.Row="1"
+                              ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.PartCollection}"
+                              SelectionMode="Multiple" BorderBrush="Transparent"
+                              MinHeight="100" HorizontalContentAlignment="Stretch" Margin="0,10,0,0">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="{x:Type ListViewItem}">
                                 <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                            <Border>
+                                            <Border Background="{TemplateBinding Background}">
                                                 <ContentPresenter/>
                                             </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource Gray242}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -236,24 +270,6 @@
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
-
-                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="5,0,0,0">
-                        <Button Style="{StaticResource NormalButton}" Command="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.SelectAllPartCommand}">
-                            <Viewbox Style="{StaticResource IconViewBox}">
-                                <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource SelectAllIcon}"/>
-                                </Canvas>
-                            </Viewbox>
-                        </Button>
-
-                        <Button Style="{StaticResource NormalButton}" Command="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.UnselectAllPartCommand}">
-                            <Viewbox Style="{StaticResource IconViewBox}">
-                                <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource UnselectAllIcon}"/>
-                                </Canvas>
-                            </Viewbox>
-                        </Button>
-                    </StackPanel>
 
                 </Grid>
 
