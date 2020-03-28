@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using Graphy.Model.CatiaDocument;
 using INFITF;
@@ -18,7 +12,7 @@ namespace Graphy.Model
         // CONSTRUCTOR
         public CatiaEnv()
         {
-            Initialize();
+            
         }
 
 
@@ -79,7 +73,7 @@ namespace Graphy.Model
 
             try
             {
-                Application = (Application)Marshal.GetActiveObject("Catia.Application");
+                Application = (Application)Marshal.GetActiveObject("CATIA.Application");
             }
             catch (Exception ex)
             {
@@ -91,7 +85,15 @@ namespace Graphy.Model
             {
                 IsApplicationOpen = true;
                 LengthUnitSymbol = GetLengthUnitSymbol();
-                FullVersion = "V" + Application.SystemConfiguration.Version + "R" + Application.SystemConfiguration.Release;
+
+                try
+                {
+                    FullVersion = "V" + Application.SystemConfiguration.Version + "R" + Application.SystemConfiguration.Release;
+                }
+                catch(Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
             }
             else
             {
@@ -110,10 +112,10 @@ namespace Graphy.Model
         private string GetLengthUnitSymbol()
         {
             UnitsSheetSettingAtt unitSetting = (UnitsSheetSettingAtt)Application.SettingControllers.Item("CATLieUnitsSheetSettingCtrl");
+
             string unitName = "";
             unitSetting.GetMagnitudeValues("LENGTH", ref unitName, out double decimalWrite, out double decimalRead);
-
-            switch(unitName)
+            switch (unitName)
             {
                 case string str when str.Contains("Micro"):
                     return "μm";

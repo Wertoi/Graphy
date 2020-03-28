@@ -140,20 +140,9 @@ namespace Graphy.ViewModel
 
             await Task.Run(() =>
             {
+                selectedFont.ComputeSupportedCharacterList();
 
-                SupportedCharGenerator supportedCharGenerator = new SupportedCharGenerator();
-
-                try
-                {
-                    selectedFont.SupportedCharacterList = supportedCharGenerator.ComputeSupportedCharacterList(selectedFont.FontFamily);
-
-
-                    MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
-                }
-                catch (Exception ex)
-                {
-                    MessengerInstance.Send(ex.Message, Enum.ProcessToken.Failed);
-                }
+                MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
 
             });
         }

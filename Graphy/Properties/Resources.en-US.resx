@@ -324,4 +324,43 @@
   <data name="Status_InProgress_Title" xml:space="preserve">
     <value>In progress !</value>
   </data>
+  <data name="MainWindow_CatiaStatus_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="MainWindow_CatiaStatus_Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="MainWindow_CatiaStatus_LastRefresh" xml:space="preserve">
+    <value>Last refresh: </value>
+  </data>
+  <data name="MainWindow_CatiaStatus_Title" xml:space="preserve">
+    <value>Catia status: </value>
+  </data>
+  <data name="MainWindow_CatiaStatus_Version" xml:space="preserve">
+    <value>Version: </value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip1" xml:space="preserve">
+    <value>The option "Generate a marking volume" must be actived.</value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip2" xml:space="preserve">
+    <value>"+" to add the result to the main body.</value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip3" xml:space="preserve">
+    <value>"-" to take out the result to the main body.</value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip4" xml:space="preserve">
+    <value>/!\ The extrusion direction is calculated depending on the Z-axis direction of the "Axis system".</value>
+  </data>
+  <data name="Settings_Marking_CreateVolumeLabel" xml:space="preserve">
+    <value>Generate a marking volume</value>
+  </data>
+  <data name="Settings_Marking_KeepHistoricLabel" xml:space="preserve">
+    <value>Keep the construction historic</value>
+  </data>
+  <data name="Settings_Marking_Title" xml:space="preserve">
+    <value>Marking</value>
+  </data>
+  <data name="Settings_Marking_ToleranceFactorLabel" xml:space="preserve">
+    <value>Tolerance factor</value>
+  </data>
 </root>

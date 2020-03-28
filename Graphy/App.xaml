@@ -102,17 +102,7 @@
                     18.95,16.56C19.35,16.35 19.65,16.07 19.83,15.73V14.16H18.7C16.93,14.16 16.04,14.63 16.04,15.57C16.04,16 16.19,16.3 16.5,16.53C16.8,16.76 17.18,16.88 17.66,
                     16.88M5.46,13.71H9.53L7.5,8.29L5.46,13.71M6.64,6H8.36L13.07,18H11.14L10.17,15.43H4.82L3.86,18H1.93L6.64,6Z"/>
         </Style>
-
-        <!-- SEARCH ICON PATH STYLE -->
-        <Style x:Key="SearchIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,
-                    16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
-        </Style>
-
-        <!-- SORT ICON PATH STYLE -->
-        <Style x:Key="SortIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M3,13H15V11H3M3,6V8H21V6M3,18H9V16H3V18Z"/>
-        </Style>
+        
 
         <!-- PARAMETERS ICON PATH STYLE -->
         <Style x:Key="ParameterIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
@@ -161,11 +151,31 @@
 
         <!-- *** ICON FOR TOGGLE BUTTON *** -->
 
+        <!-- BASE TOGGLE BUTTON ICON STYLE -->
+        <Style x:Key="BaseToggleButtonIconStyle" TargetType="{x:Type Path}">
+            <Setter Property="Fill" Value="Black"/>
+            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="False">
+                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- SORT ICON PATH STYLE -->
+        <Style x:Key="SortIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M3,13H15V11H3M3,6V8H21V6M3,18H9V16H3V18Z"/>
+        </Style>
+
         <!-- FAVORITE TOGGLE BUTTON ICON -->
-        <Style x:Key="FavoriteToggleButtonIcon" TargetType="{x:Type Path}">
+        <Style x:Key="FavoriteToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
             <Setter Property="Data" Value="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/>
             <Setter Property="Fill" Value="Transparent"/>
             <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ToggleButton}}, Path=IsChecked}" Value="True">
                     <Setter Property="Fill" Value="{StaticResource SecondaryColorLight}"/>
@@ -174,33 +184,15 @@
         </Style>
 
         <!-- SORT BY ASCENDING ORDER TOGGLE BUTTON ICON -->
-        <Style x:Key="SortByAscendingIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M9.25 5L12.5 1.75L15.75 5H9.25M8.89 14.3H6L5.28 17H2.91L6 7H9L12.13 17H9.67L8.89 14.3M6.33 12.68H8.56L7.93 10.56L7.67 9.59L7.42 8.63H7.39L7.17 9.6L6.93 10.58L6.33 12.68M13.05 17V15.74L17.8 8.97V8.91H13.5V7H20.73V8.34L16.09 15V15.08H20.8V17H13.05Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="SortByAscendingIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M9.25 5L12.5 1.75L15.75 5H9.25M8.89 14.3H6L5.28 17H2.91L6 7H9L12.13 17H9.67L8.89 14.3M6.33 12.68H8.56L7.93 10.56L7.67 
+                    9.59L7.42 8.63H7.39L7.17 9.6L6.93 10.58L6.33 12.68M13.05 17V15.74L17.8 8.97V8.91H13.5V7H20.73V8.34L16.09 15V15.08H20.8V17H13.05Z"/>
         </Style>
 
         <!-- SORT BY DESCENDING ORDER TOGGLE BUTTON ICON -->
-        <Style x:Key="SortByDescendingIcon" TargetType="{x:Type Path}">
-            <Setter Property="Data" Value="M15.75 19L12.5 22.25L9.25 19H15.75M8.89 14.3H6L5.28 17H2.91L6 7H9L12.13 17H9.67L8.89 14.3M6.33 12.68H8.56L7.93 10.56L7.67 9.59L7.42 8.63H7.39L7.17 9.6L6.93 10.58L6.33 12.68M13.05 17V15.74L17.8 8.97V8.91H13.5V7H20.73V8.34L16.09 15V15.08H20.8V17H13.05Z"/>
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style x:Key="SortByDescendingIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M15.75 19L12.5 22.25L9.25 19H15.75M8.89 14.3H6L5.28 17H2.91L6 7H9L12.13 17H9.67L8.89 14.3M6.33 12.68H8.56L7.93 10.56L7.67 
+                    9.59L7.42 8.63H7.39L7.17 9.6L6.93 10.58L6.33 12.68M13.05 17V15.74L17.8 8.97V8.91H13.5V7H20.73V8.34L16.09 15V15.08H20.8V17H13.05Z"/>
         </Style>
 
 
@@ -237,6 +229,12 @@
         <!-- INFO ICON PATH STYLE -->
         <Style x:Key="InfoIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
             <Setter Property="Data" Value="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
+        </Style>
+
+        <!-- SEARCH ICON PATH STYLE -->
+        <Style x:Key="SearchIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
+            <Setter Property="Data" Value="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,
+                    16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
         </Style>
 
         <!-- ***** END OF ICONS ***** -->

@@ -46,7 +46,7 @@
 
                 <ToggleButton Style="{StaticResource NormalToggleButton}"
                               x:Name="SortButton"
-                              IsHitTestVisible="{Binding ElementName=m_moreActionsPopup, Path=IsOpen,  Converter={StaticResource InvertBooleanConverter}}" HorizontalAlignment="Left">
+                              IsHitTestVisible="{Binding ElementName=FilterPopup, Path=IsOpen,  Converter={StaticResource InvertBooleanConverter}}" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <Viewbox Style="{StaticResource IconViewBox}">
                             <Canvas Style="{StaticResource IconCanvas}">
@@ -154,7 +154,7 @@
                     </Viewbox>
                 </Button>
 
-                <Viewbox Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource IconViewBox}">
+                <Viewbox Grid.Column="2" Style="{StaticResource IconViewBox}">
                     <Canvas Style="{StaticResource IconCanvas}">
                         <Path Style="{StaticResource SearchIcon}"/>
                     </Canvas>

@@ -130,7 +130,7 @@ namespace Graphy.ViewModel
                 // Create a design table reader
                 DesignTableReader designTableReader = new DesignTableReader();
 
-                // Update the status view
+                // Start the process
                 MessengerInstance.Send<object>(null, Enum.ProcessToken.SimpleStarted);
 
                 // Necessary to update the progress bar view correctly
@@ -153,7 +153,7 @@ namespace Graphy.ViewModel
                             // Close the design table
                             designTableReader.CloseDesignTable();
 
-                            // Update the status view
+                            // Finish the process
                             MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
                         }
                         else
@@ -164,7 +164,6 @@ namespace Graphy.ViewModel
                     }
                     catch (Exception ex)
                     {
-                        // If exception, update the status view
                         MessengerInstance.Send(ex.Message, Enum.ProcessToken.Failed);
                     }
                 });

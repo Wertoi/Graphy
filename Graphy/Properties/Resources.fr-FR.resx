@@ -309,12 +309,6 @@
   <data name="Settings_Title" xml:space="preserve">
     <value>Paramètres</value>
   </data>
-  <data name="Status_CatiaException_Refresh" xml:space="preserve">
-    <value>Rafraichir</value>
-  </data>
-  <data name="Status_CatiaException_Title" xml:space="preserve">
-    <value>On dirait que Catia a un problème.</value>
-  </data>
   <data name="Status_Finised_Title" xml:space="preserve">
     <value>Terminé !</value>
   </data>
@@ -329,5 +323,44 @@
   </data>
   <data name="Status_InProgress_Title" xml:space="preserve">
     <value>Processus en cours !</value>
+  </data>
+  <data name="MainWindow_CatiaStatus_Connected" xml:space="preserve">
+    <value>Connecté</value>
+  </data>
+  <data name="MainWindow_CatiaStatus_Disconnected" xml:space="preserve">
+    <value>Déconnecté</value>
+  </data>
+  <data name="MainWindow_CatiaStatus_LastRefresh" xml:space="preserve">
+    <value>Dernier rafraichissement : </value>
+  </data>
+  <data name="MainWindow_CatiaStatus_Title" xml:space="preserve">
+    <value>Statut Catia : </value>
+  </data>
+  <data name="MainWindow_CatiaStatus_Version" xml:space="preserve">
+    <value>Version : </value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip1" xml:space="preserve">
+    <value>L'option "Créer un volume de marquage" doit être activée.</value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip2" xml:space="preserve">
+    <value>"+" pour ajouter le résultat au corps principal.</value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip3" xml:space="preserve">
+    <value>"-" pour retirer le résultat au corps principal.</value>
+  </data>
+  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip4" xml:space="preserve">
+    <value>/!\ Le sens d'extrusion se fait par rapport au sens de l'axe Z du "Repère local".</value>
+  </data>
+  <data name="Settings_Marking_CreateVolumeLabel" xml:space="preserve">
+    <value>Générer un volume de marquage</value>
+  </data>
+  <data name="Settings_Marking_KeepHistoricLabel" xml:space="preserve">
+    <value>Garder l'historique de construction</value>
+  </data>
+  <data name="Settings_Marking_Title" xml:space="preserve">
+    <value>Marquage</value>
+  </data>
+  <data name="Settings_Marking_ToleranceFactorLabel" xml:space="preserve">
+    <value>Facteur de tolérance</value>
   </data>
 </root>

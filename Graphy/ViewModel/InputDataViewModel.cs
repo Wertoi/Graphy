@@ -123,7 +123,7 @@ namespace Graphy.ViewModel
 
         private void SelectTrackingCurveCommandAction()
         {
-            MessengerInstance.Send<object>(null, Enum.CatiaToken.Refresh);
+            MessengerInstance.Send<CatiaPartDocument>(_selectedPartDocument, Enum.CatiaToken.Refresh);
 
             if (_selectedPartDocument != null)
             {
@@ -160,7 +160,7 @@ namespace Graphy.ViewModel
 
         private void SelectStartPointCommandAction()
         {
-            MessengerInstance.Send<object>(null, Enum.CatiaToken.Refresh);
+            MessengerInstance.Send<CatiaPartDocument>(_selectedPartDocument, Enum.CatiaToken.Refresh);
 
             if (_selectedPartDocument != null)
             {
@@ -196,7 +196,7 @@ namespace Graphy.ViewModel
 
         private void SelectionProjectionSurfaceCommandAction()
         {
-            MessengerInstance.Send<object>(null, Enum.CatiaToken.Refresh);
+            MessengerInstance.Send<CatiaPartDocument>(_selectedPartDocument, Enum.CatiaToken.Refresh);
 
             if (_selectedPartDocument != null)
             {
@@ -233,7 +233,7 @@ namespace Graphy.ViewModel
 
         private void SelectLocalAxisSystemCommandAction()
         {
-            MessengerInstance.Send<object>(null, Enum.CatiaToken.Refresh);
+            MessengerInstance.Send<CatiaPartDocument>(_selectedPartDocument, Enum.CatiaToken.Refresh);
 
             if (_selectedPartDocument != null)
             {
@@ -270,6 +270,8 @@ namespace Graphy.ViewModel
 
         private async void GenerateCommandAction()
         {
+            MessengerInstance.Send<CatiaPartDocument>(_selectedPartDocument, Enum.CatiaToken.Refresh);
+
             if (IsNameUnique(MarkingData.ProjectionSurfaceName) && IsNameUnique(MarkingData.StartPointName) && IsNameUnique(MarkingData.TrackingCurveName) && IsNameUnique(MarkingData.AxisSystemName))
             {
                 if(IsDesignTableActivated)

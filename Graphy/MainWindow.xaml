@@ -196,13 +196,13 @@
                         <Viewbox Grid.Row="3" Grid.Column="4" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                             <Viewbox.ToolTip>
                                 <TextBlock>
-                                    <Run Text="L'option &quot;Créer un volume de marquage&quot; doit être activée."/>
+                                    <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip1}"/>
                                     <LineBreak/>
-                                    <Run Text="&quot;+&quot; pour ajouter le résultat au corps principal."/>
+                                    <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip2}"/>
                                     <LineBreak/>
-                                    <Run Text="&quot;-&quot; pour retirer le résultat au corps principal."/>
+                                    <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip3}"/>
                                     <LineBreak/>
-                                    <Run Text="/!\ Le sens d'extrusion se fait par rapport au sens de l'axe Z du &quot;Repère local&quot;."/>
+                                    <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip4}"/>
                                 </TextBlock>
                             </Viewbox.ToolTip>
                             <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
@@ -365,15 +365,15 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Margin="20,0,0,5">
-                    <Run Text="Catia status: "/>
+                    <Run Text="{local:Loc MainWindow_CatiaStatus_Title}"/>
                     <Run>
                         <Run.Style>
                             <Style TargetType="{x:Type Run}">
-                                <Setter Property="Text" Value="Disconnected"/>
+                                <Setter Property="Text" Value="{local:Loc MainWindow_CatiaStatus_Disconnected}"/>
                                 <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
-                                        <Setter Property="Text" Value="Connected"/>
+                                        <Setter Property="Text" Value="{local:Loc MainWindow_CatiaStatus_Connected}"/>
                                         <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -383,12 +383,12 @@
                     
                     <LineBreak/>
                     
-                    <Run Text="Last refresh: " FontSize="10"/>
+                    <Run Text="{local:Loc MainWindow_CatiaStatus_LastRefresh}" FontSize="10"/>
                     <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.LastRefreshTime, StringFormat=u}" Foreground="{StaticResource Gray127}" FontSize="10"/>
                     
                     <LineBreak/>
                     
-                    <Run Text="Version:" FontSize="10"/>
+                    <Run Text="{local:Loc MainWindow_CatiaStatus_Version}" FontSize="10"/>
                     <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.FullVersion}" FontSize="10" Foreground="{StaticResource Gray127}"/>
 
                 </TextBlock>

@@ -101,7 +101,6 @@
     <Compile Include="Model\CatiaShape\CatiaSurface.cs" />
     <Compile Include="Model\DesignTableParameter.cs" />
     <Compile Include="Model\LinkableData.cs" />
-    <Compile Include="Model\Generator\SupportedCharGenerator.cs" />
     <Compile Include="Model\SelectableFont.cs" />
     <Compile Include="CustomControl\TextBoxWithUnit.cs" />
     <Compile Include="Enum\ViewModelToken.cs" />

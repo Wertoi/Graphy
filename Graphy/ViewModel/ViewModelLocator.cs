@@ -15,28 +15,15 @@ namespace Graphy.ViewModel
         /// </summary>
         public ViewModelLocator()
         {
-            // To remove
-            //System.Windows.MessageBox.Show("Initialisation ViewModelLocator.");
-            try
-            {
-                ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-                // Pour info : "true" permet de contrôler l'ordre d'initialisation des view models
-                SimpleIoc.Default.Register<ProcessViewModel>(true);
-                SimpleIoc.Default.Register<InputDataViewModel>(true);
-                SimpleIoc.Default.Register<FontViewModel>(true);
-                SimpleIoc.Default.Register<SettingViewModel>(true);
-                SimpleIoc.Default.Register<CatiaViewModel>(true);
-                SimpleIoc.Default.Register<DesignTableViewModel>(true);       
-            }
-            catch(Exception ex)
-            {
-                System.Windows.MessageBox.Show("ViewModelLocator :\r\n\r\n" + ex.Message + "\r\n\r\n" + ex.Source + "\r\n\r\n" + ex.StackTrace + "\r\n\r\n" + ex.TargetSite);
-            }
-            
-
-            // To remove
-            //System.Windows.MessageBox.Show("Fin initialisation ViewModelLocator.");
+            // Pour info : "true" permet de contrôler l'ordre d'initialisation des view models
+            SimpleIoc.Default.Register<ProcessViewModel>(true);
+            SimpleIoc.Default.Register<InputDataViewModel>(true);
+            SimpleIoc.Default.Register<FontViewModel>(true);
+            SimpleIoc.Default.Register<SettingViewModel>(true);
+            SimpleIoc.Default.Register<CatiaViewModel>(true);
+            SimpleIoc.Default.Register<DesignTableViewModel>(true);
         }
 
         public FontViewModel FontViewModel

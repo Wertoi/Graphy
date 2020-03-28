@@ -9,6 +9,7 @@ using INFITF;
 using MECMOD;
 using Graphy.Model.CatiaDocument;
 using System;
+using System.Threading.Tasks;
 
 namespace Graphy.ViewModel
 {
@@ -54,13 +55,13 @@ namespace Graphy.ViewModel
             {
                 Set(() => SelectedPartDocument, ref _selectedPartDocument, value);
 
-                if(SelectedPartDocument != null)
+                if (SelectedPartDocument != null)
                 {
                     // We send the selected part document
                     MessengerInstance.Send<CatiaPartDocument>(SelectedPartDocument, Enum.CatiaToken.SelectedPartDocumentChanged);
 
                     SelectedPartDocument.Document.Activate();
-                } 
+                }
             }
         }
 
@@ -111,7 +112,7 @@ namespace Graphy.ViewModel
 
             if (CatiaEnv.IsApplicationOpen)
             {
-                
+
                 foreach (Document document in CatiaEnv.Application.Documents)
                 {
                     CatiaGenericDocument tempGenericDocument = new CatiaGenericDocument(CatiaEnv)
@@ -147,11 +148,11 @@ namespace Graphy.ViewModel
                         };
 
                         // IF ACTIVE DOCUMENT IS A CATPART, WE SELECT ACTIVE DOCUMENT
-                        if(activeDocument.DocumentFormat == CatiaGenericDocument.CatiaDocumentFormat.CATPart)
+                        if (activeDocument.DocumentFormat == CatiaGenericDocument.CatiaDocumentFormat.CATPart)
                         {
-                            foreach(CatiaPartDocument partDocument in PartDocumentCollection)
+                            foreach (CatiaPartDocument partDocument in PartDocumentCollection)
                             {
-                                if(partDocument.Name == activeDocument.Name)
+                                if (partDocument.Name == activeDocument.Name)
                                 {
                                     SelectedPartDocument = partDocument;
                                     break;
@@ -172,7 +173,7 @@ namespace Graphy.ViewModel
         private RelayCommand _openDocumentCommand;
         public RelayCommand OpenDocumentCommand { get => _openDocumentCommand; set => _openDocumentCommand = value; }
 
-        private void OpenDocumentCommandAction()
+        private async void OpenDocumentCommandAction()
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -182,7 +183,24 @@ namespace Graphy.ViewModel
 
             if ((bool)openFileDialog.ShowDialog())
             {
-                SelectedPartDocument = new CatiaPartDocument(CatiaEnv, CatiaEnv.OpenDocument(new CatiaFile(openFileDialog.FileName)));
+                // Start the process
+                MessengerInstance.Send<object>(null, Enum.ProcessToken.SimpleStarted);
+
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        // Open the document
+                        SelectedPartDocument = new CatiaPartDocument(CatiaEnv, CatiaEnv.OpenDocument(new CatiaFile(openFileDialog.FileName)));
+
+                        // Finish the process
+                        MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessengerInstance.Send(ex.Message, Enum.ProcessToken.Failed);
+                    }
+                });
             }
 
             RefreshCatiaApplicationCommandAction();
