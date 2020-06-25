@@ -48,6 +48,8 @@ namespace Graphy.Model
         private string _startPointName;
         private string _projectionSurfaceName;
         private string _axisSystemName;
+        private bool _isBold;
+        private bool _isItalic;
 
 
         public LinkableData<string> Text
@@ -119,6 +121,24 @@ namespace Graphy.Model
             set
             {
                 Set(() => AxisSystemName, ref _axisSystemName, value);
+            }
+        }
+
+        public bool IsBold
+        {
+            get => _isBold;
+            set
+            {
+                Set(() => IsBold, ref _isBold, value);
+            }
+        }
+
+        public bool IsItalic
+        {
+            get => _isItalic;
+            set
+            {
+                Set(() => IsItalic, ref _isItalic, value);
             }
         }
 

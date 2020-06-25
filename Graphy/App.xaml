@@ -20,6 +20,9 @@
         <conv:EnumToCollectionConverter x:Key="EnumToCollectionConverter"/>
         <conv:LocalizedEnumToStringConverter x:Key="LocalizedEnumToStringConverter"/>
         <conv:BooleanToBooleanConverter x:Key="InvertBooleanConverter" True="False" False="True"/>
+        <conv:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter" />
+        <conv:BooleanToFontStyleConverter x:Key="BooleanToFontStyleConverter" />
+        <conv:BooleanToTextDecorationConverter x:Key="BooleanToTextDecorationConverter" />
 
         <!-- BOOLEAN -->
         <sys:Boolean x:Key="False">False</sys:Boolean>
@@ -159,9 +162,9 @@
                 <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="False">
                     <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="True">
+                <!--<DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="True">
                     <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
+                </DataTrigger>-->
             </Style.Triggers>
         </Style>
 
@@ -177,8 +180,9 @@
             <Setter Property="Stroke" Value="Black"/>
             <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ToggleButton}}, Path=IsChecked}" Value="True">
-                    <Setter Property="Fill" Value="{StaticResource SecondaryColorLight}"/>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -187,12 +191,55 @@
         <Style x:Key="SortByAscendingIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
             <Setter Property="Data" Value="M9.25 5L12.5 1.75L15.75 5H9.25M8.89 14.3H6L5.28 17H2.91L6 7H9L12.13 17H9.67L8.89 14.3M6.33 12.68H8.56L7.93 10.56L7.67 
                     9.59L7.42 8.63H7.39L7.17 9.6L6.93 10.58L6.33 12.68M13.05 17V15.74L17.8 8.97V8.91H13.5V7H20.73V8.34L16.09 15V15.08H20.8V17H13.05Z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
         <!-- SORT BY DESCENDING ORDER TOGGLE BUTTON ICON -->
         <Style x:Key="SortByDescendingIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
             <Setter Property="Data" Value="M15.75 19L12.5 22.25L9.25 19H15.75M8.89 14.3H6L5.28 17H2.91L6 7H9L12.13 17H9.67L8.89 14.3M6.33 12.68H8.56L7.93 10.56L7.67 
                     9.59L7.42 8.63H7.39L7.17 9.6L6.93 10.58L6.33 12.68M13.05 17V15.74L17.8 8.97V8.91H13.5V7H20.73V8.34L16.09 15V15.08H20.8V17H13.05Z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- BOLD TOGGLE BUTTON ICON -->
+        <Style x:Key="BoldToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M13.5,15.5H10V12.5H13.5A1.5,1.5 0 0,1 15,14A1.5,1.5 0 0,1 13.5,15.5M10,6.5H13A1.5,1.5 0 0,1 14.5,8A1.5,1.5 0 0,1 
+                    13,9.5H10M15.6,10.79C16.57,10.11 17.25,9 17.25,8C17.25,5.74 15.5,4 13.25,4H7V18H14.04C16.14,18 17.75,16.3 17.75,14.21C17.75,12.69 16.89,11.39 15.6,10.79Z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ITALIC TOGGLE BUTTON ICON -->
+        <Style x:Key="ItalicToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M10,4V7H12.21L8.79,15H6V18H14V15H11.79L15.21,7H18V4H10Z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- UNDERLINE TOGGLE BUTTON ICON -->
+        <Style x:Key="UnderlineToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M5,21H19V19H5V21M12,17A6,6 0 0,0 18,11V3H15.5V11A3.5,3.5 0 0,1 12,14.5A3.5,3.5 0 0,1 8.5,11V3H6V11A6,6 0 0,0 12,17Z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
 
@@ -509,12 +556,12 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Style.Triggers>
+            <!--<Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Background" Value="{StaticResource Gray191}" />
                     <Setter Property="BorderBrush" Value="{StaticResource Gray166}" />
                 </Trigger>
-            </Style.Triggers>
+            </Style.Triggers>-->
         </Style>
 
 

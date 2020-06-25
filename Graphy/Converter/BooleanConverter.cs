@@ -48,4 +48,31 @@ namespace Graphy.Converter
 
         }
     }
+
+    public sealed class BooleanToFontWeightConverter : BooleanConverter<FontWeight>
+    {
+        public BooleanToFontWeightConverter() :
+            base(FontWeights.Bold, FontWeights.Normal)
+        {
+
+        }
+    }
+
+    public sealed class BooleanToFontStyleConverter : BooleanConverter<FontStyle>
+    {
+        public BooleanToFontStyleConverter() :
+            base(FontStyles.Italic, FontStyles.Normal)
+        {
+
+        }
+    }
+
+    public sealed class BooleanToTextDecorationConverter : BooleanConverter<TextDecorationCollection>
+    {
+        public BooleanToTextDecorationConverter() :
+            base(TextDecorations.Underline, null)
+        {
+
+        }
+    }
 }

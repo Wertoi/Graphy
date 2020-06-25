@@ -247,7 +247,7 @@ namespace Graphy.Model.Generator
             double currentLength = 0;
 
             // Compute the scale ratio to obtain the character height with a fixed character reference
-            double scaleRatio = markingData.CharacterHeight.Value / markingData.Font.GetCharacterGeometry('M', toleranceFactor).Bounds.Height;
+            double scaleRatio = markingData.CharacterHeight.Value / markingData.Font.GetCharacterGeometry('M', toleranceFactor, markingData.IsBold, markingData.IsItalic).Bounds.Height;
 
             // Create a catia character list from input text and character height
             foreach (char character in markingData.Text.Value)
@@ -376,7 +376,7 @@ namespace Graphy.Model.Generator
             if (!characterList.Contains(catiaCharacter))
             {
                 characterList.Add(catiaCharacter);
-                catiaCharacter.PathGeometry = markingData.Font.GetCharacterGeometry(catiaCharacter.Value, toleranceFactor);
+                catiaCharacter.PathGeometry = markingData.Font.GetCharacterGeometry(catiaCharacter.Value, toleranceFactor, markingData.IsBold, markingData.IsItalic);
                 catiaCharacter.FillSurfaceList();
 
                 if (!catiaCharacter.IsSpaceCharacter)

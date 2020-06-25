@@ -80,5 +80,6 @@ namespace Graphy
         }
 
         // ***** END OF FONT VIEW MANAGEMENT *****
+
     }
 }

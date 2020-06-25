@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Graphy.Model
 {
@@ -90,11 +91,31 @@ namespace Graphy.Model
             }
         }
 
-        public PathGeometry GetCharacterGeometry(char c, double toleranceValue)
+        public PathGeometry GetCharacterGeometry(char c, double toleranceValue, bool isBold, bool isItalic)
         {
             int unicodeValue = Convert.ToUInt16(c);
 
-            if (FontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            // test
+
+            Typeface selectedTypeface = FontFamily.GetTypefaces().First();
+
+            if(isBold || isItalic)
+            {
+
+                foreach (Typeface typeFace in FontFamily.GetTypefaces())
+                {
+                    if (((!isBold && typeFace.Weight == FontWeights.Normal) || (isBold && typeFace.Weight == FontWeights.Bold)) &&
+                       ((!isItalic && typeFace.Style == FontStyles.Normal) || (isItalic && typeFace.Style == FontStyles.Italic)))
+                    {
+                        selectedTypeface = typeFace;
+                    }
+                }
+            }
+
+
+            // end of test
+
+            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
             {
                 if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
                 {

@@ -94,7 +94,7 @@
 
                     <TextBlock Text="{local:Loc MainWindow_MarkingData_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,20,0,0"/>
 
-                    <Grid>
+                    <Grid Margin="0,5,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -111,13 +111,35 @@
                         <!-- TEXTE INPUT -->
                         <TextBlock Text="{local:Loc MainWindow_MarkingData_TextLabel}" Style="{StaticResource LabelFormTextBlock}"/>
 
-                        <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
+                        <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}" Text="{local:Loc MainWindow_MarkingData_ParameterLinked}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.Text.IsLinkOn, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
-                        <TextBox Grid.Column="1" Style="{StaticResource NormalTextBox}"
+
+                        <TextBox x:Name="InputTextTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource NormalTextBox}"
                                  Text="{Binding InputDataViewModel.MarkingData.Text.Value, Mode=TwoWay, Source={StaticResource Locator}}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.Text.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"
-                                 FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.FontFamily}"/>
+                                 FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.FontFamily}"
+                                 FontWeight="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.IsBold, Converter={StaticResource BooleanToFontWeightConverter}}"
+                                 FontStyle="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.IsItalic, Converter={StaticResource BooleanToFontStyleConverter}}" />
+
+                        <ToggleButton Grid.Row="0" Grid.Column="2" Style="{StaticResource NormalToggleButton}"
+                                      IsChecked="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.IsBold, Mode=TwoWay}">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource BoldToggleButtonIcon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </ToggleButton>
+
+                        <ToggleButton x:Name="ItalicToggleButton" Grid.Row="0" Grid.Column="3" Style="{StaticResource NormalToggleButton}"
+                                      IsChecked="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.IsItalic, Mode=TwoWay}">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource ItalicToggleButtonIcon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </ToggleButton>
+
 
                         <!-- Police d'écriture -->
                         <TextBlock Grid.Row="1" Text="{local:Loc MainWindow_MarkingData_FontLabel}" Style="{StaticResource LabelFormTextBlock}"/>
@@ -153,7 +175,7 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <!-- TOOLTIP IF INFORMATION IS AVALAIBLE -->
+                        <!-- FONT BUTTON -->
                         <Button x:Name="FontButton"
                                 Grid.Row="1" Grid.Column="2"
                                 Style="{StaticResource NormalButton}"
@@ -193,7 +215,7 @@
                                             Visibility="{Binding InputDataViewModel.MarkingData.ExtrusionHeight.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}" 
                                             IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
 
-                        <Viewbox Grid.Row="3" Grid.Column="4" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
+                        <Viewbox Grid.Row="3" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                             <Viewbox.ToolTip>
                                 <TextBlock>
                                     <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip1}"/>
@@ -214,7 +236,7 @@
                     <!-- POSITIONS -->
                     <TextBlock Grid.Row="5" Grid.ColumnSpan="4" Text="{local:Loc MainWindow_Position_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,20,0,0"/>
 
-                    <Grid>
+                    <Grid Margin="0,5,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -444,12 +466,15 @@
         <view:SettingView x:Name="SettingView" Visibility="Collapsed"
                           BackButtonClicked="SettingView_BackButtonClicked" />
 
-        <view:FontView x:Name="FontView" Visibility="Collapsed" BackButtonClicked="FontView_BackButtonClicked"/>
+        <view:FontView x:Name="FontView" Visibility="Collapsed"
+                       BackButtonClicked="FontView_BackButtonClicked"/>
 
-        <view:DesignTableView x:Name="DesignTableView" Visibility="Collapsed" BackButtonClicked="DesignTableView_BackButtonClicked" />
+        <view:DesignTableView x:Name="DesignTableView" Visibility="Collapsed"
+                              BackButtonClicked="DesignTableView_BackButtonClicked" />
 
         <view:ProcessView x:Name="StateView"
                         Visibility="{Binding StatusViewModel.IsOneStateActivated, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource Locator}}"/>
 
     </Grid>
+    
 </Window>
