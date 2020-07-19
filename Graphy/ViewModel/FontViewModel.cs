@@ -153,10 +153,14 @@ namespace Graphy.ViewModel
 
         private void SendSelectedFontCommandAction(SelectableFont selectedFont)
         {
-            if(!selectedFont.IsCalculated)
-                ComputeCharacterListCommandAction(selectedFont);
+            if(selectedFont != null)
+            {
+                if (!selectedFont.IsCalculated)
+                    ComputeCharacterListCommandAction(selectedFont);
 
-            SearchText = selectedFont.FontFamily.Source;
+                SearchText = selectedFont.FontFamily.Source;
+            }
+
         }
 
 
