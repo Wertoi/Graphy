@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Globalization;
+using Graphy.Model.CatiaShape;
 
 namespace Graphy.Model
 {
@@ -91,29 +93,32 @@ namespace Graphy.Model
             }
         }
 
-        public PathGeometry GetCharacterGeometry(char c, double toleranceValue, bool isBold, bool isItalic)
+
+        public Typeface GetTypeface(bool isBold, bool isItalic)
         {
-            int unicodeValue = Convert.ToUInt16(c);
-
-            // test
-
             Typeface selectedTypeface = FontFamily.GetTypefaces().First();
 
-            if(isBold || isItalic)
+            if (isBold || isItalic)
             {
 
-                foreach (Typeface typeFace in FontFamily.GetTypefaces())
+                foreach (Typeface typeface in FontFamily.GetTypefaces())
                 {
-                    if (((!isBold && typeFace.Weight == FontWeights.Normal) || (isBold && typeFace.Weight == FontWeights.Bold)) &&
-                       ((!isItalic && typeFace.Style == FontStyles.Normal) || (isItalic && typeFace.Style == FontStyles.Italic)))
+                    if (((!isBold && typeface.Weight == FontWeights.Normal) || (isBold && typeface.Weight == FontWeights.Bold)) &&
+                       ((!isItalic && typeface.Style == FontStyles.Normal) || (isItalic && typeface.Style == FontStyles.Italic)))
                     {
-                        selectedTypeface = typeFace;
+                        selectedTypeface = typeface;
                     }
                 }
             }
 
+            return selectedTypeface;
+        }
 
-            // end of test
+        public PathGeometry GetCharacterGeometry(char c, double toleranceValue, bool isBold, bool isItalic)
+        {
+            int unicodeValue = Convert.ToUInt16(c);
+
+            Typeface selectedTypeface = GetTypeface(isBold, isItalic);
 
             if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
             {
@@ -164,12 +169,60 @@ namespace Graphy.Model
                 return 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <param name="isBold"></param>
+        /// <param name="isItalic"></param>
+        /// <returns></returns>
+        public double GetKerning(CatiaCharacter c1, CatiaCharacter c2, bool isBold, bool isItalic, double characterHeight)
+        {
+            if (c1 != null)
+            {
+                Typeface selectedTypeface = GetTypeface(isBold, isItalic);
+                double emSize = 11;
+                double pixelPerDip = 96;
 
-        public double GetWidth(char c)
+                /*FormattedText c1FormattedText = new FormattedText(c1.Value.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                    selectedTypeface, emSize, Brushes.Black, pixelPerDip);
+
+                FormattedText c2FormattedText = new FormattedText(c2.Value.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                    selectedTypeface, emSize, Brushes.Black, pixelPerDip);*/
+
+
+                FormattedText formattedText = new FormattedText(c1.Value.ToString() + c2.Value.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                    selectedTypeface, emSize, Brushes.Black, pixelPerDip);
+
+                Geometry c1Geometry = formattedText.BuildHighlightGeometry(new Point(0, 0), 0, 1);
+                Geometry c2Geometry = formattedText.BuildHighlightGeometry(new Point(0, 0), 1, 1);
+                Geometry formattedTextGeometry = formattedText.BuildHighlightGeometry(new Point(0, 0), 0, 2);
+
+                double ratio1 = c1Geometry.Bounds.Width / c1.PathGeometry.Bounds.Width;
+
+                FormattedText referenceFormattedText = new FormattedText("M", CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                    selectedTypeface, emSize, Brushes.Black, pixelPerDip);
+
+                Geometry referenceFormattedTextGeometry = referenceFormattedText.BuildHighlightGeometry(new Point(0, 0), 0, 1);
+
+                double ratio2 = characterHeight / referenceFormattedTextGeometry.Bounds.Height;
+
+
+
+                return (formattedTextGeometry.Bounds.Width - (c1.PathGeometry.Bounds.Width + c2.PathGeometry.Bounds.Width) * ratio1 ) * ratio2;
+            }
+            else
+                return 0;
+
+        }
+
+
+        public double GetWidth(char c, Typeface selectedTypeface)
         {
             int unicodeValue = Convert.ToUInt16(c);
 
-            if (FontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
             {
                 if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
                 {

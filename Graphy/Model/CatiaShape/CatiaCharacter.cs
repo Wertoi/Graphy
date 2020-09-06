@@ -131,14 +131,16 @@ namespace Graphy.Model.CatiaShape
 
         public void DrawCharacter(HybridBody set)
         {
+            double xCorrectif = PathGeometry.Bounds.Left;
+
             for(int i = 0; i < SurfaceList.Count; i++)
             {
-                SurfaceList[i].ExternalContour.DrawContour(set);
+                SurfaceList[i].ExternalContour.DrawContour(set, xCorrectif);
                 SurfaceList[i].ExternalContour.SmoothedShape.set_Name("Ext." + (i+1).ToString());
 
                 for (int j = 0; j < SurfaceList[i].InternalContourList.Count; j++)
                 {
-                    SurfaceList[i].InternalContourList[j].DrawContour(set);
+                    SurfaceList[i].InternalContourList[j].DrawContour(set, xCorrectif);
                     SurfaceList[i].InternalContourList[j].SmoothedShape.set_Name("Ext." + (i+1).ToString() + "-Int." + (j+1).ToString());
                 }
             }

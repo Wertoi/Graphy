@@ -75,7 +75,7 @@ namespace Graphy.Model.CatiaShape
         }
 
 
-        public void DrawContour(HybridBody set)
+        public void DrawContour(HybridBody set, double xCorrectif)
         {
             List<Reference> segmentRefList = new List<Reference>();
 
@@ -93,7 +93,7 @@ namespace Graphy.Model.CatiaShape
                     foreach (System.Windows.Point point in ((PolyLineSegment)segment).Points)
                     {
                         // Get the point and store it in the list
-                        tempPointList.Add(new CatiaPoint(PartDocument, point.X, -point.Y, 0));
+                        tempPointList.Add(new CatiaPoint(PartDocument, point.X - xCorrectif, -point.Y, 0));
                         tempPointList.Last().ComputePointShape();
                     }
 

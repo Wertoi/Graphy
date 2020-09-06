@@ -114,7 +114,7 @@ namespace Graphy.Model
             UnitsSheetSettingAtt unitSetting = (UnitsSheetSettingAtt)Application.SettingControllers.Item("CATLieUnitsSheetSettingCtrl");
 
             string unitName = "";
-            unitSetting.GetMagnitudeValues("LENGTH", ref unitName, out double decimalWrite, out double decimalRead);
+            unitSetting.GetMagnitudeValues("LENGTH", ref unitName, out _, out _);
             switch (unitName)
             {
                 case string str when str.Contains("Micro"):
