@@ -64,7 +64,7 @@
         </Style>
 
         <!-- *** ICON FOR BUTTON *** -->
-        
+
         <!-- BASE BUTTON ICON STYLE -->
         <Style x:Key="BaseButtonIconStyle" TargetType="{x:Type Path}">
             <Setter Property="Fill" Value="Black"/>
@@ -105,7 +105,7 @@
                     18.95,16.56C19.35,16.35 19.65,16.07 19.83,15.73V14.16H18.7C16.93,14.16 16.04,14.63 16.04,15.57C16.04,16 16.19,16.3 16.5,16.53C16.8,16.76 17.18,16.88 17.66,
                     16.88M5.46,13.71H9.53L7.5,8.29L5.46,13.71M6.64,6H8.36L13.07,18H11.14L10.17,15.43H4.82L3.86,18H1.93L6.64,6Z"/>
         </Style>
-        
+
 
         <!-- PARAMETERS ICON PATH STYLE -->
         <Style x:Key="ParameterIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
@@ -256,7 +256,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <!-- NO DOCUMENTATION ICON PATH STYLE -->
         <Style x:Key="NoDocumentIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
             <Setter Property="Data" Value="M19,5A2,2 0 0,0 17,3H10L7.66,5.34L19,16.68V5M3.65,3.88L2.38,5.15L5,7.77V19A2,2 0 0,0 7,21H17C17.36,21 17.68,20.9 17.97,20.74L19.85,22.62L21.12,21.35L3.65,3.88Z"/>
@@ -556,26 +556,39 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <!--<Style.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Gray191}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Gray166}" />
-                </Trigger>
-            </Style.Triggers>-->
         </Style>
 
 
-        <!-- POPUP STYLE -->
-        <Style x:Key="NormalPopupStyle" TargetType="{x:Type Popup}">
-            <Setter Property="Placement" Value="Left" />
-            <Setter Property="StaysOpen" Value="False" />
-            <Setter Property="AllowsTransparency" Value="True" />
-            <Setter Property="HorizontalOffset" Value="10" />
-            <Setter Property="VerticalOffset" Value="20" />
-            <Setter Property="PopupAnimation" Value="Fade" />
-            <Setter Property="MinWidth" Value="100" />
-        </Style>
+        <!-- NORMAL POPUP CONTENT STYLE -->
+        <Style x:Key="NormalPopupContentStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
 
+                        <!-- Main Border -->
+                        <Border Name="PopupBorder" CornerRadius="5" Margin="0,0,4,4" BorderBrush="Black">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="2" Color="#FF757575"/>
+                            </Border.Effect>
+
+                            <Grid>
+                                <!-- Mask Border -->
+                                <Border x:Name="MaskBorder" Background="White"
+                                        CornerRadius="{Binding ElementName=PopupBorder, Path=CornerRadius}"
+                                        BorderThickness="0.5"/>
+
+                                <!-- Content -->
+                                <ContentPresenter Margin="10" Content="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Path=Content}">
+                                    <ContentPresenter.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=MaskBorder}"/>
+                                    </ContentPresenter.OpacityMask>
+                                </ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
 
         <!--  CHECKBOX STYLE -->

@@ -59,73 +59,68 @@
 
                 <!-- Menu Popup -->
                 <Popup x:Name="FilterPopup"
-                       Style="{StaticResource NormalPopupStyle}"
                        IsOpen="{Binding ElementName=SortButton, Path=IsChecked, Mode=TwoWay}"
-                       PlacementTarget="{Binding ElementName=SortButton}" >
+                       PlacementTarget="{Binding ElementName=SortButton}"
+                       Placement="Left"
+                       StaysOpen="False"
+                       AllowsTransparency="True"
+                       HorizontalOffset="10"
+                       VerticalOffset="20"
+                       PopupAnimation="Fade"
+                       MinWidth="100">
 
-                    <!-- Main Border -->
-                    <Border x:Name="PopupBorder" CornerRadius="5" Margin="0,0,4,4" BorderBrush="Black">
-                        <Border.Effect>
-                            <DropShadowEffect ShadowDepth="2" Color="#FF757575"/>
-                        </Border.Effect>
+                    <ContentControl Style="{StaticResource NormalPopupContentStyle}">
 
-                        <Grid>
-                            <!-- Mask Border -->
-                            <Border x:Name="MaskBorder" Background="White" CornerRadius="{Binding ElementName=PopupBorder, Path=CornerRadius}" BorderThickness="0.5"/>
+                        <StackPanel Orientation="Vertical">
 
-                            <!-- Content -->
-                            <StackPanel Orientation="Vertical" Margin="10">
-                                <StackPanel.OpacityMask>
-                                    <VisualBrush Visual="{Binding ElementName=MaskBorder}"/>
-                                </StackPanel.OpacityMask>
-
-                                <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                            <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
                                              Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByNameCommand}"
                                              CommandParameter="{StaticResource True}"
                                              IsChecked="True" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <Viewbox Style="{StaticResource IconViewBox}">
-                                            <Canvas Style="{StaticResource IconCanvas}">
-                                                <Path Style="{StaticResource SortByAscendingIcon}"/>
-                                            </Canvas>
-                                        </Viewbox>
+                                <StackPanel Orientation="Horizontal">
+                                    <Viewbox Style="{StaticResource IconViewBox}">
+                                        <Canvas Style="{StaticResource IconCanvas}">
+                                            <Path Style="{StaticResource SortByAscendingIcon}"/>
+                                        </Canvas>
+                                    </Viewbox>
 
-                                        <TextBlock Text="{local:Loc Font_SortAscending}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </RadioButton>
+                                    <TextBlock Text="{local:Loc Font_SortAscending}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
 
 
-                                <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                            <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
                                              Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByNameCommand}"
                                              CommandParameter="{StaticResource False}" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <Viewbox Style="{StaticResource IconViewBox}">
-                                            <Canvas Style="{StaticResource IconCanvas}">
-                                                <Path Style="{StaticResource SortByDescendingIcon}"/>
-                                            </Canvas>
-                                        </Viewbox>
+                                <StackPanel Orientation="Horizontal">
+                                    <Viewbox Style="{StaticResource IconViewBox}">
+                                        <Canvas Style="{StaticResource IconCanvas}">
+                                            <Path Style="{StaticResource SortByDescendingIcon}"/>
+                                        </Canvas>
+                                    </Viewbox>
 
-                                        <TextBlock Text="{local:Loc Font_SortDescending}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </RadioButton>
+                                    <TextBlock Text="{local:Loc Font_SortDescending}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
 
 
-                                <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                            <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
                                              Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByFavoriteCommand}" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <Viewbox Style="{StaticResource IconViewBox}">
-                                            <Canvas Style="{StaticResource IconCanvas}">
-                                                <Path Style="{StaticResource FavoriteToggleButtonIcon}"/>
-                                            </Canvas>
-                                        </Viewbox>
+                                <StackPanel Orientation="Horizontal">
+                                    <Viewbox Style="{StaticResource IconViewBox}">
+                                        <Canvas Style="{StaticResource IconCanvas}">
+                                            <Path Style="{StaticResource FavoriteToggleButtonIcon}"/>
+                                        </Canvas>
+                                    </Viewbox>
 
-                                        <TextBlock Text="{local:Loc Font_SortFavorite}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </RadioButton>
+                                    <TextBlock Text="{local:Loc Font_SortFavorite}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
 
-                            </StackPanel>
-                        </Grid>
-                    </Border>
+                        </StackPanel>
+
+                    </ContentControl>
+
                 </Popup>
 
                 <!-- SEARCH TEXT BOX -->
@@ -159,7 +154,7 @@
                         <Path Style="{StaticResource SearchIcon}"/>
                     </Canvas>
                 </Viewbox>
-                
+
                 <!-- END OF SEARCH TEXT BOX -->
 
             </Grid>
@@ -241,7 +236,7 @@
                 </ScrollViewer>
 
             </Grid>
-            
+
         </Grid>
 
     </Grid>
