@@ -128,7 +128,7 @@ namespace Graphy.Model.Generator
 
             // Creates the marking set
             HybridBody markingSet = partDocument.PartDocument.Part.HybridBodies.Add();
-            markingSet.set_Name("MARKING SET");
+            markingSet.set_Name("MARKING SET: \"" + markingData.Text.Value + "\"");
 
             // Creates the origin axis system to the marking set
             partDocument.PartDocument.Part.InWorkObject = markingSet;
@@ -160,7 +160,6 @@ namespace Graphy.Model.Generator
             Reference startPointRef = partDocument.PartDocument.Part.CreateReferenceFromObject(startPoint);
 
             AxisSystem startAxisSystem = (AxisSystem)partDocument.PartDocument.Part.FindObjectByName(markingData.AxisSystemName);
-            Reference startAxisSystemRef = partDocument.PartDocument.Part.CreateReferenceFromObject(startAxisSystem);
 
             // Factories
             HybridShapeFactory hybridShapeFactory = (HybridShapeFactory)partDocument.PartDocument.Part.HybridShapeFactory;
@@ -252,21 +251,20 @@ namespace Graphy.Model.Generator
             // Compute the scale ratio to obtain the character height with a fixed character reference
             double scaleRatio = markingData.CharacterHeight.Value / markingData.Font.GetCharacterGeometry('M', toleranceFactor, markingData.IsBold, markingData.IsItalic).Bounds.Height;
 
+            // Compute the kerningPair table
+            markingData.Font.ComputeKerningPairs();
+
+            // Create a list to store local axis system references in order to delete them if keep historic option is uncheck.
+            List<Reference> localAxisSystemRefList = new List<Reference>();
 
             // Create a catia character list from input text and character height
             foreach (char character in markingData.Text.Value)
             {
-                // Create the character set
-                HybridBody characterSet = writingSet.HybridBodies.Add();
-                characterSet.set_Name(character.ToString() + "." + characterIndex);
-
 
                 // Get the associatedCatiaCharacter
-                CatiaCharacter associatedCatiaCharacter = GetCatiaCharacter(partDocument.PartDocument, markingData, characterSet, character, characterList, toleranceFactor);
-
+                CatiaCharacter associatedCatiaCharacter = GetCatiaCharacter(partDocument.PartDocument, markingData, character, characterList, toleranceFactor);
 
                 // Create the local point
-                //Reference localPointRef = ComputeLocalPoint(associatedCatiaCharacter, markingData, trackingCurveRef, startPointRef, pointSet, isXSameDirection, ref currentLength, scaleRatio);
                 Reference localPointRef = ComputeLocalPoint(associatedCatiaCharacter, previousCharacter, markingData,
                     trackingCurveRef, startPointRef, pointSet,
                     isXSameDirection, ref currentLength, scaleRatio);
@@ -274,34 +272,42 @@ namespace Graphy.Model.Generator
 
                 if (!associatedCatiaCharacter.IsSpaceCharacter)
                 {
+                    // Create the character set
+                    HybridBody characterSet = writingSet.HybridBodies.Add();
+                    characterSet.set_Name(character.ToString() + "." + characterIndex);
+
                     // Create the local axis system
-                    AxisSystem localAxisSystem = ComputeLocalAxisSystem(partDocument.PartDocument, markingData, localAxisSet, localPointRef, projectionSurfaceRef, trackingCurveRef,
+                    AxisSystem localAxisSystem = ComputeLocalAxisSystem(partDocument.PartDocument, localAxisSet, localPointRef, projectionSurfaceRef, trackingCurveRef,
                         isXSameDirection, isYSameDirection, isZSameDirection);
 
                     Reference localAxisSystemRef = partDocument.PartDocument.Part.CreateReferenceFromObject(localAxisSystem);
+
+                    localAxisSystemRefList.Add(localAxisSystemRef);
 
                     // For each surface composing the CatiaCharacter
                     foreach (CatiaSurface surface in associatedCatiaCharacter.SurfaceList)
                     {
                         // Scale external contour
-                        surface.ExternalContour.Scale(scaleRatio, originPointRef);
+                        surface.ExternalContour.Scale(scaleRatio, originPointRef, keepHistoric, characterSet) ;
 
                         // Move external contour
-                        surface.ExternalContour.Move(originAxisSystemRef, localAxisSystemRef);
+                        surface.ExternalContour.Move(originAxisSystemRef, localAxisSystemRef, keepHistoric, characterSet);
 
                         // Project external contour
-                        surface.ExternalContour.Project(projectionSurfaceRef);
+                        surface.ExternalContour.Project(projectionSurfaceRef, keepHistoric, characterSet);
+
 
                         foreach (CatiaContour contour in surface.InternalContourList)
                         {
                             // Scale external contour
-                            contour.Scale(scaleRatio, originPointRef);
+                            contour.Scale(scaleRatio, originPointRef, keepHistoric, characterSet);
 
                             // Move external contour
-                            contour.Move(originAxisSystemRef, localAxisSystemRef);
+                            contour.Move(originAxisSystemRef, localAxisSystemRef, keepHistoric, characterSet);
 
                             // Project external contour
-                            contour.Project(projectionSurfaceRef);
+                            contour.Project(projectionSurfaceRef, keepHistoric, characterSet);
+
                         }
 
                         surface.ComputeSurface(projectionSurfaceRef);
@@ -317,7 +323,6 @@ namespace Graphy.Model.Generator
                         surfaceWithoutHistory.Compute();
                         associatedCatiaCharacter.Shape = surfaceWithoutHistory;
                     }
-
 
                     characterSet.AppendHybridShape(associatedCatiaCharacter.Shape);
 
@@ -345,6 +350,10 @@ namespace Graphy.Model.Generator
                 hybridShapeFactory.DeleteObjectForDatum(partDocument.PartDocument.Part.CreateReferenceFromObject(pointSet));
                 hybridShapeFactory.DeleteObjectForDatum(partDocument.PartDocument.Part.CreateReferenceFromObject(localAxisSet));
                 hybridShapeFactory.DeleteObjectForDatum(originAxisSystemRef);
+                foreach(Reference reference in localAxisSystemRefList)
+                {
+                    hybridShapeFactory.DeleteObjectForDatum(reference);
+                }
             }
 
             if (createVolume)
@@ -366,7 +375,17 @@ namespace Graphy.Model.Generator
 
         }
 
-        private CatiaCharacter GetCatiaCharacter(PartDocument partDocument, MarkingData markingData, HybridBody characterSet, char character, List<CatiaCharacter> characterList, double toleranceFactor)
+        /// <summary>
+        /// Get the character geometry, draw it in Catia and retrieves it.
+        /// </summary>
+        /// <param name="partDocument">Working part document.</param>
+        /// <param name="markingData">Marking datas.</param>
+        /// <param name="character">Character to draw.</param>
+        /// <param name="characterList">List of characters. Take the character from the list if it already exists.</param>
+        /// <param name="toleranceFactor">Define the precision of the drawing.</param>
+        /// <returns></returns>
+        private CatiaCharacter GetCatiaCharacter(PartDocument partDocument, MarkingData markingData, char character,
+            List<CatiaCharacter> characterList, double toleranceFactor)
         {
             CatiaCharacter catiaCharacter = new CatiaCharacter(partDocument, character);
 
@@ -378,7 +397,7 @@ namespace Graphy.Model.Generator
 
                 if (!catiaCharacter.IsSpaceCharacter)
                 {
-                    catiaCharacter.DrawCharacter(characterSet);
+                    catiaCharacter.DrawCharacter();
                 }
             }
 
@@ -389,7 +408,19 @@ namespace Graphy.Model.Generator
         }
 
 
-
+        /// <summary>
+        /// Create the local point to place the character following kerning values.
+        /// </summary>
+        /// <param name="character">Character to write.</param>
+        /// <param name="previousCharacter">Previous character in order to compute kerning.</param>
+        /// <param name="markingData">Marking datas.</param>
+        /// <param name="trackingCurveRef">Reference of the curve in which the point will be placed.</param>
+        /// <param name="startPointRef">Reference of the reference point.</param>
+        /// <param name="pointSet">Set where the point will be stored.</param>
+        /// <param name="isXSameDirection">Define the direction on the curve.</param>
+        /// <param name="currentLength">Length of the previous point on the curve. This parameter will be updated to the new point localization.</param>
+        /// <param name="scaleRatio">Scale ratio between the initial character form and the scaled one.</param>
+        /// <returns></returns>
         private Reference ComputeLocalPoint(CatiaCharacter character, CatiaCharacter previousCharacter, MarkingData markingData,
             Reference trackingCurveRef, Reference startPointRef, HybridBody pointSet,
             bool isXSameDirection, ref double currentLength, double scaleRatio)
@@ -404,11 +435,26 @@ namespace Graphy.Model.Generator
 
                 else
                 {
-                    currentLength += scaleRatio * previousCharacter.PathGeometry.Bounds.Width + markingData.CharacterHeight.Value * 0.1;
+                    double kerningValue = 0d;
 
-                    // *** Cannot manage to retrieve the kerning between characters ! *** //
-                    /*currentLength += scaleRatio * previousCharacter.PathGeometry.Bounds.Width +
-                        markingData.Font.GetKerning(previousCharacter, character, markingData.IsBold, markingData.IsItalic, markingData.CharacterHeight.Value);*/
+                    Int16 firstCharInt = Convert.ToInt16(previousCharacter.Value);
+                    Int16 secondCharInt = Convert.ToInt16(character.Value);
+
+                    foreach(SelectableFont.KerningPair pair in markingData.Font.KerningPairs)
+                    {
+                        if(pair.wFirst == firstCharInt && pair.wSecond == secondCharInt)
+                        {
+                            //kerningValue *= (1 + (Convert.ToDouble(pair.iKernAmount) / 100));
+                            kerningValue = Convert.ToDouble(pair.iKernAmount) / 1000;
+
+                            break;
+                        }
+                    }
+
+                    currentLength += scaleRatio * previousCharacter.PathGeometry.Bounds.Width
+                        + markingData.Font.GetRightSideBearing(previousCharacter.Value, markingData.CharacterHeight.Value, markingData.IsBold, markingData.IsItalic)
+                        + markingData.Font.GetLeftSideBearing(character.Value, markingData.CharacterHeight.Value, markingData.IsBold, markingData.IsItalic)
+                        + markingData.CharacterHeight.Value * kerningValue;
                 }
             }
             
@@ -422,8 +468,19 @@ namespace Graphy.Model.Generator
         }
 
 
-
-        private AxisSystem ComputeLocalAxisSystem(PartDocument partDocument, MarkingData markingData, HybridBody localAxisSystemSet, Reference localPointRef, Reference projectionSurfaceRef, Reference trackingCurveRef,
+        /// <summary>
+        /// Create the local axis system in order to orientate the character.
+        /// </summary>
+        /// <param name="partDocument">Working part document.</param>
+        /// <param name="localAxisSystemSet">Set where the local axis system will be stored.</param>
+        /// <param name="localPointRef">Reference of the origin point.</param>
+        /// <param name="projectionSurfaceRef">Reference of the tangential surface (Plane XY).</param>
+        /// <param name="trackingCurveRef">Reference of the tangential curve (X Axis).</param>
+        /// <param name="isXSameDirection">Define the X axis sens.</param>
+        /// <param name="isYSameDirection">Define the Y axis sens.</param>
+        /// <param name="isZSameDirection">Define the Z axis sens.</param>
+        /// <returns></returns>
+        private AxisSystem ComputeLocalAxisSystem(PartDocument partDocument, HybridBody localAxisSystemSet, Reference localPointRef, Reference projectionSurfaceRef, Reference trackingCurveRef,
             bool isXSameDirection, bool isYSameDirection, bool isZSameDirection)
         {
 

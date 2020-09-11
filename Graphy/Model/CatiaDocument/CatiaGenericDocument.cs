@@ -1,8 +1,5 @@
-﻿using DRAFTINGITF;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using INFITF;
-using MECMOD;
-using ProductStructureTypeLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;

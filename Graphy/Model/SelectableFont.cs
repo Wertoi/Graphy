@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Globalization;
 using Graphy.Model.CatiaShape;
+using System.Runtime.InteropServices;
 
 namespace Graphy.Model
 {
@@ -28,6 +29,7 @@ namespace Graphy.Model
         private bool _isCalculated;
         private string _supportedCharacterList;
         private bool _isDefault;
+        private KerningPair[] _kerningPairs;
 
 
         public FontFamily FontFamily
@@ -44,7 +46,7 @@ namespace Graphy.Model
             get => _isSelected;
             set
             {
-                if(!IsDefault || (IsDefault && value))
+                if (!IsDefault || (IsDefault && value))
                 {
                     Set(() => IsSelected, ref _isSelected, value);
                 }
@@ -80,6 +82,16 @@ namespace Graphy.Model
             }
         }
 
+        public KerningPair[] KerningPairs
+        {
+            get => _kerningPairs;
+            set
+            {
+                Set(() => KerningPairs, ref _kerningPairs, value);
+            }
+        }
+
+
         // PUBLIC METHODS
         public void ComputeSupportedCharacterList()
         {
@@ -87,7 +99,7 @@ namespace Graphy.Model
             {
                 for (ushort i = 0; i < ushort.MaxValue; i++)
                 {
-                    if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(i, out ushort glyphIndex))
+                    if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(i, out _))
                         SupportedCharacterList += Convert.ToChar(i);
                 }
             }
@@ -114,6 +126,7 @@ namespace Graphy.Model
             return selectedTypeface;
         }
 
+
         public PathGeometry GetCharacterGeometry(char c, double toleranceValue, bool isBold, bool isItalic)
         {
             int unicodeValue = Convert.ToUInt16(c);
@@ -134,99 +147,17 @@ namespace Graphy.Model
         }
 
 
-        public double GetLeftSideBearing(char c)
+        public double GetRightSideBearing(char c, double refHeight, bool isBold, bool isItalic)
         {
             int unicodeValue = Convert.ToUInt16(c);
 
-            if (FontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
-            {
-                if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
-                {
-                    return glyphTypeFace.LeftSideBearings[glyphIndex];
-                }
-                else
-                    return 0;
-            }
-            else
-                return 0;
-        }
-
-
-        public double GetRightSideBearing(char c)
-        {
-            int unicodeValue = Convert.ToUInt16(c);
-
-            if (FontFamily.GetTypefaces().First().TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
-            {
-                if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
-                {
-                    return glyphTypeFace.RightSideBearings[glyphIndex];
-                }
-                else
-                    return 0;
-            }
-            else
-                return 0;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="c1"></param>
-        /// <param name="c2"></param>
-        /// <param name="isBold"></param>
-        /// <param name="isItalic"></param>
-        /// <returns></returns>
-        public double GetKerning(CatiaCharacter c1, CatiaCharacter c2, bool isBold, bool isItalic, double characterHeight)
-        {
-            if (c1 != null)
-            {
-                Typeface selectedTypeface = GetTypeface(isBold, isItalic);
-                double emSize = 11;
-                double pixelPerDip = 96;
-
-                /*FormattedText c1FormattedText = new FormattedText(c1.Value.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                    selectedTypeface, emSize, Brushes.Black, pixelPerDip);
-
-                FormattedText c2FormattedText = new FormattedText(c2.Value.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                    selectedTypeface, emSize, Brushes.Black, pixelPerDip);*/
-
-
-                FormattedText formattedText = new FormattedText(c1.Value.ToString() + c2.Value.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                    selectedTypeface, emSize, Brushes.Black, pixelPerDip);
-
-                Geometry c1Geometry = formattedText.BuildHighlightGeometry(new Point(0, 0), 0, 1);
-                Geometry c2Geometry = formattedText.BuildHighlightGeometry(new Point(0, 0), 1, 1);
-                Geometry formattedTextGeometry = formattedText.BuildHighlightGeometry(new Point(0, 0), 0, 2);
-
-                double ratio1 = c1Geometry.Bounds.Width / c1.PathGeometry.Bounds.Width;
-
-                FormattedText referenceFormattedText = new FormattedText("M", CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                    selectedTypeface, emSize, Brushes.Black, pixelPerDip);
-
-                Geometry referenceFormattedTextGeometry = referenceFormattedText.BuildHighlightGeometry(new Point(0, 0), 0, 1);
-
-                double ratio2 = characterHeight / referenceFormattedTextGeometry.Bounds.Height;
-
-
-
-                return (formattedTextGeometry.Bounds.Width - (c1.PathGeometry.Bounds.Width + c2.PathGeometry.Bounds.Width) * ratio1 ) * ratio2;
-            }
-            else
-                return 0;
-
-        }
-
-
-        public double GetWidth(char c, Typeface selectedTypeface)
-        {
-            int unicodeValue = Convert.ToUInt16(c);
+            Typeface selectedTypeface = GetTypeface(isBold, isItalic);
 
             if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
             {
                 if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
                 {
-                    return glyphTypeFace.AdvanceWidths[glyphIndex];
+                    return glyphTypeFace.RightSideBearings[glyphIndex] * refHeight / glyphTypeFace.Height;
                 }
                 else
                     return 0;
@@ -235,6 +166,74 @@ namespace Graphy.Model
                 return 0;
         }
 
+        public double GetLeftSideBearing(char c, double refHeight, bool isBold, bool isItalic)
+        {
+            int unicodeValue = Convert.ToUInt16(c);
+
+            Typeface selectedTypeface = GetTypeface(isBold, isItalic);
+
+            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            {
+                if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
+                {
+                    return glyphTypeFace.LeftSideBearings[glyphIndex] * refHeight / glyphTypeFace.Height;
+                }
+                else
+                    return 0;
+            }
+            else
+                return 0;
+        }
+
+
+        // METHOD TO RETRIEVE KERNING PAIRS
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct KerningPair
+        {
+            public Int16 wFirst;
+            public Int16 wSecond;
+            public int iKernAmount;
+        }
+
+
+        [DllImport("Gdi32.dll", EntryPoint = "GetKerningPairs", SetLastError = true)]
+        static extern int GetKerningPairsW(int hdc, int nNumPairs, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] KerningPair[] kerningPairs);
+
+        [DllImport("Gdi32.dll", CharSet = CharSet.Unicode)]
+        static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+
+        [DllImport("Gdi32.dll", CharSet = CharSet.Unicode)]
+        static extern bool DeleteObject(IntPtr hdc);
+
+
+        public void ComputeKerningPairs()
+        {
+            // NOTE: We put the font size to 1000 because kerning value are expressed in 1000/em.
+            // The kerning value retrieved from the function is an integer so with a font size smaller than 1000, it will be rounded.
+            System.Drawing.Font font = new System.Drawing.Font(FontFamily.ToString(), 1000);
+
+            System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
+            g.PageUnit = System.Drawing.GraphicsUnit.Pixel;
+
+            // Select the HFONT into the HDC.
+            IntPtr hDC = g.GetHdc();
+            System.Drawing.Font fontClone = (System.Drawing.Font)font.Clone();
+            IntPtr hFont = fontClone.ToHfont();
+            SelectObject(hDC, hFont);
+
+            // Find out how many pairs there are and allocate them.
+            int numKerningPairs = GetKerningPairsW(hDC.ToInt32(), 0, null);
+            KerningPair[] kerningPairs = new KerningPair[numKerningPairs];
+
+            // Get the pairs.
+            GetKerningPairsW(hDC.ToInt32(), kerningPairs.Length, kerningPairs);
+
+            DeleteObject(hFont);
+            g.ReleaseHdc();
+
+            KerningPairs = kerningPairs;
+        }
 
     }
 }

@@ -73,7 +73,7 @@ namespace Graphy.Model.CatiaShape
         public override bool Equals(object obj)
         {
             // Is null?
-            if (Object.ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -100,22 +100,5 @@ namespace Graphy.Model.CatiaShape
             return base.GetHashCode();
         }
 
-        // 
-        public class InvalidShapeException : Exception
-        {
-            public InvalidShapeException()
-            {
-            }
-
-            public InvalidShapeException(string message)
-                : base(message)
-            {
-            }
-
-            public InvalidShapeException(string message, Exception inner)
-                : base(message, inner)
-            {
-            }
-        }
     }
 }

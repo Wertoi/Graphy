@@ -42,7 +42,7 @@ namespace Graphy.Model.CatiaShape
             {
                 _value = value;
 
-                if(Value == ' ')
+                if (Value == ' ')
                 {
                     Value = '_';
                     IsSpaceCharacter = true;
@@ -129,22 +129,22 @@ namespace Graphy.Model.CatiaShape
             }
         }
 
-        public void DrawCharacter(HybridBody set)
+        public void DrawCharacter()
         {
             double xCorrectif = PathGeometry.Bounds.Left;
 
-            for(int i = 0; i < SurfaceList.Count; i++)
+            for (int i = 0; i < SurfaceList.Count; i++)
             {
-                SurfaceList[i].ExternalContour.DrawContour(set, xCorrectif);
-                SurfaceList[i].ExternalContour.SmoothedShape.set_Name("Ext." + (i+1).ToString());
+                SurfaceList[i].ExternalContour.DrawContour(xCorrectif);
 
                 for (int j = 0; j < SurfaceList[i].InternalContourList.Count; j++)
                 {
-                    SurfaceList[i].InternalContourList[j].DrawContour(set, xCorrectif);
-                    SurfaceList[i].InternalContourList[j].SmoothedShape.set_Name("Ext." + (i+1).ToString() + "-Int." + (j+1).ToString());
+                    SurfaceList[i].InternalContourList[j].DrawContour(xCorrectif);
                 }
             }
         }
+
+
 
         public void AssembleSurfaces()
         {
@@ -170,10 +170,13 @@ namespace Graphy.Model.CatiaShape
 
         public CatiaCharacter Clone()
         {
-            CatiaCharacter copyCharacter = new CatiaCharacter(PartDocument, Value);
-            copyCharacter.PathGeometry = PathGeometry.Clone();
-            copyCharacter.IsSpaceCharacter = IsSpaceCharacter;
-            foreach(CatiaSurface surface in SurfaceList)
+            CatiaCharacter copyCharacter = new CatiaCharacter(PartDocument, Value)
+            {
+                PathGeometry = PathGeometry.Clone(),
+                IsSpaceCharacter = IsSpaceCharacter
+            };
+
+            foreach (CatiaSurface surface in SurfaceList)
             {
                 copyCharacter.SurfaceList.Add(surface.Copy());
             }
@@ -187,7 +190,7 @@ namespace Graphy.Model.CatiaShape
         public override bool Equals(object obj)
         {
             // Is null?
-            if (Object.ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }

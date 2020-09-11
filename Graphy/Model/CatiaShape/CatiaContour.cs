@@ -18,10 +18,6 @@ namespace Graphy.Model.CatiaShape
         }
 
         private Reference _supportReference;
-        private HybridShape _smoothedShape;
-        private Reference _smoothedShapeReference;
-        private bool _isSmoothedShapeComputed = false;
-        private double _area;
         private PathGeometry _pathGeometry;
 
         // Modify property Shape
@@ -32,54 +28,18 @@ namespace Graphy.Model.CatiaShape
             {
                 _shape = value;
                 ShapeReference = PartDocument.Part.CreateReferenceFromObject(Shape);
-
-                IsSmoothedShapeComputed = false;
             }
         }
 
-        public HybridShape SmoothedShape
-        {
-            get => _smoothedShape;
-            set
-            {
-                _smoothedShape = value;
-                SmoothedShapeReference = PartDocument.Part.CreateReferenceFromObject(SmoothedShape);
-            }
-        }
-
-        public Reference SmoothedShapeReference { get => _smoothedShapeReference; set => _smoothedShapeReference = value; }
         public Reference SupportReference { get => _supportReference; set => _supportReference = value; }
-        public double Area { get => _area; set => _area = value; }
         public PathGeometry PathGeometry { get => _pathGeometry; set => _pathGeometry = value; }
-        public bool IsSmoothedShapeComputed { get => _isSmoothedShapeComputed; set => _isSmoothedShapeComputed = value; }
-
-        public void ComputeSmoothedShape()
-        {
-            // Smooth the sub curve
-            HybridShapeCurveSmooth smoothSubCurve = HybridShapeFactory.AddNewCurveSmooth(ShapeReference);
-            smoothSubCurve.CorrectionMode = 3;
-            smoothSubCurve.SetMaximumDeviation(0.01);
-            smoothSubCurve.TopologySimplificationActivity = true;
-            smoothSubCurve.MaximumDeviationActivity = true;
-            smoothSubCurve.Support = SupportReference;
-            smoothSubCurve.Compute();
-
-            // Create a curve without historic to avoid huge data storage
-            Reference smoothSubCurveRef = PartDocument.Part.CreateReferenceFromObject(smoothSubCurve);
-            HybridShapeCurveExplicit smoothSubCurveWithoutHistoric = HybridShapeFactory.AddNewCurveDatum(smoothSubCurveRef);
-            smoothSubCurveWithoutHistoric.Compute();
-
-            SmoothedShape = (HybridShape)smoothSubCurveWithoutHistoric;
-
-            IsSmoothedShapeComputed = true;
-        }
 
 
-        public void DrawContour(HybridBody set, double xCorrectif)
+        public void DrawContour(double xCorrectif)
         {
             List<Reference> segmentRefList = new List<Reference>();
 
-            for(int i = 0; i < PathGeometry.Figures.First().Segments.Count; i++)
+            for (int i = 0; i < PathGeometry.Figures.First().Segments.Count; i++)
             {
                 PathSegment segment = PathGeometry.Figures.First().Segments[i];
 
@@ -212,46 +172,52 @@ namespace Graphy.Model.CatiaShape
             assemblyShape.Compute();
 
             Shape = assemblyShape;
-            ComputeSmoothedShape();
-
-            set.AppendHybridShape(SmoothedShape);
         }
 
 
-        public void Scale(double scaleRatio, Reference scaleCenterPointRef)
+        public void Scale(double scaleRatio, Reference scaleCenterPointRef, bool appendInSet, HybridBody set = null)
         {
-            HybridShapeScaling scaledShape;
-            if (IsSmoothedShapeComputed)
-                scaledShape = HybridShapeFactory.AddNewHybridScaling(SmoothedShapeReference, scaleCenterPointRef, scaleRatio);
-            else
-                scaledShape = HybridShapeFactory.AddNewHybridScaling(ShapeReference, scaleCenterPointRef, scaleRatio);
+            HybridShapeScaling scaledShape = HybridShapeFactory.AddNewHybridScaling(ShapeReference, scaleCenterPointRef, scaleRatio);
 
             scaledShape.Compute();
             Shape = (HybridShape)scaledShape;
+
+            // Add to set and hide it.
+            if (appendInSet)
+            {
+                set.AppendHybridShape(Shape);
+                HybridShapeFactory.GSMVisibility(ShapeReference, 0);
+            }
         }
 
-        public void Move(Reference referenceAxisRef, Reference targetAxisRef)
+        public void Move(Reference referenceAxisRef, Reference targetAxisRef, bool appendInSet, HybridBody set = null)
         {
-            HybridShapeAxisToAxis movedShape;
-            if (IsSmoothedShapeComputed)
-                movedShape = HybridShapeFactory.AddNewAxisToAxis(SmoothedShapeReference, referenceAxisRef, targetAxisRef);
-            else
-                movedShape = HybridShapeFactory.AddNewAxisToAxis(ShapeReference, referenceAxisRef, targetAxisRef);
+            HybridShapeAxisToAxis movedShape = HybridShapeFactory.AddNewAxisToAxis(ShapeReference, referenceAxisRef, targetAxisRef);
 
             movedShape.Compute();
             Shape = (HybridShape)movedShape;
+
+            // Add to set and hide it.
+            if (appendInSet)
+            {
+                set.AppendHybridShape(Shape);
+                HybridShapeFactory.GSMVisibility(ShapeReference, 0);
+            }
         }
 
-        public void Project(Reference projectionSurfaceRef)
+        public void Project(Reference projectionSurfaceRef, bool appendInSet, HybridBody set = null)
         {
-            HybridShapeProject projectedShape;
-            if (IsSmoothedShapeComputed)
-                projectedShape = HybridShapeFactory.AddNewProject(SmoothedShapeReference, projectionSurfaceRef);
-            else
-                projectedShape = HybridShapeFactory.AddNewProject(ShapeReference, projectionSurfaceRef);
+            HybridShapeProject projectedShape = HybridShapeFactory.AddNewProject(ShapeReference, projectionSurfaceRef);
 
             projectedShape.Compute();
             Shape = (HybridShape)projectedShape;
+
+            // Add to set and hide it.
+            if (appendInSet)
+            {
+                set.AppendHybridShape(Shape);
+                HybridShapeFactory.GSMVisibility(ShapeReference, 0);
+            }
         }
 
 
@@ -259,14 +225,14 @@ namespace Graphy.Model.CatiaShape
         {
             CatiaContour copyContour = new CatiaContour(PartDocument, SupportReference);
 
-            if(ShapeReference != null)
+            if (ShapeReference != null)
             {
                 HybridShape copyShape = (HybridShape)HybridShapeFactory.AddNewCurveDatum(ShapeReference);
                 copyShape.Compute();
 
                 copyContour.Shape = copyShape;
             }
-            
+
             copyContour.PathGeometry = PathGeometry.Clone();
 
             return copyContour;

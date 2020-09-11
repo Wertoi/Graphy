@@ -14,7 +14,7 @@ namespace Graphy.ViewModel
             // MESSENGER REGISTRATION
 
             // INPUT DATA TOKEN
-            MessengerInstance.Register<string>(this, Enum.InputDataToken.SelectionIncorrect, (dataTypeName) => SelectionIncorrect(dataTypeName));
+            MessengerInstance.Register<string>(this, Enum.InputDataToken.SelectionIncorrect, (_) => SelectionIncorrect());
 
             // PROCESS TOKEN
             MessengerInstance.Register<string>(this, Enum.ProcessToken.Failed, (msg) => ProcessFailed(msg));
@@ -167,7 +167,7 @@ namespace Graphy.ViewModel
             }
         }
 
-        private void SelectionIncorrect(string dataTypeName)
+        private void SelectionIncorrect()
         {
             IsGeneralExceptionRaised = true;
             ExceptionMessage = "Incorrect selection.\r\nSelection must have an unique name (avoid spaces and special characters).\r\nSelection from volumes are forbidden.";

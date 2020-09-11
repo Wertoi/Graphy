@@ -45,7 +45,7 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
@@ -59,10 +59,6 @@
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.DRAFTINGITF">
-      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.DRAFTINGITF.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.HybridShapeTypeLib">
       <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.HybridShapeTypeLib.dll</HintPath>
@@ -80,16 +76,8 @@
       <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.MECMOD.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Interop.NavigatorTypeLib">
-      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.NavigatorTypeLib.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="Interop.PARTITF">
       <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.PARTITF.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Interop.ProductStructureTypeLib">
-      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.ProductStructureTypeLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.SPATypeLib">

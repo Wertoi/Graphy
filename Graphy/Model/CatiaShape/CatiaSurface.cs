@@ -29,9 +29,12 @@ namespace Graphy.Model.CatiaShape
 
         public CatiaSurface Copy()
         {
-            CatiaSurface copySurface = new CatiaSurface(PartDocument);
-            copySurface.ExternalContour = ExternalContour.Copy();
-            foreach(CatiaContour internalContour in InternalContourList)
+            CatiaSurface copySurface = new CatiaSurface(PartDocument)
+            {
+                ExternalContour = ExternalContour.Copy()
+            };
+
+            foreach (CatiaContour internalContour in InternalContourList)
             {
                 copySurface.InternalContourList.Add(internalContour.Copy());
             }
@@ -103,16 +106,12 @@ namespace Graphy.Model.CatiaShape
                 Shape = HybridShapeFactory.AddNewHybridSplit(exteriorSplitSurfaceRef, internalContourListAssembledRef, -splitOrientation);
                 Shape.Compute();
 
-                // Hide
-                HybridShapeFactory.GSMVisibility(internalContourListAssembledRef, 0);
-                HybridShapeFactory.GSMVisibility(exteriorSplitSurfaceRef, 0);
             }
             else
             {
                 Shape = exteriorSplitSurface;
             }
 
-            
         }
 
 

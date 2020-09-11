@@ -30,8 +30,7 @@ namespace Graphy.Model.CatiaShape
         public double Y { get => _y; set => _y = value; }
         public double Z { get => _z; set => _z = value; }
 
-        // Modify property Shape
-        // When the Shape attribut is set, check if the shape is a point then retrieves point coordinates.
+
         new public HybridShape Shape
         {
             get => _shape;
@@ -63,7 +62,7 @@ namespace Graphy.Model.CatiaShape
         public override bool Equals(object obj)
         {
             // Is null?
-            if (Object.ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
