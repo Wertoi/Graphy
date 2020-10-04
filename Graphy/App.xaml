@@ -22,12 +22,15 @@
         <conv:BooleanToBooleanConverter x:Key="InvertBooleanConverter" True="False" False="True"/>
         <conv:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter" />
         <conv:BooleanToFontStyleConverter x:Key="BooleanToFontStyleConverter" />
-        <conv:BooleanToTextDecorationConverter x:Key="BooleanToTextDecorationConverter" />
+        <conv:BooleanToGridLengthConverter True="Auto" False="0" x:Key="BooleanToGridLengthConverter" />
+        <conv:BooleanToGridLengthConverter True="0" False="Auto" x:Key="InvertBooleanToGridLengthConverter" />
+        <conv:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
 
         <!-- BOOLEAN -->
         <sys:Boolean x:Key="False">False</sys:Boolean>
         <sys:Boolean x:Key="True">True</sys:Boolean>
-
+        
+        
         <!-- *** COLOR STATIC RESSOURCES *** -->
         <SolidColorBrush x:Key="Gray242" Color="#FFF2F2F2"/>
         <SolidColorBrush x:Key="Gray217" Color="#FFD9D9D9"/>
@@ -80,13 +83,28 @@
         </Style>
 
         <!-- LINK ICON PATH STYLE -->
-        <Style x:Key="LinkIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+        <Style x:Key="Link_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
             <Setter Property="Data" Value="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,
                     7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"/>
         </Style>
 
+        <!-- ADD ICON PATH STYLE -->
+        <Style x:Key="Add_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+        </Style>
+
+        <!-- COPY ICON PATH STYLE -->
+        <Style x:Key="Copy_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+        </Style>
+
+        <!-- DELETE ICON PATH STYLE -->
+        <Style x:Key="Delete_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z"/>
+        </Style>
+
         <!-- REFRESH ICON PATH STYLE -->
-        <Style x:Key="RefreshIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+        <Style x:Key="Refresh_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
             <Setter Property="Data" Value="M19,8L15,12H18A6,6 0 0,1 12,18C11,18 10.03,17.75 9.2,17.3L7.74,18.76C8.97,19.54 10.43,20 12,20A8,8 0 0,0 20,12H23M6,12A6,6 0 0,1 
                     12,6C13,6 13.97,6.25 14.8,6.7L16.26,5.24C15.03,4.46 13.57,4 12,4A8,8 0 0,0 4,12H1L5,16L9,12"/>
         </Style>
@@ -149,6 +167,16 @@
         <!-- OPEN FOLDER ICON PATH STYLE -->
         <Style x:Key="OpenFolderIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
             <Setter Property="Data" Value="M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z"/>
+        </Style>
+
+        <!-- SEARCH IMAGE ICON PATH STYLE -->
+        <Style x:Key="SearchImageIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
+            <Setter Property="Data" Value="M15.5,9C16.2,9 16.79,8.76 17.27,8.27C17.76,7.79 18,7.2 18,6.5C18,5.83 17.76,5.23 17.27,4.73C16.79,4.23 16.2,4 
+                    15.5,4C14.83,4 14.23,4.23 13.73,4.73C13.23,5.23 13,5.83 13,6.5C13,7.2 13.23,7.79 13.73,8.27C14.23,8.76 14.83,9 15.5,9M19.31,8.91L22.41,12L21,
+                    13.41L17.86,10.31C17.08,10.78 16.28,11 15.47,11C14.22,11 13.16,10.58 12.3,9.7C11.45,8.83 11,7.77 11,6.5C11,5.27 11.45,4.2 12.33,3.33C13.2,2.45 
+                    14.27,2 15.5,2C16.77,2 17.83,2.45 18.7,3.33C19.58,4.2 20,5.27 20,6.5C20,7.33 19.78,8.13 19.31,8.91M16.5,18H5.5L8.25,14.5L10.22,16.83L12.94,
+                    13.31L16.5,18M18,13L20,15V20C20,20.55 19.81,21 19.41,21.4C19,21.79 18.53,22 18,22H4C3.45,22 3,21.79 2.6,21.4C2.21,21 2,20.55 2,20V6C2,5.47 
+                    2.21,5 2.6,4.59C3,4.19 3.45,4 4,4H9.5C9.2,4.64 9.03,5.31 9,6H4V20H18V13Z"/>
         </Style>
 
 
@@ -242,6 +270,72 @@
             </Style.Triggers>
         </Style>
 
+        <!-- MORE TOGGLE BUTTON ICON -->
+        <Style x:Key="MoreToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1
+                    10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ALIGN VERTICAL BOTTOM TOGGLE BUTTON ICON -->
+        <Style x:Key="AlignVerticalBottomToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M22,22H2v-2h20V22z M10,2H7v16h3V2z M17,8h-3v10h3V8z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ALIGN VERTICAL MIDDLE TOGGLE BUTTON ICON -->
+        <Style x:Key="AlignVerticalMiddleToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="F1 M 22,9 v2 H2 v2 H22 Z       M 7,21 h3 V3 H7 V21 z      M 14,18 h3 V6 h-3 V18 z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ALIGN VERTICAL TOP TOGGLE BUTTON ICON -->
+        <Style x:Key="AlignVerticalTopToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M22,2v2H2V2H22z M7,22h3V6H7V22z M14,16h3V6h-3V16z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <!-- ICON OPTION TOGGLE BUTTON ICON -->
+        <Style x:Key="IconOptionToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                    <Setter Property="Fill" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TEXT OPTION TOGGLE BUTTON ICON -->
+        <Style x:Key="TextOptionToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
+            <Setter Property="Data" Value="M2.5,4v3h5v12h3V7h5V4H2.5z M21.5,9h-9v3h3v7h3v-7h3V9z"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                    <Setter Property="Fill" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
 
         <!-- *** ICON ONLY *** -->
@@ -303,6 +397,21 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        
+        <!-- TOGGLE BUTTON WITH IMAGE TEXTBLOCK STYLE -->
+        <Style x:Key="ToggleButtonWithImageTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers> 
+        </Style>
 
 
         <!-- TOOLTIP STYLE -->
@@ -343,7 +452,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBox}">
-                        <TextBlock Text="{TemplateBinding Text}"  TextTrimming="CharacterEllipsis" />
+                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                            <TextBlock Text="{TemplateBinding Text}" TextTrimming="CharacterEllipsis" Margin="{TemplateBinding Padding}"/>
+                        </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -355,7 +466,7 @@
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Setter Property="BorderBrush" Value="#FFACACAC"/>
             <Setter Property="Padding" Value="0,10,0,5"/>
-            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Margin" Value="0,2,10,2"/>
         </Style>
 
         <!-- NORMAL TEXTBOX STYLE -->
@@ -551,11 +662,25 @@
         </Style>
 
 
-        <!-- TOGGLED RADIO BUTTON STYLE -->
-        <Style x:Key="ToggledRadioButtonStyle" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource NormalToggleButton}">
+        <!-- TRANSPARENT TOGGLED RADIO BUTTON STYLE -->
+        <Style x:Key="TransparentToggledRadioButtonStyle" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource NormalToggleButton}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <!-- NORMAL TOGGLED RADIO BUTTON STYLE -->
+        <Style x:Key="NormalToggledRadioButtonStyle" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource NormalToggleButton}">
+            <Setter Property="Background" Value="{StaticResource Gray242}" />
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SecondaryColorLight}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
 

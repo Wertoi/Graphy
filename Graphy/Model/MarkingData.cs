@@ -40,8 +40,10 @@ namespace Graphy.Model
         public const string DEFAULT_PROJECTION_SURFACE_NAME = "No surface selected";
         public const string DEFAULT_AXIS_SYSTEM_NAME = "No axis system selected";
 
+        private bool _isText = true; // true for text and false for icon.
         private LinkableData<string> _text;
         private SelectableFont _font;
+        private Icon _icon;
         private LinkableData<double> _characterHeight;
         private LinkableData<double> _extrusionHeight;
         private string _trackingCurveName;
@@ -51,6 +53,15 @@ namespace Graphy.Model
         private bool _isBold;
         private bool _isItalic;
 
+
+        public bool IsText
+        {
+            get => _isText;
+            set
+            {
+                Set(() => IsText, ref _isText, value);
+            }
+        }
 
         public LinkableData<string> Text
         {
@@ -67,6 +78,15 @@ namespace Graphy.Model
             set
             {
                 Set(() => Font, ref _font, value);
+            }
+        }
+
+        public Icon Icon
+        {
+            get => _icon;
+            set
+            {
+                Set(() => Icon, ref _icon, value);
             }
         }
 

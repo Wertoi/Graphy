@@ -73,7 +73,7 @@
 
                         <StackPanel Orientation="Vertical">
 
-                            <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                            <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}"
                                              Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByNameCommand}"
                                              CommandParameter="{StaticResource True}"
                                              IsChecked="True" >
@@ -89,7 +89,7 @@
                             </RadioButton>
 
 
-                            <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                            <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}"
                                              Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByNameCommand}"
                                              CommandParameter="{StaticResource False}" >
                                 <StackPanel Orientation="Horizontal">
@@ -104,7 +104,7 @@
                             </RadioButton>
 
 
-                            <RadioButton Style="{StaticResource ToggledRadioButtonStyle}"
+                            <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}"
                                              Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SortByFavoriteCommand}" >
                                 <StackPanel Orientation="Horizontal">
                                     <Viewbox Style="{StaticResource IconViewBox}">

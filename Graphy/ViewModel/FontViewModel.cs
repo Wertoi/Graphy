@@ -185,7 +185,9 @@ namespace Graphy.ViewModel
         {
             SettingsFontCollection.SortDescriptions.Clear();
             SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("IsSelected", ListSortDirection.Descending));
+            SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Ascending));
         }
+
 
         private RelayCommand _clearSearchCommand;
         public RelayCommand ClearSearchCommand { get => _clearSearchCommand; set => _clearSearchCommand = value; }

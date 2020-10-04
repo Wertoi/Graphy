@@ -13,6 +13,8 @@ using GalaSoft.MvvmLight.Command;
 using INFITF;
 using MECMOD;
 using Graphy.Model.CatiaDocument;
+using Graphy.Model.CatiaShape;
+using Graphy.Enum;
 
 namespace Graphy.ViewModel
 {
@@ -27,6 +29,7 @@ namespace Graphy.ViewModel
 
             // MESSENGER REGISTRATION
             MessengerInstance.Register<SelectableFont>(this, Enum.InputDataToken.SelectedFontChanged, (font) => { MarkingData.Font = font; });
+            MessengerInstance.Register<Icon>(this, Enum.InputDataToken.SelectedIconChanged, (icon) => { MarkingData.Icon = icon; });
             MessengerInstance.Register<CatiaPartDocument>(this, Enum.CatiaToken.SelectedPartDocumentChanged, (partDoc) => { _selectedPartDocument = partDoc; CheckIfCanGenerate(); });
 
             MessengerInstance.Register<string>(this, Enum.DesignTableToken.DesignTableLoaded, (fullPath) => DesignTableLoaded(fullPath));
@@ -35,6 +38,7 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<double>(this, Enum.SettingToken.ToleranceFactorChanged, (toleranceFactor) => { _toleranceFactor = toleranceFactor; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.KeepHistoricChanged, (keepHistoric) => { _keepHistoric = keepHistoric; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
+            MessengerInstance.Register<VerticalAlignment>(this, Enum.SettingToken.VerticalAlignmentChanged, (verticalAlignment) => { _verticalAlignment = verticalAlignment; });
 
             // COMMANDS INITIALIZATION
             SelectTrackingCurveCommand = new RelayCommand(SelectTrackingCurveCommandAction);
@@ -61,6 +65,7 @@ namespace Graphy.ViewModel
         private double _toleranceFactor;
         private bool _keepHistoric;
         private bool _createVolume;
+        private VerticalAlignment _verticalAlignment;
 
         private DesignTableParameter _tempTextParameter;
         private DesignTableParameter _tempCharacterHeightParameter;
@@ -290,11 +295,13 @@ namespace Graphy.ViewModel
                         // If the design table mode is selected
                         if (IsDesignTableActivated)
                         {
-                            markingGenerator.RunForCatalogPart(_selectedPartDocument.CatiaEnv, MarkingData, _designTableFullPath, _partList, _toleranceFactor, _keepHistoric, _createVolume);
+                            markingGenerator.RunForCatalogPart(_selectedPartDocument.CatiaEnv, MarkingData, _designTableFullPath, _partList,
+                                _toleranceFactor, _keepHistoric, _createVolume, _verticalAlignment);
                         }
                         else
                         {
-                            markingGenerator.Run(_selectedPartDocument, MarkingData, new List<Model.CatiaShape.CatiaCharacter>(), _toleranceFactor, _keepHistoric, _createVolume);
+                            markingGenerator.Run(_selectedPartDocument, MarkingData, new List<Model.CatiaShape.CatiaCharacter>(),
+                                _toleranceFactor, _keepHistoric, _createVolume, _verticalAlignment);
                         }
 
                         MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);

@@ -9,10 +9,6 @@ namespace Graphy.Converter
 {
     public class EnumToCollectionConverter : IValueConverter
     {
-        public EnumToCollectionConverter()
-        {
-            
-        }
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

@@ -117,19 +117,23 @@
     <Compile Include="Attribute\LocalizationKeyAttribute.cs" />
     <Compile Include="Converter\EnumToCollectionConverter.cs" />
     <Compile Include="Converter\LocalizedEnumToStringConverter.cs" />
+    <Compile Include="Converter\EnumToBooleanConverter.cs" />
     <Compile Include="CustomControl\LoadingBox.xaml.cs">
       <DependentUpon>LoadingBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Enum\Language.cs" />
     <Compile Include="DesignTableReader.cs" />
+    <Compile Include="Enum\VerticalAlignment.cs" />
     <Compile Include="Model\CatiaDocument\CatiaGenericDocument.cs" />
     <Compile Include="Model\CatiaDocument\CatiaPartDocument.cs" />
     <Compile Include="Model\CatiaFile.cs" />
     <Compile Include="Model\CatiaShape\CatiaCharacter.cs" />
     <Compile Include="Model\CatiaShape\CatiaContour.cs" />
+    <Compile Include="Model\CatiaShape\CatiaDrawableShape.cs" />
     <Compile Include="Model\CatiaShape\CatiaGenericShape.cs" />
     <Compile Include="Model\CatiaShape\CatiaSurface.cs" />
     <Compile Include="Model\DesignTableParameter.cs" />
+    <Compile Include="Model\Icon.cs" />
     <Compile Include="Model\LinkableData.cs" />
     <Compile Include="Model\SelectableFont.cs" />
     <Compile Include="CustomControl\TextBoxWithUnit.cs" />
@@ -142,6 +146,7 @@
     <Compile Include="ViewModel\CatiaViewModel.cs" />
     <Compile Include="ViewModel\DesignTableViewModel.cs" />
     <Compile Include="ViewModel\FontViewModel.cs" />
+    <Compile Include="ViewModel\IconViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\ProcessViewModel.cs" />
     <Compile Include="ViewModel\InputDataViewModel.cs" />
@@ -151,6 +156,9 @@
     </Compile>
     <Compile Include="View\FontView.xaml.cs">
       <DependentUpon>FontView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\IconView.xaml.cs">
+      <DependentUpon>IconView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingView.xaml.cs">
       <DependentUpon>SettingView.xaml</DependentUpon>
@@ -184,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\FontView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\IconView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

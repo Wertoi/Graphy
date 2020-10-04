@@ -81,5 +81,16 @@ namespace Graphy
 
         // ***** END OF FONT VIEW MANAGEMENT *****
 
+
+
+        private void IconButton_Click(object sender, RoutedEventArgs e)
+        {
+            IconView.Visibility = Visibility.Visible;
+        }
+
+        private void IconView_BackButtonClicked(object sender, EventArgs e)
+        {
+            IconView.Visibility = Visibility.Collapsed;
+        }
     }
 }

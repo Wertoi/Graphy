@@ -14,6 +14,7 @@ using Graphy.Model;
 using Graphy.Model.Generator;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using Graphy.Model.CatiaShape;
 
 namespace Graphy.ViewModel
 {
@@ -44,6 +45,7 @@ namespace Graphy.ViewModel
         private double _toleranceFactor;
         private bool _keepHistoric;
         private bool _createVolume;
+        private VerticalAlignment _verticalAlignment;
 
         public Language SelectedLanguage
         {
@@ -120,6 +122,23 @@ namespace Graphy.ViewModel
             }
         }
 
+        public VerticalAlignment VerticalAlignment
+        {
+            get => _verticalAlignment;
+            set
+            {
+                Set(() => VerticalAlignment, ref _verticalAlignment, value);
+
+                if (!_isReadingUserPreferenceFlag)
+                {
+                    Properties.Settings.Default.VerticalAlignment = (int)VerticalAlignment;
+                    Properties.Settings.Default.Save();
+                }
+
+                MessengerInstance.Send(VerticalAlignment, Enum.SettingToken.VerticalAlignmentChanged);
+            }
+        }
+
 
         // COMMANDS
 
@@ -164,6 +183,7 @@ namespace Graphy.ViewModel
             ToleranceFactor = Properties.Settings.Default.ToleranceFactor;
             KeepHistoric = Properties.Settings.Default.KeepHistoric;
             CreateVolume = Properties.Settings.Default.CreateVolume;
+            VerticalAlignment = (VerticalAlignment)Properties.Settings.Default.VerticalAlignment;
 
             MessengerInstance.Send(Properties.Settings.Default.FavoriteFontCollection, Enum.SettingToken.UserPreferencesChanged);
 

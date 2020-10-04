@@ -24,6 +24,7 @@ namespace Graphy.ViewModel
             SimpleIoc.Default.Register<SettingViewModel>(true);
             SimpleIoc.Default.Register<CatiaViewModel>(true);
             SimpleIoc.Default.Register<DesignTableViewModel>(true);
+            SimpleIoc.Default.Register<IconViewModel>(true);
         }
 
         public FontViewModel FontViewModel
@@ -71,6 +72,14 @@ namespace Graphy.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<DesignTableViewModel>();
+            }
+        }
+
+        public IconViewModel IconViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<IconViewModel>();
             }
         }
 

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Graphy"
+             xmlns:enum="clr-namespace:Graphy.Enum"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="450">
 
@@ -15,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="15,15,0,15">
-            
+
             <!-- BACK BUTTON -->
             <Button x:Name="BackButton" Style="{StaticResource NormalButton}" Click="BackButton_Click">
                 <Viewbox Style="{StaticResource IconViewBox}">
@@ -28,7 +29,7 @@
             <TextBlock Text="{local:Loc Settings_Title}" FontSize="22" Foreground="{StaticResource PrimaryColorDark}" VerticalAlignment="Center" Margin="20,0,0,0"/>
 
         </StackPanel>
-        
+
         <ScrollViewer Grid.Row="1" Margin="15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
 
@@ -68,29 +69,74 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}"
                                Text="{local:Loc Settings_Marking_ToleranceFactorLabel}"/>
-                    
+
                     <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource NormalTextBox}"
                              Text="{Binding Source={StaticResource Locator}, Path=SettingViewModel.ToleranceFactor, Mode=TwoWay}"/>
-                    
+
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}"
                                Text="{local:Loc Settings_Marking_KeepHistoricLabel}" />
-                    
+
                     <CheckBox Grid.Row="1" Grid.Column="1" Style="{StaticResource YesNoCheckBox}" Margin="0,7"
                               IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.KeepHistoric, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}"
                                Text="{local:Loc Settings_Marking_CreateVolumeLabel}"/>
-                    
+
                     <CheckBox Grid.Row="2" Grid.Column="1" Style="{StaticResource YesNoCheckBox}" Margin="0,7"
                               IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume, Mode=TwoWay}"/>
 
-                </Grid>
+                    <!-- ALIGNMENT INPUT -->
+                    <!--#region -->
 
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Vertical alignment" Style="{StaticResource LabelFormTextBlock}"/>
+
+                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="-1,0,0,0">
+
+                        <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}" Background="{StaticResource Gray242}"
+                                     IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:VerticalAlignment.Bottom}}">
+                            
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource AlignVerticalBottomToggleButtonIcon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}" Background="{StaticResource Gray242}"
+                                     IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:VerticalAlignment.Center}}">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource AlignVerticalMiddleToggleButtonIcon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}" Background="{StaticResource Gray242}"
+                                     IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:VerticalAlignment.Top}}">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource AlignVerticalTopToggleButtonIcon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </RadioButton>
+
+                    </StackPanel>
+
+                    <!--#endregion-->
+
+                </Grid>
 
             </StackPanel>
         </ScrollViewer>
@@ -101,7 +147,7 @@
                 <LineBreak/>
                 <Run Text="By Guillaume Andrieu"/>
                 <LineBreak/>
-                <Run Text="v3.1"/>
+                <Run Text="v3.3"/>
             </TextBlock>
             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <Hyperlink Command="{Binding Source={StaticResource Locator}, Path=SettingViewModel.ShowLicenceCommand}">

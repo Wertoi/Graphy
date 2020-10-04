@@ -20,6 +20,7 @@ namespace Graphy.Enum
     public enum InputDataToken
     {
         SelectedFontChanged,
+        SelectedIconChanged,
         SelectionIncorrect
     };
 
@@ -38,7 +39,8 @@ namespace Graphy.Enum
         LicenceFileReadingFailed,
         ToleranceFactorChanged,
         KeepHistoricChanged,
-        CreateVolumeChanged
+        CreateVolumeChanged,
+        VerticalAlignmentChanged
     }
 
     public enum DesignTableToken

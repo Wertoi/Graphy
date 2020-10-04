@@ -35,7 +35,7 @@ namespace Graphy.Model.CatiaShape
         public PathGeometry PathGeometry { get => _pathGeometry; set => _pathGeometry = value; }
 
 
-        public void DrawContour(double xCorrectif)
+        public void DrawContour(double xCorrectif, double yCorrectif)
         {
             List<Reference> segmentRefList = new List<Reference>();
 
@@ -53,7 +53,7 @@ namespace Graphy.Model.CatiaShape
                     foreach (System.Windows.Point point in ((PolyLineSegment)segment).Points)
                     {
                         // Get the point and store it in the list
-                        tempPointList.Add(new CatiaPoint(PartDocument, point.X - xCorrectif, -point.Y, 0));
+                        tempPointList.Add(new CatiaPoint(PartDocument, point.X - xCorrectif, -point.Y + yCorrectif, 0));
                         tempPointList.Last().ComputePointShape();
                     }
 

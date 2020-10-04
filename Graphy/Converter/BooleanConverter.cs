@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Graphy.Converter
@@ -40,6 +41,15 @@ namespace Graphy.Converter
         }
     }
 
+    public sealed class BooleanToGridLengthConverter : BooleanConverter<GridLength>
+    {
+        public BooleanToGridLengthConverter() :
+            base(new GridLength(1, GridUnitType.Auto), new GridLength(0, GridUnitType.Pixel))
+        {
+
+        }
+    }
+
     public sealed class BooleanToBooleanConverter : BooleanConverter<bool>
     {
         public BooleanToBooleanConverter() :
@@ -67,12 +77,13 @@ namespace Graphy.Converter
         }
     }
 
-    public sealed class BooleanToTextDecorationConverter : BooleanConverter<TextDecorationCollection>
+    // NOT USE FOR NOW. DO NOT KNOW HOW TO DRAW UNDERLINED CHARACTERS.
+    /*public sealed class BooleanToTextDecorationConverter : BooleanConverter<TextDecorationCollection>
     {
         public BooleanToTextDecorationConverter() :
             base(TextDecorations.Underline, null)
         {
 
         }
-    }
+    }*/
 }
