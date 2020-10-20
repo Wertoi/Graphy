@@ -4,6 +4,7 @@
 Graphy allows you to write 3D texts easily in Catia V5 on complex surfaces and directions.
 Text obtained can be kept as a surface or in volume but cannot be modified directly in Catia.
 Graphy only uses Generative Shape Design module; it does not need other specific Catia V5 license and supports all Windows fonts.
+![Hello World](/Images/Hello_World.png)
 
 From version v3.2, it has been tested with Catia V5 R19, R20 and R28.
 Work fine if compiled with the associated reference Catia dlls:
@@ -17,13 +18,14 @@ Work fine if compiled with the associated reference Catia dlls:
 ## How to use
 Graphy needs 4 basic shapes:
 - A surface where the projection is done.
-- A line or a curve to follow. (Should be constructed on the surface).
-- A starting point (Should be constructed on the surface and on the line).
-- An axis system to orientate the drawing.
-![Hello World](/Images/Hello_World.png)
-
-### Axis system orientation possibilities
-![Axis system orientation possibilities](/Images/AxisSystemEffect.png)
+- A line or a curve to follow. Should be constructed on the surface.
+- A point which determines the starting point. Should be constructed on the surface and on the line.
+- An axis system to orientate the drawing:
+  - The axis system origin must be "Start Point".
+  - The X axis must be the tangent to "Tracking curve" passing by its origin. Its direction points the marking direction.
+  - The Y axis is the results of X and Z axis. Its direction points the characters direction.
+  - The Z axis must be the normal to "Projection surface" passing by its origin. Its direction points the material adding direction.
+![AxisSystemEffect](/Images/AxisSystemEffect.png)
 
 ## Third party software
 
