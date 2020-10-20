@@ -1,9 +1,9 @@
 # Graphy
 
 ## General Info
-Graphy allows you to write 3D texts easily in Catia V5 on complex surfaces and directions.
-Text obtained can be kept as a surface or in volume but cannot be modified directly in Catia.
-Graphy only uses Generative Shape Design module; it does not need other specific Catia V5 license.
+Graphy allows you to write 3D texts easily in Catia V5 on complex surfaces and directions.<br />
+Text obtained can be kept as a surface or in volume but cannot be modified directly in Catia.<br />
+Graphy only uses Generative Shape Design module; it does not need other specific Catia V5 license.<br />
 ![Hello World](/Images/Hello_World.png)
 
 From version v3.2, it has been tested with Catia V5 R19, R20 and R28.
@@ -26,10 +26,11 @@ Graphy needs 4 basic shapes:
   - The X axis must be the tangent to the curve passing by its origin. Its direction points the marking direction.
   - The Y axis is the results of X and Z axis. Its direction points the characters direction.
   - The Z axis must be the normal to the surface passing by its origin. Its direction points the material adding direction.
-
+<br />
+Example of possible orientations just by changing the axis system directions.<br />
 ![AxisSystemEffect](/Images/AxisSystemEffect.png)
 
-Example of possible orientations just by changing the axis system directions.
+
 
 
 ## Third party software
