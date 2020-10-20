@@ -27,6 +27,7 @@ Graphy needs 4 basic shapes:
   - The Z axis must be the normal to the surface passing by its origin. Its direction points the material adding direction.
 
 Example of possible orientations just by changing the axis system directions.
+
 ![AxisSystemEffect](/Images/AxisSystemEffect.png)
 
 ## Third party software
