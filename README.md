@@ -14,6 +14,16 @@ Work fine if compiled with the associated reference Catia dlls:
 - MECMOD.dll
 - KnowledgewareTypeLib.dll
 
+## How to use
+![test](/Images/Hello_World.png)
+Graphy needs 4 elements:
+- A surface where the projection is done.
+- A line (or a curve) to follow.
+- A starting point.
+- An axis system 
+
+![Axis system orientation possibilities](/Images/AxisSystemEffect.png)
+
 ## Third party software
 
 MVVMLight
