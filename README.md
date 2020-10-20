@@ -15,6 +15,7 @@ Work fine if compiled with the associated reference Catia dlls:
 - MECMOD.dll
 - KnowledgewareTypeLib.dll
 
+
 ## How to use
 Graphy needs 4 basic shapes:
 - A surface where the projection is done.
@@ -27,7 +28,9 @@ Graphy needs 4 basic shapes:
   - The Z axis must be the normal to the surface passing by its origin. Its direction points the material adding direction.
 
 ![AxisSystemEffect](/Images/AxisSystemEffect.png)
+
 Example of possible orientations just by changing the axis system directions.
+
 
 ## Third party software
 
