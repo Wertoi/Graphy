@@ -26,9 +26,8 @@ Graphy needs 4 basic shapes:
   - The Y axis is the results of X and Z axis. Its direction points the characters direction.
   - The Z axis must be the normal to the surface passing by its origin. Its direction points the material adding direction.
 
-Example of possible orientations just by changing the axis system directions.
-
 ![AxisSystemEffect](/Images/AxisSystemEffect.png)
+Example of possible orientations just by changing the axis system directions.
 
 ## Third party software
 
