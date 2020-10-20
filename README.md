@@ -1,8 +1,8 @@
 # Graphy
 
 ## General Info
-Graphy allows you to write 3D texts easily in Catia V5 on complex surfaces and directions.<br />
-Text obtained can be kept as a surface or in volume but cannot be modified directly in Catia.<br />
+Graphy allows you to write texts or vector images easily in Catia V5 on complex surfaces and directions.<br />
+Drawings obtained can be kept as a surface or in volume but cannot be modified directly in Catia.<br />
 Graphy only uses Generative Shape Design module; it does not need other specific Catia V5 license.<br />
 ![Hello World](/Images/Hello_World.png)
 
