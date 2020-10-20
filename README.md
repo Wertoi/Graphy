@@ -15,14 +15,14 @@ Work fine if compiled with the associated reference Catia dlls:
 - KnowledgewareTypeLib.dll
 
 ## How to use
-![test](/Images/Hello_World.png)
 Graphy needs 4 elements:
 - A surface where the projection is done.
 - A line (or a curve) to follow.
 - A starting point.
 - An axis system 
+![Hello World](/Images/Hello_World.png)
 
-![Axis system orientation possibilities](/Images/AxisSystemEffect.png)
+![Axis system orientation possibilities](/Images/AxisSystemEffect.png "Axis system orientation possibilities")
 
 ## Third party software
 
