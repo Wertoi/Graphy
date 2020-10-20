@@ -17,7 +17,7 @@ Work fine if compiled with the associated reference Catia dlls:
 
 
 ## How to use
-Graphy needs 4 basic shapes:
+Graphy just needs 4 basic shapes:
 - A surface where the projection is done.
 - A line or a curve to follow. Should be constructed on the surface.
 - A starting point. Should be constructed on the surface and on the line.
@@ -27,7 +27,7 @@ Graphy needs 4 basic shapes:
   - The Y axis is the results of X and Z axis. Its direction points the characters direction.
   - The Z axis must be the normal to the surface passing by its origin. Its direction points the material adding direction.
 
-Example of possible orientations just by changing the axis system directions.
+Example of possible orientations by changing the axis system directions.
 
 ![AxisSystemEffect](/Images/AxisSystemEffect.png)
 
