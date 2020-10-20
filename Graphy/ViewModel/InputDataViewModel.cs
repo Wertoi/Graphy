@@ -277,7 +277,8 @@ namespace Graphy.ViewModel
         {
             MessengerInstance.Send<CatiaPartDocument>(_selectedPartDocument, Enum.CatiaToken.Refresh);
 
-            if (IsNameUnique(MarkingData.ProjectionSurfaceName) && IsNameUnique(MarkingData.StartPointName) && IsNameUnique(MarkingData.TrackingCurveName) && IsNameUnique(MarkingData.AxisSystemName))
+            if (IsNameUnique(MarkingData.ProjectionSurfaceName) && IsNameUnique(MarkingData.StartPointName) && IsNameUnique(MarkingData.TrackingCurveName)
+                && IsNameUnique(MarkingData.AxisSystemName))
             {
                 if(IsDesignTableActivated)
                     MessengerInstance.Send<int>(_partList.Count, Enum.ProcessToken.ComplexStarted);
@@ -362,20 +363,15 @@ namespace Graphy.ViewModel
                         CanGenerate = true;
                     }
                     else
-                    {
                         CanGenerate = false;
-                    }
                 }
                 else
                 {
                     if (MarkingData.Text.Value != "" && MarkingData.CharacterHeight.Value > 0 && MarkingData.ExtrusionHeight.Value != 0)
-                    {
                         CanGenerate = true;
-                    }
+
                     else
-                    {
                         CanGenerate = false;
-                    }
                 }
             }
             else

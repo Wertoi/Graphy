@@ -112,27 +112,34 @@ namespace Graphy.Model.CatiaShape
             }
         }
 
-        public void DrawCharacter(VerticalAlignment verticalAlignment)
+        public void DrawCharacter(VerticalAlignment verticalAlignment, PathGeometry refCharacterGeometry = null)
         {
             double xCorrectif = PathGeometry.Bounds.Left;
             double yCorrectif;
+            PathGeometry tempGeometry;
+
+            if (refCharacterGeometry == null)
+                tempGeometry = PathGeometry;
+            else
+                tempGeometry = refCharacterGeometry;
+            
 
             switch(verticalAlignment)
             {
                 case VerticalAlignment.Top:
-                    yCorrectif = PathGeometry.Bounds.Top;
+                    yCorrectif = tempGeometry.Bounds.Top;
                     break;
 
                 case VerticalAlignment.Center:
-                    yCorrectif = (PathGeometry.Bounds.Top + PathGeometry.Bounds.Bottom) / 2;
+                    yCorrectif = (tempGeometry.Bounds.Top + tempGeometry.Bounds.Bottom) / 2;
                     break;
 
                 case VerticalAlignment.Bottom:
-                    yCorrectif = PathGeometry.Bounds.Bottom;
+                    yCorrectif = tempGeometry.Bounds.Bottom;
                     break;
 
                 default:
-                    yCorrectif = (PathGeometry.Bounds.Top + PathGeometry.Bounds.Bottom) / 2;
+                    yCorrectif = tempGeometry.Bounds.Bottom;
                     break;
             }
 

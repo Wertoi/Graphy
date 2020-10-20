@@ -175,11 +175,15 @@ namespace Graphy.Model
                 Document previousActiveDocument = Application.ActiveDocument;
                 newCatiaDocument.Document = Application.Documents.Open(file.FullPath);
 
-                do
+                if(newCatiaDocument.Document != previousActiveDocument)
                 {
-                    newCatiaDocument.Document.Activate();
+
+                    do
+                    {
+                        newCatiaDocument.Document.Activate();
+                    }
+                    while (Application.ActiveDocument == previousActiveDocument);
                 }
-                while (Application.ActiveDocument == previousActiveDocument);
             }
 
             return newCatiaDocument;

@@ -17,27 +17,14 @@ namespace Graphy.ViewModel
         public IconViewModel()
         {
             IconCollection = new ObservableCollection<Icon>();
-            IconCollection.Add(new Icon()
-            {
-                Name = "Link_ButtonIcon",
-                PathData = "M22,22H2v-2h20V22z M10,2H7v16h3V2z M17,8h-3v10h3V8z"
-            });
 
-            IconCollection.Add(new Icon()
-            {
-                Name = "Refresh_ButtonIcon",
-                PathData = "M22,2v2H2V2H22z M7,22h3V6H7V22z M14,16h3V6h-3V16z"
-            });
-
+            IconCollection.Add(Icon.Default());
             SelectedIcon = IconCollection.First();
+            DrawIconCommandAction(SelectedIcon);
 
-            Add_ButtonIconCommand = new RelayCommand(() => IconCollection.Add(new Icon()));
-            Delete_ButtonIconCommand = new RelayCommand<Icon>((icon) => IconCollection.Remove(icon));
-            CopyIconCommand = new RelayCommand<Icon>((icon) => IconCollection.Add(new Icon()
-            {
-                Name = icon.Name,
-                PathData = icon.PathData
-            }));
+            AddIconCommand = new RelayCommand(() => AddIconCommandAction());
+            DeleteIconCommand = new RelayCommand<Icon>((icon) => DeleteIconCommandAction(icon));
+            CopyIconCommand = new RelayCommand<Icon>((icon) => CopyIconCommandAction(icon));
             DrawIconCommand = new RelayCommand<Icon>((icon) => DrawIconCommandAction(icon));
         }
         
@@ -63,16 +50,41 @@ namespace Graphy.ViewModel
         }
 
 
-        private RelayCommand _Add_ButtonIconCommand;
-        public RelayCommand Add_ButtonIconCommand { get => _Add_ButtonIconCommand; set => _Add_ButtonIconCommand = value; }
+        private RelayCommand _addIconCommand;
+        public RelayCommand AddIconCommand { get => _addIconCommand; set => _addIconCommand = value; }
+
+        private void AddIconCommandAction()
+        {
+            IconCollection.Add(Icon.Default());
+
+            SelectedIcon = IconCollection.Last();
+        }
 
 
-        private RelayCommand<Icon> _Delete_ButtonIconCommand;
-        public RelayCommand<Icon> Delete_ButtonIconCommand { get => _Delete_ButtonIconCommand; set => _Delete_ButtonIconCommand = value; }
+        private RelayCommand<Icon> _deleteIconCommand;
+        public RelayCommand<Icon> DeleteIconCommand { get => _deleteIconCommand; set => _deleteIconCommand = value; }
+
+        private void DeleteIconCommandAction(Icon icon)
+        {
+            int index = IconCollection.IndexOf(icon);
+            IconCollection.Remove(icon);
+            SelectedIcon = IconCollection.ElementAtOrDefault(index - 1);
+        }
 
 
         private RelayCommand<Icon> _copyIconCommand;
         public RelayCommand<Icon> CopyIconCommand { get => _copyIconCommand; set => _copyIconCommand = value; }
+
+        private void CopyIconCommandAction(Icon icon)
+        {
+            IconCollection.Add(new Icon()
+            {
+                Name = icon.Name,
+                PathData = icon.PathData
+            });
+
+            SelectedIcon = IconCollection.Last();
+        }
 
 
         private RelayCommand<Icon> _drawIconCommand;

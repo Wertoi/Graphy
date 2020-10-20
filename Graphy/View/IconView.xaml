@@ -37,7 +37,7 @@
             </Grid.RowDefinitions>
 
             <Button Grid.Row="0" Style="{StaticResource NormalButton}"
-                    Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.Add_ButtonIconCommand}"
+                    Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.AddIconCommand}"
                     HorizontalAlignment="Left">
                 <StackPanel Orientation="Horizontal">
 
@@ -171,7 +171,7 @@
                                         </Button>
 
                                         <Button Style="{StaticResource NormalButton}"
-                                                Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.Delete_ButtonIconCommand}"
+                                                Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.DeleteIconCommand}"
                                                 CommandParameter="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon}"
                                                 HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
                                             <StackPanel Orientation="Horizontal">

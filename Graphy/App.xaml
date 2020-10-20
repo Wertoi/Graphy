@@ -17,13 +17,17 @@
         <!-- CONVERTERS -->
         <conv:BooleanToVisibilityConverter True="Visible" False="Collapsed" x:Key="BooleanToVisibilityConverter"/>
         <conv:BooleanToVisibilityConverter True="Collapsed" False="Visible" x:Key="InvertBooleanToVisibilityConverter"/>
+        <conv:BooleanToBooleanConverter x:Key="InvertBooleanConverter" True="False" False="True"/>
+        
         <conv:EnumToCollectionConverter x:Key="EnumToCollectionConverter"/>
         <conv:LocalizedEnumToStringConverter x:Key="LocalizedEnumToStringConverter"/>
-        <conv:BooleanToBooleanConverter x:Key="InvertBooleanConverter" True="False" False="True"/>
+
         <conv:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter" />
         <conv:BooleanToFontStyleConverter x:Key="BooleanToFontStyleConverter" />
+        
         <conv:BooleanToGridLengthConverter True="Auto" False="0" x:Key="BooleanToGridLengthConverter" />
         <conv:BooleanToGridLengthConverter True="0" False="Auto" x:Key="InvertBooleanToGridLengthConverter" />
+        
         <conv:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
 
         <!-- BOOLEAN -->
@@ -294,7 +298,7 @@
 
         <!-- ALIGN VERTICAL MIDDLE TOGGLE BUTTON ICON -->
         <Style x:Key="AlignVerticalMiddleToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="F1 M 22,9 v2 H2 v2 H22 Z       M 7,21 h3 V3 H7 V21 z      M 14,18 h3 V6 h-3 V18 z"/>
+            <Setter Property="Data" Value="F1 M 22,9 v2 H2 v2 H22 Z M 7,21 h3 V3 H7 V21 z M 14,21 h3 V10 h-3 V21 z"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
                     <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
@@ -305,7 +309,7 @@
 
         <!-- ALIGN VERTICAL TOP TOGGLE BUTTON ICON -->
         <Style x:Key="AlignVerticalTopToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M22,2v2H2V2H22z M7,22h3V6H7V22z M14,16h3V6h-3V16z"/>
+            <Setter Property="Data" Value="M22,2v2H2V2H22z M7,22h3V6H7V22z M14,22h3V12h-3V22z"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
                     <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>

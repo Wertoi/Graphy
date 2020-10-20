@@ -48,13 +48,19 @@ namespace Graphy.Model.CatiaShape
                 {
                     // Create a list of point
                     List<CatiaPoint> tempPointList = new List<CatiaPoint>();
+                    System.Windows.Point startPoint = PathGeometry.Figures.First().StartPoint;
+                    tempPointList.Add(new CatiaPoint(PartDocument, startPoint.X - xCorrectif, -startPoint.Y + yCorrectif, 0));
+                    tempPointList.Last().ComputePointShape();
 
                     // For each point in the multi lines segment
                     foreach (System.Windows.Point point in ((PolyLineSegment)segment).Points)
                     {
-                        // Get the point and store it in the list
-                        tempPointList.Add(new CatiaPoint(PartDocument, point.X - xCorrectif, -point.Y + yCorrectif, 0));
-                        tempPointList.Last().ComputePointShape();
+                        // Get the point and store it in the list.
+                        if(point != startPoint)
+                        {
+                            tempPointList.Add(new CatiaPoint(PartDocument, point.X - xCorrectif, -point.Y + yCorrectif, 0));
+                            tempPointList.Last().ComputePointShape();
+                        }
                     }
 
                     // For each point in the list

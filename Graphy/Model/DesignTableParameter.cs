@@ -77,7 +77,7 @@ namespace Graphy.Model
                 return ParameterType.NoType;
             else
             {
-                bool isNumeric = double.TryParse(cellValue, out double testResults);
+                bool isNumeric = double.TryParse(cellValue, out _);
 
                 if (isNumeric)
                     return ParameterType.Number;
