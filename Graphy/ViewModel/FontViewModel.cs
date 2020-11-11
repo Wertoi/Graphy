@@ -26,34 +26,26 @@ namespace Graphy.ViewModel
         {
             // RETRIEVES THE WINDOWS FONT COLLECTION
             InstalledFontCollection installedFontCollection = new InstalledFontCollection();
-            Collection<SelectableFont> tempFontCollection = new Collection<SelectableFont>();
+            _fontCollection = new Collection<SelectableFont>();
 
             foreach (System.Drawing.FontFamily fontFamily in installedFontCollection.Families)
             {
                 if(fontFamily.Name == DEFAULT_FONT)
-                    tempFontCollection.Add(new SelectableFont(new System.Windows.Media.FontFamily(fontFamily.Name), true));
+                    _fontCollection.Add(new SelectableFont(new System.Windows.Media.FontFamily(fontFamily.Name), true));
                 else
-                    tempFontCollection.Add(new SelectableFont(new System.Windows.Media.FontFamily(fontFamily.Name), false));
+                    _fontCollection.Add(new SelectableFont(new System.Windows.Media.FontFamily(fontFamily.Name), false));
 
-                tempFontCollection.Last().PropertyChanged += FontViewModel_PropertyChanged;
+                _fontCollection.Last().PropertyChanged += FontCollection_PropertyChanged;
             }
 
             // FONT COLLECTION INITIALIZATION
-            FontCollection = new CollectionViewSource();
-            FontCollection.Filter += FontCollection_Filter;
-            FontCollection.Source = tempFontCollection;
-
-            // SETTINGS FONT COLLECTION INITIALIZATION
-            SettingsFontCollection = new CollectionViewSource();
-            SettingsFontCollection.Filter += SettingsFontCollection_Filter;
-            SettingsFontCollection.Source = tempFontCollection;
-
-            SettingsSelectedFont = tempFontCollection.First();
-
-            // END OF FONT COLLECTION INITIALIZATION
+            FontCollectionViewSource = new CollectionViewSource();
+            FontCollectionViewSource.Filter += FontCollection_Filter;
+            FontCollectionViewSource.Source = _fontCollection;
+            SelectedFont = _fontCollection.First();
 
             // MESSENGER REGISTRATION
-            MessengerInstance.Register<StringCollection>(this, Enum.SettingToken.UserPreferencesChanged, (selectedFontList) => ReadUserPreferences(selectedFontList));
+            MessengerInstance.Register<StringCollection>(this, Enum.SettingToken.FavoriteFontCollectionChanged, (selectedFontList) => ReadUserPreferences(selectedFontList));
 
 
             // COMMANDS INITIALIZATION
@@ -67,29 +59,20 @@ namespace Graphy.ViewModel
         // CONSTANTS
         private const string DEFAULT_FONT = "Monospac821 BT";
 
-        // ATTRIBUTS
-        private CollectionViewSource _fontCollection;
-        private CollectionViewSource _settingsFontCollection;
+        // PRIVATE ATTRIBUTS
+        private Collection<SelectableFont> _fontCollection;
+
+        // OBSERVABLE ATTRIBUTS
+        private CollectionViewSource _fontCollectionViewSource;
         private SelectableFont _selectedFont;
-        private SelectableFont _settingsSelectedFont;
         private string _searchText;
 
-        public CollectionViewSource FontCollection
+        public CollectionViewSource FontCollectionViewSource
         {
-            get => _fontCollection;
+            get => _fontCollectionViewSource;
             set
             {
-                Set(() => FontCollection, ref _fontCollection, value);
-            }
-        }
-
-
-        public CollectionViewSource SettingsFontCollection
-        {
-            get => _settingsFontCollection;
-            set
-            {
-                Set(() => SettingsFontCollection, ref _settingsFontCollection, value);
+                Set(() => FontCollectionViewSource, ref _fontCollectionViewSource, value);
             }
         }
 
@@ -100,17 +83,6 @@ namespace Graphy.ViewModel
             set
             {
                 Set(() => SelectedFont, ref _selectedFont, value);
-
-                MessengerInstance.Send<SelectableFont>(SelectedFont, Enum.InputDataToken.SelectedFontChanged);
-            }
-        }
-
-        public SelectableFont SettingsSelectedFont
-        {
-            get => _settingsSelectedFont;
-            set
-            {
-                Set(() => SettingsSelectedFont, ref _settingsSelectedFont, value);
             }
         }
 
@@ -121,10 +93,10 @@ namespace Graphy.ViewModel
             set
             {
                 Set(() => SearchText, ref _searchText, value);
-                SettingsFontCollection.View.Refresh();
+                FontCollectionViewSource.View.Refresh();
 
-                if(!SettingsFontCollection.View.IsEmpty)
-                    SettingsFontCollection.View.MoveCurrentToFirst();
+                if(!FontCollectionViewSource.View.IsEmpty)
+                    FontCollectionViewSource.View.MoveCurrentToFirst();
             }
         }
 
@@ -158,9 +130,9 @@ namespace Graphy.ViewModel
                 if (!selectedFont.IsCalculated)
                     ComputeCharacterListCommandAction(selectedFont);
 
+                SelectedFont = selectedFont;
                 SearchText = selectedFont.FontFamily.Source;
             }
-
         }
 
 
@@ -170,12 +142,13 @@ namespace Graphy.ViewModel
 
         private void SortByNameCommandAction(bool isAscending)
         {
-            SettingsFontCollection.SortDescriptions.Clear();
+            FontCollectionViewSource.SortDescriptions.Clear();
             if(isAscending)
-                SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Ascending));
+                FontCollectionViewSource.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Ascending));
             else
-                SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Descending));
+                FontCollectionViewSource.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Descending));
         }
+
 
 
         private RelayCommand _sortByFavoriteCommand;
@@ -183,9 +156,9 @@ namespace Graphy.ViewModel
 
         private void SortByFavoriteCommandAction()
         {
-            SettingsFontCollection.SortDescriptions.Clear();
-            SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("IsSelected", ListSortDirection.Descending));
-            SettingsFontCollection.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Ascending));
+            FontCollectionViewSource.SortDescriptions.Clear();
+            FontCollectionViewSource.View.SortDescriptions.Add(new SortDescription("IsSelected", ListSortDirection.Descending));
+            FontCollectionViewSource.View.SortDescriptions.Add(new SortDescription("FontFamily.Source", ListSortDirection.Ascending));
         }
 
 
@@ -199,17 +172,18 @@ namespace Graphy.ViewModel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FontViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void FontCollection_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsSelected")
             {
-                SelectableFont oldSelectedFontFamily = (SelectableFont)FontCollection.View.CurrentItem;
-                FontCollection.View.Refresh();
+                List<SelectableFont> tempFontCollection = new List<SelectableFont>();
+                foreach(SelectableFont font in _fontCollection)
+                {
+                    if (font.IsSelected)
+                        tempFontCollection.Add(font);
+                }
 
-                if (!FontCollection.View.Contains(oldSelectedFontFamily))
-                    FontCollection.View.MoveCurrentToFirst();
-
-                MessengerInstance.Send<List<SelectableFont>>(FontCollection.View.Cast<SelectableFont>().ToList(), Enum.FontToken.FavoriteFontListChanged);
+                MessengerInstance.Send<List<SelectableFont>>(tempFontCollection, Enum.FontToken.FavoriteFontCollectionChanged);
             }
         }
 
@@ -224,20 +198,6 @@ namespace Graphy.ViewModel
             if (font == null)
                 e.Accepted = false;
             else
-                e.Accepted = font.IsSelected ? true : false;
-        }
-
-        /// <summary>
-        /// Filter the Settings Font Collection function of the Search Text
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SettingsFontCollection_Filter(object sender, FilterEventArgs e)
-        {
-            SelectableFont font = (SelectableFont)e.Item;
-            if (font == null)
-                e.Accepted = false;
-            else
             {
                 if (SearchText != "" && SearchText != null)
                     e.Accepted = font.FontFamily.Source.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0 ? true : false;
@@ -247,13 +207,13 @@ namespace Graphy.ViewModel
         }
 
 
+
         // PRIVATE METHODS
         private void ReadUserPreferences(StringCollection favoriteFontNameCollection)
         {
-            Collection<SelectableFont> tempFontCollection = (Collection<SelectableFont>)FontCollection.Source;
             foreach (string fontName in favoriteFontNameCollection)
             {
-                foreach (SelectableFont font in tempFontCollection)
+                foreach (SelectableFont font in _fontCollection)
                 {
                     if (font.FontFamily.Source == fontName)
                     {
@@ -263,6 +223,7 @@ namespace Graphy.ViewModel
                 }
             }
         }
+
 
     }
 }

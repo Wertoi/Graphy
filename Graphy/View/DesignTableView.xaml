@@ -69,7 +69,7 @@
                                 <LineBreak/>
                                 <Run Text="Première ligne : En-têtes des colonnes."/>
                                 <LineBreak/>
-                                <Run Text="Première colonne : Colonne &quot;PartNumber&quot;."/>
+                                <Run Text="Première colonne : Nom des fichiers .CATPart sans extension."/>
                             </TextBlock>
                         </Viewbox.ToolTip>
                         <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
@@ -100,16 +100,18 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Texte" Style="{StaticResource LabelFormTextBlock}" />
                     <ComboBox Grid.Column="1"
                               ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.ParameterCollection}"
-                              SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.Text.LinkedParameter}" Margin="0,5">
+                              SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.Text.LinkedParameter}" Margin="0,5"
+                              HorizontalContentAlignment="Stretch">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -131,7 +133,8 @@
                     <TextBlock Grid.Row="1" Text="Hauteur de caractère" Style="{StaticResource LabelFormTextBlock}" />
                     <ComboBox Grid.Column="1" Grid.Row="1"
                               ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.ParameterCollection}"
-                              SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.CharacterHeight.LinkedParameter}" Margin="0,5">
+                              SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.CharacterHeight.LinkedParameter}" Margin="0,5"
+                              HorizontalContentAlignment="Stretch">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -152,7 +155,8 @@
                     <TextBlock Grid.Row="2" Text="Hauteur d'extrusion" Style="{StaticResource LabelFormTextBlock}" />
                     <ComboBox Grid.Column="1" Grid.Row="2"
                               ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.ParameterCollection}"
-                              SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.ExtrusionHeight.LinkedParameter}" Margin="0,5">
+                              SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.ExtrusionHeight.LinkedParameter}" Margin="0,5"
+                              HorizontalContentAlignment="Stretch">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -169,6 +173,30 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+
+                    <!--<TextBlock Grid.Row="3" Grid.Column="0"
+                               Text="Icon" Style="{StaticResource LabelFormTextBlock}" />
+                    
+                    <ComboBox Grid.Row="3" Grid.Column="1"
+                              ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.ParameterCollection}"
+                              SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.ExtrusionHeight.LinkedParameter}" Margin="0,5"
+                              HorizontalContentAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding Name}"/>
+
+                                    <TextBlock Grid.Column="1" Text="{Binding Type, Converter={StaticResource LocalizedEnumToStringConverter}}" Margin="25,0,0,0"
+                                               Foreground="#FFA6A6A6"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>-->
 
                 </Grid>
 

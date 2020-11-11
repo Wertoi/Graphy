@@ -118,6 +118,7 @@
     <Compile Include="Converter\EnumToCollectionConverter.cs" />
     <Compile Include="Converter\LocalizedEnumToStringConverter.cs" />
     <Compile Include="Converter\EnumToBooleanConverter.cs" />
+    <Compile Include="CustomControl\CartesianCanvas.cs" />
     <Compile Include="CustomControl\LoadingBox.xaml.cs">
       <DependentUpon>LoadingBox.xaml</DependentUpon>
     </Compile>

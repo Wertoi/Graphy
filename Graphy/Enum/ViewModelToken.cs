@@ -14,13 +14,11 @@ namespace Graphy.Enum
 
     public enum FontToken
     {
-        FavoriteFontListChanged
+        FavoriteFontCollectionChanged
     };
 
     public enum InputDataToken
     {
-        SelectedFontChanged,
-        SelectedIconChanged,
         SelectionIncorrect
     };
 
@@ -35,7 +33,8 @@ namespace Graphy.Enum
 
     public enum SettingToken
     {
-        UserPreferencesChanged,
+        FavoriteFontCollectionChanged,
+        IconCollectionChanged,
         LicenceFileReadingFailed,
         ToleranceFactorChanged,
         KeepHistoricChanged,
@@ -47,5 +46,11 @@ namespace Graphy.Enum
     {
         DesignTableLoaded,
         SelectedPartCollectionChanged
+    }
+
+    public enum IconToken
+    {
+        IconCollectionChanged,
+        SelectedIconChanged
     }
 }

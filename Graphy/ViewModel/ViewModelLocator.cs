@@ -21,10 +21,10 @@ namespace Graphy.ViewModel
             SimpleIoc.Default.Register<ProcessViewModel>(true);
             SimpleIoc.Default.Register<InputDataViewModel>(true);
             SimpleIoc.Default.Register<FontViewModel>(true);
+            SimpleIoc.Default.Register<IconViewModel>(true);
             SimpleIoc.Default.Register<SettingViewModel>(true);
             SimpleIoc.Default.Register<CatiaViewModel>(true);
             SimpleIoc.Default.Register<DesignTableViewModel>(true);
-            SimpleIoc.Default.Register<IconViewModel>(true);
         }
 
         public FontViewModel FontViewModel

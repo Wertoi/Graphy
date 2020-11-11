@@ -35,6 +35,7 @@ namespace Graphy.Model
             }
         }
 
+
         public static Icon Default()
         {
             return new Icon()

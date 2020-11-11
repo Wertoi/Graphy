@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Graphy.View"
+             xmlns:custom="clr-namespace:Graphy.CustomControl"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="450">
 
@@ -25,7 +26,7 @@
                 </Viewbox>
             </Button>
 
-            <TextBlock Text="Gestion des icons"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}" VerticalAlignment="Center" Margin="20,0,0,0"/>
+            <TextBlock Text="Gestion des icones"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}" VerticalAlignment="Center" Margin="20,0,0,0"/>
         </StackPanel>
 
         <!-- MAIN CONTENT -->
@@ -52,7 +53,8 @@
                 </StackPanel>
             </Button>
 
-            <Grid Grid.Row="1" Margin="0,15,0,0">
+            <Grid Grid.Row="1" Margin="0,15,0,0"
+                  Visibility="{Binding Source={StaticResource Locator}, Path=IconViewModel.IsIconCollectionEmpty, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" MinWidth="150" MaxWidth="350"/>
                     <ColumnDefinition Width="Auto"/>
@@ -62,7 +64,7 @@
                 <ListView Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ItemsSource="{Binding Source={StaticResource Locator}, Path=IconViewModel.IconCollection}"
                           SelectedItem="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon}"
-                          HorizontalContentAlignment="Stretch">
+                          HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource ListViewItemBaseStyle}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
 
@@ -76,7 +78,7 @@
                                            TextTrimming="CharacterEllipsis"/>
 
                                 <Viewbox Grid.Column="1" Style="{StaticResource IconViewBox}">
-                                    <Canvas Style="{StaticResource IconCanvas}">
+                                    <custom:CartesianCanvas Style="{StaticResource IconCanvas}" ClipToBounds="True" IsEditable="False">
                                         <Path Data="{Binding PathData}">
                                             <Path.Style>
                                                 <Style TargetType="Path">
@@ -89,7 +91,7 @@
                                                 </Style>
                                             </Path.Style>
                                         </Path>
-                                    </Canvas>
+                                    </custom:CartesianCanvas>
                                 </Viewbox>
                             </Grid>
 
@@ -195,9 +197,9 @@
 
 
                         <Viewbox Height="100" Width="100">
-                            <Canvas Style="{StaticResource IconCanvas}">
+                            <custom:CartesianCanvas Style="{StaticResource IconCanvas}" ClipToBounds="True" IsEditable="False">
                                 <Path Data="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon.PathData}" Fill="Black"/>
-                            </Canvas>
+                            </custom:CartesianCanvas>
                         </Viewbox>
 
                         <TextBlock Text="Name" Foreground="{StaticResource PrimaryColorLight}"/>
@@ -213,6 +215,18 @@
                 </ScrollViewer>
 
             </Grid>
+
+            <StackPanel Grid.Row="1" Margin="0,15,0,0" Orientation="Vertical"
+                        Visibility="{Binding Source={StaticResource Locator}, Path=IconViewModel.IsIconCollectionEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="No icon found." Foreground="#FFA6A6A6"/>
+                <Viewbox Style="{StaticResource IconViewBox}">
+                    <Canvas Style="{StaticResource IconCanvas}">
+                        <Path Style="{StaticResource NoDocumentIcon}"/>
+                    </Canvas>
+                </Viewbox>
+
+            </StackPanel>
 
         </Grid>
 

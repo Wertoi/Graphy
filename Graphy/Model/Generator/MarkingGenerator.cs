@@ -362,6 +362,9 @@ namespace Graphy.Model.Generator
                 {
                     _ = shapeFactory.AddNewRemove(markingBody);
                 }
+
+                // Updates
+                partDocument.PartDocument.Part.Update();
             }
 
 

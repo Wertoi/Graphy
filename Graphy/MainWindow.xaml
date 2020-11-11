@@ -120,14 +120,15 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <RadioButton x:Name="IconRadioButton" Style="{StaticResource NormalToggledRadioButtonStyle}" Margin="10,0,0,0">
+                        <RadioButton x:Name="IconRadioButton" Style="{StaticResource NormalToggledRadioButtonStyle}" Margin="10,0,0,0"
+                                     IsEnabled="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.IsDesignTableActivated, Converter={StaticResource InvertBooleanConverter}}">
                             <StackPanel Orientation="Horizontal">
                                 <Viewbox Style="{StaticResource IconViewBox}">
                                     <Canvas Style="{StaticResource IconCanvas}">
                                         <Path Style="{StaticResource IconOptionToggleButtonIcon}"/>
                                     </Canvas>
                                 </Viewbox>
-                                <TextBlock Text="Icon" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
+                                <TextBlock Text="Image" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
                             </StackPanel>
                         </RadioButton>
 
@@ -193,7 +194,7 @@
                         <TextBox x:Name="InputTextTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource NormalTextBox}"
                                  Text="{Binding InputDataViewModel.MarkingData.Text.Value, Mode=TwoWay, Source={StaticResource Locator}}"
                                  Visibility="{Binding InputDataViewModel.MarkingData.Text.IsLinkOn, Converter={StaticResource InvertBooleanToVisibilityConverter}, Source={StaticResource Locator}}"
-                                 FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.FontFamily}"
+                                 FontFamily="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.Font.FontFamily}"
                                  FontWeight="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.IsBold, Converter={StaticResource BooleanToFontWeightConverter}}"
                                  FontStyle="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.IsItalic, Converter={StaticResource BooleanToFontStyleConverter}}" />
 
@@ -225,8 +226,8 @@
                                   Margin="0,5,10,5"
                                   VerticalContentAlignment="Center"
                                   Padding="5,8,15,8"
-                                  ItemsSource="{Binding FontViewModel.FontCollection.View, Source={StaticResource Locator}}"
-                                  SelectedItem="{Binding FontViewModel.SelectedFont, Mode=TwoWay, Source={StaticResource Locator}}">
+                                  ItemsSource="{Binding InputDataViewModel.FontCollection, Source={StaticResource Locator}}"
+                                  SelectedItem="{Binding InputDataViewModel.MarkingData.Font, Mode=TwoWay, Source={StaticResource Locator}}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding FontFamily}" VerticalAlignment="Center"/>
@@ -240,7 +241,7 @@
                                 Style="{StaticResource NormalButton}"
                                 Click="FontButton_Click"
                                 Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.SendSelectedFontCommand}"
-                                CommandParameter="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont}">
+                                CommandParameter="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.Font}">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource FontIcon}"/>

@@ -124,10 +124,10 @@ namespace Graphy
 
             try
             {
-                foreach (Excel.Range cell in (Excel.Range)_excelWorksheet.UsedRange)
+                foreach(Excel.Range cell in ((Excel.Range)_excelWorksheet.UsedRange.Columns[1]).Rows)
                 {
                     // Première colonne : Liste des pièces
-                    if (cell.Row > 1 && cell.Column == 1 && cell.Value != null)
+                    if (cell.Row > 1 && cell.Value != null)
                     {
                         string partName = Convert.ToString(cell.Value);
                         partList.Add(partName);
@@ -150,10 +150,10 @@ namespace Graphy
         {
             try
             {
-                foreach (Excel.Range cell in (Excel.Range)_excelWorksheet.UsedRange)
+                foreach (Excel.Range cell in ((Excel.Range)_excelWorksheet.Columns[1]).Rows)
                 {
                     // Première colonne : Liste des pièces
-                    if (cell.Row > 1 && cell.Column == 1 && cell.Value == partNumber)
+                    if (cell.Row > 1 && cell.Value == partNumber)
                     {
                         return cell.Row;
                     }
@@ -179,16 +179,7 @@ namespace Graphy
         {
             try
             {
-                foreach (Excel.Range cell in (Excel.Range)_excelWorksheet.UsedRange)
-                {
-                    if (cell.Row == row && cell.Column == column)
-                    {
-                        return cell.Value;
-                    }
-                }
-
-                CloseDesignTable();
-                throw new Exception("Cell not found");
+                return _excelWorksheet.Cells[row, column].Value;
             }
             catch (Exception ex)
             {

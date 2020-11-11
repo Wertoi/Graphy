@@ -166,11 +166,12 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <ListBox Grid.Row="1" Grid.Column="0" BorderBrush="Transparent"
-                         ItemsSource="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsFontCollection.View}"
-                         SelectedItem="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont, Mode=TwoWay}"
-                         HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListBox.ItemTemplate>
+                <ListView Grid.Row="1" Grid.Column="0" BorderBrush="Transparent"
+                         ItemsSource="{Binding Source={StaticResource Locator}, Path=FontViewModel.FontCollectionViewSource.View}"
+                         SelectedItem="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont, Mode=TwoWay}"
+                         HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                           ItemContainerStyle="{StaticResource ListViewItemBaseStyle}">
+                    <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -194,23 +195,23 @@
 
                             </Grid>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
+                    </ListView.ItemTemplate>
 
-                </ListBox>
+                </ListView>
 
                 <GridSplitter Grid.Row="1" Grid.Column="1" Width="2" ResizeDirection="Columns" HorizontalAlignment="Left" Margin="5,0,0,0" Background="{StaticResource SecondaryColorLight}"/>
 
                 <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto">
 
                     <StackPanel  Orientation="Vertical">
-                        <TextBlock Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.FontFamily}"
+                        <TextBlock Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.FontFamily}"
                                    FontSize="16" Foreground="{StaticResource PrimaryColor}"
                                    Margin="15,0,0,15"/>
 
                         <Button Style="{StaticResource NormalButton}"
-                                Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.IsCalculated, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
+                                Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.IsCalculated, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
                                 Command="{Binding Source={StaticResource Locator}, Path=FontViewModel.ComputeCharacterListCommand}"
-                                CommandParameter="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont}">
+                                CommandParameter="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont}">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource UpdateButtonIcon}"/>
@@ -220,16 +221,16 @@
 
                         <TextBlock Text="{local:Loc Font_selectedFontSupportedCharacters}"
                                    Margin="15,0,0,5"
-                                   Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                   Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                        <TextBox  Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.SupportedCharacterList}"
+                        <TextBox  Text="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.SupportedCharacterList}"
                                   TextWrapping="Wrap"
                                   Foreground="{StaticResource Gray127}"
-                                  Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                  FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SettingsSelectedFont.FontFamily}"
+                                  Visibility="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.IsCalculated, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                  FontFamily="{Binding Source={StaticResource Locator}, Path=FontViewModel.SelectedFont.FontFamily}"
                                   BorderBrush="Transparent"
                                   IsReadOnly="True"
-                                  Margin="15,0,0,0" />
+                                  Margin="15,0,0,0"/>
 
                     </StackPanel>
 

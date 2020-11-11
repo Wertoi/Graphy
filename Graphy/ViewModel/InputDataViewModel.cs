@@ -13,8 +13,8 @@ using GalaSoft.MvvmLight.Command;
 using INFITF;
 using MECMOD;
 using Graphy.Model.CatiaDocument;
-using Graphy.Model.CatiaShape;
 using Graphy.Enum;
+using System.Collections.ObjectModel;
 
 namespace Graphy.ViewModel
 {
@@ -24,17 +24,24 @@ namespace Graphy.ViewModel
         public InputDataViewModel()
         {
             MarkingData = new MarkingData("Hello World !", 1.6, 0.1);
-
             MarkingData.PropertyChanged += MarkingData_PropertyChanged;
 
+            FontCollection = new ObservableCollection<SelectableFont>();
+
             // MESSENGER REGISTRATION
-            MessengerInstance.Register<SelectableFont>(this, Enum.InputDataToken.SelectedFontChanged, (font) => { MarkingData.Font = font; });
-            MessengerInstance.Register<Icon>(this, Enum.InputDataToken.SelectedIconChanged, (icon) => { MarkingData.Icon = icon; });
+            
+            // From Catia
             MessengerInstance.Register<CatiaPartDocument>(this, Enum.CatiaToken.SelectedPartDocumentChanged, (partDoc) => { _selectedPartDocument = partDoc; CheckIfCanGenerate(); });
 
+            // From Font and Icon
+            MessengerInstance.Register<List<SelectableFont>>(this, Enum.FontToken.FavoriteFontCollectionChanged, (fontList) => FillFontCollection(fontList));
+            MessengerInstance.Register<Icon>(this, Enum.IconToken.SelectedIconChanged, (icon) => { MarkingData.Icon = icon; });
+
+            // From Design table
             MessengerInstance.Register<string>(this, Enum.DesignTableToken.DesignTableLoaded, (fullPath) => DesignTableLoaded(fullPath));
             MessengerInstance.Register<List<CatiaFile>>(this, Enum.DesignTableToken.SelectedPartCollectionChanged, (partList) => { _partList = partList; CheckIfCanGenerate(); });
 
+            // From settings
             MessengerInstance.Register<double>(this, Enum.SettingToken.ToleranceFactorChanged, (toleranceFactor) => { _toleranceFactor = toleranceFactor; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.KeepHistoricChanged, (keepHistoric) => { _keepHistoric = keepHistoric; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
@@ -57,6 +64,7 @@ namespace Graphy.ViewModel
         private MarkingData _markingData;
         private bool _canGenerate;
         private bool _isDesignTableActivated = false;
+        private ObservableCollection<SelectableFont> _fontCollection;
 
         // PRIVATE ATTRIBUTS
         private CatiaPartDocument _selectedPartDocument;
@@ -89,12 +97,24 @@ namespace Graphy.ViewModel
             }
         }
 
+        public ObservableCollection<SelectableFont> FontCollection
+        {
+            get => _fontCollection;
+            set
+            {
+                Set(() => FontCollection, ref _fontCollection, value);
+            }
+        }
+
         public bool IsDesignTableActivated
         {
             get => _isDesignTableActivated;
             set
             {
                 Set(() => IsDesignTableActivated, ref _isDesignTableActivated, value);
+
+                if (IsDesignTableActivated && !MarkingData.IsText)
+                    MarkingData.IsText = true;
 
                 if (!IsDesignTableActivated)
                 {
@@ -328,7 +348,7 @@ namespace Graphy.ViewModel
         #endregion
 
 
-        #region EVENTS
+        #region CHECK IF CAN GENERATE
 
         private void MarkingData_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -367,11 +387,19 @@ namespace Graphy.ViewModel
                 }
                 else
                 {
-                    if (MarkingData.Text.Value != "" && MarkingData.CharacterHeight.Value > 0 && MarkingData.ExtrusionHeight.Value != 0)
-                        CanGenerate = true;
+                    if(MarkingData.CharacterHeight.Value > 0 && (MarkingData.ExtrusionHeight.Value != 0 || !_createVolume))
+                    {
+                        if (MarkingData.IsText && MarkingData.Text.Value != "")
+                            CanGenerate = true;
+                        else
+                        {
+                            if (!MarkingData.IsText && MarkingData.Icon != null)
+                                CanGenerate = true;
+                            else
+                                CanGenerate = false;
+                        }
 
-                    else
-                        CanGenerate = false;
+                    }
                 }
             }
             else
@@ -399,6 +427,23 @@ namespace Graphy.ViewModel
             selection.Search("Name=" + name + ",all");
 
             return selection.Count == 1 ? true : false;
+        }
+
+        private void FillFontCollection(List<SelectableFont> fontList)
+        {
+            SelectableFont selectedFont = MarkingData.Font;
+
+            FontCollection.Clear();
+
+            foreach(SelectableFont font in fontList)
+            {
+                FontCollection.Add(font);
+            }
+
+            if (FontCollection.Contains(selectedFont))
+                MarkingData.Font = selectedFont;
+            else
+                MarkingData.Font = FontCollection.First();
         }
     }
 }

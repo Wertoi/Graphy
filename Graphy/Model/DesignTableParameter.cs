@@ -68,7 +68,7 @@ namespace Graphy.Model
 
         public static DesignTableParameter NoLinkParameter()
         {
-            return new DesignTableParameter("Pas de lien.", 0, ParameterType.NoType);
+            return new DesignTableParameter("No link.", 0, ParameterType.NoType);
         }
 
         public static ParameterType GetParameterCategory(string cellValue)

@@ -26,7 +26,8 @@ namespace Graphy.ViewModel
             ShowLicenceCommand = new RelayCommand(ShowLicenceCommandAction);
 
             // MESSENGER REGISTRATION
-            MessengerInstance.Register<List<SelectableFont>>(this, Enum.FontToken.FavoriteFontListChanged, (collection) => SaveFavoriteFontCollection(collection));
+            MessengerInstance.Register<List<SelectableFont>>(this, Enum.FontToken.FavoriteFontCollectionChanged, (collection) => SaveFavoriteFontCollection(collection));
+            MessengerInstance.Register<List<Icon>>(this, Enum.IconToken.IconCollectionChanged, (collection) => SaveIconCollection(collection));
 
             // INITIALIZE SETTINGS
             InitializeLanguage();
@@ -185,7 +186,8 @@ namespace Graphy.ViewModel
             CreateVolume = Properties.Settings.Default.CreateVolume;
             VerticalAlignment = (VerticalAlignment)Properties.Settings.Default.VerticalAlignment;
 
-            MessengerInstance.Send(Properties.Settings.Default.FavoriteFontCollection, Enum.SettingToken.UserPreferencesChanged);
+            MessengerInstance.Send(Properties.Settings.Default.FavoriteFontCollection, Enum.SettingToken.FavoriteFontCollectionChanged);
+            MessengerInstance.Send(Properties.Settings.Default.IconCollection, Enum.SettingToken.IconCollectionChanged);
 
             _isReadingUserPreferenceFlag = false;
         }
@@ -200,6 +202,19 @@ namespace Graphy.ViewModel
             }
 
             Properties.Settings.Default.FavoriteFontCollection = stringCollection;
+            Properties.Settings.Default.Save();
+        }
+
+
+        private void SaveIconCollection(List<Icon> iconCollection)
+        {
+            System.Collections.Specialized.StringCollection stringCollection = new System.Collections.Specialized.StringCollection();
+            foreach(Icon icon in iconCollection)
+            {
+                stringCollection.Add(icon.Name + '\t' + icon.PathData);
+            }
+
+            Properties.Settings.Default.IconCollection = stringCollection;
             Properties.Settings.Default.Save();
         }
 
