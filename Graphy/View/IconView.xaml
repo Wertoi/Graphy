@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Graphy.View"
+             xmlns:local="clr-namespace:Graphy"
              xmlns:custom="clr-namespace:Graphy.CustomControl"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="450">
@@ -26,7 +26,7 @@
                 </Viewbox>
             </Button>
 
-            <TextBlock Text="Gestion des icones"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}" VerticalAlignment="Center" Margin="20,0,0,0"/>
+            <TextBlock Text="{local:Loc Icon_Title}"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}" VerticalAlignment="Center" Margin="20,0,0,0"/>
         </StackPanel>
 
         <!-- MAIN CONTENT -->
@@ -48,7 +48,7 @@
                         </Canvas>
                     </Viewbox>
 
-                    <TextBlock Text="Ajouter une icone" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Text="{local:Loc Icon_Add}" Style="{StaticResource LabelFormTextBlock}"/>
 
                 </StackPanel>
             </Button>
@@ -153,7 +153,7 @@
                                                     </Canvas>
                                                 </Viewbox>
 
-                                                <TextBlock Text="Draw" Style="{StaticResource LabelFormTextBlock}"/>
+                                                <TextBlock Text="{local:Loc Icon_SelectedIcon_Draw}" Style="{StaticResource LabelFormTextBlock}"/>
                                             </StackPanel>
                                         </Button>
 
@@ -168,7 +168,7 @@
                                                     </Canvas>
                                                 </Viewbox>
 
-                                                <TextBlock Text="Copier" Style="{StaticResource LabelFormTextBlock}"/>
+                                                <TextBlock Text="{local:Loc Icon_SelectedIcon_Copy}" Style="{StaticResource LabelFormTextBlock}"/>
                                             </StackPanel>
                                         </Button>
 
@@ -183,7 +183,7 @@
                                                     </Canvas>
                                                 </Viewbox>
 
-                                                <TextBlock Text="Supprimer" Style="{StaticResource LabelFormTextBlock}"/>
+                                                <TextBlock Text="{local:Loc Icon_SelectedIcon_Remove}" Style="{StaticResource LabelFormTextBlock}"/>
                                             </StackPanel>
                                         </Button>
 
@@ -202,11 +202,11 @@
                             </custom:CartesianCanvas>
                         </Viewbox>
 
-                        <TextBlock Text="Name" Foreground="{StaticResource PrimaryColorLight}"/>
+                        <TextBlock Text="{local:Loc Icon_SelectedIcon_Name}" Foreground="{StaticResource PrimaryColorLight}"/>
                         <TextBox Text="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource NormalTextBox}"/>
 
-                        <TextBlock Text="Geometry Data" Margin="0,20,0,0" Foreground="{StaticResource PrimaryColorLight}"/>
+                        <TextBlock Text="{local:Loc Icon_SelectedIcon_GeometryData}" Margin="0,20,0,0" Foreground="{StaticResource PrimaryColorLight}"/>
                         <TextBox Text="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon.PathData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          MinLines="2" TextWrapping="Wrap" AcceptsReturn="True" Style="{StaticResource NormalTextBox}"/>
 

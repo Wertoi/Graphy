@@ -104,7 +104,7 @@
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">
                             <Run Text=">" Foreground="{StaticResource SecondaryColor}" FontWeight="Bold" />
-                            <Run Text="Type de marquage :"/>
+                            <Run Text="{local:Loc MainWindow_MarkingData_MarkingTypeLabel}"/>
                         </TextBlock>
 
                         <RadioButton x:Name="TextRadioButton"
@@ -116,7 +116,7 @@
                                         <Path Style="{StaticResource TextOptionToggleButtonIcon}"/>
                                     </Canvas>
                                 </Viewbox>
-                                <TextBlock Text="Texte" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
+                                <TextBlock Text="{local:Loc MainWindow_MarkingData_MarkingTypeText}" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
                             </StackPanel>
                         </RadioButton>
 
@@ -128,7 +128,7 @@
                                         <Path Style="{StaticResource IconOptionToggleButtonIcon}"/>
                                     </Canvas>
                                 </Viewbox>
-                                <TextBlock Text="Image" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
+                                <TextBlock Text="{local:Loc MainWindow_MarkingData_MarkingTypeIcon}" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
                             </StackPanel>
                         </RadioButton>
 
@@ -252,7 +252,7 @@
 
 
                         <!--ICON INPUT -->
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Icon" Style="{StaticResource LabelFormTextBlock}" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_IconLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
                         <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}"
                                  Text="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.Icon.Name}" />

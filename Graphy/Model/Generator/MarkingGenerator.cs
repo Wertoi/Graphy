@@ -127,7 +127,10 @@ namespace Graphy.Model.Generator
 
             // Creates the marking set
             HybridBody markingSet = partDocument.PartDocument.Part.HybridBodies.Add();
-            markingSet.set_Name("MARKING SET: \"" + markingData.Text.Value + "\"");
+            if (markingData.IsText)
+                markingSet.set_Name("MARKING SET: \"" + markingData.Text.Value + "\"");
+            else
+                markingSet.set_Name("MARKING SET: \"" + markingData.Icon.Name + "\"");
 
             // Creates the origin axis system to the marking set
             partDocument.PartDocument.Part.InWorkObject = markingSet;

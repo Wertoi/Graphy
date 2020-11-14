@@ -363,4 +363,52 @@
   <data name="Settings_Marking_ToleranceFactorLabel" xml:space="preserve">
     <value>Facteur de tolérance</value>
   </data>
+  <data name="DesignTable_Link_CharacterHeightLabel" xml:space="preserve">
+    <value>Hauteur de caractères</value>
+  </data>
+  <data name="DesignTable_Link_ExtrusionHeightLabel" xml:space="preserve">
+    <value>Hauteur d'extrusion</value>
+  </data>
+  <data name="DesignTable_Link_TextLabel" xml:space="preserve">
+    <value>Texte</value>
+  </data>
+  <data name="DesignTable_PartSelection_SelectAll" xml:space="preserve">
+    <value>Tout sélectionner</value>
+  </data>
+  <data name="DesignTable_PartSelection_UnselectAll" xml:space="preserve">
+    <value>Tout dé-selectionner</value>
+  </data>
+  <data name="Icon_Add" xml:space="preserve">
+    <value>Ajouter une image</value>
+  </data>
+  <data name="Icon_SelectedIcon_Copy" xml:space="preserve">
+    <value>Copier</value>
+  </data>
+  <data name="Icon_SelectedIcon_Draw" xml:space="preserve">
+    <value>Dessiner</value>
+  </data>
+  <data name="Icon_SelectedIcon_GeometryData" xml:space="preserve">
+    <value>Données géométriques</value>
+  </data>
+  <data name="Icon_SelectedIcon_Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Icon_SelectedIcon_Remove" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Icon_Title" xml:space="preserve">
+    <value>Gestion des images</value>
+  </data>
+  <data name="MainWindow_MarkingData_IconLabel" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="MainWindow_MarkingData_MarkingTypeIcon" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="MainWindow_MarkingData_MarkingTypeLabel" xml:space="preserve">
+    <value>Type de marquage :</value>
+  </data>
+  <data name="MainWindow_MarkingData_MarkingTypeText" xml:space="preserve">
+    <value>Texte</value>
+  </data>
 </root>

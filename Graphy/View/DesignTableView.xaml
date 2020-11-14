@@ -107,7 +107,7 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Texte" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Text="{local:Loc DesignTable_Link_TextLabel}" Style="{StaticResource LabelFormTextBlock}" />
                     <ComboBox Grid.Column="1"
                               ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.ParameterCollection}"
                               SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.Text.LinkedParameter}" Margin="0,5"
@@ -130,7 +130,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    <TextBlock Grid.Row="1" Text="Hauteur de caractère" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Grid.Row="1" Text="{local:Loc DesignTable_Link_CharacterHeightLabel}" Style="{StaticResource LabelFormTextBlock}" />
                     <ComboBox Grid.Column="1" Grid.Row="1"
                               ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.ParameterCollection}"
                               SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.CharacterHeight.LinkedParameter}" Margin="0,5"
@@ -152,7 +152,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    <TextBlock Grid.Row="2" Text="Hauteur d'extrusion" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Grid.Row="2" Text="{local:Loc DesignTable_Link_ExtrusionHeightLabel}" Style="{StaticResource LabelFormTextBlock}" />
                     <ComboBox Grid.Column="1" Grid.Row="2"
                               ItemsSource="{Binding Source={StaticResource Locator}, Path=DesignTableViewModel.ParameterCollection}"
                               SelectedItem="{Binding Source={StaticResource Locator}, Path=InputDataViewModel.MarkingData.ExtrusionHeight.LinkedParameter}" Margin="0,5"
@@ -233,7 +233,7 @@
                                     </Canvas>
                                 </Viewbox>
 
-                                <TextBlock Text="Tout sélectionner" VerticalAlignment="Center" Margin="2,0,7,0"/>
+                                <TextBlock Text="{local:Loc DesignTable_PartSelection_SelectAll}" VerticalAlignment="Center" Margin="2,0,7,0"/>
                                 
                             </StackPanel>
                         </Button>
@@ -247,7 +247,7 @@
                                     </Canvas>
                                 </Viewbox>
 
-                                <TextBlock Text="Tout dé-sélectionner" VerticalAlignment="Center" Margin="2,0,7,0"/>
+                                <TextBlock Text="{local:Loc DesignTable_PartSelection_UnselectAll}" VerticalAlignment="Center" Margin="2,0,7,0"/>
 
                             </StackPanel>
                         </Button>
