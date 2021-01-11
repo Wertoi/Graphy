@@ -1,0 +1,159 @@
+﻿<Page x:Class="Graphy.View.ComplexMarkingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Graphy.View"
+      xmlns:main="clr-namespace:Graphy"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ComplexMarkingPage"
+      DataContext="{Binding Source={StaticResource Locator}, Path=ComplexMarkingViewModel}">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="20,25,20,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <!-- PAGE TITLE -->
+            <TextBlock Grid.Row="0" Text="Marquage complexe"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}"/>
+
+            <!-- PAGE CONTENT AREA -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,25,0,0">
+                <StackPanel Orientation="Vertical">
+                    
+
+                    <!-- INPUT DATA TITLE -->
+                    <TextBlock Text="{main:Loc DesignTable_InputData_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,15,0,5"/>
+
+                    <!-- INPUT DATA GRID -->
+                    <Grid Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!--#region TABLE SELECTION REGION-->
+                        
+                        <!-- TABLE SELECTION LABEL -->
+                        <TextBlock Text="{main:Loc DesignTable_InputData_DesignTableLabel}" Style="{StaticResource LabelFormTextBlock}" />
+                        
+                        <!-- TABLE SELECTION DATA -->
+                        <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
+                                 Text="{Binding Path=TableFullPath}" />
+
+                        <!-- TABLE SELECTION BUTTON -->
+                        <Button Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
+                                Command="{Binding Path=SelectTableCommand}">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Document_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+
+                        
+                        <!--#endregion-->
+
+                        <!--#region PART FOLDER SELECTION REGION -->
+                        
+                        <!-- PART FOLDER SELECTION LABEL -->
+                        <TextBlock Grid.Row="1" Text="{main:Loc DesignTable_InputData_PartCatalogDirectoryLabel}" Style="{StaticResource LabelFormTextBlock}" />
+
+                        <!-- PART FOLDER SELECTION INPUT -->
+                        <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"
+                                 Text="{Binding Path=PartFolderPath}" />
+
+                        <!-- PART FOLDER SELECTION BUTTON -->
+                        <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource Generic_SquareButton}"
+                            Command="{Binding Path=SelectPartFolderCommand}">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Folder_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                        
+                        <!--#endregion-->
+
+                    </Grid>
+
+                    <!-- PART LIST TITLE -->
+                    <TextBlock Text="Liste des pièces" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,15,0,5"/>
+
+                    <Button Content="REFRESH" Command="{Binding Path=LoadDataCommand}"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource Generic_Button}"
+                                Command="{Binding Path=SelectAllPartCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+
+
+                                <TextBlock Text="Select All" Style="{StaticResource LabelFormTextBlock}"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <Button Style="{StaticResource Generic_Button}"
+                                Command="{Binding Path=UnselectAllPartCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+
+
+                                <TextBlock Text="Unselect All" Style="{StaticResource LabelFormTextBlock}"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    
+                    <!-- PART LIST LISTVIEW -->
+                    <ListView ItemsSource="{Binding Path=MarkablePartCollection}"
+                              SelectedItem="{Binding Path=SelectedMarkablePart}">
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="Column 1" DisplayMemberBinding="{Binding PartName}">
+                                    <GridViewColumn.HeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                                            <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                        </Style>
+                                    </GridViewColumn.HeaderContainerStyle>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Column 2" DisplayMemberBinding="{Binding MarkingDataCollection.Count}"/>
+                                <GridViewColumn Header="Column 3"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                </StackPanel>
+            </ScrollViewer>
+
+        </Grid>
+
+        
+
+        
+
+
+    </Grid>
+    
+</Page>

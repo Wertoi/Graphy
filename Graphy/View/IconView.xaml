@@ -18,10 +18,10 @@
         <StackPanel Orientation="Horizontal" Margin="15,15,0,15">
 
             <!-- BACK BUTTON -->
-            <Button x:Name="BackButton" Style="{StaticResource NormalButton}" Click="BackButton_Click">
+            <Button x:Name="BackButton" Style="{StaticResource Generic_Button}" Click="BackButton_Click">
                 <Viewbox Style="{StaticResource IconViewBox}">
                     <Canvas Style="{StaticResource IconCanvas}">
-                        <Path Style="{StaticResource BackIcon}"/>
+                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Add_Icon}"/>
                     </Canvas>
                 </Viewbox>
             </Button>
@@ -37,14 +37,14 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" Style="{StaticResource NormalButton}"
+            <Button Grid.Row="0" Style="{StaticResource Generic_Button}"
                     Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.AddIconCommand}"
                     HorizontalAlignment="Left">
                 <StackPanel Orientation="Horizontal">
 
                     <Viewbox Style="{StaticResource IconViewBox}">
                         <Canvas Style="{StaticResource IconCanvas}">
-                            <Path Style="{StaticResource Add_ButtonIcon}"/>
+                            <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Add_Icon}"/>
                         </Canvas>
                     </Viewbox>
 
@@ -117,10 +117,10 @@
 
                             <ToggleButton Grid.Column="1" x:Name="SelectedIconMoreButton"
                                       IsHitTestVisible="{Binding ElementName=SelectedIconMorePopup, Path=IsOpen,  Converter={StaticResource InvertBooleanConverter}}"
-                                      Style="{StaticResource NormalToggleButton}" HorizontalAlignment="Right">
+                                      Style="{StaticResource Generic_SquareToggleButton}" HorizontalAlignment="Right">
                                 <Viewbox Style="{StaticResource IconViewBox}">
                                     <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource MoreToggleButtonIcon}"/>
+                                        <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource MoreVertical_Icon}"/>
                                     </Canvas>
                                 </Viewbox>
                             </ToggleButton>
@@ -141,15 +141,14 @@
 
                                     <StackPanel Orientation="Vertical">
 
-                                        <Button Style="{StaticResource NormalButton}"
-                                                HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent"
+                                        <Button Style="{StaticResource PopupMenu_Button}"
                                                 Click="BackButton_Click"
                                                 Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.DrawIconCommand}"
                                                 CommandParameter="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Viewbox Style="{StaticResource IconViewBox}">
                                                     <Canvas Style="{StaticResource IconCanvas}">
-                                                        <Path Style="{StaticResource SelectIcon}"/>
+                                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Select_Icon}"/>
                                                     </Canvas>
                                                 </Viewbox>
 
@@ -157,14 +156,13 @@
                                             </StackPanel>
                                         </Button>
 
-                                        <Button Style="{StaticResource NormalButton}"
-                                                HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent"
+                                        <Button Style="{StaticResource PopupMenu_Button}"
                                                 Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.CopyIconCommand}"
                                                 CommandParameter="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Viewbox Style="{StaticResource IconViewBox}">
                                                     <Canvas Style="{StaticResource IconCanvas}">
-                                                        <Path Style="{StaticResource Copy_ButtonIcon}"/>
+                                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Copy_Icon}"/>
                                                     </Canvas>
                                                 </Viewbox>
 
@@ -172,14 +170,13 @@
                                             </StackPanel>
                                         </Button>
 
-                                        <Button Style="{StaticResource NormalButton}"
+                                        <Button Style="{StaticResource PopupMenu_Button}"
                                                 Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.DeleteIconCommand}"
-                                                CommandParameter="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon}"
-                                                HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Background="Transparent">
+                                                CommandParameter="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Viewbox Style="{StaticResource IconViewBox}">
                                                     <Canvas Style="{StaticResource IconCanvas}">
-                                                        <Path Style="{StaticResource Delete_ButtonIcon}"/>
+                                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Delete_Icon}"/>
                                                     </Canvas>
                                                 </Viewbox>
 
@@ -222,7 +219,7 @@
                 <TextBlock Text="No icon found." Foreground="#FFA6A6A6"/>
                 <Viewbox Style="{StaticResource IconViewBox}">
                     <Canvas Style="{StaticResource IconCanvas}">
-                        <Path Style="{StaticResource NoDocumentIcon}"/>
+                        <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource NoDocument_Icon}"/>
                     </Canvas>
                 </Viewbox>
 

@@ -8,13 +8,8 @@ namespace Graphy.Enum
 {
     public enum CatiaToken
     {
-        SelectedPartDocumentChanged,
+        SelectedPartChanged,
         Refresh
-    };
-
-    public enum FontToken
-    {
-        FavoriteFontCollectionChanged
     };
 
     public enum InputDataToken
@@ -33,19 +28,12 @@ namespace Graphy.Enum
 
     public enum SettingToken
     {
-        FavoriteFontCollectionChanged,
         IconCollectionChanged,
         LicenceFileReadingFailed,
         ToleranceFactorChanged,
         KeepHistoricChanged,
         CreateVolumeChanged,
         VerticalAlignmentChanged
-    }
-
-    public enum DesignTableToken
-    {
-        DesignTableLoaded,
-        SelectedPartCollectionChanged
     }
 
     public enum IconToken

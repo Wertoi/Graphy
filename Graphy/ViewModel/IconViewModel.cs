@@ -71,7 +71,7 @@ namespace Graphy.ViewModel
             MessengerInstance.Send(IconCollection.ToList(), Enum.IconToken.IconCollectionChanged);
             IconCollection.Last().PropertyChanged += Icon_PropertyChanged;
 
-            IsIconCollectionEmpty = IconCollection.Count == 0 ? true : false;
+            IsIconCollectionEmpty = IconCollection.Count == 0;
         }
 
 
@@ -86,7 +86,7 @@ namespace Graphy.ViewModel
 
             MessengerInstance.Send(IconCollection.ToList(), Enum.IconToken.IconCollectionChanged);
 
-            IsIconCollectionEmpty = IconCollection.Count == 0 ? true : false;
+            IsIconCollectionEmpty = IconCollection.Count == 0;
         }
 
 

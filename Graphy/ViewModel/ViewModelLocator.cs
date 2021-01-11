@@ -19,20 +19,11 @@ namespace Graphy.ViewModel
 
             // Pour info : "true" permet de contrôler l'ordre d'initialisation des view models
             SimpleIoc.Default.Register<ProcessViewModel>(true);
-            SimpleIoc.Default.Register<InputDataViewModel>(true);
-            SimpleIoc.Default.Register<FontViewModel>(true);
+            SimpleIoc.Default.Register<SimpleMarkingViewModel>(true);
+            SimpleIoc.Default.Register<ComplexMarkingViewModel>(true);
             SimpleIoc.Default.Register<IconViewModel>(true);
             SimpleIoc.Default.Register<SettingViewModel>(true);
             SimpleIoc.Default.Register<CatiaViewModel>(true);
-            SimpleIoc.Default.Register<DesignTableViewModel>(true);
-        }
-
-        public FontViewModel FontViewModel
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<FontViewModel>();
-            }
         }
 
         public CatiaViewModel CatiaViewModel
@@ -51,14 +42,6 @@ namespace Graphy.ViewModel
             }
         }
 
-        public InputDataViewModel InputDataViewModel
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<InputDataViewModel>();
-            }
-        }
-
         public SettingViewModel SettingViewModel
         {
             get
@@ -67,19 +50,28 @@ namespace Graphy.ViewModel
             }
         }
 
-        public DesignTableViewModel DesignTableViewModel
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<DesignTableViewModel>();
-            }
-        }
 
         public IconViewModel IconViewModel
         {
             get
             {
                 return ServiceLocator.Current.GetInstance<IconViewModel>();
+            }
+        }
+
+        public SimpleMarkingViewModel SimpleMarkingViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SimpleMarkingViewModel>();
+            }
+        }
+
+        public ComplexMarkingViewModel ComplexMarkingViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ComplexMarkingViewModel>();
             }
         }
 

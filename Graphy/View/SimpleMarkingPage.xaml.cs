@@ -16,24 +16,19 @@ using System.Windows.Shapes;
 namespace Graphy.View
 {
     /// <summary>
-    /// Logique d'interaction pour FontView.xaml
+    /// Logique d'interaction pour SimpleMarkingPage.xaml
     /// </summary>
-    public partial class FontView : UserControl
+    public partial class SimpleMarkingPage : Page
     {
-        public FontView()
+        public SimpleMarkingPage()
         {
             InitializeComponent();
         }
 
-        public event EventHandler BackButtonClicked;
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+        private void SelectionButton_Click(object sender, RoutedEventArgs e)
         {
-            BackButtonClicked?.Invoke(sender, new EventArgs());
+            
         }
 
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ClearSearchButton.Visibility = SearchTextBox.Text == "" ? Visibility.Collapsed : Visibility.Visible;
-        }
     }
 }

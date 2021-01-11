@@ -112,19 +112,20 @@ namespace Graphy.Model.CatiaShape
             }
         }
 
-        public void DrawCharacter(VerticalAlignment verticalAlignment, PathGeometry refCharacterGeometry = null)
+        public void Draw(VerticalAlignment verticalAlignment, PathGeometry refGeometry = null)
         {
-            double xCorrectif = PathGeometry.Bounds.Left;
-            double yCorrectif;
             PathGeometry tempGeometry;
 
-            if (refCharacterGeometry == null)
+            if (refGeometry == null)
                 tempGeometry = PathGeometry;
             else
-                tempGeometry = refCharacterGeometry;
-            
+                tempGeometry = refGeometry;
 
-            switch(verticalAlignment)
+            double xCorrectif = PathGeometry.Bounds.Left;
+            double yCorrectif = GetYOffset(verticalAlignment, tempGeometry);
+
+
+            /*switch (verticalAlignment)
             {
                 case VerticalAlignment.Top:
                     yCorrectif = tempGeometry.Bounds.Top;
@@ -141,7 +142,7 @@ namespace Graphy.Model.CatiaShape
                 default:
                     yCorrectif = tempGeometry.Bounds.Bottom;
                     break;
-            }
+            }*/
 
             for (int i = 0; i < SurfaceList.Count; i++)
             {
@@ -154,6 +155,23 @@ namespace Graphy.Model.CatiaShape
             }
         }
 
+        public static double GetYOffset(VerticalAlignment verticalAlignment, PathGeometry refGeometry)
+        {
+            switch (verticalAlignment)
+            {
+                case VerticalAlignment.Top:
+                    return refGeometry.Bounds.Top;
+
+                case VerticalAlignment.Center:
+                    return (refGeometry.Bounds.Top + refGeometry.Bounds.Bottom) / 2;
+
+                case VerticalAlignment.Bottom:
+                    return refGeometry.Bounds.Bottom;
+
+                default:
+                    return refGeometry.Bounds.Bottom;
+            }
+        }
 
 
         public void AssembleSurfaces()

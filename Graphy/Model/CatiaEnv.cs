@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GalaSoft.MvvmLight;
-using Graphy.Model.CatiaDocument;
 using INFITF;
 using KnowledgewareTypeLib;
 
@@ -59,7 +58,14 @@ namespace Graphy.Model
             }
         }
 
-        public string FullVersion { get => _fullVersion; set => _fullVersion = value; }
+        public string FullVersion
+        {
+            get => _fullVersion;
+            set
+            {
+                Set(() => FullVersion, ref _fullVersion, value);
+            }
+        }
 
 
         // METHODS
@@ -85,15 +91,7 @@ namespace Graphy.Model
             {
                 IsApplicationOpen = true;
                 LengthUnitSymbol = GetLengthUnitSymbol();
-
-                try
-                {
-                    FullVersion = "V" + Application.SystemConfiguration.Version + "R" + Application.SystemConfiguration.Release;
-                }
-                catch(Exception ex)
-                {
-                    System.Windows.MessageBox.Show(ex.Message);
-                }
+                FullVersion = "V" + Application.SystemConfiguration.Version + "R" + Application.SystemConfiguration.Release;
             }
             else
             {
@@ -146,47 +144,5 @@ namespace Graphy.Model
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="fullPath"></param>
-        /// <returns></returns>
-        public CatiaGenericDocument OpenDocument(CatiaFile file)
-        {
-            CatiaDocument.CatiaGenericDocument newCatiaDocument = new CatiaDocument.CatiaGenericDocument(this);
-            bool isDocumentCollectionEmpty = Application.Documents.Count == 0 ? true : false;
-
-            // If there is no document already open
-            if (isDocumentCollectionEmpty)
-            {
-                newCatiaDocument.Document = Application.Documents.Open(file.FullPath);
-
-                do
-                {
-                    newCatiaDocument.Document.Activate();
-                }
-                while (Application.Documents.Count == 0);
-            }
-
-            // Otherwise
-            else
-            {
-                Document previousActiveDocument = Application.ActiveDocument;
-                newCatiaDocument.Document = Application.Documents.Open(file.FullPath);
-
-                if(newCatiaDocument.Document != previousActiveDocument)
-                {
-
-                    do
-                    {
-                        newCatiaDocument.Document.Activate();
-                    }
-                    while (Application.ActiveDocument == previousActiveDocument);
-                }
-            }
-
-            return newCatiaDocument;
-        }
     }
 }

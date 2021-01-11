@@ -11,23 +11,24 @@ namespace Graphy.Model
 {
     public class MarkingData : ObservableObject
     {
-        public MarkingData(string textValue, double charactereHeightValue, double extrusionHeightValue)
+        public MarkingData()
         {
-            Font = new SelectableFont(new System.Windows.Media.FontFamily("Arial"));
-            Text = new LinkableData<string>()
-            {
-                Value = textValue
-            };
+            IsBold = false;
+            IsItalic = false;
 
-            CharacterHeight = new LinkableData<double>()
-            {
-                Value = charactereHeightValue
-            };
+            TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
+            StartPointName = DEFAULT_START_POINT_NAME;
+            ProjectionSurfaceName = DEFAULT_PROJECTION_SURFACE_NAME;
+            AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME;
+        }
 
-            ExtrusionHeight = new LinkableData<double>()
-            {
-                Value = extrusionHeightValue
-            };
+        public MarkingData(string text, double charactereHeight, double extrusionHeight)
+        {
+            Text = text;
+            IsBold = false;
+            IsItalic = false;
+            MarkingHeight = charactereHeight;
+            ExtrusionHeight = extrusionHeight;
 
             TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
             StartPointName = DEFAULT_START_POINT_NAME;
@@ -40,12 +41,13 @@ namespace Graphy.Model
         public const string DEFAULT_PROJECTION_SURFACE_NAME = "No surface selected";
         public const string DEFAULT_AXIS_SYSTEM_NAME = "No axis system selected";
 
+        private string _name;
         private bool _isText = true; // true for text and false for icon.
-        private LinkableData<string> _text;
-        private SelectableFont _font;
+        private string _text;
+        private FontFamily _fontFamily;
         private Icon _icon;
-        private LinkableData<double> _characterHeight;
-        private LinkableData<double> _extrusionHeight;
+        private double _markingHeight;
+        private double _extrusionHeight;
         private string _trackingCurveName;
         private string _startPointName;
         private string _projectionSurfaceName;
@@ -53,6 +55,15 @@ namespace Graphy.Model
         private bool _isBold;
         private bool _isItalic;
 
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                Set(() => Name, ref _name, value);
+            }
+        }
 
         public bool IsText
         {
@@ -63,7 +74,7 @@ namespace Graphy.Model
             }
         }
 
-        public LinkableData<string> Text
+        public string Text
         {
             get => _text;
             set
@@ -72,12 +83,12 @@ namespace Graphy.Model
             }
         }
 
-        public SelectableFont Font
+        public FontFamily FontFamily
         {
-            get => _font;
+            get => _fontFamily;
             set
             {
-                Set(() => Font, ref _font, value);
+                Set(() => FontFamily, ref _fontFamily, value);
             }
         }
 
@@ -90,16 +101,16 @@ namespace Graphy.Model
             }
         }
 
-        public LinkableData<double> CharacterHeight
+        public double MarkingHeight
         {
-            get => _characterHeight;
+            get => _markingHeight;
             set
             {
-                Set(() => CharacterHeight, ref _characterHeight, value);
+                Set(() => MarkingHeight, ref _markingHeight, value);
             }
         }
 
-        public LinkableData<double> ExtrusionHeight
+        public double ExtrusionHeight
         {
             get => _extrusionHeight;
             set

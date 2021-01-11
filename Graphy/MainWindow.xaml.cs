@@ -24,73 +24,32 @@ namespace Graphy
         public MainWindow()
         {
             InitializeComponent();
+            SimpleMarkingRadioButton.IsChecked = true;
         }
 
-        private void SelectionButton_Click(object sender, RoutedEventArgs e)
+        private void SimpleMarkingRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            if(MainFrame != null)
+                MainFrame.Navigate(new Graphy.View.SimpleMarkingPage());
+        }
+
+        private void ComplexMarkingRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (MainFrame != null)
+                MainFrame.Navigate(new Graphy.View.ComplexMarkingPage());
         }
 
 
-
-        // ***** SETTING VIEW MANAGEMENT *****
-
-        private void SettingView_BackButtonClicked(object sender, EventArgs e)
+        private void IconRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            SettingView.Visibility = Visibility.Collapsed;
+            if (MainFrame != null)
+                MainFrame.Navigate(new Graphy.View.IconView());
         }
 
-        private void SettingButton_Click(object sender, RoutedEventArgs e)
+        private void SettingRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            SettingView.Visibility = Visibility.Visible;
-        }
-
-        // ***** END OF SETTING VIEW MANAGEMENT *****
-
-
-
-
-        // ***** DESIGN TABLE VIEW MANAGEMENT *****
-
-        private void DesignTableView_BackButtonClicked(object sender, EventArgs e)
-        {
-            DesignTableView.Visibility = Visibility.Collapsed;
-        }
-
-        private void DesignTableButton_Click(object sender, RoutedEventArgs e)
-        {
-            DesignTableView.Visibility = Visibility.Visible;
-        }
-
-        // ***** END OF DESIGN TABLE VIEW MANAGEMENT *****
-
-
-
-
-        // ***** FONT VIEW MANAGEMENT *****
-
-        private void FontView_BackButtonClicked(object sender, EventArgs e)
-        {
-            FontView.Visibility = Visibility.Collapsed;
-        }
-
-        private void FontButton_Click(object sender, RoutedEventArgs e)
-        {
-            FontView.Visibility = Visibility.Visible;
-        }
-
-        // ***** END OF FONT VIEW MANAGEMENT *****
-
-
-
-        private void IconButton_Click(object sender, RoutedEventArgs e)
-        {
-            IconView.Visibility = Visibility.Visible;
-        }
-
-        private void IconView_BackButtonClicked(object sender, EventArgs e)
-        {
-            IconView.Visibility = Visibility.Collapsed;
+            if (MainFrame != null)
+                MainFrame.Navigate(new Graphy.View.SettingView());
         }
     }
 }

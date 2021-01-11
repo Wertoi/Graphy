@@ -125,38 +125,35 @@
     <Compile Include="Enum\Language.cs" />
     <Compile Include="DesignTableReader.cs" />
     <Compile Include="Enum\VerticalAlignment.cs" />
-    <Compile Include="Model\CatiaDocument\CatiaGenericDocument.cs" />
-    <Compile Include="Model\CatiaDocument\CatiaPartDocument.cs" />
-    <Compile Include="Model\CatiaFile.cs" />
+    <Compile Include="Model\CatiaPart.cs" />
     <Compile Include="Model\CatiaShape\CatiaCharacter.cs" />
     <Compile Include="Model\CatiaShape\CatiaContour.cs" />
     <Compile Include="Model\CatiaShape\CatiaDrawableShape.cs" />
     <Compile Include="Model\CatiaShape\CatiaGenericShape.cs" />
     <Compile Include="Model\CatiaShape\CatiaSurface.cs" />
     <Compile Include="Model\DesignTableParameter.cs" />
+    <Compile Include="Model\ExcelTableStream.cs" />
     <Compile Include="Model\Icon.cs" />
     <Compile Include="Model\LinkableData.cs" />
-    <Compile Include="Model\SelectableFont.cs" />
+    <Compile Include="Model\FontFamily.cs" />
+    <Compile Include="Model\MarkablePart.cs" />
     <Compile Include="CustomControl\TextBoxWithUnit.cs" />
     <Compile Include="Enum\ViewModelToken.cs" />
     <Compile Include="Model\Generator\MarkingGenerator.cs" />
     <Compile Include="Model\CatiaEnv.cs" />
     <Compile Include="Model\CatiaShape\CatiaPoint.cs" />
     <Compile Include="Model\MarkingData.cs" />
+    <Compile Include="Model\TableReader.cs" />
     <Compile Include="TranslationSource.cs" />
     <Compile Include="ViewModel\CatiaViewModel.cs" />
-    <Compile Include="ViewModel\DesignTableViewModel.cs" />
-    <Compile Include="ViewModel\FontViewModel.cs" />
+    <Compile Include="ViewModel\ComplexMarkingViewModel.cs" />
     <Compile Include="ViewModel\IconViewModel.cs" />
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\ProcessViewModel.cs" />
-    <Compile Include="ViewModel\InputDataViewModel.cs" />
+    <Compile Include="ViewModel\SimpleMarkingViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\DesignTableView.xaml.cs">
-      <DependentUpon>DesignTableView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\FontView.xaml.cs">
-      <DependentUpon>FontView.xaml</DependentUpon>
+    <Compile Include="View\ComplexMarkingPage.xaml.cs">
+      <DependentUpon>ComplexMarkingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IconView.xaml.cs">
       <DependentUpon>IconView.xaml</DependentUpon>
@@ -166,6 +163,9 @@
     </Compile>
     <Compile Include="View\ProcessView.xaml.cs">
       <DependentUpon>ProcessView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SimpleMarkingPage.xaml.cs">
+      <DependentUpon>SimpleMarkingPage.xaml</DependentUpon>
     </Compile>
     <Page Include="CustomControl\LoadingBox.xaml">
       <SubType>Designer</SubType>
@@ -188,11 +188,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\DesignTableView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\FontView.xaml">
+    <Page Include="View\ComplexMarkingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -205,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProcessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SimpleMarkingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

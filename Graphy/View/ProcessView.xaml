@@ -48,7 +48,7 @@
                     <Run Text="{Binding Source={StaticResource Locator}, Path=StatusViewModel.ExceptionMessage}" Foreground="#FFA6A6A6" FontSize="14"/>
                 </TextBlock>
 
-                <Button Margin="2,10,2,15" Style="{StaticResource NormalButton}"
+                <Button Margin="2,10,2,15" Style="{StaticResource Generic_Button}"
                         Command="{Binding Source={StaticResource Locator}, Path=StatusViewModel.ResetExceptionCommand}" Content="OK" Padding="15,5" />
 
             </StackPanel>

@@ -18,10 +18,10 @@
         <StackPanel Orientation="Horizontal" Margin="15,15,0,15">
 
             <!-- BACK BUTTON -->
-            <Button x:Name="BackButton" Style="{StaticResource NormalButton}" Click="BackButton_Click">
+            <Button x:Name="BackButton" Style="{StaticResource Generic_Button}" Click="BackButton_Click">
                 <Viewbox Style="{StaticResource IconViewBox}">
                     <Canvas Style="{StaticResource IconCanvas}">
-                        <Path Style="{StaticResource BackIcon}"/>
+                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Add_Icon}"/>
                     </Canvas>
                 </Viewbox>
             </Button>
@@ -98,36 +98,36 @@
 
                     <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="-1,0,0,0">
 
-                        <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}" Background="{StaticResource Gray242}"
+                        <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}"
                                      IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:VerticalAlignment.Bottom}}">
                             
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource AlignVerticalBottomToggleButtonIcon}"/>
+                                    <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource AlignVerticalBottom_Icon}"/>
                                 </Canvas>
                             </Viewbox>
                         </RadioButton>
 
-                        <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}" Background="{StaticResource Gray242}"
+                        <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}"
                                      IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:VerticalAlignment.Center}}">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource AlignVerticalMiddleToggleButtonIcon}"/>
+                                    <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignVerticalMiddle_Icon}"/>
                                 </Canvas>
                             </Viewbox>
                         </RadioButton>
 
-                        <RadioButton Style="{StaticResource TransparentToggledRadioButtonStyle}" Background="{StaticResource Gray242}"
+                        <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}"
                                      IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:VerticalAlignment.Top}}">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource AlignVerticalTopToggleButtonIcon}"/>
+                                    <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignVerticalTop_Icon}"/>
                                 </Canvas>
                             </Viewbox>
                         </RadioButton>
@@ -145,7 +145,7 @@
             <TextBlock HorizontalAlignment="Left" Foreground="{StaticResource Gray127}">
                 <Run Text="© Graphy, 2020"/>
                 <LineBreak/>
-                <Run Text="v3.3"/>
+                <Run Text="v4.0"/>
             </TextBlock>
             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <Hyperlink Command="{Binding Source={StaticResource Locator}, Path=SettingViewModel.ShowLicenceCommand}">
