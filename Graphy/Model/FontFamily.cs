@@ -18,7 +18,7 @@ namespace Graphy.Model
         public KerningPair[] KerningPairs { get => _kerningPairs; set => _kerningPairs = value; }
 
 
-        private Typeface GetTypeface(bool isBold, bool isItalic)
+        public Typeface GetTypeface(bool isBold, bool isItalic)
         {
             Typeface selectedTypeface = GetTypefaces().First();
 

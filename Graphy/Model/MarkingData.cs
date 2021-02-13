@@ -13,9 +13,6 @@ namespace Graphy.Model
     {
         public MarkingData()
         {
-            IsBold = false;
-            IsItalic = false;
-
             TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
             StartPointName = DEFAULT_START_POINT_NAME;
             ProjectionSurfaceName = DEFAULT_PROJECTION_SURFACE_NAME;
@@ -25,8 +22,6 @@ namespace Graphy.Model
         public MarkingData(string text, double charactereHeight, double extrusionHeight)
         {
             Text = text;
-            IsBold = false;
-            IsItalic = false;
             MarkingHeight = charactereHeight;
             ExtrusionHeight = extrusionHeight;
 
@@ -52,8 +47,10 @@ namespace Graphy.Model
         private string _startPointName;
         private string _projectionSurfaceName;
         private string _axisSystemName;
-        private bool _isBold;
-        private bool _isItalic;
+        private bool _isBold = false;
+        private bool _isItalic = false;
+        private bool _isStrikeThrough = false;
+        private bool _isUnderline = false;
 
 
         public string Name
@@ -173,5 +170,22 @@ namespace Graphy.Model
             }
         }
 
+        public bool IsStrikeThrough
+        {
+            get => _isStrikeThrough;
+            set
+            {
+                Set(() => IsStrikeThrough, ref _isStrikeThrough, value);
+            }
+        }
+
+        public bool IsUnderline
+        {
+            get => _isUnderline;
+            set
+            {
+                Set(() => IsUnderline, ref _isUnderline, value);
+            }
+        }
     }
 }

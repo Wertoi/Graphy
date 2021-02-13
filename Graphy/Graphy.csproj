@@ -118,13 +118,16 @@
     <Compile Include="Converter\EnumToCollectionConverter.cs" />
     <Compile Include="Converter\LocalizedEnumToStringConverter.cs" />
     <Compile Include="Converter\EnumToBooleanConverter.cs" />
+    <Compile Include="CsvStream\CsvConfig.cs" />
+    <Compile Include="CsvStream\CsvReader.cs" />
+    <Compile Include="CsvStream\CsvWriter.cs" />
     <Compile Include="CustomControl\CartesianCanvas.cs" />
     <Compile Include="CustomControl\LoadingBox.xaml.cs">
       <DependentUpon>LoadingBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Enum\Language.cs" />
     <Compile Include="DesignTableReader.cs" />
-    <Compile Include="Enum\VerticalAlignment.cs" />
+    <Compile Include="Enum\Alignments.cs" />
     <Compile Include="Model\CatiaPart.cs" />
     <Compile Include="Model\CatiaShape\CatiaCharacter.cs" />
     <Compile Include="Model\CatiaShape\CatiaContour.cs" />
@@ -144,6 +147,7 @@
     <Compile Include="Model\CatiaShape\CatiaPoint.cs" />
     <Compile Include="Model\MarkingData.cs" />
     <Compile Include="Model\TableReader.cs" />
+    <Compile Include="Model\TableStream.cs" />
     <Compile Include="TranslationSource.cs" />
     <Compile Include="ViewModel\CatiaViewModel.cs" />
     <Compile Include="ViewModel\ComplexMarkingViewModel.cs" />

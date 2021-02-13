@@ -39,14 +39,10 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
                         <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="1" Text="{local:Loc Settings_General_LanguageLabel}" Style="{StaticResource LabelFormTextBlock}"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" Padding="5,8,15,8"
+                    <TextBlock Grid.Column="0" Text="{local:Loc Settings_General_LanguageLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                    <ComboBox Grid.Column="1" VerticalContentAlignment="Center" Padding="5,8,15,8"
                               ItemsSource="{Binding Source={StaticResource Locator}, Path=SettingViewModel.SelectedLanguage, Converter={StaticResource EnumToCollectionConverter}}"
                               SelectedItem="{Binding Source={StaticResource Locator}, Path=SettingViewModel.SelectedLanguage, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
@@ -66,6 +62,7 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -91,7 +88,7 @@
                     <CheckBox Grid.Row="2" Grid.Column="1" Style="{StaticResource YesNoCheckBox}" Margin="0,7"
                               IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume, Mode=TwoWay}"/>
 
-                    <!-- ALIGNMENT INPUT -->
+                    <!-- VERTICAL ALIGNMENT INPUT -->
                     <!--#region -->
 
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="Vertical alignment" Style="{StaticResource LabelFormTextBlock}"/>
@@ -113,7 +110,7 @@
                         <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}"
                                      IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
-                            ConverterParameter={x:Static enum:VerticalAlignment.Center}}">
+                            ConverterParameter={x:Static enum:VerticalAlignment.Center}}" Margin="5,0,0,0">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignVerticalMiddle_Icon}"/>
@@ -124,7 +121,7 @@
                         <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}"
                                      IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
-                            ConverterParameter={x:Static enum:VerticalAlignment.Top}}">
+                            ConverterParameter={x:Static enum:VerticalAlignment.Top}}" Margin="5,0,0,0">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignVerticalTop_Icon}"/>
@@ -135,6 +132,78 @@
                     </StackPanel>
 
                     <!--#endregion-->
+
+
+                    <!-- HORIZONTAL ALIGNMENT INPUT -->
+                    <!--#region -->
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Horizontal alignment" Style="{StaticResource LabelFormTextBlock}"/>
+
+                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="-1,0,0,0">
+
+                        <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}"
+                                     IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:VerticalAlignment.Bottom}}" Margin="0,5,0,0">
+
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource AlignHorizontalLeft_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}"
+                                     IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:VerticalAlignment.Center}}" Margin="5,5,0,0">
+                            
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignHorizontalCenter_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}"
+                                     IsChecked="{Binding Source={StaticResource Locator}, Path=SettingViewModel.VerticalAlignment, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:VerticalAlignment.Top}}" Margin="5,5,0,0">
+                            
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignHorizontalRight_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </RadioButton>
+
+                    </StackPanel>
+
+                    <!--#endregion-->
+
+                </Grid>
+
+                
+                
+                <TextBlock Text="CSV Reader"
+                           FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,35,0,5"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Caractère délimiteur" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text=";" Style="{StaticResource NormalTextBox}"/>
+
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Caractère pour commentaire" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="$" Style="{StaticResource NormalTextBox}"/>
 
                 </Grid>
 

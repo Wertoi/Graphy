@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Graphy"
       xmlns:cc="clr-namespace:Graphy.CustomControl"
       mc:Ignorable="d" 
-      d:DesignHeight="750" d:DesignWidth="480"
+      d:DesignHeight="744" d:DesignWidth="463"
       Title="SimpleMarkingPage">
 
     <Grid Background="White">
@@ -81,7 +81,7 @@
                                     <Path Style="{StaticResource SimpleMarking_OptionIcon}" Data="{StaticResource Text_Icon}"/>
                                 </Canvas>
                             </Viewbox>
-                            
+
                             <TextBlock Text="{local:Loc MainWindow_MarkingData_MarkingTypeText}" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
                         </StackPanel>
                     </RadioButton>
@@ -107,14 +107,15 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="{Binding Path=MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
                         <RowDefinition Height="{Binding Path=MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
+                        <RowDefinition Height="{Binding Path=MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
                         <RowDefinition Height="{Binding Path=MarkingData.IsText, Converter={StaticResource InvertBooleanToGridLengthConverter}}"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
                         <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LastColumnGroup"/>
                     </Grid.ColumnDefinitions>
 
@@ -123,37 +124,103 @@
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_TextLabel}" Style="{StaticResource LabelFormTextBlock}"
                                    IsEnabled="{Binding ElementName=TextRadioButton, Path=IsChecked}"/>
 
-                    <TextBox x:Name="InputTextTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource NormalTextBox}"
+                    <TextBox x:Name="InputTextTextBox" Grid.Row="0" Grid.Column="1"
                              Text="{Binding Path=MarkingData.Text, Mode=TwoWay}"
                              FontFamily="{Binding Path=MarkingData.FontFamily}"
                              FontWeight="{Binding Path=MarkingData.IsBold, Converter={StaticResource BooleanToFontWeightConverter}}"
-                             FontStyle="{Binding Path=MarkingData.IsItalic, Converter={StaticResource BooleanToFontStyleConverter}}" />
+                             FontStyle="{Binding Path=MarkingData.IsItalic, Converter={StaticResource BooleanToFontStyleConverter}}">
 
-                    <ToggleButton Grid.Row="0" Grid.Column="2" Style="{StaticResource Generic_SquareToggleButton}"
+                        <!-- DEFINE TEXT DECORATIONS BEHAVIOUR -->
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource NormalTextBox}">
+
+                                <Style.Triggers>
+
+                                    <!-- If is underline -->
+                                    <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.IsUnderline}" Value="True">
+                                        <Setter Property="TextDecorations" Value="Underline"/>
+                                    </DataTrigger>
+
+                                    <!-- If is strike through -->
+                                    <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.IsStrikeThrough}" Value="True">
+                                        <Setter Property="TextDecorations" Value="StrikeThrough"/>
+                                    </DataTrigger>
+
+                                    <!-- If is underline AND strike through -->
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.IsUnderline}" Value="True"/>
+                                            <Condition Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.IsStrikeThrough}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="TextDecorations" Value="Underline, StrikeThrough"/>
+                                    </MultiDataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+
+                    </TextBox>
+
+
+                    <!--#endregion-->
+
+
+                    <!-- TEXT OPTIONS -->
+                    <!--#region TEXT OPTIONS-->
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Style du texte" Style="{StaticResource LabelFormTextBlock}"/>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,5">
+
+                        <ToggleButton Grid.Column="0" Style="{StaticResource Generic_SquareToggleButton}"
                                   IsChecked="{Binding Path=MarkingData.IsBold, Mode=TwoWay}" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}">
-                        <Viewbox Style="{StaticResource IconViewBox}">
-                            <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource Bold_Icon}"/>
-                            </Canvas>
-                        </Viewbox>
-                    </ToggleButton>
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource Bold_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </ToggleButton>
 
-                    <ToggleButton x:Name="ItalicToggleButton" Grid.Row="0" Grid.Column="3" Style="{StaticResource Generic_SquareToggleButton}"
+                        <ToggleButton Grid.Column="1" Style="{StaticResource Generic_SquareToggleButton}"
                                   IsChecked="{Binding Path=MarkingData.IsItalic, Mode=TwoWay}"
-                                  Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}">
-                        <Viewbox Style="{StaticResource IconViewBox}">
-                            <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource Italic_Icon}"/>
-                            </Canvas>
-                        </Viewbox>
-                    </ToggleButton>
+                                  Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" Margin="5,0,0,0">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource Italic_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </ToggleButton>
+
+                        <ToggleButton Grid.Column="2" Style="{StaticResource Generic_SquareToggleButton}"
+                                  IsChecked="{Binding Path=MarkingData.IsUnderline, Mode=TwoWay}"
+                                  Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" Margin="5,0,0,0">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource Underline_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </ToggleButton>
+
+                        <ToggleButton Grid.Column="4" Style="{StaticResource Generic_SquareToggleButton}"
+                                  IsChecked="{Binding Path=MarkingData.IsStrikeThrough, Mode=TwoWay}"
+                                  Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" Margin="5,0,0,0">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource StrikeThrough_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </ToggleButton>
+
+                        
+                    </StackPanel>
+
                     <!--#endregion-->
 
                     <!-- Police d'écriture -->
                     <!--#region -->
-                    <TextBlock Grid.Row="1" Text="{local:Loc MainWindow_MarkingData_FontLabel}" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_FontLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
-                    <ComboBox Grid.Row="1" Grid.Column="1"
+                    <ComboBox Grid.Row="2" Grid.Column="1"
                               Margin="0,5,10,5"
                               VerticalContentAlignment="Center"
                               Padding="5,8,15,8"
@@ -166,17 +233,17 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    
+
                     <!--#endregion-->
 
 
                     <!--ICON INPUT -->
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_IconLabel}" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_IconLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
-                    <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}"
+                    <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}"
                                  Text="{Binding Path=MarkingData.Icon.Name}" />
 
-                    <Button Grid.Row="2" Grid.Column="2"
+                    <Button Grid.Row="3" Grid.Column="2"
                                 x:Name="IconButton"
                                 Style="{StaticResource Generic_SquareButton}">
                         <Viewbox Style="{StaticResource IconViewBox}">
@@ -187,18 +254,18 @@
                     </Button>
 
                     <!-- Hauteur de caractère -->
-                    <TextBlock Grid.Row="3" Text="{local:Loc MainWindow_MarkingData_CharacterHeightLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="4" Text="{local:Loc MainWindow_MarkingData_CharacterHeightLabel}" Style="{StaticResource LabelFormTextBlock}"/>
 
-                    <cc:TextBoxWithUnit Grid.Row="3" Grid.Column="1"
+                    <cc:TextBoxWithUnit Grid.Row="4" Grid.Column="1"
                                         Unit="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.LengthUnitSymbol}"
                                         Text="{Binding MarkingData.MarkingHeight, Mode=TwoWay}"/>
 
 
                     <!-- Hauteur d'extrusion -->
-                    <TextBlock Grid.Row="4" Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightLabel}" Style="{StaticResource LabelFormTextBlock}"
+                    <TextBlock Grid.Row="5" Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightLabel}" Style="{StaticResource LabelFormTextBlock}"
                                IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
 
-                    <cc:TextBoxWithUnit Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center"
+                    <cc:TextBoxWithUnit Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center"
                                         Unit="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.LengthUnitSymbol}"
                                         Text="{Binding MarkingData.ExtrusionHeight, Mode=TwoWay}"
                                         IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
@@ -219,6 +286,76 @@
                             <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource Info_Icon}"/>
                         </Canvas>
                     </Viewbox>
+
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Alignements" Style="{StaticResource LabelFormTextBlock}"/>
+
+                    <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="0,5">
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource AlignHorizontalLeft_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}" Margin="5,0,0,0">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignHorizontalCenter_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}" Margin="5,0,0,0">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignHorizontalRight_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                        </StackPanel>
+
+                        <Rectangle Fill="{StaticResource Gray191}" Width="1" Margin="10,2"/>
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}" Margin="0">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource AlignVerticalBottom_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}" Margin="5,0,0,0">
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignVerticalMiddle_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Background="{StaticResource Gray242}" Margin="5,0,0,0">
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource AlignVerticalTop_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
                 </Grid>
 
                 <!-- POSITIONS -->
@@ -439,5 +576,5 @@
         </Grid>
 
     </Grid>
-    
+
 </Page>

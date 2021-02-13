@@ -76,14 +76,4 @@ namespace Graphy.Converter
 
         }
     }
-
-    // NOT USE FOR NOW. DO NOT KNOW HOW TO DRAW UNDERLINED CHARACTERS.
-    /*public sealed class BooleanToTextDecorationConverter : BooleanConverter<TextDecorationCollection>
-    {
-        public BooleanToTextDecorationConverter() :
-            base(TextDecorations.Underline, null)
-        {
-
-        }
-    }*/
 }

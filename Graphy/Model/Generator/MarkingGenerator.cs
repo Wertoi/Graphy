@@ -250,6 +250,17 @@ namespace Graphy.Model.Generator
                 double currentLength = 0;
                 CatiaCharacter previousCharacter = null;
 
+                // /!\ RECUPERER UN FORMATTED TEXT AFIN D'OBTENIR LA LONGUEUR DU TEXTE !
+                FormattedText test = new FormattedText(markingData.Text, System.Globalization.CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight,
+                    markingData.FontFamily.GetTypeface(markingData.IsBold, markingData.IsItalic), 1, Brushes.Black, 1);
+                Geometry testGeometry = test.BuildGeometry(new System.Windows.Point(0, 0));
+                double testRealWidth = testGeometry.Bounds.Width * markingData.MarkingHeight / testGeometry.Bounds.Height;
+
+                // /!\ CREER LE POINT DE DEPART FONCTION DE L'ALIGNEMENT HORIZONTAL
+
+
+
+
                 // Compute the scale ratio to obtain the character height with a fixed character reference
                 // 'M' character is used as reference.
                 PathGeometry refCharacterGeometry = markingData.FontFamily.GetCharacterGeometry('M', toleranceFactor, markingData.IsBold, markingData.IsItalic);
@@ -258,8 +269,12 @@ namespace Graphy.Model.Generator
                 // Compute the kerningPair table
                 markingData.FontFamily.ComputeKerningPairs();
 
+                // Create a list to store points references in order to create underline and strike through if necessary
+                List<Reference> localPointRefList = new List<Reference>();
+
                 // Create a list to store local axis system references in order to delete them if keep historic option is uncheck.
                 List<Reference> localAxisSystemRefList = new List<Reference>();
+
 
                 // Creates the working set
                 HybridBody writingSet = markingSet.HybridBodies.Add();
@@ -276,6 +291,9 @@ namespace Graphy.Model.Generator
                     Reference localPointRef = ComputeLocalPoint(catiaCharacter, previousCharacter, markingData,
                         trackingCurveRef, startPointRef, pointSet,
                         isXSameDirection, ref currentLength, scaleRatio);
+
+                    // Store the point in the list
+                    localPointRefList.Add(localPointRef);
 
 
                     if (!catiaCharacter.IsSpaceCharacter)
@@ -313,14 +331,60 @@ namespace Graphy.Model.Generator
                     characterIndex++;
                 }
 
-                // If Underligned
-                if (true)
-                {
-                    HybridBody underlineBody = markingSet.HybridBodies.Add();
 
-                    DrawLine(catiaPart, LineType.Underline, markingData, verticalAlignment, refCharacterGeometry, underlineBody, scaleRatio, isYSameDirection,
-                        keepHistoric, createVolume, trackingCurveRef, projectionSurfaceRef, hybridShapeFactory);
+                // If Underligned OR Strike through
+                if (markingData.IsUnderline || markingData.IsStrikeThrough)
+                {
+                    // Get a space character in order to create the final point on the curve
+                    CatiaCharacter catiaCharacter = GetCatiaCharacter(catiaPart.PartDocument, markingData, '_', characterList, toleranceFactor,
+                        verticalAlignment, refCharacterGeometry);
+
+                    // Create the final point
+                    Reference pointRef = ComputeLocalPoint(catiaCharacter, previousCharacter, markingData,
+                        trackingCurveRef, startPointRef, pointSet,
+                        isXSameDirection, ref currentLength, scaleRatio);
+
+                    // Store the point in the list
+                    localPointRefList.Add(pointRef);
+
+                    // Create a curve passing by all the points in the local point list
+                    HybridShapeSpline baseline = hybridShapeFactory.AddNewSpline();
+                    baseline.SetSupport(projectionSurfaceRef);
+                    baseline.SetSplineType(0);
+                    baseline.SetClosing(0);
+                    foreach(Reference pRef in localPointRefList)
+                    {
+                        baseline.AddPointWithConstraintExplicit(pRef, null, -1d, 1, null, 0d);
+                    }
+
+                    baseline.Compute();
+                    Reference baselineRef = catiaPart.PartDocument.Part.CreateReferenceFromObject(baseline);
+
+
+                    // If Underligned
+                    if (markingData.IsUnderline)
+                    {
+                        // Create the underline set
+                        HybridBody underlineBody = markingSet.HybridBodies.Add();
+
+                        // Draw the underline
+                        DrawLine(catiaPart, LineType.Underline, markingData, verticalAlignment, refCharacterGeometry, underlineBody, scaleRatio, isYSameDirection,
+                            keepHistoric, createVolume, baselineRef, projectionSurfaceRef, hybridShapeFactory);
+                    }
+
+
+                    // If Strike through
+                    if (markingData.IsStrikeThrough)
+                    {
+                        // Create the strike through set
+                        HybridBody strikeThroughBody = markingSet.HybridBodies.Add();
+
+                        // Draw the strike through
+                        DrawLine(catiaPart, LineType.StrikeThrough, markingData, verticalAlignment, refCharacterGeometry, strikeThroughBody, scaleRatio, isYSameDirection,
+                            keepHistoric, createVolume, baselineRef, projectionSurfaceRef, hybridShapeFactory);
+                    }
                 }
+
 
                 // Remove local axis systems
                 if (!keepHistoric)
@@ -338,8 +402,8 @@ namespace Graphy.Model.Generator
             else
             {
                 CatiaDrawableShape iconShape = new CatiaDrawableShape(catiaPart.PartDocument);
-                Geometry test = Geometry.Parse(markingData.Icon.PathData);
-                iconShape.PathGeometry = test.GetFlattenedPathGeometry(toleranceFactor, ToleranceType.Relative);
+                Geometry iconGeometry = Geometry.Parse(markingData.Icon.PathData);
+                iconShape.PathGeometry = iconGeometry.GetFlattenedPathGeometry(toleranceFactor, ToleranceType.Relative);
                 iconShape.FillSurfaceList();
                 iconShape.Draw(verticalAlignment);
                 double scaleRatio = markingData.MarkingHeight / iconShape.PathGeometry.Bounds.Height;
@@ -382,7 +446,7 @@ namespace Graphy.Model.Generator
                 hybridShapeFactory.DeleteObjectForDatum(catiaPart.PartDocument.Part.CreateReferenceFromObject(markingBody));
 
 
-                // ***** END ***** //
+            // ***** END ***** //
 
         }
 
@@ -629,11 +693,11 @@ namespace Graphy.Model.Generator
             StrikeThrough
         }
 
+
         private void DrawLine(CatiaPart catiaPart, LineType lineType, MarkingData markingData, VerticalAlignment verticalAlignment, PathGeometry refCharacterGeometry,
             HybridBody lineBody, double scaleRatio, bool isYSameDirection, bool keepHistoric, bool createVolume,
-            Reference trackingCurveRef, Reference projectionSurfaceRef, HybridShapeFactory hybridShapeFactory)
+            Reference curveRef, Reference projectionSurfaceRef, HybridShapeFactory hybridShapeFactory)
         {
-            double yOffset = 0;
             (double position, double thickness) lineValue = (position: 0d, thickness: 0d);
 
             switch (lineType)
@@ -641,8 +705,6 @@ namespace Graphy.Model.Generator
                 case LineType.Underline:
                     {
                         lineValue = markingData.FontFamily.GetUnderline(markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
-                        yOffset = -CatiaDrawableShape.GetYOffset(verticalAlignment, refCharacterGeometry);
-
 
                         break;
                     }
@@ -650,20 +712,34 @@ namespace Graphy.Model.Generator
                 case LineType.StrikeThrough:
                     {
                         lineValue = markingData.FontFamily.GetStrikeThrough(markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
-                        yOffset = CatiaDrawableShape.GetYOffset(verticalAlignment, refCharacterGeometry);
-
 
                         break;
                     }
             }
 
-            HybridShapeCurvePar offsetCurve = hybridShapeFactory.AddNewCurvePar(trackingCurveRef, projectionSurfaceRef, yOffset * scaleRatio, !isYSameDirection, false);
-            offsetCurve.Compute();
-            Reference offsetCurveRef = catiaPart.PartDocument.Part.CreateReferenceFromObject(offsetCurve);
+            // Compute the offset baseline
+            double yOffset = Math.Abs(CatiaDrawableShape.GetYOffset(verticalAlignment, refCharacterGeometry));
+            HybridShapeCurvePar offsetBaseline = hybridShapeFactory.AddNewCurvePar(curveRef, projectionSurfaceRef, yOffset * scaleRatio, !isYSameDirection, false);
+            offsetBaseline.Compute();
+            Reference offsetBaselineRef = catiaPart.PartDocument.Part.CreateReferenceFromObject(offsetBaseline);
 
-            HybridShapeCurvePar positionCurve = hybridShapeFactory.AddNewCurvePar(offsetCurveRef, projectionSurfaceRef, lineValue.position, !isYSameDirection, false);
+            if(keepHistoric)
+            {
+                offsetBaseline.set_Name("Offset_Baseline");
+                lineBody.AppendHybridShape(offsetBaseline);
+            }
+
+            // Compute the position of the underline or strike through curve.
+            // The thickness is added symetricaly
+            HybridShapeCurvePar positionCurve = hybridShapeFactory.AddNewCurvePar(offsetBaselineRef, projectionSurfaceRef, lineValue.position, !isYSameDirection, false);
             positionCurve.Compute();
             Reference positionCurveRef = catiaPart.PartDocument.Part.CreateReferenceFromObject(positionCurve);
+
+            if(keepHistoric)
+            {
+                positionCurve.set_Name("Position_Curve");
+                lineBody.AppendHybridShape(positionCurve);
+            }
 
             HybridShapeSweepLine lineSurfaceFull = hybridShapeFactory.AddNewSweepLine(positionCurveRef);
             lineSurfaceFull.FirstGuideSurf = projectionSurfaceRef;
@@ -681,12 +757,6 @@ namespace Graphy.Model.Generator
 
             if (keepHistoric)
             {
-                offsetCurve.set_Name("Offset_Curve");
-                lineBody.AppendHybridShape(offsetCurve);
-
-                positionCurve.set_Name("Position_Curve");
-                lineBody.AppendHybridShape(positionCurve);
-
                 lineBody.AppendHybridShape(lineSurfaceFull);
             }
             else

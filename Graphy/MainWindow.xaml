@@ -8,7 +8,7 @@
         xmlns:view="clr-namespace:Graphy.View"
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Graphy.MainWindow"
         mc:Ignorable="d"
-        Title="Graphy" Height="750" Width="700" WindowStartupLocation="CenterScreen" Icon="Icon/Graphy_Icon.ico">
+        Title="Graphy" Height="775" Width="700" WindowStartupLocation="CenterScreen" Icon="Icon/Graphy_Icon.ico">
 
     <Grid UseLayoutRounding="True">
         <Grid.ColumnDefinitions>
@@ -56,6 +56,18 @@
                                Visibility="{Binding ElementName=Menu_ToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
                 </RadioButton>
+
+                <ListView ItemsSource="{Binding Source={StaticResource Locator}, Path=ComplexMarkingViewModel.MarkablePartCollection}"
+                          Background="Transparent"
+                          BorderThickness="0"
+                          BorderBrush="Transparent"
+                          Visibility="{Binding Source={StaticResource Locator}, Path=ComplexMarkingViewModel.IsMarkablePartCollectionEmpty, Converter={StaticResource InvertBooleanToVisibilityConverter}}" Padding="20,0,0,0" Margin="0,0,0,10">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PartName}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <!-- ICON RADIO BUTTON -->
                 <RadioButton x:Name="IconRadioButton" Style="{StaticResource Menu_ToggledRadioButton}"

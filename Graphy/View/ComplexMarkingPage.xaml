@@ -29,7 +29,7 @@
             <ScrollViewer Grid.Row="1"
                           VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,25,0,0">
                 <StackPanel Orientation="Vertical">
-                    
+
 
                     <!-- INPUT DATA TITLE -->
                     <TextBlock Text="{main:Loc DesignTable_InputData_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,15,0,5"/>
@@ -47,10 +47,10 @@
                         </Grid.RowDefinitions>
 
                         <!--#region TABLE SELECTION REGION-->
-                        
+
                         <!-- TABLE SELECTION LABEL -->
                         <TextBlock Text="{main:Loc DesignTable_InputData_DesignTableLabel}" Style="{StaticResource LabelFormTextBlock}" />
-                        
+
                         <!-- TABLE SELECTION DATA -->
                         <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
                                  Text="{Binding Path=TableFullPath}" />
@@ -65,11 +65,11 @@
                             </Viewbox>
                         </Button>
 
-                        
+
                         <!--#endregion-->
 
                         <!--#region PART FOLDER SELECTION REGION -->
-                        
+
                         <!-- PART FOLDER SELECTION LABEL -->
                         <TextBlock Grid.Row="1" Text="{main:Loc DesignTable_InputData_PartCatalogDirectoryLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
@@ -86,7 +86,7 @@
                                 </Canvas>
                             </Viewbox>
                         </Button>
-                        
+
                         <!--#endregion-->
 
                     </Grid>
@@ -94,52 +94,81 @@
                     <!-- PART LIST TITLE -->
                     <TextBlock Text="Liste des pièces" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,15,0,5"/>
 
-                    <Button Content="REFRESH" Command="{Binding Path=LoadDataCommand}"/>
+                    <Grid>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Button Style="{StaticResource Generic_Button}"
+                        <StackPanel Orientation="Horizontal">
+                            <Button Style="{StaticResource Generic_Button}"
                                 Command="{Binding Path=SelectAllPartCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <Viewbox Style="{StaticResource IconViewBox}">
-                                    <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
-                                    </Canvas>
-                                </Viewbox>
+                                <StackPanel Orientation="Horizontal">
+                                    <Viewbox Style="{StaticResource IconViewBox}">
+                                        <Canvas Style="{StaticResource IconCanvas}">
+                                            <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
+                                        </Canvas>
+                                    </Viewbox>
 
 
-                                <TextBlock Text="Select All" Style="{StaticResource LabelFormTextBlock}"/>
-                            </StackPanel>
-                        </Button>
-                        
-                        <Button Style="{StaticResource Generic_Button}"
+                                    <TextBlock Text="Select All" Style="{StaticResource LabelFormTextBlock}"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource Generic_Button}"
                                 Command="{Binding Path=UnselectAllPartCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Viewbox Style="{StaticResource IconViewBox}">
+                                        <Canvas Style="{StaticResource IconCanvas}">
+                                            <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
+                                        </Canvas>
+                                    </Viewbox>
+
+
+                                    <TextBlock Text="Unselect All" Style="{StaticResource LabelFormTextBlock}"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Content="Test" Command="{Binding Path=GenerateTableTemplateCommand}"/>
+
+                        </StackPanel>
+
+                        <Button Style="{StaticResource Generic_Button}" HorizontalAlignment="Right"
+                                Command="{Binding Path=LoadDataCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <Viewbox Style="{StaticResource IconViewBox}">
                                     <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
+                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Refresh_Icon}"/>
                                     </Canvas>
                                 </Viewbox>
 
-
-                                <TextBlock Text="Unselect All" Style="{StaticResource LabelFormTextBlock}"/>
+                                <TextBlock Style="{StaticResource LabelFormTextBlock}" Text="Refresh"/>
                             </StackPanel>
                         </Button>
-                    </StackPanel>
-                    
+
+                    </Grid>
+
                     <!-- PART LIST LISTVIEW -->
                     <ListView ItemsSource="{Binding Path=MarkablePartCollection}"
                               SelectedItem="{Binding Path=SelectedMarkablePart}">
                         <ListView.View>
                             <GridView >
-                                <GridViewColumn Header="Column 1" DisplayMemberBinding="{Binding PartName}">
+                                <GridViewColumn Header="PartName" DisplayMemberBinding="{Binding PartName}">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="{x:Type GridViewColumnHeader}">
                                             <Setter Property="HorizontalContentAlignment" Value="Left" />
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Column 2" DisplayMemberBinding="{Binding MarkingDataCollection.Count}"/>
-                                <GridViewColumn Header="Column 3"/>
+                                <GridViewColumn Header="MarkingDataCount">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run Text="{Binding NumberOfMarkingDataOK}"/>
+                                                <Run Text=" / "/>
+                                                <Run Text="{Binding MarkingDataCollection.Count, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                
+                                <GridViewColumn Header="Has File" DisplayMemberBinding="{Binding HasFile}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -149,11 +178,11 @@
 
         </Grid>
 
-        
 
-        
+
+
 
 
     </Grid>
-    
+
 </Page>

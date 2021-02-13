@@ -46,6 +46,7 @@ namespace Graphy.Model
         private int _numberOfMarkingDataOK;
         private bool _canGenerate = false;
         private bool _isSelected = false;
+        private bool _hasFile = false;
 
 
         public string PartName
@@ -65,7 +66,13 @@ namespace Graphy.Model
                 Set(() => CatiaPart, ref _catiaPart, value);
 
                 if (System.IO.File.Exists(CatiaPart.FileFullPath))
+                {
                     PartName = CatiaPart.Name;
+                    HasFile = true;
+                }
+                else
+                    HasFile = false;
+
             }
         }
 
@@ -106,5 +113,13 @@ namespace Graphy.Model
             }
         }
 
+        public bool HasFile
+        {
+            get => _hasFile;
+            set
+            {
+                Set(() => HasFile, ref _hasFile, value);
+            }
+        }
     }
 }
