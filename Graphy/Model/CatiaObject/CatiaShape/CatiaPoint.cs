@@ -1,4 +1,5 @@
 ﻿using HybridShapeTypeLib;
+using INFITF;
 using MECMOD;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Graphy.Model.CatiaShape
+namespace Graphy.Model.CatiaObject.CatiaShape
 {
     public class CatiaPoint : CatiaGenericShape
     {
@@ -15,11 +16,40 @@ namespace Graphy.Model.CatiaShape
 
         }
 
+        /// <summary>
+        ///  Create a point from coordinates.
+        /// </summary>
+        /// <param name="partDocument"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
         public CatiaPoint(PartDocument partDocument, double x, double y, double z) : base(partDocument)
         {
-            X = x;
-            Y = y;
-            Z = z;
+            HybridShape tempShape = (HybridShape)HybridShapeFactory.AddNewPointCoord(x, y, z);
+            tempShape.Compute();
+            Shape = tempShape;
+        }
+
+        /// <summary>
+        /// Create a point on a curve at a certain distance from a reference point.
+        /// </summary>
+        /// <param name="partDocument"></param>
+        /// <param name="curveRef"></param>
+        /// <param name="referencePoint"></param>
+        /// <param name="distance"></param>
+        /// <param name="direction"></param>
+        public CatiaPoint(PartDocument partDocument, CatiaCurve curve, CatiaPoint referencePoint, double distance, bool direction) : base(partDocument)
+        {
+            HybridShapePointOnCurve tempShape = HybridShapeFactory.AddNewPointOnCurveWithReferenceFromDistance(curve.ShapeReference, referencePoint.ShapeReference, distance, direction);
+            tempShape.Compute();
+            Shape = (HybridShape)tempShape;
+        }
+
+        public CatiaPoint(PartDocument partDocument, CatiaCurve curve, double ratio, bool direction) : base(partDocument)
+        {
+            HybridShapePointOnCurve tempShape = HybridShapeFactory.AddNewPointOnCurveFromPercent(curve.ShapeReference, ratio, direction);
+            tempShape.Compute();
+            Shape = (HybridShape)tempShape;
         }
 
         private double _x;
@@ -51,12 +81,6 @@ namespace Graphy.Model.CatiaShape
             }
         }
 
-        public void ComputePointShape()
-        {
-            HybridShape tempShape = (HybridShape)HybridShapeFactory.AddNewPointCoord(X, Y, Z);
-            tempShape.Compute();
-            Shape = tempShape;
-        }
 
         // EQUALS OVERRIDE
         public override bool Equals(object obj)

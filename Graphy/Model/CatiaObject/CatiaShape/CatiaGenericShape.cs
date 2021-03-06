@@ -8,24 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Graphy.Model.CatiaShape
+namespace Graphy.Model.CatiaObject.CatiaShape
 {
     public class CatiaGenericShape
     {
-        // ENUMS
-        public enum ShapeType
-        {
-            Unknown = 0,
-            Point = 1,
-            Curve = 2,
-            Line = 3,
-            Circle = 4,
-            Surface = 5,
-            Plane = 6,
-            Solid = 7,
-            AxisSystem = 12
-        };
-
         // CONSTRUCTOR
         public CatiaGenericShape(PartDocument partDocument)
         {

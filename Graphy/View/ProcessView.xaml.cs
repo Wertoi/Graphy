@@ -24,5 +24,13 @@ namespace Graphy.View
         {
             InitializeComponent();
         }
+
+        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.Visibility == Visibility.Visible)
+                ProgressBar.IsIndeterminate = true;
+            else
+                ProgressBar.IsIndeterminate = false;
+        }
     }
 }

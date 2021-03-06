@@ -10,8 +10,9 @@ using System.Drawing.Text;
 using GalaSoft.MvvmLight.Command;
 using INFITF;
 using MECMOD;
-using Graphy.Model.Generator;
 using Graphy.Enum;
+using Graphy.Model.CatiaObject;
+using Graphy.Model.CatiaObject.CatiaShape;
 
 namespace Graphy.ViewModel
 {
@@ -41,7 +42,6 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<double>(this, Enum.SettingToken.ToleranceFactorChanged, (toleranceFactor) => { _toleranceFactor = toleranceFactor; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.KeepHistoricChanged, (keepHistoric) => { _keepHistoric = keepHistoric; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
-            MessengerInstance.Register<VerticalAlignment>(this, Enum.SettingToken.VerticalAlignmentChanged, (verticalAlignment) => { _verticalAlignment = verticalAlignment; });
 
             // From Icon
             MessengerInstance.Register<Icon>(this, Enum.IconToken.SelectedIconChanged, (icon) => { MarkingData.Icon = icon; });
@@ -56,6 +56,7 @@ namespace Graphy.ViewModel
             GenerateCommand = new RelayCommand(GenerateCommandAction);
         }
 
+        // PUBLIC ATTRIBUTS
         private ObservableCollection<FontFamily> _fontFamilyCollection;
         private MarkablePart _markablePart;
         private MarkingData _markingData;
@@ -64,7 +65,6 @@ namespace Graphy.ViewModel
         private double _toleranceFactor;
         private bool _keepHistoric;
         private bool _createVolume;
-        private VerticalAlignment _verticalAlignment;
 
         public ObservableCollection<FontFamily> FontFamilyCollection
         {
@@ -116,7 +116,7 @@ namespace Graphy.ViewModel
         {
             bool selectionStatus = TrySelectShape(ShapeType.Point, out string shapeName);
             if (selectionStatus)
-                MarkingData.StartPointName = shapeName;
+                MarkingData.ReferencePointName = shapeName;
         }
         #endregion
 
@@ -268,8 +268,8 @@ namespace Graphy.ViewModel
 
                 try
                 {
-                    markingGenerator.Run(MarkablePart.CatiaPart, MarkingData, new List<Model.CatiaShape.CatiaCharacter>(),
-                        _toleranceFactor, _keepHistoric, _createVolume, _verticalAlignment);
+                    markingGenerator.Run(MarkablePart.CatiaPart, MarkingData, new List<CatiaCharacter>(),
+                        _toleranceFactor, _keepHistoric, _createVolume);
 
                     MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
                 }

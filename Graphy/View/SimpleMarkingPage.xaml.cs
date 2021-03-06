@@ -25,9 +25,9 @@ namespace Graphy.View
             InitializeComponent();
         }
 
-        private void SelectionButton_Click(object sender, RoutedEventArgs e)
+        private void IconButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            this.NavigationService.Navigate(new IconPage());
         }
 
     }

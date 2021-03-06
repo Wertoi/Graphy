@@ -1,12 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Graphy.Model;
-using System;
+using Graphy.Model.CatiaObject;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Graphy.ViewModel
 {
@@ -53,9 +50,6 @@ namespace Graphy.ViewModel
             set
             {
                 Set(() => PartFolderPath, ref _partFolderPath, value);
-
-                /*if(System.IO.Directory.Exists(PartFolderPath))
-                    LoadCatiaFileCollection(PartFolderPath);*/
             }
         }
 

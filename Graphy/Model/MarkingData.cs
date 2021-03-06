@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MECMOD;
 using HybridShapeTypeLib;
 using GalaSoft.MvvmLight;
+using Graphy.Enum;
 
 namespace Graphy.Model
 {
@@ -14,7 +15,7 @@ namespace Graphy.Model
         public MarkingData()
         {
             TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
-            StartPointName = DEFAULT_START_POINT_NAME;
+            ReferencePointName = DEFAULT_REFERENCE_POINT_NAME;
             ProjectionSurfaceName = DEFAULT_PROJECTION_SURFACE_NAME;
             AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME;
         }
@@ -26,13 +27,13 @@ namespace Graphy.Model
             ExtrusionHeight = extrusionHeight;
 
             TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
-            StartPointName = DEFAULT_START_POINT_NAME;
+            ReferencePointName = DEFAULT_REFERENCE_POINT_NAME;
             ProjectionSurfaceName = DEFAULT_PROJECTION_SURFACE_NAME;
             AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME;
         }
 
         public const string DEFAULT_TRACKING_CURVE_NAME = "No curve selected";
-        public const string DEFAULT_START_POINT_NAME = "No point selected";
+        public const string DEFAULT_REFERENCE_POINT_NAME = "No point selected";
         public const string DEFAULT_PROJECTION_SURFACE_NAME = "No surface selected";
         public const string DEFAULT_AXIS_SYSTEM_NAME = "No axis system selected";
 
@@ -44,13 +45,17 @@ namespace Graphy.Model
         private double _markingHeight;
         private double _extrusionHeight;
         private string _trackingCurveName;
-        private string _startPointName;
+        private string _referencePointName;
         private string _projectionSurfaceName;
         private string _axisSystemName;
         private bool _isBold = false;
         private bool _isItalic = false;
         private bool _isStrikeThrough = false;
         private bool _isUnderline = false;
+        private HorizontalAlignment _horizontalAlignment = HorizontalAlignment.Left;
+        private VerticalAlignment _verticalAlignment = VerticalAlignment.Bottom;
+
+
 
 
         public string Name
@@ -125,12 +130,12 @@ namespace Graphy.Model
             }
         }
 
-        public string StartPointName
+        public string ReferencePointName
         {
-            get => _startPointName;
+            get => _referencePointName;
             set
             {
-                Set(() => StartPointName, ref _startPointName, value);
+                Set(() => ReferencePointName, ref _referencePointName, value);
             }
         }
 
@@ -185,6 +190,24 @@ namespace Graphy.Model
             set
             {
                 Set(() => IsUnderline, ref _isUnderline, value);
+            }
+        }
+
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get => _horizontalAlignment;
+            set
+            {
+                Set(() => HorizontalAlignment, ref _horizontalAlignment, value);
+            } 
+        }
+
+        public VerticalAlignment VerticalAlignment
+        {
+            get => _verticalAlignment;
+            set
+            {
+                Set(() => VerticalAlignment, ref _verticalAlignment, value);
             }
         }
     }

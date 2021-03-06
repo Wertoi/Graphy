@@ -32,8 +32,7 @@ namespace Graphy.Enum
         LicenceFileReadingFailed,
         ToleranceFactorChanged,
         KeepHistoricChanged,
-        CreateVolumeChanged,
-        VerticalAlignmentChanged
+        CreateVolumeChanged
     }
 
     public enum IconToken

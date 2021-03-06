@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using Graphy.Enum;
 
-namespace Graphy.Model.CatiaShape
+namespace Graphy.Model.CatiaObject.CatiaShape
 {
 
     public class CatiaDrawableShape : CatiaGenericShape
@@ -114,8 +114,9 @@ namespace Graphy.Model.CatiaShape
 
         public void Draw(VerticalAlignment verticalAlignment, PathGeometry refGeometry = null)
         {
+            // NOTE: If we draw a character we will pass the geometry of the reference character to have a nice text.
+            // Otherwise, if we draw an icon, we do not need any reference so we use directly the geometry.
             PathGeometry tempGeometry;
-
             if (refGeometry == null)
                 tempGeometry = PathGeometry;
             else
@@ -123,26 +124,6 @@ namespace Graphy.Model.CatiaShape
 
             double xCorrectif = PathGeometry.Bounds.Left;
             double yCorrectif = GetYOffset(verticalAlignment, tempGeometry);
-
-
-            /*switch (verticalAlignment)
-            {
-                case VerticalAlignment.Top:
-                    yCorrectif = tempGeometry.Bounds.Top;
-                    break;
-
-                case VerticalAlignment.Center:
-                    yCorrectif = (tempGeometry.Bounds.Top + tempGeometry.Bounds.Bottom) / 2;
-                    break;
-
-                case VerticalAlignment.Bottom:
-                    yCorrectif = tempGeometry.Bounds.Bottom;
-                    break;
-
-                default:
-                    yCorrectif = tempGeometry.Bounds.Bottom;
-                    break;
-            }*/
 
             for (int i = 0; i < SurfaceList.Count; i++)
             {
@@ -174,8 +155,10 @@ namespace Graphy.Model.CatiaShape
         }
 
 
-        public void AssembleSurfaces()
+        public CatiaSurface GetAssembleSurfaces()
         {
+            CatiaSurface assembledSurface = new CatiaSurface(PartDocument);
+
             if (SurfaceList.Count > 1)
             {
                 HybridShapeAssemble surfaceAssy = HybridShapeFactory.AddNewJoin(SurfaceList.First().ShapeReference, SurfaceList[1].ShapeReference);
@@ -188,12 +171,14 @@ namespace Graphy.Model.CatiaShape
 
                 surfaceAssy.Compute();
 
-                Shape = surfaceAssy;
+                assembledSurface.Shape = surfaceAssy;
             }
             else
             {
-                Shape = SurfaceList.First().Shape;
+                assembledSurface.Shape = SurfaceList.First().Shape;
             }
+
+            return assembledSurface;
         }
 
         public CatiaDrawableShape Clone()

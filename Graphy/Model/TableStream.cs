@@ -63,7 +63,7 @@ namespace Graphy.Model
                         tempPart.markingData.ExtrusionHeight = double.Parse(row[9]);
                         tempPart.markingData.ProjectionSurfaceName = row[10];
                         tempPart.markingData.TrackingCurveName = row[11];
-                        tempPart.markingData.StartPointName = row[12];
+                        tempPart.markingData.ReferencePointName = row[12];
                         tempPart.markingData.AxisSystemName = row[13];
 
                         markablePartList.Add(tempPart);

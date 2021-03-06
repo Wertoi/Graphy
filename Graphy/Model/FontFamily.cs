@@ -10,14 +10,20 @@ namespace Graphy.Model
     {
         public FontFamily(string familyName) : base(familyName)
         {
-            
+
         }
 
-        private KerningPair[] _kerningPairs;
+        // PUBLIC CONSTANTES
+        public const char REFERENCE_CHARACTER = 'M';
 
+
+        // PUBLIC ATTRIBUTS
+        private KerningPair[] _kerningPairs;
         public KerningPair[] KerningPairs { get => _kerningPairs; set => _kerningPairs = value; }
 
 
+
+        // PUBLIC METHODS
         public Typeface GetTypeface(bool isBold, bool isItalic)
         {
             Typeface selectedTypeface = GetTypefaces().First();
@@ -59,18 +65,39 @@ namespace Graphy.Model
         }
 
 
+        public double GetAdvanceWidth(char c, double refHeight, bool isBold, bool isItalic)
+        {
+            int unicodeValue = Convert.ToUInt16(c);
+
+            Typeface selectedTypeface = GetTypeface(isBold, isItalic);
+
+            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeface))
+            {
+                if (glyphTypeface.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
+                {
+                    double ratio = GetRatio(refHeight, glyphTypeface);
+                    return glyphTypeface.AdvanceWidths[glyphIndex] * ratio;
+                }
+                else
+                    return 0;
+            }
+            else
+                return 0;
+        }
+
+
         public double GetRightSideBearing(char c, double refHeight, bool isBold, bool isItalic)
         {
             int unicodeValue = Convert.ToUInt16(c);
 
             Typeface selectedTypeface = GetTypeface(isBold, isItalic);
 
-            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeface))
             {
-                if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
+                if (glyphTypeface.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
                 {
-                    double ratio = GetRatio(refHeight, isBold, isItalic);
-                    return glyphTypeFace.RightSideBearings[glyphIndex] * ratio;
+                    double ratio = GetRatio(refHeight, glyphTypeface);
+                    return glyphTypeface.RightSideBearings[glyphIndex] * ratio;
                 }
                 else
                     return 0;
@@ -85,12 +112,12 @@ namespace Graphy.Model
 
             Typeface selectedTypeface = GetTypeface(isBold, isItalic);
 
-            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeface))
             {
-                if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
+                if (glyphTypeface.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
                 {
-                    double ratio = GetRatio(refHeight, isBold, isItalic);
-                    return glyphTypeFace.LeftSideBearings[glyphIndex] * ratio;
+                    double ratio = GetRatio(refHeight, glyphTypeface);
+                    return glyphTypeface.LeftSideBearings[glyphIndex] * ratio;
                 }
                 else
                     return 0;
@@ -103,10 +130,10 @@ namespace Graphy.Model
         {
             Typeface selectedTypeFace = GetTypeface(isBold, isItalic);
 
-            if (selectedTypeFace.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            if (selectedTypeFace.TryGetGlyphTypeface(out GlyphTypeface glyphTypeface))
             {
-                double ratio = GetRatio(refHeight, isBold, isItalic);
-                return (position: glyphTypeFace.UnderlinePosition * ratio, thickness: glyphTypeFace.UnderlineThickness * ratio);
+                double ratio = GetRatio(refHeight, glyphTypeface);
+                return (position: glyphTypeface.UnderlinePosition * ratio, thickness: glyphTypeface.UnderlineThickness * ratio);
             }
             else
                 return (position: 0, thickness: 0);
@@ -116,10 +143,10 @@ namespace Graphy.Model
         {
             Typeface selectedTypeFace = GetTypeface(isBold, isItalic);
 
-            if (selectedTypeFace.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            if (selectedTypeFace.TryGetGlyphTypeface(out GlyphTypeface glyphTypeface))
             {
-                double ratio = GetRatio(refHeight, isBold, isItalic);
-                return (position: glyphTypeFace.StrikethroughPosition * ratio, thickness: glyphTypeFace.StrikethroughThickness * ratio);
+                double ratio = GetRatio(refHeight, glyphTypeface);
+                return (position: glyphTypeface.StrikethroughPosition * ratio, thickness: glyphTypeface.StrikethroughThickness * ratio);
             }
             else
                 return (position: 0, thickness: 0);
@@ -133,20 +160,13 @@ namespace Graphy.Model
         /// <param name="isBold"></param>
         /// <param name="isItalic"></param>
         /// <returns></returns>
-        private double GetRatio(double refHeight, bool isBold, bool isItalic)
+        private double GetRatio(double refHeight, GlyphTypeface glyphTypeface)
         {
-            int unicodeValue = Convert.ToUInt16('M');
+            int unicodeValue = Convert.ToUInt16(REFERENCE_CHARACTER);
 
-            Typeface selectedTypeface = GetTypeface(isBold, isItalic);
-
-            if (selectedTypeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeFace))
+            if (glyphTypeface.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
             {
-                if (glyphTypeFace.CharacterToGlyphMap.TryGetValue(unicodeValue, out ushort glyphIndex))
-                {
-                    return refHeight / (glyphTypeFace.Height - glyphTypeFace.TopSideBearings[glyphIndex] - glyphTypeFace.BottomSideBearings[glyphIndex]);
-                }
-                else
-                    return 0;
+                return refHeight / (glyphTypeface.AdvanceHeights[glyphIndex] - glyphTypeface.TopSideBearings[glyphIndex] - glyphTypeface.BottomSideBearings[glyphIndex]);
             }
             else
                 return 0;
@@ -201,6 +221,33 @@ namespace Graphy.Model
 
             KerningPairs = kerningPairs;
         }
+
+        /// <summary>
+        /// Retrieve the kerning value between two characters for a height of 1.
+        /// </summary>
+        /// <param name="firstChar"></param>
+        /// <param name="secondChar"></param>
+        /// <returns></returns>
+        public double GetKerningValue(char firstChar, char secondChar)
+        {
+            double kerningValue = 0d;
+            Int16 firstCharInt = Convert.ToInt16(firstChar);
+            Int16 secondCharInt = Convert.ToInt16(secondChar);
+
+            foreach (FontFamily.KerningPair pair in KerningPairs)
+            {
+                if (pair.wFirst == firstCharInt && pair.wSecond == secondCharInt)
+                {
+                    // iKernAmount is obtain for a height of 1000 (see "ComputeKerningPairs") so we divide by 1000 to have a kerning value relative to a height of 1.
+                    kerningValue = Convert.ToDouble(pair.iKernAmount) / 1000;
+
+                    break;
+                }
+            }
+
+            return kerningValue;
+        }
+
         #endregion
     }
 }

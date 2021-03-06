@@ -61,18 +61,6 @@ namespace Graphy.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int VerticalAlignment {
-            get {
-                return ((int)(this["VerticalAlignment"]));
-            }
-            set {
-                this["VerticalAlignment"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::System.Collections.Specialized.StringCollection IconCollection {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["IconCollection"]));

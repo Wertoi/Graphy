@@ -238,7 +238,7 @@
     <value>/!\ All "Projection surface" sub surfaces must have the same natural normal.</value>
   </data>
   <data name="MainWindow_Position_StartPointLabel" xml:space="preserve">
-    <value>Start point</value>
+    <value>Reference point</value>
   </data>
   <data name="MainWindow_Position_StartPointTooltip1" xml:space="preserve">
     <value>Marking start point.</value>

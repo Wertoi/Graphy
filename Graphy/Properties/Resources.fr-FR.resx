@@ -238,7 +238,7 @@
     <value>/!\ Toutes les surfaces formant la "Surface de projection" doivent avoir la même normale naturelle.</value>
   </data>
   <data name="MainWindow_Position_StartPointLabel" xml:space="preserve">
-    <value>Point de départ</value>
+    <value>Point de référence</value>
   </data>
   <data name="MainWindow_Position_StartPointTooltip1" xml:space="preserve">
     <value>Point de départ du marquage.</value>

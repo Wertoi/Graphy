@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Graphy.View"
       xmlns:main="clr-namespace:Graphy"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="744" d:DesignWidth="463"
       Title="ComplexMarkingPage"
       DataContext="{Binding Source={StaticResource Locator}, Path=ComplexMarkingViewModel}">
 
@@ -38,7 +38,7 @@
                     <Grid Margin="0,5,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -112,7 +112,7 @@
                             </Button>
 
                             <Button Style="{StaticResource Generic_Button}"
-                                Command="{Binding Path=UnselectAllPartCommand}">
+                                    Command="{Binding Path=UnselectAllPartCommand}" Margin="5,0,0,0">
                                 <StackPanel Orientation="Horizontal">
                                     <Viewbox Style="{StaticResource IconViewBox}">
                                         <Canvas Style="{StaticResource IconCanvas}">
@@ -125,7 +125,7 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button Content="Test" Command="{Binding Path=GenerateTableTemplateCommand}"/>
+                            <Button Content="Test" Command="{Binding Path=GenerateTableTemplateCommand}" Margin="5,0,0,0"/>
 
                         </StackPanel>
 
@@ -146,7 +146,7 @@
 
                     <!-- PART LIST LISTVIEW -->
                     <ListView ItemsSource="{Binding Path=MarkablePartCollection}"
-                              SelectedItem="{Binding Path=SelectedMarkablePart}">
+                              SelectedItem="{Binding Path=SelectedMarkablePart}" Margin="0,10,0,0">
                         <ListView.View>
                             <GridView >
                                 <GridViewColumn Header="PartName" DisplayMemberBinding="{Binding PartName}">

@@ -4,7 +4,7 @@ using GalaSoft.MvvmLight;
 using INFITF;
 using KnowledgewareTypeLib;
 
-namespace Graphy.Model
+namespace Graphy.Model.CatiaObject
 {
     public class CatiaEnv : ObservableObject
     {

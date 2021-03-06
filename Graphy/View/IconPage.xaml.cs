@@ -16,19 +16,18 @@ using System.Windows.Shapes;
 namespace Graphy.View
 {
     /// <summary>
-    /// Logique d'interaction pour IconView.xaml
+    /// Logique d'interaction pour IconPage.xaml
     /// </summary>
-    public partial class IconView : UserControl
+    public partial class IconPage : Page
     {
-        public IconView()
+        public IconPage()
         {
             InitializeComponent();
         }
 
-        public event EventHandler BackButtonClicked;
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            BackButtonClicked?.Invoke(sender, new EventArgs());
+            NavigationService.Navigate(new SimpleMarkingPage());
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Graphy.Model.CatiaObject;
 
 namespace Graphy.Model
 {
@@ -65,7 +66,7 @@ namespace Graphy.Model
             {
                 Set(() => CatiaPart, ref _catiaPart, value);
 
-                if (System.IO.File.Exists(CatiaPart.FileFullPath))
+                if (CatiaPart != null && System.IO.File.Exists(CatiaPart.FileFullPath))
                 {
                     PartName = CatiaPart.Name;
                     HasFile = true;

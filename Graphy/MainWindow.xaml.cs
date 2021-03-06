@@ -24,32 +24,61 @@ namespace Graphy
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.NavigationService.Navigated += NavigationService_Navigated;
+
             SimpleMarkingRadioButton.IsChecked = true;
+        }
+
+        private void NavigationService_Navigated(object sender, NavigationEventArgs e)
+        {
+            if (MainFrame.NavigationService.Content.GetType() == typeof(View.SimpleMarkingPage))
+            {
+                SimpleMarkingRadioButton.IsChecked = true;
+                return;
+            }
+
+            if (MainFrame.NavigationService.Content.GetType() == typeof(View.ComplexMarkingPage))
+            {
+                ComplexMarkingRadioButton.IsChecked = true;
+                return;
+            }
+
+            if (MainFrame.NavigationService.Content.GetType() == typeof(View.IconPage))
+            {
+                IconRadioButton.IsChecked = true;
+                return;
+            }
+
+            if (MainFrame.NavigationService.Content.GetType() == typeof(View.SettingPage))
+            {
+                SettingRadioButton.IsChecked = true;
+                return;
+            }
         }
 
         private void SimpleMarkingRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if(MainFrame != null)
-                MainFrame.Navigate(new Graphy.View.SimpleMarkingPage());
+                MainFrame.Navigate(new View.SimpleMarkingPage());
         }
 
         private void ComplexMarkingRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if (MainFrame != null)
-                MainFrame.Navigate(new Graphy.View.ComplexMarkingPage());
+                MainFrame.Navigate(new View.ComplexMarkingPage());
         }
 
 
         private void IconRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if (MainFrame != null)
-                MainFrame.Navigate(new Graphy.View.IconView());
+                MainFrame.Navigate(new View.IconPage());
         }
 
         private void SettingRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if (MainFrame != null)
-                MainFrame.Navigate(new Graphy.View.SettingView());
+                MainFrame.Navigate(new View.SettingPage());
         }
     }
 }

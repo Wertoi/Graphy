@@ -9,6 +9,7 @@ using INFITF;
 using MECMOD;
 using System;
 using System.Threading.Tasks;
+using Graphy.Model.CatiaObject;
 
 namespace Graphy.ViewModel
 {

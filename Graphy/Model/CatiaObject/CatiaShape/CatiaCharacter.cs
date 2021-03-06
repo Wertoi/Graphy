@@ -7,7 +7,7 @@ using System.Windows.Media;
 using HybridShapeTypeLib;
 using MECMOD;
 
-namespace Graphy.Model.CatiaShape
+namespace Graphy.Model.CatiaObject.CatiaShape
 {
     public class CatiaCharacter : CatiaDrawableShape
     {
@@ -31,7 +31,7 @@ namespace Graphy.Model.CatiaShape
 
                 if (Value == ' ')
                 {
-                    Value = '_';
+                    //Value = '_';
                     IsSpaceCharacter = true;
                 }
             }

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace Graphy.Model.CatiaShape
+namespace Graphy.Model.CatiaObject.CatiaShape
 {
     public class CatiaContour : CatiaGenericShape
     {
@@ -50,7 +50,6 @@ namespace Graphy.Model.CatiaShape
                     List<CatiaPoint> tempPointList = new List<CatiaPoint>();
                     System.Windows.Point startPoint = PathGeometry.Figures.First().StartPoint;
                     tempPointList.Add(new CatiaPoint(PartDocument, startPoint.X - xCorrectif, -startPoint.Y + yCorrectif, 0));
-                    tempPointList.Last().ComputePointShape();
 
                     // For each point in the multi lines segment
                     foreach (System.Windows.Point point in ((PolyLineSegment)segment).Points)
@@ -59,7 +58,6 @@ namespace Graphy.Model.CatiaShape
                         if(point != startPoint)
                         {
                             tempPointList.Add(new CatiaPoint(PartDocument, point.X - xCorrectif, -point.Y + yCorrectif, 0));
-                            tempPointList.Last().ComputePointShape();
                         }
                     }
 
@@ -181,10 +179,9 @@ namespace Graphy.Model.CatiaShape
         }
 
 
-        public void Scale(double scaleRatio, Reference scaleCenterPointRef, bool appendInSet, HybridBody set = null)
+        public void Scale(double scaleRatio, CatiaPoint scaleCenterPoint, bool appendInSet, HybridBody set = null)
         {
-            HybridShapeScaling scaledShape = HybridShapeFactory.AddNewHybridScaling(ShapeReference, scaleCenterPointRef, scaleRatio);
-
+            HybridShapeScaling scaledShape = HybridShapeFactory.AddNewHybridScaling(ShapeReference, scaleCenterPoint.ShapeReference, scaleRatio);
             scaledShape.Compute();
             Shape = (HybridShape)scaledShape;
 
@@ -196,10 +193,9 @@ namespace Graphy.Model.CatiaShape
             }
         }
 
-        public void Move(Reference referenceAxisRef, Reference targetAxisRef, bool appendInSet, HybridBody set = null)
+        public void Move(CatiaAxisSystem referenceAxisSystem, CatiaAxisSystem targetAxisSystemRef, bool appendInSet, HybridBody set = null)
         {
-            HybridShapeAxisToAxis movedShape = HybridShapeFactory.AddNewAxisToAxis(ShapeReference, referenceAxisRef, targetAxisRef);
-
+            HybridShapeAxisToAxis movedShape = HybridShapeFactory.AddNewAxisToAxis(ShapeReference, referenceAxisSystem.SystemReference, targetAxisSystemRef.SystemReference);
             movedShape.Compute();
             Shape = (HybridShape)movedShape;
 
@@ -211,10 +207,9 @@ namespace Graphy.Model.CatiaShape
             }
         }
 
-        public void Project(Reference projectionSurfaceRef, bool appendInSet, HybridBody set = null)
+        public void Project(CatiaSurface projectionSurface, bool appendInSet, HybridBody set = null)
         {
-            HybridShapeProject projectedShape = HybridShapeFactory.AddNewProject(ShapeReference, projectionSurfaceRef);
-
+            HybridShapeProject projectedShape = HybridShapeFactory.AddNewProject(ShapeReference, projectionSurface.ShapeReference);
             projectedShape.Compute();
             Shape = (HybridShape)projectedShape;
 

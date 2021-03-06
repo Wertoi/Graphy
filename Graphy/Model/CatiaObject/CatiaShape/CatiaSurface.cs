@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Graphy.Model.CatiaShape
+namespace Graphy.Model.CatiaObject.CatiaShape
 {
     public class CatiaSurface : CatiaGenericShape
     {
@@ -16,9 +16,29 @@ namespace Graphy.Model.CatiaShape
             InternalContourList = new List<CatiaContour>();
         }
 
+        public CatiaSurface(PartDocument partDocument, CatiaCurve curve, CatiaSurface supportSurface, double height) : base(partDocument)
+        {
+            InternalContourList = new List<CatiaContour>();
+
+            HybridShapeSweepLine tempShape = HybridShapeFactory.AddNewSweepLine(curve.ShapeReference);
+            tempShape.FirstGuideSurf = supportSurface.ShapeReference;
+            tempShape.Mode = 4;
+            tempShape.SetFirstLengthLaw(height / 2, 0d, 0);
+            tempShape.SetSecondLengthLaw(height / 2, 0d, 0);
+            tempShape.SetAngle(1, 0d);
+            tempShape.SolutionNo = 0;
+            tempShape.SmoothActivity = false;
+            tempShape.GuideDeviationActivity = false;
+            tempShape.SetbackValue = 0.02;
+            tempShape.FillTwistedAreas = 1;
+            tempShape.Compute();
+
+            Shape = (HybridShape)tempShape;
+        }
+
+
         private CatiaContour _externalContour;
         private List<CatiaContour> _internalContourList;
-
 
         public CatiaContour ExternalContour { get => _externalContour; set => _externalContour = value; }
         public List<CatiaContour> InternalContourList
@@ -26,6 +46,7 @@ namespace Graphy.Model.CatiaShape
             get => _internalContourList;
             set => _internalContourList = value;
         }
+
 
         public CatiaSurface Copy()
         {
@@ -50,8 +71,31 @@ namespace Graphy.Model.CatiaShape
             return copySurface;
         }
 
+        public HybridShapePlaneTangent GetTangentPlane(CatiaPoint point)
+        {
+            HybridShapePlaneTangent tangentPlane = HybridShapeFactory.AddNewPlaneTangent(ShapeReference, point.ShapeReference);
+            tangentPlane.Compute();
 
+            return tangentPlane;
+        }
 
+        public CatiaLine GetNaturalNormalLine(CatiaPoint point)
+        {
+            return new CatiaLine(PartDocument, this, point, 0, 10, false);
+        }
+
+        public CatiaSurface GetSurfaceWithoutLink()
+        {
+            HybridShapeSurfaceExplicit tempSurface = HybridShapeFactory.AddNewSurfaceDatum(ShapeReference);
+            tempSurface.Compute();
+
+            CatiaSurface surfaceWithoutLink = new CatiaSurface(PartDocument)
+            {
+                Shape = tempSurface
+            };
+
+            return surfaceWithoutLink;
+        }
 
         public void ComputeSurface(Reference projectionSurfaceRef)
         {
@@ -61,11 +105,12 @@ namespace Graphy.Model.CatiaShape
             // Create exterior split surface
             HybridShapeSplit exteriorSplitSurface;
 
+            // Try a split
             HybridShapeSplit tempSplit = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, splitOrientation);
             tempSplit.Compute();
             Reference tempSplitRef = PartDocument.Part.CreateReferenceFromObject(tempSplit);
 
-
+            // Check the split, if NOK invert the split
             if (!IsSplitOrientationOK(PartDocument, tempSplitRef, ExternalContour.ShapeReference, HybridShapeFactory, projectionSurfaceRef))
             {
                 exteriorSplitSurface = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, -splitOrientation);
@@ -78,10 +123,11 @@ namespace Graphy.Model.CatiaShape
 
             exteriorSplitSurface.Compute();
 
-
+            // Create interior splits
             if (InternalContourList.Count > 0)
             {
                 Reference internalContourListAssembledRef;
+
                 // Assemble interior contours
                 if (InternalContourList.Count > 1)
                 {
@@ -120,19 +166,19 @@ namespace Graphy.Model.CatiaShape
         /// </summary>
         /// <param name="partDocument">Part of the working document.</param>
         /// <param name="cutSurfaceRef">Reference of the splited surface.</param>
-        /// <param name="characterContourRef">Reference of the contour which split the surface.</param>
+        /// <param name="contourRef">Reference of the contour which split the surface.</param>
         /// <param name="factory">HybridShapeFactory of the working part.</param>
         /// <param name="supportRef">Reference of the surface before split.</param>
         /// <returns></returns>
-        private bool IsSplitOrientationOK(PartDocument partDocument, Reference cutSurfaceRef, Reference characterContourRef, HybridShapeFactory factory, Reference supportRef)
+        private bool IsSplitOrientationOK(PartDocument partDocument, Reference cutSurfaceRef, Reference contourRef, HybridShapeFactory factory, Reference supportRef)
         {
             SPATypeLib.Measurable measurable = SPAWorkbench.GetMeasurable(cutSurfaceRef);
             double cutArea = measurable.Area;
 
             // Create a filled contour
             HybridShapeFill filledContour = factory.AddNewFill();
-            filledContour.AddBound(characterContourRef);
-            filledContour.AddSupportAtBound(characterContourRef, supportRef);
+            filledContour.AddBound(contourRef);
+            filledContour.AddSupportAtBound(contourRef, supportRef);
             filledContour.Compute();
 
             Reference filledContourRef = partDocument.Part.CreateReferenceFromObject(filledContour);

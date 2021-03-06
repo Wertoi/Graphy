@@ -16,19 +16,13 @@ using System.Windows.Shapes;
 namespace Graphy.View
 {
     /// <summary>
-    /// Logique d'interaction pour SettingView.xaml
+    /// Logique d'interaction pour SettingPage.xaml
     /// </summary>
-    public partial class SettingView : UserControl
+    public partial class SettingPage : Page
     {
-        public SettingView()
+        public SettingPage()
         {
             InitializeComponent();
-        }
-
-        public event EventHandler BackButtonClicked;
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            BackButtonClicked?.Invoke(sender, new EventArgs());
         }
     }
 }
