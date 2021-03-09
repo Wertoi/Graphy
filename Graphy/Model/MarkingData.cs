@@ -32,13 +32,16 @@ namespace Graphy.Model
             AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME;
         }
 
+        // DEFAULT VALUES
         public const string DEFAULT_TRACKING_CURVE_NAME = "No curve selected";
         public const string DEFAULT_REFERENCE_POINT_NAME = "No point selected";
         public const string DEFAULT_PROJECTION_SURFACE_NAME = "No surface selected";
         public const string DEFAULT_AXIS_SYSTEM_NAME = "No axis system selected";
 
+
+        // ATTRIBUTS
         private string _name;
-        private bool _isText = true; // true for text and false for icon.
+        private bool _isText; // true for text and false for icon.
         private string _text;
         private FontFamily _fontFamily;
         private Icon _icon;
@@ -48,14 +51,14 @@ namespace Graphy.Model
         private string _referencePointName;
         private string _projectionSurfaceName;
         private string _axisSystemName;
-        private bool _isBold = false;
-        private bool _isItalic = false;
-        private bool _isStrikeThrough = false;
-        private bool _isUnderline = false;
-        private HorizontalAlignment _horizontalAlignment = HorizontalAlignment.Left;
-        private VerticalAlignment _verticalAlignment = VerticalAlignment.Bottom;
-
-
+        private bool _isBold;
+        private bool _isItalic;
+        private bool _isStrikeThrough;
+        private bool _isUnderline;
+        private HorizontalAlignment _horizontalAlignment;
+        private VerticalAlignment _verticalAlignment;
+        private bool _isOK;
+        private string _comments;
 
 
         public string Name
@@ -209,6 +212,47 @@ namespace Graphy.Model
             {
                 Set(() => VerticalAlignment, ref _verticalAlignment, value);
             }
+        }
+
+        public bool IsOK
+        {
+            get => _isOK;
+            set
+            {
+                Set(() => IsOK, ref _isOK, value);
+            }
+        }
+
+        public string Comments
+        {
+            get => _comments;
+            set
+            {
+                Set(() => Comments, ref _comments, value);
+            }
+        }
+
+
+        public static MarkingData Default()
+        {
+            MarkingData defaultMarkingData = new MarkingData()
+            {   
+                Name = "DefaultMarking",
+                IsText = true,
+                Text = "Hello Wolrd !",
+                IsBold = false,
+                IsItalic = false,
+                IsUnderline = false,
+                IsStrikeThrough = false,
+                FontFamily = new FontFamily("Calibri"),
+                Icon = Icon.Default(),
+                MarkingHeight = 2d,
+                ExtrusionHeight = 0.1,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom
+            };
+
+            return defaultMarkingData;
         }
     }
 }

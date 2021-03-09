@@ -79,7 +79,7 @@
 
                         <!-- PART FOLDER SELECTION BUTTON -->
                         <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource Generic_SquareButton}"
-                            Command="{Binding Path=SelectPartFolderCommand}">
+                            Command="{Binding Path=SelectPartFolderCommand}" Margin="0,5,0,0">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Folder_Icon}"/>
@@ -96,7 +96,7 @@
 
                     <Grid>
 
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                             <Button Style="{StaticResource Generic_Button}"
                                 Command="{Binding Path=SelectAllPartCommand}">
                                 <StackPanel Orientation="Horizontal">
@@ -145,10 +145,67 @@
                     </Grid>
 
                     <!-- PART LIST LISTVIEW -->
-                    <ListView ItemsSource="{Binding Path=MarkablePartCollection}"
-                              SelectedItem="{Binding Path=SelectedMarkablePart}" Margin="0,10,0,0">
-                        <ListView.View>
-                            <GridView >
+                    <ListView x:Name="MarkablePartListView" ItemsSource="{Binding Path=MarkablePartCollection}"
+                              Margin="0,10,0,0" BorderBrush="Transparent"
+                              HorizontalContentAlignment="Stretch"
+                              SelectionMode="Multiple"
+                              MouseMove="MarkablePartListView_MouseMove">
+                        
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource Gray242}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Style="{StaticResource NormalCheckBox}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding PartName}" Style="{StaticResource LabelFormTextBlock}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding MarkingData.Name}" Style="{StaticResource LabelFormTextBlock}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding HasFile}" Style="{StaticResource LabelFormTextBlock}"/>
+                                    <TextBlock Grid.Column="4" Text="{Binding MarkingData.IsOK}" Style="{StaticResource LabelFormTextBlock}"/>
+
+                                    <Button x:Name="MarkablePartViewButton" Grid.Column="5" Style="{StaticResource Generic_SquareButton}"
+                                            Click="MarkablePartViewButton_Click" Margin="0,5,0,0"
+                                            Command="{Binding Source={StaticResource Locator}, Path=ComplexMarkingViewModel.SelectMarkablePartCommand}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ComplexMarkingPage}, Path=MouseOverItemIndex}">
+                                        <Viewbox Style="{StaticResource IconViewBox}">
+                                            <Canvas Style="{StaticResource IconCanvas}">
+                                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource MoreVertical_Icon}"/>
+                                            </Canvas>
+                                        </Viewbox>
+                                    </Button>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <!--<ListView.View>
+                            <GridView>
                                 <GridViewColumn Header="PartName" DisplayMemberBinding="{Binding PartName}">
                                     <GridViewColumn.HeaderContainerStyle>
                                         <Style TargetType="{x:Type GridViewColumnHeader}">
@@ -156,21 +213,20 @@
                                         </Style>
                                     </GridViewColumn.HeaderContainerStyle>
                                 </GridViewColumn>
-                                <GridViewColumn Header="MarkingDataCount">
+                                
+                                <GridViewColumn Header="MarkingData Name" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock>
-                                                <Run Text="{Binding NumberOfMarkingDataOK}"/>
-                                                <Run Text=" / "/>
-                                                <Run Text="{Binding MarkingDataCollection.Count, Mode=OneWay}"/>
-                                            </TextBlock>
+                                            <TextBlock Text="{Binding MarkingData.Name}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 
                                 <GridViewColumn Header="Has File" DisplayMemberBinding="{Binding HasFile}"/>
+
+                                <GridViewColumn Header="Are marking datas OK" DisplayMemberBinding="{Binding MarkingData.IsOK}" Width="150"/>
                             </GridView>
-                        </ListView.View>
+                        </ListView.View>-->
                     </ListView>
 
                 </StackPanel>

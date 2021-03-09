@@ -14,14 +14,14 @@ namespace Graphy.Model
         public MarkablePart()
         {
             CatiaPart = new CatiaPart();
-            MarkingDataCollection = new ObservableCollection<MarkingData>();
+            MarkingData = new MarkingData();
             //MarkingDataCollection.CollectionChanged += MarkingDataCollection_CollectionChanged;
         }
 
         public MarkablePart(CatiaPart part)
         {
             CatiaPart = part;
-            MarkingDataCollection = new ObservableCollection<MarkingData>();
+            MarkingData = new MarkingData();
         }
 
         /*private void MarkingDataCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -43,8 +43,7 @@ namespace Graphy.Model
 
         private string _partName;
         private CatiaPart _catiaPart;
-        private ObservableCollection<MarkingData> _markingDataCollection;
-        private int _numberOfMarkingDataOK;
+        private MarkingData _markingData;
         private bool _canGenerate = false;
         private bool _isSelected = false;
         private bool _hasFile = false;
@@ -78,12 +77,12 @@ namespace Graphy.Model
         }
 
 
-        public ObservableCollection<MarkingData> MarkingDataCollection
+        public MarkingData MarkingData
         {
-            get => _markingDataCollection;
+            get => _markingData;
             set
             {
-                Set(() => MarkingDataCollection, ref _markingDataCollection, value);
+                Set(() => MarkingData, ref _markingData, value);
             }
         }
 
@@ -96,14 +95,6 @@ namespace Graphy.Model
             }
         }
 
-        public int NumberOfMarkingDataOK
-        {
-            get => _numberOfMarkingDataOK;
-            set
-            {
-                Set(() => NumberOfMarkingDataOK, ref _numberOfMarkingDataOK, value);
-            }
-        }
 
         public bool IsSelected
         {

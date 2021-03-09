@@ -102,24 +102,19 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             // Initialize splitOrientation
             int splitOrientation = 1;
 
-            // Create exterior split surface
-            HybridShapeSplit exteriorSplitSurface;
-
             // Try a split
-            HybridShapeSplit tempSplit = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, splitOrientation);
-            tempSplit.Compute();
-            Reference tempSplitRef = PartDocument.Part.CreateReferenceFromObject(tempSplit);
+            HybridShapeSplit exteriorSplitSurface = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, splitOrientation);
+            exteriorSplitSurface.Compute();
+            Reference exteriorSplitSurfaceRef = PartDocument.Part.CreateReferenceFromObject(exteriorSplitSurface);
 
             // Check the split, if NOK invert the split
-            if (!IsSplitOrientationOK(PartDocument, tempSplitRef, ExternalContour.ShapeReference, HybridShapeFactory, projectionSurfaceRef))
+            if (!IsSplitOrientationOK(PartDocument, exteriorSplitSurfaceRef, ExternalContour.ShapeReference, HybridShapeFactory, projectionSurfaceRef))
             {
-                exteriorSplitSurface = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, -splitOrientation);
+                exteriorSplitSurface.Orientation = -splitOrientation;
+                exteriorSplitSurface.Compute();
             }
             else
-            {
-                exteriorSplitSurface = HybridShapeFactory.AddNewHybridSplit(projectionSurfaceRef, ExternalContour.ShapeReference, splitOrientation);
                 splitOrientation = -1;
-            }
 
             exteriorSplitSurface.Compute();
 
@@ -148,7 +143,6 @@ namespace Graphy.Model.CatiaObject.CatiaShape
 
 
                 // Cut surface result by interior contours
-                Reference exteriorSplitSurfaceRef = PartDocument.Part.CreateReferenceFromObject(exteriorSplitSurface);
                 Shape = HybridShapeFactory.AddNewHybridSplit(exteriorSplitSurfaceRef, internalContourListAssembledRef, -splitOrientation);
                 Shape.Compute();
 

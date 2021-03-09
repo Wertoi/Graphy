@@ -23,6 +23,7 @@ namespace Graphy.Model
 
         private double _progressRate;
         private int _step;
+        private IEnumerable<MarkablePart> blbl;
 
         public double ProgressRate
         {
@@ -51,67 +52,27 @@ namespace Graphy.Model
         }
 
 
-        /*public void RunForCatalogPart(CatiaEnv catiaEnv, MarkingData markingData, string designTableFullPath, List<CatiaFile> partList,
-            double toleranceFactor, bool keepHistoric, bool createVolume, VerticalAlignment verticalAlignment)
+        public void RunForCollection(CatiaEnv catiaEnv, ICollection<MarkablePart> markablePartCollection,
+            double toleranceFactor, bool keepHistoric, bool createVolume)
         {
-            // Create a design table reader
-            DesignTableReader designTableReader = new DesignTableReader();
-            if (designTableReader.OpenDesignTable(designTableFullPath))
+            IEnumerable<IGrouping<CatiaPart, MarkablePart>> groupedMarkablePartList = markablePartCollection.GroupBy(markablePart => markablePart.CatiaPart);
+            foreach(IGrouping<CatiaPart, MarkablePart> groupedMarkablePart in groupedMarkablePartList)
             {
-                Step = 1;
-                foreach (CatiaFile part in partList)
+                CatiaPart catiaPart = groupedMarkablePart.Key;
+                if (catiaPart.TryOpenDocument(catiaEnv, catiaPart.FileFullPath))
                 {
-                    // Check if the part is in the design table excel file
-                    List<string> partListFromDesignTableFile = new List<string>();
-                    designTableReader.GetPartList(partListFromDesignTableFile);
+                    List<MarkablePart> partMarkablePartList = groupedMarkablePart.Select(markablePart => markablePart).ToList();
+                    List<CatiaCharacter> drawnCharacterList = new List<CatiaCharacter>();
 
-                    List<CatiaCharacter> characterList = new List<CatiaCharacter>();
-
-                    // If Ok, then run the marking generation
-                    if (partListFromDesignTableFile.Contains(part.Name))
+                    foreach (MarkablePart markablePart in partMarkablePartList)
                     {
-                        CatiaPartDocument catiaPartDocument = new CatiaPartDocument(catiaEnv, catiaEnv.OpenDocument(part));
-
-                        // Get the value from the design table for Text, Character height and Extrusion height datas if link is activated
-                        if (markingData.Text.IsLinkOn || markingData.CharacterHeight.IsLinkOn || markingData.ExtrusionHeight.IsLinkOn)
-                        {
-                            MarkingData tempMarkingData = markingData;
-                            int row = designTableReader.GetRow(part.Name);
-
-                            if (markingData.Text.IsLinkOn)
-                                tempMarkingData.Text.Value = (string)designTableReader.GetValue(row, markingData.Text.LinkedParameter.ColumnIndex);
-
-                            if (markingData.CharacterHeight.IsLinkOn)
-                                tempMarkingData.CharacterHeight.Value = (double)designTableReader.GetValue(row, markingData.CharacterHeight.LinkedParameter.ColumnIndex);
-
-                            if (markingData.ExtrusionHeight.IsLinkOn)
-                                tempMarkingData.ExtrusionHeight.Value = (double)designTableReader.GetValue(row, markingData.ExtrusionHeight.LinkedParameter.ColumnIndex);
-
-                            // Run the marking generation with linked values
-                            Run(catiaPartDocument, tempMarkingData, characterList, toleranceFactor, keepHistoric, createVolume, verticalAlignment);
-                        }
-                        else
-                        {
-                            // Run the marking generation without linked values
-                            Run(catiaPartDocument, markingData, characterList, toleranceFactor, keepHistoric, createVolume, verticalAlignment);
-                        }
-
-                        // Save and close the document
-                        catiaPartDocument.Document.Save();
-                        catiaPartDocument.Document.Close();
+                        Run(catiaPart, markablePart.MarkingData, drawnCharacterList, toleranceFactor, keepHistoric, createVolume);
                     }
 
-                    Step++;
+                    //catiaPart.CloseDocument(true);
                 }
-
-                // Close the design table Excel file
-                designTableReader.CloseDesignTable();
             }
-            else
-            {
-                throw new Exception(designTableReader.ExceptionMessage);
-            }
-        }*/
+        }
 
         public void Run(CatiaPart catiaPart, MarkingData markingData, List<CatiaCharacter> characterList,
             double toleranceFactor, bool keepHistoric, bool createVolume)

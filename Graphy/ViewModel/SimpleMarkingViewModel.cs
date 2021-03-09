@@ -21,9 +21,10 @@ namespace Graphy.ViewModel
         public SimpleMarkingViewModel()
         {
             FontFamilyCollection = new ObservableCollection<FontFamily>();
-            MarkablePart = new MarkablePart();
-            MarkingData = new MarkingData("Hello World !", 1.6, 0.1);
-            MarkablePart.MarkingDataCollection.Add(MarkingData);
+            MarkablePart = new MarkablePart
+            {
+                MarkingData = MarkingData.Default()
+            };
 
             // Fill the FontFamilyCollection with the installed fonts
             InstalledFontCollection installedFontCollection = new InstalledFontCollection();
@@ -32,7 +33,7 @@ namespace Graphy.ViewModel
                 FontFamilyCollection.Add(new FontFamily(fontFamily.Name));
             }
 
-            MarkingData.FontFamily = FontFamilyCollection.ToList().Find((fontFamily) => fontFamily.Source == "Calibri");
+            MarkablePart.MarkingData.FontFamily = FontFamilyCollection.ToList().Find((fontFamily) => fontFamily.Source == "Calibri");
 
             // MESSENGER REGISTRATION
             // From Catia
@@ -44,7 +45,7 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
 
             // From Icon
-            MessengerInstance.Register<Icon>(this, Enum.IconToken.SelectedIconChanged, (icon) => { MarkingData.Icon = icon; });
+            MessengerInstance.Register<Icon>(this, Enum.IconToken.SelectedIconChanged, (icon) => { MarkablePart.MarkingData.Icon = icon; });
 
 
             // COMMANDS INITIALIZATION
@@ -59,7 +60,6 @@ namespace Graphy.ViewModel
         // PUBLIC ATTRIBUTS
         private ObservableCollection<FontFamily> _fontFamilyCollection;
         private MarkablePart _markablePart;
-        private MarkingData _markingData;
 
         // PRIVATE ATTRIBUTS
         private double _toleranceFactor;
@@ -84,15 +84,6 @@ namespace Graphy.ViewModel
             }
         }
 
-        public MarkingData MarkingData
-        {
-            get => _markingData;
-            set
-            {
-                Set(() => MarkingData, ref _markingData, value);
-            }
-        }
-
         #region SHAPE SELECTION
 
         #region Select Tracking Curve Command
@@ -103,7 +94,7 @@ namespace Graphy.ViewModel
         {
             bool selectionStatus = TrySelectShape(ShapeType.Spline, out string shapeName);
             if (selectionStatus)
-                MarkingData.TrackingCurveName = shapeName;
+                MarkablePart.MarkingData.TrackingCurveName = shapeName;
         }
         #endregion
 
@@ -116,7 +107,7 @@ namespace Graphy.ViewModel
         {
             bool selectionStatus = TrySelectShape(ShapeType.Point, out string shapeName);
             if (selectionStatus)
-                MarkingData.ReferencePointName = shapeName;
+                MarkablePart.MarkingData.ReferencePointName = shapeName;
         }
         #endregion
 
@@ -130,7 +121,7 @@ namespace Graphy.ViewModel
 
             bool selectionStatus = TrySelectShape(ShapeType.Surface, out string shapeName);
             if (selectionStatus)
-                MarkingData.ProjectionSurfaceName = shapeName;
+                MarkablePart.MarkingData.ProjectionSurfaceName = shapeName;
         }
         #endregion
 
@@ -143,7 +134,7 @@ namespace Graphy.ViewModel
         {
             bool selectionStatus = TrySelectShape(ShapeType.AxisSystem, out string shapeName);
             if (selectionStatus)
-                MarkingData.AxisSystemName = shapeName;
+                MarkablePart.MarkingData.AxisSystemName = shapeName;
         }
         #endregion
 
@@ -268,7 +259,7 @@ namespace Graphy.ViewModel
 
                 try
                 {
-                    markingGenerator.Run(MarkablePart.CatiaPart, MarkingData, new List<CatiaCharacter>(),
+                    markingGenerator.Run(MarkablePart.CatiaPart, MarkablePart.MarkingData, new List<CatiaCharacter>(),
                         _toleranceFactor, _keepHistoric, _createVolume);
 
                     MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);

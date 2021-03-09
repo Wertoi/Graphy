@@ -160,6 +160,9 @@
     <Compile Include="View\IconPage.xaml.cs">
       <DependentUpon>IconPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\MarkablePartPage.xaml.cs">
+      <DependentUpon>MarkablePartPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
@@ -191,6 +194,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\IconPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MarkablePartPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

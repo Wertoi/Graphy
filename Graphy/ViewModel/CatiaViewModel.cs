@@ -103,6 +103,7 @@ namespace Graphy.ViewModel
         private void RefreshCatiaApplicationCommandAction(CatiaPart previousSelectedPartDocument = null)
         {
             CatiaEnv.Initialize();
+            MessengerInstance.Send<CatiaEnv>(CatiaEnv, Enum.CatiaToken.CatieEnvChanged);
 
             LastRefreshTime = DateTime.Now;
 

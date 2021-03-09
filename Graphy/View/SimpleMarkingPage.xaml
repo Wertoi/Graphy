@@ -7,7 +7,7 @@
       xmlns:cc="clr-namespace:Graphy.CustomControl"
       xmlns:enum="clr-namespace:Graphy.Enum"
       mc:Ignorable="d"
-      d:DesignHeight="744" d:DesignWidth="463"
+      d:DesignHeight="760" d:DesignWidth="463"
       Title="SimpleMarkingPage">
 
     <Grid Background="White">
@@ -75,7 +75,7 @@
 
                     <RadioButton x:Name="TextRadioButton" Style="{StaticResource GenericHighlight_ToggledRadioButton}"
                                  VerticalContentAlignment="Center"
-                                 IsChecked="{Binding Path=MarkingData.IsText, Mode=TwoWay}">
+                                 IsChecked="{Binding Path=MarkablePart.MarkingData.IsText, Mode=TwoWay}">
                         <StackPanel Orientation="Horizontal">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
@@ -89,7 +89,7 @@
 
                     <RadioButton x:Name="IconRadioButton" Style="{StaticResource GenericHighlight_ToggledRadioButton}"
                                  Margin="10,0,0,0"
-                                 IsChecked="{Binding MarkingData.IsText, Mode=TwoWay, Converter={StaticResource InvertBooleanConverter}}">
+                                 IsChecked="{Binding MarkablePart.MarkingData.IsText, Mode=TwoWay, Converter={StaticResource InvertBooleanConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
@@ -107,10 +107,10 @@
                 <Grid Margin="0,5,0,0"
                       DataContext="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{Binding Path=MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
-                        <RowDefinition Height="{Binding Path=MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
-                        <RowDefinition Height="{Binding Path=MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
-                        <RowDefinition Height="{Binding Path=MarkingData.IsText, Converter={StaticResource InvertBooleanToGridLengthConverter}}"/>
+                        <RowDefinition Height="{Binding Path=MarkablePart.MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
+                        <RowDefinition Height="{Binding Path=MarkablePart.MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
+                        <RowDefinition Height="{Binding Path=MarkablePart.MarkingData.IsText, Converter={StaticResource BooleanToGridLengthConverter}}"/>
+                        <RowDefinition Height="{Binding Path=MarkablePart.MarkingData.IsText, Converter={StaticResource InvertBooleanToGridLengthConverter}}"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -127,10 +127,10 @@
                                    IsEnabled="{Binding ElementName=TextRadioButton, Path=IsChecked}"/>
 
                     <TextBox x:Name="InputTextTextBox" Grid.Row="0" Grid.Column="1"
-                             Text="{Binding Path=MarkingData.Text, Mode=TwoWay}"
-                             FontFamily="{Binding Path=MarkingData.FontFamily}"
-                             FontWeight="{Binding Path=MarkingData.IsBold, Converter={StaticResource BooleanToFontWeightConverter}}"
-                             FontStyle="{Binding Path=MarkingData.IsItalic, Converter={StaticResource BooleanToFontStyleConverter}}">
+                             Text="{Binding Path=MarkablePart.MarkingData.Text, Mode=TwoWay}"
+                             FontFamily="{Binding Path=MarkablePart.MarkingData.FontFamily}"
+                             FontWeight="{Binding Path=MarkablePart.MarkingData.IsBold, Converter={StaticResource BooleanToFontWeightConverter}}"
+                             FontStyle="{Binding Path=MarkablePart.MarkingData.IsItalic, Converter={StaticResource BooleanToFontStyleConverter}}">
 
                         <!-- DEFINE TEXT DECORATIONS BEHAVIOUR -->
                         <TextBox.Style>
@@ -139,20 +139,20 @@
                                 <Style.Triggers>
 
                                     <!-- If is underline -->
-                                    <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.IsUnderline}" Value="True">
+                                    <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.IsUnderline}" Value="True">
                                         <Setter Property="TextDecorations" Value="Underline"/>
                                     </DataTrigger>
 
                                     <!-- If is strike through -->
-                                    <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.IsStrikeThrough}" Value="True">
+                                    <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.IsStrikeThrough}" Value="True">
                                         <Setter Property="TextDecorations" Value="StrikeThrough"/>
                                     </DataTrigger>
 
                                     <!-- If is underline AND strike through -->
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.IsUnderline}" Value="True"/>
-                                            <Condition Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.IsStrikeThrough}" Value="True"/>
+                                            <Condition Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.IsUnderline}" Value="True"/>
+                                            <Condition Binding="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.IsStrikeThrough}" Value="True"/>
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="TextDecorations" Value="Underline, StrikeThrough"/>
                                     </MultiDataTrigger>
@@ -175,7 +175,7 @@
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,5">
 
                         <ToggleButton Grid.Column="0" Style="{StaticResource Generic_SquareToggleButton}"
-                                  IsChecked="{Binding Path=MarkingData.IsBold, Mode=TwoWay}" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}">
+                                  IsChecked="{Binding Path=MarkablePart.MarkingData.IsBold, Mode=TwoWay}">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource Bold_Icon}"/>
@@ -184,8 +184,8 @@
                         </ToggleButton>
 
                         <ToggleButton Grid.Column="1" Style="{StaticResource Generic_SquareToggleButton}"
-                                  IsChecked="{Binding Path=MarkingData.IsItalic, Mode=TwoWay}"
-                                  Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" Margin="5,0,0,0">
+                                  IsChecked="{Binding Path=MarkablePart.MarkingData.IsItalic, Mode=TwoWay}"
+                                  Margin="5,0,0,0">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource Italic_Icon}"/>
@@ -194,8 +194,7 @@
                         </ToggleButton>
 
                         <ToggleButton Grid.Column="2" Style="{StaticResource Generic_SquareToggleButton}"
-                                  IsChecked="{Binding Path=MarkingData.IsUnderline, Mode=TwoWay}"
-                                  Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" Margin="5,0,0,0">
+                                  IsChecked="{Binding Path=MarkablePart.MarkingData.IsUnderline, Mode=TwoWay}" Margin="5,0,0,0">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource Underline_Icon}"/>
@@ -204,8 +203,8 @@
                         </ToggleButton>
 
                         <ToggleButton Grid.Column="4" Style="{StaticResource Generic_SquareToggleButton}"
-                                  IsChecked="{Binding Path=MarkingData.IsStrikeThrough, Mode=TwoWay}"
-                                  Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" Margin="5,0,0,0">
+                                      IsChecked="{Binding Path=MarkablePart.MarkingData.IsStrikeThrough, Mode=TwoWay}"
+                                      Margin="5,0,0,0">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
                                     <Path Style="{StaticResource Generic_ToggleButtonIcon}" Data="{StaticResource StrikeThrough_Icon}"/>
@@ -226,7 +225,7 @@
                               VerticalContentAlignment="Center"
                               Padding="5,8,15,8" Margin="0,5,10,5"
                               ItemsSource="{Binding SimpleMarkingViewModel.FontFamilyCollection, Source={StaticResource Locator}}"
-                              SelectedItem="{Binding SimpleMarkingViewModel.MarkingData.FontFamily, Mode=TwoWay, Source={StaticResource Locator}}">
+                              SelectedItem="{Binding SimpleMarkingViewModel.MarkablePart.MarkingData.FontFamily, Mode=TwoWay, Source={StaticResource Locator}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Source}" VerticalAlignment="Center"/>
@@ -260,7 +259,7 @@
 
                     <cc:TextBoxWithUnit Grid.Row="4" Grid.Column="1"
                                         Unit="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.LengthUnitSymbol}"
-                                        Text="{Binding MarkingData.MarkingHeight, Mode=TwoWay}"/>
+                                        Text="{Binding MarkablePart.MarkingData.MarkingHeight, Mode=TwoWay}"/>
 
 
                     <!-- Hauteur d'extrusion -->
@@ -269,7 +268,7 @@
 
                     <cc:TextBoxWithUnit Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center"
                                         Unit="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.LengthUnitSymbol}"
-                                        Text="{Binding MarkingData.ExtrusionHeight, Mode=TwoWay}"
+                                        Text="{Binding MarkablePart.MarkingData.ExtrusionHeight, Mode=TwoWay}"
                                         IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
 
                     <Viewbox Grid.Row="4" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
@@ -297,7 +296,7 @@
                         <StackPanel Orientation="Horizontal">
 
                             <RadioButton Style="{StaticResource Generic_ToggledRadioButton}"
-                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.HorizontalAlignment, Mode=TwoWay,
+                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.HorizontalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:HorizontalAlignment.Left}}">
 
@@ -309,7 +308,7 @@
                             </RadioButton>
 
                             <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Margin="5,0,0,0"
-                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.HorizontalAlignment, Mode=TwoWay,
+                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.HorizontalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:HorizontalAlignment.Center}}">
 
@@ -321,7 +320,7 @@
                             </RadioButton>
 
                             <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Margin="5,0,0,0"
-                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.HorizontalAlignment, Mode=TwoWay,
+                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.HorizontalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:HorizontalAlignment.Right}}">
 
@@ -339,7 +338,7 @@
                         <StackPanel Orientation="Horizontal">
 
                             <RadioButton Style="{StaticResource Generic_ToggledRadioButton}"
-                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.VerticalAlignment, Mode=TwoWay,
+                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.VerticalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:VerticalAlignment.Bottom}}">
 
@@ -351,7 +350,7 @@
                             </RadioButton>
 
                             <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Margin="5,0,0,0"
-                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.VerticalAlignment, Mode=TwoWay,
+                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.VerticalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:VerticalAlignment.Center}}">
                                 <Viewbox Style="{StaticResource IconViewBox}">
@@ -362,7 +361,7 @@
                             </RadioButton>
 
                             <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Margin="5,0,0,0"
-                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkingData.VerticalAlignment, Mode=TwoWay,
+                                         IsChecked="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel.MarkablePart.MarkingData.VerticalAlignment, Mode=TwoWay,
                             Converter={StaticResource EnumToBooleanConverter},
                             ConverterParameter={x:Static enum:VerticalAlignment.Top}}">
                                 <Viewbox Style="{StaticResource IconViewBox}">
@@ -399,7 +398,7 @@
                     <!-- SURFACE POSITION -->
                     <TextBlock Text="{local:Loc MainWindow_Position_SurfaceLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
-                             Text="{Binding MarkingData.ProjectionSurfaceName}"/>
+                             Text="{Binding MarkablePart.MarkingData.ProjectionSurfaceName}"/>
 
                     <Button Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding SelectProjectionSurfaceCommand}"
@@ -430,11 +429,11 @@
                     <!-- TRACKING CURVE POSITION -->
                     <TextBlock Grid.Row="1" Text="{local:Loc MainWindow_Position_CurveLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"
-                             Text="{Binding MarkingData.TrackingCurveName}"/>
+                             Text="{Binding MarkablePart.MarkingData.TrackingCurveName}"/>
 
                     <Button Grid.Row="1" Grid.Column="2"  Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding SelectTrackingCurveCommand}"
-                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}">
+                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Margin="0,5,0,0">
                         <Viewbox Style="{StaticResource IconViewBox}">
                             <Canvas Style="{StaticResource IconCanvas}">
                                 <Path  Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Select_Icon}"/>
@@ -460,11 +459,11 @@
                     <!-- START POINT POSITION -->
                     <TextBlock Grid.Row="2" Text="{local:Loc MainWindow_Position_StartPointLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
-                             Text="{Binding MarkingData.ReferencePointName}"/>
+                             Text="{Binding MarkablePart.MarkingData.ReferencePointName}"/>
 
                     <Button Grid.Row="2" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding SelectStartPointCommand}"
-                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}">
+                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Margin="0,5,0,0">
                         <Viewbox Style="{StaticResource IconViewBox}">
                             <Canvas Style="{StaticResource IconCanvas}">
                                 <Path  Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Select_Icon}"/>
@@ -489,11 +488,11 @@
                     <!-- LOCAL AXIS POSITION -->
                     <TextBlock Grid.Row="3" Text="{local:Loc MainWindow_Position_LocalAxisSystemLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
-                             Text="{Binding MarkingData.AxisSystemName}"/>
+                             Text="{Binding MarkablePart.MarkingData.AxisSystemName}"/>
 
                     <Button Grid.Row="3" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding SelectAxisSystemCommand}"
-                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}">
+                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Margin="0,5,0,0">
                         <Viewbox Style="{StaticResource IconViewBox}">
                             <Canvas Style="{StaticResource IconCanvas}">
                                 <Path  Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Select_Icon}"/>

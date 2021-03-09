@@ -2,8 +2,10 @@
 using GalaSoft.MvvmLight.Command;
 using Graphy.Model;
 using Graphy.Model.CatiaObject;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Graphy.ViewModel
 {
@@ -19,11 +21,19 @@ namespace Graphy.ViewModel
             GenerateTableTemplateCommand = new RelayCommand(GenerateTableTemplateCommandAction);
             SelectTableCommand = new RelayCommand(SelectTableCommandAction);
             SelectPartFolderCommand = new RelayCommand(SelectPartFolderCommandAction);
+            SelectMarkablePartCommand = new RelayCommand<int>((index) => SelectMarkablePartCommandAction(index));
             SelectAllPartCommand = new RelayCommand(SelectAllPartCommandAction);
             UnselectAllPartCommand = new RelayCommand(UnselectAllPartCommandAction);
 
             LoadDataCommand = new RelayCommand(LoadDataCommandAction);
 
+            // From settings
+            MessengerInstance.Register<double>(this, Enum.SettingToken.ToleranceFactorChanged, (toleranceFactor) => { _toleranceFactor = toleranceFactor; });
+            MessengerInstance.Register<bool>(this, Enum.SettingToken.KeepHistoricChanged, (keepHistoric) => { _keepHistoric = keepHistoric; });
+            MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
+
+            // From Catia
+            MessengerInstance.Register<CatiaEnv>(this, Enum.CatiaToken.CatieEnvChanged, (catiaEnv) => { _catiaEnv = catiaEnv; });
         }
 
         public const string DEFAULT_TABLE_FULLPATH = "No curve selected";
@@ -34,6 +44,12 @@ namespace Graphy.ViewModel
         private ObservableCollection<MarkablePart> _markablePartCollection;
         private bool _isMarkablePartCollectionEmpty = true;
         private MarkablePart _selectedMarkablePart;
+
+        // PRIVATE ATTRIBUTS
+        private double _toleranceFactor;
+        private bool _keepHistoric;
+        private bool _createVolume;
+        CatiaEnv _catiaEnv;
 
         public string TableFullPath
         {
@@ -53,7 +69,7 @@ namespace Graphy.ViewModel
             }
         }
 
-        private void LoadCatiaFileCollection(string folderPath)
+        private void LoadCatiaFileCollection(string folderPath, List<CatiaPart> catiaPartList)
         {
             // For each file in the part directory
             foreach (string fileFullPath in System.IO.Directory.GetFiles(folderPath))
@@ -61,12 +77,7 @@ namespace Graphy.ViewModel
                 if (CatiaPart.IsFormatOK(fileFullPath))
                 {
                     CatiaPart tempCatiaPart = new CatiaPart(fileFullPath);
-
-                    MarkablePart newMarkablePart = new MarkablePart(tempCatiaPart)
-                    {
-                        PartName = tempCatiaPart.Name
-                    };
-                    MarkablePartCollection.Add(newMarkablePart);
+                    catiaPartList.Add(tempCatiaPart);
                 }
             }
         }
@@ -101,9 +112,44 @@ namespace Graphy.ViewModel
 
         private RelayCommand _generateTableTemplateCommand;
         public RelayCommand GenerateTableTemplateCommand { get => _generateTableTemplateCommand; set => _generateTableTemplateCommand = value; }
-        private void GenerateTableTemplateCommandAction()
+        private async void GenerateTableTemplateCommandAction()
         {
-            TableStream.GenerateTemplate();
+            //TableStream.GenerateTemplate();
+            // TEST
+            
+
+            MessengerInstance.Send<int>(1, Enum.ProcessToken.ComplexStarted);
+
+            await Task.Run(() =>
+            {
+                MarkingGenerator markingGenerator = new MarkingGenerator();
+                List<MarkablePart> selectedMarkablePartList = new List<MarkablePart>();
+
+                foreach (MarkablePart markablePart in MarkablePartCollection)
+                {
+                    if (markablePart.IsSelected)
+                        selectedMarkablePartList.Add(markablePart);
+                }
+                markingGenerator.ProgressUpdated += MarkingGenerator_ProgressUpdated;
+
+                try
+                {
+                    markingGenerator.RunForCollection(_catiaEnv, selectedMarkablePartList, _toleranceFactor, _keepHistoric, _createVolume);
+
+                    MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
+                }
+                catch (Exception ex)
+                {
+                    MessengerInstance.Send(ex.Message, Enum.ProcessToken.Failed);
+                    return;
+                }
+
+            });
+        }
+
+        private void MarkingGenerator_ProgressUpdated(object sender, (double progressRate, int currentStep) e)
+        {
+            MessengerInstance.Send<(double, int)>((e.progressRate * 100, e.currentStep), Enum.ProcessToken.Refresh);
         }
 
 
@@ -153,55 +199,65 @@ namespace Graphy.ViewModel
 
         private void LoadDataCommandAction()
         {
+            // Clear the markable part collection
             MarkablePartCollection.Clear();
+
+
+            List<CatiaPart> catiaPartList = new List<CatiaPart>();
 
             // If Part folder exists, get all the parts in it.
             if (System.IO.Directory.Exists(PartFolderPath))
-                LoadCatiaFileCollection(PartFolderPath);
+                LoadCatiaFileCollection(PartFolderPath, catiaPartList);
+                
 
             // Try to read the marking datas in the table.
-            List<(string, MarkingData)> markingDatas = new List<(string, MarkingData)>();
+            List<MarkablePart> markablePartListFromCSV = new List<MarkablePart>();
 
             // If we manage to read the CSV file
-            if (TableStream.TryRead(TableFullPath, markingDatas))
+            if (TableStream.TryRead(TableFullPath, markablePartListFromCSV))
             {
-
-                // For each pair (Part name, Marking Data) in the datas got from the CSV file
-                foreach ((string partName, MarkingData markingData) datas in markingDatas)
+                // Add all the markable part from the CSV file in the Markable part collection
+                foreach(MarkablePart markablePartFromCSV in markablePartListFromCSV)
                 {
-                    // Define a flag
-                    bool flag = false;
+                    MarkablePartCollection.Add(markablePartFromCSV);
+                }
 
-
-                    // For each markable part from Catia in the markable part collection
-                    foreach (MarkablePart partFromCatia in MarkablePartCollection)
+                // Try to assign a catia part at each markable part from CSV in MarkablePartCollection
+                foreach(CatiaPart catiaPart in catiaPartList)
+                {
+                    bool hasCatiaPartFoundItsMarkingData = false;
+                    foreach(MarkablePart markablePartFromCSV in MarkablePartCollection)
                     {
-
-                        // If the part from Catia has the same name as the datas from the CSV file
-                        if (partFromCatia.PartName == datas.partName)
+                        if(markablePartFromCSV.PartName == catiaPart.Name)
                         {
-                            // Add datas marking datas to the markable part
-                            partFromCatia.MarkingDataCollection.Add(datas.markingData);
-                            flag = true;
-                            break;
+                            markablePartFromCSV.CatiaPart = catiaPart;
+                            hasCatiaPartFoundItsMarkingData = true;
                         }
-
                     }
 
-                    // If the datas did not find a markable part, we create it.
-                    if (!flag)
-                    {
-                        MarkablePart tempMarkablePart = new MarkablePart();
-                        tempMarkablePart.PartName = datas.partName;
-                        tempMarkablePart.MarkingDataCollection.Add(datas.markingData);
-                        MarkablePartCollection.Add(tempMarkablePart);
-                    }
+                    if (!hasCatiaPartFoundItsMarkingData)
+                        MarkablePartCollection.Add(new MarkablePart(catiaPart));
+
+                }  
+            }
+            else
+            {
+                foreach(CatiaPart catiaPart in catiaPartList)
+                {
+                    MarkablePartCollection.Add(new MarkablePart(catiaPart));
                 }
             }
 
             IsMarkablePartCollectionEmpty = MarkablePartCollection.Count == 0;
         }
 
+
+        private RelayCommand<int> _selectMarkablePartCommand;
+        public RelayCommand<int> SelectMarkablePartCommand { get => _selectMarkablePartCommand; set => _selectMarkablePartCommand = value; }
+        private void SelectMarkablePartCommandAction(int markablePartIndex)
+        {
+            SelectedMarkablePart = MarkablePartCollection[markablePartIndex];
+        }
 
 
         private RelayCommand _selectAllPartCommand;

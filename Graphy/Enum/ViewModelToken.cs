@@ -8,6 +8,7 @@ namespace Graphy.Enum
 {
     public enum CatiaToken
     {
+        CatieEnvChanged,
         SelectedPartChanged,
         Refresh
     };

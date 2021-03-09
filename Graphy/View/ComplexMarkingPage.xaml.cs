@@ -24,5 +24,37 @@ namespace Graphy.View
         {
             InitializeComponent();
         }
+
+        private void MarkablePartViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new MarkablePartPage());
+        }
+
+
+
+        public int MouseOverItemIndex
+        {
+            get { return (int)GetValue(MouseOverItemIndexProperty); }
+            set { SetValue(MouseOverItemIndexProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MouseOverItemIndex.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MouseOverItemIndexProperty =
+            DependencyProperty.Register("MouseOverItemIndex", typeof(int), typeof(ComplexMarkingPage), new PropertyMetadata(0));
+
+
+        private void MarkablePartListView_MouseMove(object sender, MouseEventArgs e)
+        {
+            var item = VisualTreeHelper.HitTest(MarkablePartListView, Mouse.GetPosition(MarkablePartListView)).VisualHit;
+
+            // find ListViewItem (or null)
+            while (item != null && !(item is ListViewItem))
+                item = VisualTreeHelper.GetParent(item);
+
+            if (item != null)
+            {
+                MouseOverItemIndex = MarkablePartListView.Items.IndexOf(((ListViewItem)item).DataContext);
+            }
+        }
     }
 }
