@@ -1,4 +1,5 @@
-﻿using INFITF;
+﻿using HybridShapeTypeLib;
+using INFITF;
 using MECMOD;
 using System;
 using System.Collections.Generic;
@@ -100,6 +101,7 @@ namespace Graphy.Model.CatiaObject.CatiaShape
 
         public Reference SystemReference { get => _systemReference; set => _systemReference = value; }
         public PartDocument PartDocument { get => _partDocument; set => _partDocument = value; }
+
 
         public static CatiaAxisSystem GetOriginAxisSystem(PartDocument partDocument, HybridBody originSet)
         {

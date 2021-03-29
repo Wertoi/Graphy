@@ -14,5 +14,8 @@
     <Setting Name="IconCollection" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="CsvConfig" Type="Graphy.CsvStream.CsvConfig" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

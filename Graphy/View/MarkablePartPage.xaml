@@ -32,7 +32,7 @@
                     </TextBlock>
                 </StackPanel>
 
-                <TextBlock Text="Part datas" FontSize="16" Foreground="{StaticResource PrimaryColor}" VerticalAlignment="Center" Margin="0,20,0,0"/>
+                <TextBlock Text="Données CATPart" FontSize="16" Foreground="{StaticResource PrimaryColor}" VerticalAlignment="Center" Margin="0,20,0,0"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
@@ -43,11 +43,11 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Associated CATPart has been found" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding HasFile}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="CATPart trouvée" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding HasFile}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="File full path" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CatiaPart.FileFullPath}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Chemin complet" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CatiaPart.FileFullPath}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
                 </Grid>
 
@@ -77,57 +77,57 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Is text" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding MarkingData.IsText}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Est du texte" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding MarkingData.IsText}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Text" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MarkingData.Text}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Texte" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MarkingData.Text}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Is Bold" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MarkingData.IsBold}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Est gras" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MarkingData.IsBold}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Is Italic" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding MarkingData.IsItalic}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Est italique" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding MarkingData.IsItalic}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Is Underlined" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding MarkingData.IsUnderline}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Est souligné" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding MarkingData.IsUnderline}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Is strike through" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding MarkingData.IsStrikeThrough}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Est barré" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding MarkingData.IsStrikeThrough}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Font Family" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding MarkingData.FontFamily.Source, Mode=OneWay}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Police d'écriture" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding MarkingData.FontFamily.Source, Mode=OneWay}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Icon data" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding MarkingData.Icon.PathData}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Définition de l'icone" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding MarkingData.Icon.PathData}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Marking height" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding MarkingData.MarkingHeight}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Hauteur de marquage" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding MarkingData.MarkingHeight}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="9" Grid.Column="0" Text="Extrusion height" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding MarkingData.ExtrusionHeight}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="Hauteur d'extrusion" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding MarkingData.ExtrusionHeight}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Horizontal alignment" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding MarkingData.HorizontalAlignment}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Alignement horizontal" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding MarkingData.HorizontalAlignment}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="11" Grid.Column="0" Text="Vertical alignment" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding MarkingData.VerticalAlignment}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="11" Grid.Column="0" Text="Alignement vertical" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding MarkingData.VerticalAlignment}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="12" Grid.Column="0" Text="Projection surface name" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding MarkingData.ProjectionSurfaceName}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="12" Grid.Column="0" Text="Surface de projection" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding MarkingData.ProjectionSurfaceName}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="13" Grid.Column="0" Text="Tracking curve name" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding MarkingData.TrackingCurveName}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="13" Grid.Column="0" Text="Courbe de suivi" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding MarkingData.TrackingCurveName}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="14" Grid.Column="0" Text="Reference point name" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="14" Grid.Column="1" Text="{Binding MarkingData.ReferencePointName}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="14" Grid.Column="0" Text="Point de référence" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="14" Grid.Column="1" Text="{Binding MarkingData.ReferencePointName}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
-                    <TextBlock Grid.Row="15" Grid.Column="0" Text="Reference axis system name" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="15" Grid.Column="1" Text="{Binding MarkingData.AxisSystemName}" Style="{StaticResource ReadOnlyTextBox}"/>
+                    <TextBlock Grid.Row="15" Grid.Column="0" Text="Repère de référence" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBox Grid.Row="15" Grid.Column="1" Text="{Binding MarkingData.AxisSystemName}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
                 </Grid>
 
-                <TextBlock Text="Commentaires" FontSize="16" Foreground="{StaticResource PrimaryColor}" VerticalAlignment="Center" Margin="0,20,0,0"/>
+                <TextBlock Text="Logs" FontSize="16" Foreground="{StaticResource PrimaryColor}" VerticalAlignment="Center" Margin="0,20,0,0"/>
 
                 <TextBlock Text="{Binding Path=MarkingData.Comments}" TextWrapping="Wrap"/>
 

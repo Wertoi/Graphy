@@ -44,8 +44,11 @@
                 </StackPanel>
             </Button>
 
+            <Button Grid.Row="0" HorizontalAlignment="Right" Content="EXPORT"
+                    Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.ExportIconCollectionCommand}"/>
+
             <Grid Grid.Row="1" Margin="0,15,0,0"
-                  Visibility="{Binding Source={StaticResource Locator}, Path=IconViewModel.IsIconCollectionEmpty, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
+                  Visibility="{Binding Source={StaticResource Locator}, Path=IconViewModel.IconCollection.Count, Converter={StaticResource HideOnEmptyConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" MinWidth="150" MaxWidth="350"/>
                     <ColumnDefinition Width="Auto"/>
@@ -53,6 +56,7 @@
                 </Grid.ColumnDefinitions>
 
                 <ListView Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          BorderBrush="Transparent"
                           ItemsSource="{Binding Source={StaticResource Locator}, Path=IconViewModel.IconCollection}"
                           SelectedItem="{Binding Source={StaticResource Locator}, Path=IconViewModel.SelectedIcon}"
                           HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource ListViewItemBaseStyle}">
@@ -205,7 +209,7 @@
             </Grid>
 
             <StackPanel Grid.Row="1" Margin="0,15,0,0" Orientation="Vertical"
-                        Visibility="{Binding Source={StaticResource Locator}, Path=IconViewModel.IsIconCollectionEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Visibility="{Binding Source={StaticResource Locator}, Path=IconViewModel.IconCollection.Count, Converter={StaticResource ShowOnEmptyConverter}}"
                         HorizontalAlignment="Center">
                 <TextBlock Text="No icon found." Foreground="#FFA6A6A6"/>
                 <Viewbox Style="{StaticResource IconViewBox}">

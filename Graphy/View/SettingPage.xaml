@@ -96,11 +96,13 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Caractère délimiteur" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Text=";" Style="{StaticResource NormalTextBox}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=CsvConfig.Delimiter, Mode=TwoWay}"
+                             Style="{StaticResource NormalTextBox}"/>
 
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Caractère pour commentaire" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="$" Style="{StaticResource NormalTextBox}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=CsvConfig.CommentMark, Mode=TwoWay}"
+                             Style="{StaticResource NormalTextBox}"/>
 
                 </Grid>
 

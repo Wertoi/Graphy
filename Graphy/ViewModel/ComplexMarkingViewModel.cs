@@ -18,7 +18,7 @@ namespace Graphy.ViewModel
             TableFullPath = DEFAULT_TABLE_FULLPATH;
             PartFolderPath = DEFAULT_PART_FOLDER_PATH;
 
-            GenerateTableTemplateCommand = new RelayCommand(GenerateTableTemplateCommandAction);
+            GenerateCommand = new RelayCommand(GenerateCommandAction);
             SelectTableCommand = new RelayCommand(SelectTableCommandAction);
             SelectPartFolderCommand = new RelayCommand(SelectPartFolderCommandAction);
             SelectMarkablePartCommand = new RelayCommand<int>((index) => SelectMarkablePartCommandAction(index));
@@ -31,13 +31,14 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<double>(this, Enum.SettingToken.ToleranceFactorChanged, (toleranceFactor) => { _toleranceFactor = toleranceFactor; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.KeepHistoricChanged, (keepHistoric) => { _keepHistoric = keepHistoric; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
+            MessengerInstance.Register<CsvStream.CsvConfig>(this, Enum.SettingToken.CsvConfigChanged, (csvConfig) => { _csvConfig = csvConfig; });
 
             // From Catia
             MessengerInstance.Register<CatiaEnv>(this, Enum.CatiaToken.CatieEnvChanged, (catiaEnv) => { _catiaEnv = catiaEnv; });
         }
 
-        public const string DEFAULT_TABLE_FULLPATH = "No curve selected";
-        public const string DEFAULT_PART_FOLDER_PATH = "No curve selected";
+        public const string DEFAULT_TABLE_FULLPATH = "No table selected";
+        public const string DEFAULT_PART_FOLDER_PATH = "No folder selected";
 
         private string _tableFullPath;
         private string _partFolderPath;
@@ -50,6 +51,7 @@ namespace Graphy.ViewModel
         private bool _keepHistoric;
         private bool _createVolume;
         CatiaEnv _catiaEnv;
+        private CsvStream.CsvConfig _csvConfig;
 
         public string TableFullPath
         {
@@ -66,19 +68,6 @@ namespace Graphy.ViewModel
             set
             {
                 Set(() => PartFolderPath, ref _partFolderPath, value);
-            }
-        }
-
-        private void LoadCatiaFileCollection(string folderPath, List<CatiaPart> catiaPartList)
-        {
-            // For each file in the part directory
-            foreach (string fileFullPath in System.IO.Directory.GetFiles(folderPath))
-            {
-                if (CatiaPart.IsFormatOK(fileFullPath))
-                {
-                    CatiaPart tempCatiaPart = new CatiaPart(fileFullPath);
-                    catiaPartList.Add(tempCatiaPart);
-                }
             }
         }
 
@@ -110,26 +99,25 @@ namespace Graphy.ViewModel
         }
 
 
-        private RelayCommand _generateTableTemplateCommand;
-        public RelayCommand GenerateTableTemplateCommand { get => _generateTableTemplateCommand; set => _generateTableTemplateCommand = value; }
-        private async void GenerateTableTemplateCommandAction()
+        private RelayCommand _generateCommand;
+        public RelayCommand GenerateCommand { get => _generateCommand; set => _generateCommand = value; }
+        private async void GenerateCommandAction()
         {
-            //TableStream.GenerateTemplate();
-            // TEST
-            
+            // Create a list with only selected markings
+            List<MarkablePart> selectedMarkablePartList = new List<MarkablePart>();
 
-            MessengerInstance.Send<int>(1, Enum.ProcessToken.ComplexStarted);
+            foreach (MarkablePart markablePart in MarkablePartCollection)
+            {
+                if (markablePart.IsSelected)
+                    selectedMarkablePartList.Add(markablePart);
+            }
+
+            MessengerInstance.Send<int>(selectedMarkablePartList.Count, Enum.ProcessToken.ComplexStarted);
 
             await Task.Run(() =>
             {
                 MarkingGenerator markingGenerator = new MarkingGenerator();
-                List<MarkablePart> selectedMarkablePartList = new List<MarkablePart>();
-
-                foreach (MarkablePart markablePart in MarkablePartCollection)
-                {
-                    if (markablePart.IsSelected)
-                        selectedMarkablePartList.Add(markablePart);
-                }
+                
                 markingGenerator.ProgressUpdated += MarkingGenerator_ProgressUpdated;
 
                 try
@@ -151,7 +139,6 @@ namespace Graphy.ViewModel
         {
             MessengerInstance.Send<(double, int)>((e.progressRate * 100, e.currentStep), Enum.ProcessToken.Refresh);
         }
-
 
 
         private RelayCommand _selectTableCommand;
@@ -192,7 +179,18 @@ namespace Graphy.ViewModel
             }
         }
 
-
+        private void LoadCatiaFileCollection(string folderPath, List<CatiaPart> catiaPartList)
+        {
+            // For each file in the part directory
+            foreach (string fileFullPath in System.IO.Directory.GetFiles(folderPath))
+            {
+                if (CatiaPart.IsFormatOK(fileFullPath))
+                {
+                    CatiaPart tempCatiaPart = new CatiaPart(fileFullPath);
+                    catiaPartList.Add(tempCatiaPart);
+                }
+            }
+        }
 
         private RelayCommand _loadDataCommand;
         public RelayCommand LoadDataCommand { get => _loadDataCommand; set => _loadDataCommand = value; }
@@ -214,7 +212,7 @@ namespace Graphy.ViewModel
             List<MarkablePart> markablePartListFromCSV = new List<MarkablePart>();
 
             // If we manage to read the CSV file
-            if (TableStream.TryRead(TableFullPath, markablePartListFromCSV))
+            if (TableStream.TryRead(TableFullPath, markablePartListFromCSV, _csvConfig))
             {
                 // Add all the markable part from the CSV file in the Markable part collection
                 foreach(MarkablePart markablePartFromCSV in markablePartListFromCSV)

@@ -11,17 +11,21 @@ namespace Graphy.Model.CatiaObject.CatiaShape
 {
     public class CatiaCharacter : CatiaDrawableShape
     {
-        public CatiaCharacter(PartDocument partDocument, char value) : base(partDocument)
+        public CatiaCharacter(PartDocument partDocument, char value, FontFamily fontFamily, bool isBold, bool isItalic) : base(partDocument)
         {
             Value = value;
+            FontFamily = fontFamily;
+            IsBold = isBold;
+            IsItalic = isItalic;
             SurfaceList = new List<CatiaSurface>();
         }
 
         private char _value;
         private bool _isSpaceCharacter = false;
+        private FontFamily _fontFamily;
+        private bool _isBold;
+        private bool _isItalic;
 
-
-        public bool IsSpaceCharacter { get => _isSpaceCharacter; set => _isSpaceCharacter = value; }
         public char Value
         {
             get => _value;
@@ -29,21 +33,24 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             {
                 _value = value;
 
-                if (Value == ' ')
-                {
-                    //Value = '_';
-                    IsSpaceCharacter = true;
-                }
+                IsSpaceCharacter = Value == ' ';
             }
         }
+        public bool IsSpaceCharacter { get => _isSpaceCharacter; set => _isSpaceCharacter = value; }
+        public bool IsBold { get => _isBold; set => _isBold = value; }
+        public bool IsItalic { get => _isItalic; set => _isItalic = value; }
+        public FontFamily FontFamily { get => _fontFamily; set => _fontFamily = value; }
 
+        public void ComputeGeometry(FontFamily fontFamily, double toleranceFactor)
+        {
+            PathGeometry = fontFamily.GetCharacterGeometry(Value, toleranceFactor, IsBold, IsItalic);
+        }
 
         public new CatiaCharacter Clone()
         {
-            CatiaCharacter copyCharacter = new CatiaCharacter(PartDocument, Value)
+            CatiaCharacter copyCharacter = new CatiaCharacter(PartDocument, Value, FontFamily, IsBold, IsItalic)
             {
-                PathGeometry = PathGeometry.Clone(),
-                IsSpaceCharacter = IsSpaceCharacter
+                PathGeometry = PathGeometry.Clone()
             };
 
             foreach (CatiaSurface surface in SurfaceList)
@@ -78,7 +85,8 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             }
 
             CatiaCharacter catiaCharacter = (CatiaCharacter)obj;
-            return (Value == catiaCharacter.Value && IsSpaceCharacter == catiaCharacter.IsSpaceCharacter);
+            return (Value == catiaCharacter.Value && FontFamily == catiaCharacter.FontFamily &&
+                IsBold == catiaCharacter.IsBold && IsItalic == catiaCharacter.IsItalic);
         }
 
         // GETHASHCODE OVERRIDE

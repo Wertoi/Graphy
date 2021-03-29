@@ -23,7 +23,6 @@ namespace Graphy.Model
 
         private double _progressRate;
         private int _step;
-        private IEnumerable<MarkablePart> blbl;
 
         public double ProgressRate
         {
@@ -55,6 +54,8 @@ namespace Graphy.Model
         public void RunForCollection(CatiaEnv catiaEnv, ICollection<MarkablePart> markablePartCollection,
             double toleranceFactor, bool keepHistoric, bool createVolume)
         {
+            Step = 1;
+
             IEnumerable<IGrouping<CatiaPart, MarkablePart>> groupedMarkablePartList = markablePartCollection.GroupBy(markablePart => markablePart.CatiaPart);
             foreach(IGrouping<CatiaPart, MarkablePart> groupedMarkablePart in groupedMarkablePartList)
             {
@@ -67,6 +68,7 @@ namespace Graphy.Model
                     foreach (MarkablePart markablePart in partMarkablePartList)
                     {
                         Run(catiaPart, markablePart.MarkingData, drawnCharacterList, toleranceFactor, keepHistoric, createVolume);
+                        Step++;
                     }
 
                     //catiaPart.CloseDocument(true);
@@ -183,9 +185,11 @@ namespace Graphy.Model
 
                 // Compute the scale ratio to obtain the character height with a fixed character reference
                 // 'M' character is used as reference.
-                PathGeometry refCharacterGeometry = markingData.FontFamily.GetCharacterGeometry(FontFamily.REFERENCE_CHARACTER, toleranceFactor,
+                CatiaCharacter refCharacter = new CatiaCharacter(catiaPart.PartDocument, FontFamily.REFERENCE_CHARACTER, markingData.FontFamily,
                     markingData.IsBold, markingData.IsItalic);
-                double scaleRatio = markingData.MarkingHeight / refCharacterGeometry.Bounds.Height;
+
+                refCharacter.ComputeGeometry(markingData.FontFamily, toleranceFactor);
+                double scaleRatio = markingData.MarkingHeight / refCharacter.PathGeometry.Bounds.Height;
 
                 // Create a list to store points references in order to create underline and strike through if necessary
                 List<CatiaPoint> constructionPointList = new List<CatiaPoint>();
@@ -267,7 +271,7 @@ namespace Graphy.Model
                 foreach (char character in markingData.Text)
                 {
                     // Get the associatedCatiaCharacter
-                    CatiaCharacter catiaCharacter = GetCatiaCharacter(catiaPart.PartDocument, markingData, character, characterList, toleranceFactor, refCharacterGeometry);
+                    CatiaCharacter catiaCharacter = GetCatiaCharacter(catiaPart.PartDocument, markingData, character, characterList, toleranceFactor);
 
                     // *** NOTE ***
                     // The local point is constructed even if the character is a space character.
@@ -294,11 +298,14 @@ namespace Graphy.Model
                         // Store the local axis system reference for deletion later if necessary
                         constructionAxisSystemList.Add(localAxisSystem);
 
+                        // Compute the Y offset depending on the vertical alignment
+                        double yOffset = CatiaDrawableShape.GetYOffset(markingData.VerticalAlignment, refCharacter.PathGeometry);
+
                         // If we do not keep the construction historic
                         if (!keepHistoric)
                         {
                             Compute(catiaPart, catiaCharacter, scaleRatio, keepHistoric, createVolume, writingSet, markingData, markingBody,
-                                originPoint, originAxisSystem, localAxisSystem, supportSurface, localPoint);
+                                yOffset, originPoint, originAxisSystem, localAxisSystem, supportSurface, localPoint);
                         }
                         else
                         {
@@ -307,7 +314,7 @@ namespace Graphy.Model
                             characterSet.set_Name(character.ToString() + "." + characterIndex);
 
                             Compute(catiaPart, catiaCharacter, scaleRatio, keepHistoric, createVolume, characterSet, markingData, markingBody,
-                                originPoint, originAxisSystem, localAxisSystem, supportSurface, localPoint);
+                                yOffset, originPoint, originAxisSystem, localAxisSystem, supportSurface, localPoint);
                         }
 
                     }
@@ -350,7 +357,7 @@ namespace Graphy.Model
 
                         // Compute the underline position curve and thickness
                         (CatiaCurve positionCurve, double textDecorationThickness) = GetTextDecoration(catiaPart, LineType.Underline, markingData,
-                            refCharacterGeometry, scaleRatio, isBaselineYSameDirection, baseline, supportSurface);
+                            refCharacter.PathGeometry, scaleRatio, isBaselineYSameDirection, baseline, supportSurface);
 
                         // Draw the underline surface
                         CatiaSurface underlineSurface = DrawTextDecoration(catiaPart, positionCurve, textDecorationThickness, supportSurface, keepHistoric, underlineSet);
@@ -383,7 +390,7 @@ namespace Graphy.Model
 
                         // Compute the strike through position curve and thickness
                         (CatiaCurve positionCurve, double textDecorationThickness) = GetTextDecoration(catiaPart, LineType.StrikeThrough, markingData,
-                            refCharacterGeometry, scaleRatio, isBaselineYSameDirection, baseline, supportSurface);
+                            refCharacter.PathGeometry, scaleRatio, isBaselineYSameDirection, baseline, supportSurface);
 
                         // Draw the underline surface
                         CatiaSurface strikeThroughSurface = DrawTextDecoration(catiaPart, positionCurve, textDecorationThickness, supportSurface, keepHistoric, strikeThroughSet);
@@ -435,7 +442,7 @@ namespace Graphy.Model
                 iconShape.FillSurfaceList();
 
                 // Draw the icon
-                iconShape.Draw(markingData.VerticalAlignment);
+                iconShape.Draw();
 
                 // Compute the scale ratio between the target height and the drawing height
                 double scaleRatio = markingData.MarkingHeight / iconShape.PathGeometry.Bounds.Height;
@@ -452,8 +459,11 @@ namespace Graphy.Model
                 HybridBody iconSet = markingSet.HybridBodies.Add();
                 iconSet.set_Name("Icon");
 
-                Compute(catiaPart, iconShape, scaleRatio, keepHistoric, createVolume, iconSet, markingData, markingBody, originPoint, originAxisSystem,
-                    localAxisSystem, supportSurface, startPoint);
+                // Compute the y offset depending on the vertical alignment
+                double yOffset = CatiaDrawableShape.GetYOffset(markingData.VerticalAlignment, iconShape.PathGeometry) * scaleRatio;
+
+                Compute(catiaPart, iconShape, scaleRatio, keepHistoric, createVolume, iconSet, markingData, markingBody, yOffset,
+                    originPoint, originAxisSystem, localAxisSystem, supportSurface, startPoint);
                 /*Compute(iconShape, scaleRatio, keepHistoric, createVolume, iconSet, hybridShapeFactory, shapeFactory, markingData, markingBody, originPointRef, originAxisSystemRef,
                     localAxisSystem.System, localAxisSystem.SystemReference, projectionSurfaceRef, referencePointRef);*/
 
@@ -504,13 +514,16 @@ namespace Graphy.Model
 
 
         private void Compute(CatiaPart catiaPart, CatiaDrawableShape drawableShape, double scaleRatio, bool keepHistoric, bool createVolume, HybridBody set,
-            MarkingData markingData, Body markingBody,
+            MarkingData markingData, Body markingBody, double yOffset,
             CatiaPoint originPoint, CatiaAxisSystem originAxisSystem, CatiaAxisSystem localAxisSystem, CatiaSurface projectionSurface, CatiaPoint localPoint)
         {
 
             // For each surface composing the CatiaCharacter
             foreach (CatiaSurface surface in drawableShape.SurfaceList)
             {
+                // Translate in Y axis for vertical alignment
+                surface.ExternalContour.Translate(0d, yOffset, 0d, originAxisSystem, keepHistoric, set);
+
                 // Scale external contour
                 surface.ExternalContour.Scale(scaleRatio, originPoint, keepHistoric, set);
 
@@ -523,6 +536,9 @@ namespace Graphy.Model
 
                 foreach (CatiaContour contour in surface.InternalContourList)
                 {
+                    // Translate in Y axis for vertical alignment
+                    contour.Translate(0d, yOffset, 0d, originAxisSystem, keepHistoric, set);
+
                     // Scale external contour
                     contour.Scale(scaleRatio, originPoint, keepHistoric, set);
 
@@ -570,10 +586,10 @@ namespace Graphy.Model
         /// <param name="toleranceFactor">Define the precision of the drawing.</param>
         /// <returns></returns>
         private CatiaCharacter GetCatiaCharacter(PartDocument partDocument, MarkingData markingData, char character,
-            List<CatiaCharacter> characterList, double toleranceFactor, PathGeometry refCharacterGeometry)
+            List<CatiaCharacter> characterList, double toleranceFactor)
         {
             // Create a new catia character
-            CatiaCharacter catiaCharacter = new CatiaCharacter(partDocument, character);
+            CatiaCharacter catiaCharacter = new CatiaCharacter(partDocument, character, markingData.FontFamily, markingData.IsBold, markingData.IsItalic);
 
             if (catiaCharacter.IsSpaceCharacter)
                 return catiaCharacter;
@@ -586,17 +602,17 @@ namespace Graphy.Model
                     characterList.Add(catiaCharacter);
 
                     // Retrieve the geometry of the character
-                    catiaCharacter.PathGeometry = markingData.FontFamily.GetCharacterGeometry(catiaCharacter.Value, toleranceFactor, markingData.IsBold, markingData.IsItalic);
+                    catiaCharacter.ComputeGeometry(markingData.FontFamily, toleranceFactor);
                     
                     // Compute surfaces of the geometry
                     catiaCharacter.FillSurfaceList();
 
                     // Draw the character
-                    catiaCharacter.Draw(markingData.VerticalAlignment, refCharacterGeometry);
+                    catiaCharacter.Draw();
                 }
 
                 // Return a clone to preserve character in the list from future modifications
-                return (characterList.Find((ch) => ch.Value == character)).Clone();
+                return (characterList.Find((c) => c.Equals(catiaCharacter))).Clone();
             }
         }
 

@@ -37,7 +37,6 @@ namespace Graphy.ViewModel
         private CatiaPart _selectedPart;
         private ObservableCollection<CatiaPart> _partCollection;
         private DateTime _lastRefreshTime;
-        private bool _isPartDocumentCollectionEmpty = true;
 
         public CatiaEnv CatiaEnv
         {
@@ -84,15 +83,6 @@ namespace Graphy.ViewModel
             }
         }
 
-        public bool IsPartDocumentCollectionEmpty
-        {
-            get => _isPartDocumentCollectionEmpty;
-            set
-            {
-                Set(() => IsPartDocumentCollectionEmpty, ref _isPartDocumentCollectionEmpty, value);
-            }
-        }
-
 
         // COMMANDS
 
@@ -109,7 +99,6 @@ namespace Graphy.ViewModel
 
             // CLEAR PARTDOCUMENT COLLECTION
             PartCollection.Clear();
-            IsPartDocumentCollectionEmpty = true;
 
             if (CatiaEnv.IsApplicationOpen)
             {
@@ -128,8 +117,6 @@ namespace Graphy.ViewModel
                 }
                 else
                 {
-                    IsPartDocumentCollectionEmpty = false;
-
                     // IF DOCUMENT PASSED BY PARAMETER IS NON NULL AND IF IT IS FOUND WE SELECT IT
                     if (previousSelectedPartDocument != null && PartCollection.Contains(previousSelectedPartDocument))
                     {

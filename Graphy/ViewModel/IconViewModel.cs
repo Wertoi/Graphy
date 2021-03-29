@@ -25,12 +25,13 @@ namespace Graphy.ViewModel
             CopyIconCommand = new RelayCommand<Icon>((icon) => CopyIconCommandAction(icon));
             DrawIconCommand = new RelayCommand<Icon>((icon) => DrawIconCommandAction(icon));
 
+            ExportIconCollectionCommand = new RelayCommand(() => ExportIconCollectionCommandAction());
+
             MessengerInstance.Register<StringCollection>(this, Enum.SettingToken.IconCollectionChanged, (collection) => LoadIconCollection(collection));
         }
 
         private ObservableCollection<Icon> _iconCollection;
         private Icon _selectedIcon;
-        private bool _isIconCollectionEmpty;
 
         public ObservableCollection<Icon> IconCollection
         {
@@ -50,14 +51,6 @@ namespace Graphy.ViewModel
             }
         }
 
-        public bool IsIconCollectionEmpty
-        {
-            get => _isIconCollectionEmpty;
-            set
-            {
-                Set(() => IsIconCollectionEmpty, ref _isIconCollectionEmpty, value);
-            }
-        }
 
 
         private RelayCommand _addIconCommand;
@@ -70,8 +63,6 @@ namespace Graphy.ViewModel
 
             MessengerInstance.Send(IconCollection.ToList(), Enum.IconToken.IconCollectionChanged);
             IconCollection.Last().PropertyChanged += Icon_PropertyChanged;
-
-            IsIconCollectionEmpty = IconCollection.Count == 0;
         }
 
 
@@ -85,8 +76,6 @@ namespace Graphy.ViewModel
             SelectedIcon = IconCollection.ElementAtOrDefault(index - 1);
 
             MessengerInstance.Send(IconCollection.ToList(), Enum.IconToken.IconCollectionChanged);
-
-            IsIconCollectionEmpty = IconCollection.Count == 0;
         }
 
 
@@ -110,6 +99,7 @@ namespace Graphy.ViewModel
 
         private RelayCommand<Icon> _drawIconCommand;
         public RelayCommand<Icon> DrawIconCommand { get => _drawIconCommand; set => _drawIconCommand = value; }
+
 
         private void DrawIconCommandAction(Icon icon)
         {
@@ -149,14 +139,32 @@ namespace Graphy.ViewModel
 
             SelectedIcon = IconCollection.First();
             DrawIconCommandAction(SelectedIcon);
-
-            IsIconCollectionEmpty = false;
         }
 
 
         private void Icon_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             MessengerInstance.Send(IconCollection.ToList(), Enum.IconToken.IconCollectionChanged);
+        }
+
+
+        private RelayCommand _exportIconCollectionCommand;
+        public RelayCommand ExportIconCollectionCommand { get => _exportIconCollectionCommand; set => _exportIconCollectionCommand = value; }
+
+        private void ExportIconCollectionCommandAction()
+        {
+            try
+            {
+                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Icon>));
+                using (Stream exportStream = File.OpenWrite(Environment.CurrentDirectory + "\\MyText.txt"))
+                {
+                    serializer.Serialize(exportStream, IconCollection.ToList());
+                }
+            }
+            catch(Exception)
+            {
+
+            }
         }
     }
 }

@@ -115,15 +115,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Attribute\LocalizationKeyAttribute.cs" />
+    <Compile Include="Converter\CollectionCountConverter.cs" />
     <Compile Include="Converter\EnumToCollectionConverter.cs" />
     <Compile Include="Converter\LocalizedEnumToStringConverter.cs" />
     <Compile Include="Converter\EnumToBooleanConverter.cs" />
-    <Compile Include="CsvStream\CsvConfig.cs" />
-    <Compile Include="CsvStream\CsvReader.cs" />
-    <Compile Include="CsvStream\CsvWriter.cs" />
+    <Compile Include="Model\CsvStream\CsvConfig.cs" />
+    <Compile Include="Model\CsvStream\CsvReader.cs" />
+    <Compile Include="Model\CsvStream\CsvWriter.cs" />
     <Compile Include="CustomControl\CartesianCanvas.cs" />
     <Compile Include="Enum\Language.cs" />
-    <Compile Include="DesignTableReader.cs" />
     <Compile Include="Enum\Alignments.cs" />
     <Compile Include="Model\CatiaObject\CatiaPart.cs" />
     <Compile Include="Model\CatiaObject\CatiaShape\CatiaAxisSystem.cs" />
@@ -134,9 +134,7 @@
     <Compile Include="Model\CatiaObject\CatiaShape\CatiaGenericShape.cs" />
     <Compile Include="Model\CatiaObject\CatiaShape\CatiaLine.cs" />
     <Compile Include="Model\CatiaObject\CatiaShape\CatiaSurface.cs" />
-    <Compile Include="Model\DesignTableParameter.cs" />
     <Compile Include="Model\Icon.cs" />
-    <Compile Include="Model\LinkableData.cs" />
     <Compile Include="Model\FontFamily.cs" />
     <Compile Include="Model\MarkablePart.cs" />
     <Compile Include="CustomControl\TextBoxWithUnit.cs" />

@@ -48,14 +48,14 @@ namespace Graphy.Model
             File.WriteAllText(Path.GetTempPath() + "Test.csv", csvTemplate);
         }
 
-        public static bool TryRead(string fullPath, ICollection<MarkablePart> markablePartList)
+        public static bool TryRead(string fullPath, ICollection<MarkablePart> markablePartList, CsvConfig csvConfig)
         {
             if (!File.Exists(fullPath))
                 return false;
 
             try
             {
-                CsvReader reader = new CsvReader();
+                CsvReader reader = new CsvReader(csvConfig);
                 string fileText = File.ReadAllText(fullPath);
 
                 foreach (string[] row in reader.Read(fileText))

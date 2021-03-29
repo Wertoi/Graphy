@@ -69,5 +69,16 @@ namespace Graphy.Properties {
                 this["IconCollection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Graphy.CsvStream.CsvConfig CsvConfig {
+            get {
+                return ((global::Graphy.CsvStream.CsvConfig)(this["CsvConfig"]));
+            }
+            set {
+                this["CsvConfig"] = value;
+            }
+        }
     }
 }

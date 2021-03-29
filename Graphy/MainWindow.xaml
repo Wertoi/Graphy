@@ -33,7 +33,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Viewbox Style="{StaticResource IconViewBox}" Margin="3,3,7,3">
                             <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource ChevronRight_Icon}"/>
+                                <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource TextShort_Icon}"/>
                             </Canvas>
                         </Viewbox>
 
@@ -48,7 +48,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Viewbox Style="{StaticResource IconViewBox}" Margin="3,3,7,3">
                             <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource ChevronLeft_Icon}"/>
+                                <Path Style="{StaticResource Generic_RadioButtonIcon}" Data="{StaticResource TextLong_Icon}"/>
                             </Canvas>
                         </Viewbox>
 

@@ -112,26 +112,17 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             }
         }
 
-        public void Draw(VerticalAlignment verticalAlignment, PathGeometry refGeometry = null)
+        public void Draw()
         {
-            // NOTE: If we draw a character we will pass the geometry of the reference character to have a nice text.
-            // Otherwise, if we draw an icon, we do not need any reference so we use directly the geometry.
-            PathGeometry tempGeometry;
-            if (refGeometry == null)
-                tempGeometry = PathGeometry;
-            else
-                tempGeometry = refGeometry;
-
             double xCorrectif = PathGeometry.Bounds.Left;
-            double yCorrectif = GetYOffset(verticalAlignment, tempGeometry);
 
             for (int i = 0; i < SurfaceList.Count; i++)
             {
-                SurfaceList[i].ExternalContour.DrawContour(xCorrectif, yCorrectif);
+                SurfaceList[i].ExternalContour.DrawContour(xCorrectif);
 
                 for (int j = 0; j < SurfaceList[i].InternalContourList.Count; j++)
                 {
-                    SurfaceList[i].InternalContourList[j].DrawContour(xCorrectif, yCorrectif);
+                    SurfaceList[i].InternalContourList[j].DrawContour(xCorrectif);
                 }
             }
         }

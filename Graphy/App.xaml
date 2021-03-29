@@ -18,6 +18,9 @@
         <conv:BooleanToVisibilityConverter True="Collapsed" False="Visible" x:Key="InvertBooleanToVisibilityConverter"/>
         <conv:BooleanToBooleanConverter x:Key="InvertBooleanConverter" True="False" False="True"/>
 
+        <conv:CollectionCountToVisibiltyConverter x:Key="ShowOnEmptyConverter" EmptyValue="Visible" NonEmptyValue="Collapsed"/>
+        <conv:CollectionCountToVisibiltyConverter x:Key="HideOnEmptyConverter" EmptyValue="Collapsed" NonEmptyValue="Visible"/>
+
         <conv:EnumToCollectionConverter x:Key="EnumToCollectionConverter"/>
         <conv:LocalizedEnumToStringConverter x:Key="LocalizedEnumToStringConverter"/>
 
@@ -241,7 +244,17 @@
         <Geometry x:Key="Text_Icon">
             M2.5,4v3h5v12h3V7h5V4H2.5z M21.5,9h-9v3h3v7h3v-7h3V9z
         </Geometry>
-        
+
+        <!-- TEXT SHORT ICON -->
+        <Geometry x:Key="TextShort_Icon">
+            M4,9H20V11H4V9M4,13H14V15H4V13Z
+        </Geometry>
+
+        <!-- TEXT LONG ICON -->
+        <Geometry x:Key="TextLong_Icon">
+            M4,5H20V7H4V5M4,9H20V11H4V9M4,13H20V15H4V13M4,17H14V19H4V17Z
+        </Geometry>
+
         <!-- INFO ICON -->
         <Geometry x:Key="Info_Icon">
             M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z
@@ -257,6 +270,7 @@
             M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
         </Geometry>
         
+
         <!--#endregion-->
 
 
@@ -274,6 +288,11 @@
                     <Setter Property="Opacity" Value="0.56"/>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+        
+        <!-- TEXTBLOCK WITH ICON STYLE -->
+        <Style x:Key="IconWithLabel_TextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource LabelFormTextBlock}">
+            <Setter Property="Margin" Value="2,0,7,0"/>
         </Style>
 
 

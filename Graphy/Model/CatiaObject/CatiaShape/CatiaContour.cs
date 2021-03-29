@@ -35,7 +35,7 @@ namespace Graphy.Model.CatiaObject.CatiaShape
         public PathGeometry PathGeometry { get => _pathGeometry; set => _pathGeometry = value; }
 
 
-        public void DrawContour(double xCorrectif, double yCorrectif)
+        public void DrawContour(double xCorrectif)
         {
             List<Reference> segmentRefList = new List<Reference>();
 
@@ -49,7 +49,7 @@ namespace Graphy.Model.CatiaObject.CatiaShape
                     // Create a list of point
                     List<CatiaPoint> tempPointList = new List<CatiaPoint>();
                     System.Windows.Point startPoint = PathGeometry.Figures.First().StartPoint;
-                    tempPointList.Add(new CatiaPoint(PartDocument, startPoint.X - xCorrectif, -startPoint.Y + yCorrectif, 0));
+                    tempPointList.Add(new CatiaPoint(PartDocument, startPoint.X - xCorrectif, -startPoint.Y, 0));
 
                     // For each point in the multi lines segment
                     foreach (System.Windows.Point point in ((PolyLineSegment)segment).Points)
@@ -57,7 +57,7 @@ namespace Graphy.Model.CatiaObject.CatiaShape
                         // Get the point and store it in the list.
                         if(point != startPoint)
                         {
-                            tempPointList.Add(new CatiaPoint(PartDocument, point.X - xCorrectif, -point.Y + yCorrectif, 0));
+                            tempPointList.Add(new CatiaPoint(PartDocument, point.X - xCorrectif, -point.Y, 0));
                         }
                     }
 
@@ -178,6 +178,29 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             Shape = assemblyShape;
         }
 
+        public void Translate(double xValue, double yValue, double zValue, CatiaAxisSystem axisSystem, bool appendInSet, HybridBody set = null)
+        {
+            HybridShapeTranslate translatedShape = HybridShapeFactory.AddNewEmptyTranslate();
+            translatedShape.ElemToTranslate = ShapeReference;
+            translatedShape.VectorType = 2;
+            translatedShape.RefAxisSystem = axisSystem.SystemReference;
+
+            // I do not know why but coordinate values are multiplied by 1000 by Catia so we must divide it by 1000.
+            translatedShape.CoordXValue = xValue / 1000;
+            translatedShape.CoordYValue = yValue / 1000;
+            translatedShape.CoordZValue = zValue / 1000;
+            translatedShape.VolumeResult = false;
+
+            translatedShape.Compute();
+            Shape = (HybridShape)translatedShape;
+
+            // Add to set and hide it.
+            if (appendInSet)
+            {
+                set.AppendHybridShape(Shape);
+                HybridShapeFactory.GSMVisibility(ShapeReference, 0);
+            }
+        }
 
         public void Scale(double scaleRatio, CatiaPoint scaleCenterPoint, bool appendInSet, HybridBody set = null)
         {

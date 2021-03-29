@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Command;
 using Graphy.Enum;
 using System.Globalization;
 using Graphy.Model;
+using Graphy.CsvStream;
 
 namespace Graphy.ViewModel
 {
@@ -35,6 +36,7 @@ namespace Graphy.ViewModel
         private double _toleranceFactor;
         private bool _keepHistoric;
         private bool _createVolume;
+        private CsvConfig _csvConfig;
 
         public Language SelectedLanguage
         {
@@ -111,6 +113,26 @@ namespace Graphy.ViewModel
             }
         }
 
+        public CsvConfig CsvConfig
+        {
+            get => _csvConfig;
+            set
+            {
+                Set(() => CsvConfig, ref _csvConfig, value);
+            }
+        }
+
+        private void CsvConfig_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (!_isReadingUserPreferenceFlag)
+            {
+                Properties.Settings.Default.CsvConfig = CsvConfig;
+                Properties.Settings.Default.Save();
+            }
+
+            MessengerInstance.Send(CsvConfig, Enum.SettingToken.CsvConfigChanged);
+        }
+
 
         // COMMANDS
 
@@ -156,11 +178,21 @@ namespace Graphy.ViewModel
             KeepHistoric = Properties.Settings.Default.KeepHistoric;
             CreateVolume = Properties.Settings.Default.CreateVolume;
 
+            if(Properties.Settings.Default.CsvConfig == null)
+            {
+                CsvConfig = CsvConfig.Default;
+                Properties.Settings.Default.CsvConfig = CsvConfig;
+                Properties.Settings.Default.Save();
+            }
+            else
+                CsvConfig = Properties.Settings.Default.CsvConfig;
+
+            CsvConfig.PropertyChanged += CsvConfig_PropertyChanged;
+
             MessengerInstance.Send(Properties.Settings.Default.IconCollection, Enum.SettingToken.IconCollectionChanged);
 
             _isReadingUserPreferenceFlag = false;
         }
-
 
 
         private void SaveIconCollection(List<Icon> iconCollection)
