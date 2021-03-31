@@ -223,8 +223,7 @@
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_FontLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
                     <ComboBox Grid.Row="2" Grid.Column="1"
-                              VerticalContentAlignment="Center"
-                              Padding="5,8,15,8" Margin="0,5,10,5"
+                              Margin="0,3,10,3" Padding="5,8,10,8"
                               ItemsSource="{Binding SimpleMarkingViewModel.FontFamilyCollection, Source={StaticResource Locator}}"
                               SelectedItem="{Binding SimpleMarkingViewModel.MarkablePart.MarkingData.FontFamily, Mode=TwoWay, Source={StaticResource Locator}}">
                         <ComboBox.ItemTemplate>

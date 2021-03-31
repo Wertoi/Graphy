@@ -44,6 +44,14 @@
         <SolidColorBrush x:Key="Gray166" Color="#FFA6A6A6"/>
         <SolidColorBrush x:Key="Gray127" Color="#FF7F7F7F"/>
 
+        <SolidColorBrush x:Key="PrimaryColor" Color="#FF1565c0"/>
+        <SolidColorBrush x:Key="PrimaryColorLight" Color="#FF5e92f3"/>
+        <SolidColorBrush x:Key="PrimaryColorDark" Color="#FF003c8f"/>
+        <SolidColorBrush x:Key="SecondaryColor" Color="#FFFF7043"/>
+        <SolidColorBrush x:Key="SecondaryColorLight" Color="#FFFFA270"/>
+        <SolidColorBrush x:Key="SecondaryColorDark" Color="#FFC63F17"/>
+
+        <!-- BUTTON BACKGROUND COLORS -->
         <!-- GRAY 242 -->
         <SolidColorBrush x:Key="Button.Static.Background" Color="#FFF2F2F2"/>
         <!-- GRAY 217 -->
@@ -52,15 +60,10 @@
         <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFBFBFBF"/>
         <!-- GRAY 248 -->
         <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF8F8F8"/>
-        
+
         <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
 
-        <SolidColorBrush x:Key="PrimaryColor" Color="#FF1565c0"/>
-        <SolidColorBrush x:Key="PrimaryColorLight" Color="#FF5e92f3"/>
-        <SolidColorBrush x:Key="PrimaryColorDark" Color="#FF003c8f"/>
-        <SolidColorBrush x:Key="SecondaryColor" Color="#FFFF7043"/>
-        <SolidColorBrush x:Key="SecondaryColorLight" Color="#FFFFA270"/>
-        <SolidColorBrush x:Key="SecondaryColorDark" Color="#FFC63F17"/>
+        <!-- RADIO BUTTON COLORS -->
 
 
         <!-- ***** ICONS ***** -->
@@ -82,29 +85,29 @@
             <Setter Property="Width" Value="24"/>
             <Setter Property="Height" Value="24"/>
         </Style>
-        
+
         <!--#region ICONS -->
 
         <!-- ADD ICON -->
         <Geometry x:Key="Add_Icon">
             M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
         </Geometry>
-        
+
         <!-- BACK ICON -->
         <Geometry x:Key="Back_Icon">
             M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z
         </Geometry>
-        
+
         <!-- COPY ICON -->
         <Geometry x:Key="Copy_Icon">
             M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z
         </Geometry>
-        
+
         <!-- DELETE ICON -->
         <Geometry x:Key="Delete_Icon">
             M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z
         </Geometry>
-        
+
         <!-- REFRESH ICON -->
         <Geometry x:Key="Refresh_Icon">
             M19,8L15,12H18A6,6 0 0,1 12,18C11,18 10.03,17.75 9.2,17.3L7.74,18.76C8.97,19.54 10.43,20 12,20A8,8 0 0,0 20,12H23M6,12A6,6 0 0,1 
@@ -120,7 +123,7 @@
             18.95,16.56C19.35,16.35 19.65,16.07 19.83,15.73V14.16H18.7C16.93,14.16 16.04,14.63 16.04,15.57C16.04,16 16.19,16.3 16.5,16.53C16.8,16.76 17.18,16.88 17.66,
             16.88M5.46,13.71H9.53L7.5,8.29L5.46,13.71M6.64,6H8.36L13.07,18H11.14L10.17,15.43H4.82L3.86,18H1.93L6.64,6Z
         </Geometry>
-        
+
         <!-- PARAMETER ICON -->
         <Geometry x:Key="Parameter_Icon">
             M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 
@@ -130,44 +133,44 @@
             19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,
             18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z
         </Geometry>
-        
+
         <!-- SELECT ICON -->
         <Geometry x:Key="Select_Icon">
             M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,
             7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z
         </Geometry>
-        
+
         <!-- SELECT ALL ICON -->
         <Geometry x:Key="SelectAll_Icon">
             M9,9H15V15H9M7,17H17V7H7M15,5H17V3H15M15,21H17V19H15M19,17H21V15H19M19,9H21V7H19M19,21A2,2 0 0,0 21,19H19M19,13H21V11H19M11,
             21H13V19H11M9,3H7V5H9M3,17H5V15H3M5,21V19H3A2,2 0 0,0 5,21M19,3V5H21A2,2 0 0,0 19,3M13,3H11V5H13M3,9H5V7H3M7,21H9V19H7M3,13H5V11H3M3,5H5V3A2,2 0 0,0 3,5Z
         </Geometry>
-        
+
         <!-- CLEAR ICON -->
         <Geometry x:Key="Clear_Icon">
             M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z
         </Geometry>
-        
-       <!-- FOLDER ICON -->
+
+        <!-- FOLDER ICON -->
         <Geometry x:Key="Folder_Icon">
             M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z
         </Geometry>
-        
+
         <!-- DOCUMENT ICON -->
         <Geometry x:Key="Document_Icon">
             M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z
         </Geometry>
-        
+
         <!-- NO DOCUMENT ICON -->
         <Geometry x:Key="NoDocument_Icon">
             M19,5A2,2 0 0,0 17,3H10L7.66,5.34L19,16.68V5M3.65,3.88L2.38,5.15L5,7.77V19A2,2 0 0,0 7,21H17C17.36,21 17.68,20.9 17.97,20.74L19.85,22.62L21.12,21.35L3.65,3.88Z
         </Geometry>
-        
+
         <!-- IMAGE ICON -->
         <Geometry x:Key="Image_Icon">
             M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z
         </Geometry>
-        
+
         <!-- SEARCH IMAGE ICON -->
         <Geometry x:Key="SearchImage_Icon">
             M15.5,9C16.2,9 16.79,8.76 17.27,8.27C17.76,7.79 18,7.2 18,6.5C18,5.83 17.76,5.23 17.27,4.73C16.79,4.23 16.2,4 
@@ -177,69 +180,69 @@
             13.31L16.5,18M18,13L20,15V20C20,20.55 19.81,21 19.41,21.4C19,21.79 18.53,22 18,22H4C3.45,22 3,21.79 2.6,21.4C2.21,21 2,20.55 2,20V6C2,5.47 
             2.21,5 2.6,4.59C3,4.19 3.45,4 4,4H9.5C9.2,4.64 9.03,5.31 9,6H4V20H18V13Z
         </Geometry>
-        
+
         <!-- IMAGE COLLECTION ICON -->
         <Geometry x:Key="ImageCollection_Icon">
             M20 4v12H8V4h12m0-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 9.67l1.69 2.26 2.48-3.1L19 15H9zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z
         </Geometry>
-        
+
         <!-- BOLD ICON -->
         <Geometry x:Key="Bold_Icon">
             M13.5,15.5H10V12.5H13.5A1.5,1.5 0 0,1 15,14A1.5,1.5 0 0,1 13.5,15.5M10,6.5H13A1.5,1.5 0 0,1 14.5,8A1.5,1.5 0 0,1 
             13,9.5H10M15.6,10.79C16.57,10.11 17.25,9 17.25,8C17.25,5.74 15.5,4 13.25,4H7V18H14.04C16.14,18 17.75,16.3 17.75,14.21C17.75,12.69 16.89,11.39 15.6,10.79Z
         </Geometry>
-        
+
         <!-- ITALIC ICON -->
         <Geometry x:Key="Italic_Icon">
             M10,4V7H12.21L8.79,15H6V18H14V15H11.79L15.21,7H18V4H10Z
         </Geometry>
-        
+
         <!-- UNDERLINE ICON -->
         <Geometry x:Key="Underline_Icon">
             M5,21H19V19H5V21M12,17A6,6 0 0,0 18,11V3H15.5V11A3.5,3.5 0 0,1 12,14.5A3.5,3.5 0 0,1 8.5,11V3H6V11A6,6 0 0,0 12,17Z
         </Geometry>
-        
+
         <!-- STRIKE THROUGH ICON -->
         <Geometry x:Key="StrikeThrough_Icon">
             M3,14H21V12H3M5,4V7H10V10H14V7H19V4M10,19H14V16H10V19Z
         </Geometry>
-        
+
         <!-- MORE VERTICAL ICON -->
         <Geometry x:Key="MoreVertical_Icon">
             M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1
             10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z
         </Geometry>
-        
+
         <!-- ALIGN VERTICAL BOTTOM ICON -->
         <Geometry x:Key="AlignVerticalBottom_Icon">
             M22,22H2v-2h20V22z M10,2H7v16h3V2z M17,8h-3v10h3V8z
         </Geometry>
-        
+
         <!-- ALIGN VERTICAL MIDDLE ICON -->
         <Geometry x:Key="AlignVerticalMiddle_Icon">
             F1 M 22,9 v2 H2 v2 H22 Z M 7,21 h3 V3 H7 V21 z M 14,21 h3 V10 h-3 V21 z
         </Geometry>
-        
+
         <!-- ALIGN VERTICAL TOP ICON -->
         <Geometry x:Key="AlignVerticalTop_Icon">
             M22,2v2H2V2H22z M7,22h3V6H7V22z M14,22h3V12h-3V22z
         </Geometry>
-        
+
         <!-- ALIGN HORIZONTAL LEFT ICON -->
         <Geometry x:Key="AlignHorizontalLeft_Icon">
             M3,3H21V5H3V3M3,7H15V9H3V7M3,11H21V13H3V11M3,15H15V17H3V15M3,19H21V21H3V19Z
         </Geometry>
-        
+
         <!-- ALIGN HORIZONTAL CENTER ICON -->
         <Geometry x:Key="AlignHorizontalCenter_Icon">
             M3,3H21V5H3V3M7,7H17V9H7V7M3,11H21V13H3V11M7,15H17V17H7V15M3,19H21V21H3V19Z
         </Geometry>
-        
+
         <!-- ALIGN HORIZONTAL RIGHT ICON -->
         <Geometry x:Key="AlignHorizontalRight_Icon">
             M3,3H21V5H3V3M9,7H21V9H9V7M3,11H21V13H3V11M9,15H21V17H9V15M3,19H21V21H3V19Z
         </Geometry>
-        
+
         <!-- TEXT ICON -->
         <Geometry x:Key="Text_Icon">
             M2.5,4v3h5v12h3V7h5V4H2.5z M21.5,9h-9v3h3v7h3v-7h3V9z
@@ -259,17 +262,31 @@
         <Geometry x:Key="Info_Icon">
             M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z
         </Geometry>
-        
+
         <!-- CHEVRON LEFT ICON -->
         <Geometry x:Key="ChevronLeft_Icon">
             M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z
         </Geometry>
-        
-       <!-- CHEVRON RIGHT ICON -->
+
+        <!-- CHEVRON RIGHT ICON -->
         <Geometry x:Key="ChevronRight_Icon">
             M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
         </Geometry>
-        
+
+        <!-- IMPORT/EXPORT ICON -->
+        <Geometry x:Key="ImportExport_Icon">
+            M9,3L5,7H8V14H10V7H13M16,17V10H14V17H11L15,21L19,17H16Z
+        </Geometry>
+
+        <!-- IMPORT ICON -->
+        <Geometry x:Key="Import_Icon">
+            M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
+        </Geometry>
+
+        <!-- EXPORT ICON -->
+        <Geometry x:Key="Export_Icon">
+            M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z
+        </Geometry>
 
         <!--#endregion-->
 
@@ -289,7 +306,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <!-- TEXTBLOCK WITH ICON STYLE -->
         <Style x:Key="IconWithLabel_TextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource LabelFormTextBlock}">
             <Setter Property="Margin" Value="2,0,7,0"/>
@@ -447,7 +464,7 @@
             <Setter Property="Fill" Value="Black"/>
             <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
         </Style>
-        
+
         <!-- GENERIC FOR BUTTON ICON STYLE -->
         <Style x:Key="Generic_ButtonIcon" TargetType="{x:Type Path}">
             <Setter Property="Fill" Value="Black"/>
@@ -475,7 +492,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
         <!-- GENERIC FOR RADIO BUTTON ICON STYLE -->
         <Style x:Key="Generic_RadioButtonIcon" TargetType="{x:Type Path}">
             <Setter Property="Fill" Value="Black"/>
@@ -501,7 +518,7 @@
 
         <!--#endregion-->
 
-        
+
         <!--#region BUTTON STYLES -->
 
         <!-- GENERIC BUTTON STYLE -->
@@ -740,7 +757,7 @@
 
 
         <!--#endregion-->
-        
+
 
         <!--#region SIMPLE MARKING -->
 
@@ -756,9 +773,9 @@
         </Style>
 
 
-        
+
         <!--#endregion-->
-        
+
 
         <!--#region  POPUP STYLES -->
 
@@ -944,7 +961,7 @@
                        Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
 
                     <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
-                        <Border x:Name="dropDownBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Background="{TemplateBinding Background}">
+                        <Border x:Name="dropDownBorder" BorderBrush="{StaticResource Gray217}" BorderThickness="1" Background="{TemplateBinding Background}">
                             <ScrollViewer x:Name="DropDownScrollViewer">
                                 <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
                                     <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
@@ -990,6 +1007,7 @@
 
         <!-- Default ListboxItem Style -->
         <Style x:Key="ComboBoxItem" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBoxItem}">
@@ -1008,8 +1026,8 @@
 
         <!-- ComboBox Style -->
         <Style x:Key="FlatComboBoxStyle" TargetType="{x:Type ComboBox}">
-            <Setter Property="Padding" Value="0,0,15,5"/>
-            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="Margin" Value="0,3,10,3"/>
+            <Setter Property="Padding" Value="0,5,0,5"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItem}"/>
@@ -1023,6 +1041,7 @@
             </Style.Triggers>
         </Style>
 
+        
 
     </Application.Resources>
 </Application>

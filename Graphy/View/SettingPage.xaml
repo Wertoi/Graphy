@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Graphy.View"
       xmlns:main="clr-namespace:Graphy"
+      xmlns:enum="clr-namespace:Graphy.Enum"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="450"
       Title="SettingPage"
@@ -33,7 +34,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Text="{main:Loc Settings_General_LanguageLabel}" Style="{StaticResource LabelFormTextBlock}"/>
-                    <ComboBox Grid.Column="1" VerticalContentAlignment="Center" Padding="5,8,15,8"
+                    <ComboBox Grid.Column="1" Margin="0,3,10,3" Padding="5,8,10,8"
                               ItemsSource="{Binding Path=SelectedLanguage, Converter={StaticResource EnumToCollectionConverter}}"
                               SelectedItem="{Binding Path=SelectedLanguage, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
@@ -45,7 +46,7 @@
                 </Grid>
 
                 <TextBlock Text="{main:Loc Settings_Marking_Title}"
-                           FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,35,0,5"/>
+                           FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,25,0,5"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -83,7 +84,7 @@
 
 
                 <TextBlock Text="CSV Reader"
-                           FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,35,0,5"/>
+                           FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,25,0,5"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -105,6 +106,52 @@
                              Style="{StaticResource NormalTextBox}"/>
 
                 </Grid>
+
+                <TextBlock Text="Collection d'images" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,25,0,5"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Exporter" Style="{StaticResource LabelFormTextBlock}" Margin="0,0,20,0"/>
+                    <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
+                            Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.ExportIconCollectionCommand}">
+                        <Viewbox Style="{StaticResource IconViewBox}">
+                            <Canvas Style="{StaticResource IconCanvas}">
+                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Export_Icon}"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Importer" Style="{StaticResource LabelFormTextBlock}"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,3,10,3" Padding="5,8,10,8"
+                              ItemsSource="{Binding Path=SelectedImportMode, Converter={StaticResource EnumToCollectionConverter}}"
+                              SelectedItem="{Binding Path=SelectedImportMode}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource LocalizedEnumToStringConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
+                            VerticalAlignment="Center"
+                            Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.ImportIconCollectionCommand}">
+                        <Viewbox Style="{StaticResource IconViewBox}">
+                            <Canvas Style="{StaticResource IconCanvas}">
+                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Import_Icon}"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+
+                </Grid>
+
 
             </StackPanel>
         </ScrollViewer>

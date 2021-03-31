@@ -411,4 +411,10 @@
   <data name="MainWindow_MarkingData_MarkingTypeText" xml:space="preserve">
     <value>Texte</value>
   </data>
+  <data name="ImportMode_Add" xml:space="preserve">
+    <value>Importer et ajouter</value>
+  </data>
+  <data name="ImportMode_Replace" xml:space="preserve">
+    <value>Importer et remplacer</value>
+  </data>
 </root>

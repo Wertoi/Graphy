@@ -25,6 +25,7 @@ namespace Graphy.ViewModel
         }
 
 
+
         // PRIVATE CONST
         private const string LICENCE_LINK = "https://github.com/Wertoi/Graphy/blob/master/LICENSE";
 
@@ -37,6 +38,7 @@ namespace Graphy.ViewModel
         private bool _keepHistoric;
         private bool _createVolume;
         private CsvConfig _csvConfig;
+        private ImportMode _selectedImportMode;
 
         public Language SelectedLanguage
         {
@@ -122,6 +124,7 @@ namespace Graphy.ViewModel
             }
         }
 
+
         private void CsvConfig_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (!_isReadingUserPreferenceFlag)
@@ -133,6 +136,23 @@ namespace Graphy.ViewModel
             MessengerInstance.Send(CsvConfig, Enum.SettingToken.CsvConfigChanged);
         }
 
+
+        public ImportMode SelectedImportMode
+        {
+            get => _selectedImportMode;
+            set
+            {
+                Set(() => SelectedImportMode, ref _selectedImportMode, value);
+
+                if (!_isReadingUserPreferenceFlag)
+                {
+                    Properties.Settings.Default.ImportMode = (int)SelectedImportMode;
+                    Properties.Settings.Default.Save();
+                }
+
+                MessengerInstance.Send(SelectedImportMode, Enum.SettingToken.ImportModeChanged);
+            }
+        }
 
         // COMMANDS
 
@@ -177,6 +197,7 @@ namespace Graphy.ViewModel
             ToleranceFactor = Properties.Settings.Default.ToleranceFactor;
             KeepHistoric = Properties.Settings.Default.KeepHistoric;
             CreateVolume = Properties.Settings.Default.CreateVolume;
+            SelectedImportMode = (ImportMode)Properties.Settings.Default.ImportMode;
 
             if(Properties.Settings.Default.CsvConfig == null)
             {

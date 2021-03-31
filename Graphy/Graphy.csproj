@@ -119,6 +119,7 @@
     <Compile Include="Converter\EnumToCollectionConverter.cs" />
     <Compile Include="Converter\LocalizedEnumToStringConverter.cs" />
     <Compile Include="Converter\EnumToBooleanConverter.cs" />
+    <Compile Include="Enum\ImportMode.cs" />
     <Compile Include="Model\CsvStream\CsvConfig.cs" />
     <Compile Include="Model\CsvStream\CsvReader.cs" />
     <Compile Include="Model\CsvStream\CsvWriter.cs" />

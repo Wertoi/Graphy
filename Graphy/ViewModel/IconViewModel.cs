@@ -16,22 +16,29 @@ namespace Graphy.ViewModel
 {
     public class IconViewModel : ViewModelBase
     {
+        // CONSTRUCTOR
         public IconViewModel()
         {
             IconCollection = new ObservableCollection<Icon>();
-            
+
             AddIconCommand = new RelayCommand(() => AddIconCommandAction());
             DeleteIconCommand = new RelayCommand<Icon>((icon) => DeleteIconCommandAction(icon));
             CopyIconCommand = new RelayCommand<Icon>((icon) => CopyIconCommandAction(icon));
             DrawIconCommand = new RelayCommand<Icon>((icon) => DrawIconCommandAction(icon));
 
             ExportIconCollectionCommand = new RelayCommand(() => ExportIconCollectionCommandAction());
+            ImportIconCollectionCommand = new RelayCommand(() => ImportIconCollectionCommandAction());
 
-            MessengerInstance.Register<StringCollection>(this, Enum.SettingToken.IconCollectionChanged, (collection) => LoadIconCollection(collection));
+            MessengerInstance.Register<StringCollection>(this, SettingToken.IconCollectionChanged, (collection) => LoadIconCollection(collection));
+            MessengerInstance.Register<ImportMode>(this, SettingToken.ImportModeChanged, (importMode) => _selectedImportMode = importMode );
         }
 
+        // PUBLIC ATTRIBUTS
         private ObservableCollection<Icon> _iconCollection;
         private Icon _selectedIcon;
+
+        // PRIVATE ATTRIBUTS
+        private ImportMode _selectedImportMode;
 
         public ObservableCollection<Icon> IconCollection
         {
@@ -111,7 +118,7 @@ namespace Graphy.ViewModel
         {
             IconCollection.Clear();
 
-            if(collection == null || collection.Count == 0)
+            if (collection == null || collection.Count == 0)
             {
                 IconCollection.Add(Icon.Default());
                 MessengerInstance.Send(IconCollection.ToList(), Enum.IconToken.IconCollectionChanged);
@@ -132,7 +139,7 @@ namespace Graphy.ViewModel
                 }
             }
 
-            foreach(Icon icon in IconCollection)
+            foreach (Icon icon in IconCollection)
             {
                 icon.PropertyChanged += Icon_PropertyChanged;
             }
@@ -153,18 +160,72 @@ namespace Graphy.ViewModel
 
         private void ExportIconCollectionCommandAction()
         {
-            try
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog()
             {
-                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Icon>));
-                using (Stream exportStream = File.OpenWrite(Environment.CurrentDirectory + "\\MyText.txt"))
+                Filter = "Xml file (*.xml)|*.xml",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
+
+            if ((bool)saveFileDialog.ShowDialog())
+            {
+                try
                 {
-                    serializer.Serialize(exportStream, IconCollection.ToList());
+                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Icon>));
+                    using (Stream exportStream = File.OpenWrite(saveFileDialog.FileName))
+                    {
+                        serializer.Serialize(exportStream, IconCollection.ToList());
+                    }
+                }
+                catch (Exception)
+                {
+
                 }
             }
-            catch(Exception)
-            {
+        }
 
+
+        private RelayCommand _importIconCollectionCommand;
+        public RelayCommand ImportIconCollectionCommand { get => _importIconCollectionCommand; set => _importIconCollectionCommand = value; }
+
+        private void ImportIconCollectionCommandAction()
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "Xml file (*.xml)|*.xml",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
+
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                try
+                {
+                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(List<Icon>));
+                    using (Stream importStream = File.OpenRead(openFileDialog.FileName))
+                    {
+                        List<Icon> tempIconList = (List<Icon>)serializer.Deserialize(importStream);
+
+                        if (_selectedImportMode == ImportMode.ReplaceCollection)
+                            IconCollection.Clear();
+
+                        foreach (Icon icon in tempIconList)
+                        {
+                            IconCollection.Add(icon);
+                            icon.PropertyChanged += Icon_PropertyChanged;
+                        }
+
+                        MessengerInstance.Send(IconCollection.ToList(), Enum.IconToken.IconCollectionChanged);
+
+                        if (IconCollection.Count > 0)
+                            SelectedIcon = IconCollection.First();
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
             }
         }
+
     }
 }

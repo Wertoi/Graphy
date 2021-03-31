@@ -34,7 +34,9 @@ namespace Graphy.Enum
         ToleranceFactorChanged,
         KeepHistoricChanged,
         CreateVolumeChanged,
-        CsvConfigChanged
+        CsvConfigChanged,
+        ImportModeChanged,
+        ImportRealized
     }
 
     public enum IconToken
