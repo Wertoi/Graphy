@@ -7,7 +7,7 @@
       xmlns:cc="clr-namespace:Graphy.CustomControl"
       xmlns:enum="clr-namespace:Graphy.Enum"
       mc:Ignorable="d"
-      d:DesignHeight="760" d:DesignWidth="463"
+      d:DesignHeight="800" d:DesignWidth="463"
       Title="SimpleMarkingPage">
 
     <Grid Background="White">
@@ -19,7 +19,7 @@
         <ScrollViewer Margin="20,25,20,10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
 
-                <TextBlock Text="{local:Loc MainWindow_General_Title}" FontSize="18" Foreground="{StaticResource PrimaryColorDark}"/>
+                <TextBlock Text="Marquage simple" FontSize="22" Foreground="{StaticResource PrimaryColorDark}"/>
 
                 <TextBlock VerticalAlignment="Center" Margin="0,25,0,7">
                         <Run Text=">" Foreground="{StaticResource SecondaryColor}" FontWeight="Bold" />
@@ -398,7 +398,8 @@
                     <!-- SURFACE POSITION -->
                     <TextBlock Text="{local:Loc MainWindow_Position_SurfaceLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
-                             Text="{Binding MarkablePart.MarkingData.ProjectionSurfaceName}"/>
+                             Text="{Binding MarkablePart.MarkingData.ProjectionSurfaceName}">
+                    </TextBox>
 
                     <Button Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding SelectProjectionSurfaceCommand}"
@@ -566,7 +567,8 @@
 
                     <Button Grid.Column="0"
                             Style="{StaticResource GenericDarker_Button}"
-                            Command="{Binding CatiaViewModel.RefreshCatiaApplicationCommand, Source={StaticResource Locator}}" Margin="5,0,0,0">
+                            Command="{Binding CatiaViewModel.RefreshCatiaApplicationCommand, Source={StaticResource Locator}}"
+                            Margin="5,0,0,0">
                         <StackPanel Orientation="Horizontal">
 
                             <Viewbox Style="{StaticResource IconViewBox}">
@@ -583,7 +585,9 @@
                     <Button Grid.Column="1" Style="{StaticResource GenericHighligh_Button}"
                             Content="{local:Loc MainWindow_General_Generate}"
                             FontSize="14" Padding="15,5" HorizontalAlignment="Right"
-                            Command="{Binding SimpleMarkingViewModel.GenerateCommand, Source={StaticResource Locator}}"/>
+                            Command="{Binding SimpleMarkingViewModel.GenerateCommand, Source={StaticResource Locator}}"
+                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}">
+                    </Button>
                 </Grid>
 
             </Border>

@@ -182,27 +182,62 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Style="{StaticResource NormalCheckBox}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding PartName}" Style="{StaticResource LabelFormTextBlock}"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding MarkingData.Name}" Style="{StaticResource LabelFormTextBlock}"/>
-                                    <TextBlock Grid.Column="3" Text="{Binding HasFile}" Style="{StaticResource LabelFormTextBlock}"/>
-                                    <TextBlock Grid.Column="4" Text="{Binding MarkingData.IsOK}" Style="{StaticResource LabelFormTextBlock}"/>
 
-                                    <Button x:Name="MarkablePartViewButton" Grid.Column="5" Style="{StaticResource Generic_SquareButton}"
-                                            Click="MarkablePartViewButton_Click" Margin="0,5,0,0"
+                                    <TextBlock Grid.Column="1" Text="{Binding PartName}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
+                                    <TextBlock Grid.Column="2" Text="{Binding MarkingData.Name}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
+                                    <TextBlock Grid.Column="3">
+                                        <Run Text="Warnings: "/>
+                                        <Run Text="{Binding MarkingData.WarningNumber}"/>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
+                                    <Button x:Name="MarkablePartViewButton" Grid.Column="4" Style="{StaticResource Generic_SquareButton}"
+                                            Click="MarkablePartViewButton_Click"
                                             Command="{Binding Source={StaticResource Locator}, Path=ComplexMarkingViewModel.SelectMarkablePartCommand}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ComplexMarkingPage}, Path=MouseOverItemIndex}">
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ComplexMarkingPage}, Path=MouseOverItemIndex}" Margin="0,2">
                                         <Viewbox Style="{StaticResource IconViewBox}">
                                             <Canvas Style="{StaticResource IconCanvas}">
-                                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource MoreVertical_Icon}"/>
+                                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Info_Icon}"/>
                                             </Canvas>
                                         </Viewbox>
                                     </Button>
@@ -210,29 +245,7 @@
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                        <!--<ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="PartName" DisplayMemberBinding="{Binding PartName}">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="{x:Type GridViewColumnHeader}">
-                                            <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
-                                
-                                <GridViewColumn Header="MarkingData Name" Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding MarkingData.Name}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                
-                                <GridViewColumn Header="Has File" DisplayMemberBinding="{Binding HasFile}"/>
-
-                                <GridViewColumn Header="Are marking datas OK" DisplayMemberBinding="{Binding MarkingData.IsOK}" Width="150"/>
-                            </GridView>
-                        </ListView.View>-->
+                        
                     </ListView>
 
 
@@ -318,7 +331,8 @@
                     <Button Grid.Column="1" Style="{StaticResource GenericHighligh_Button}"
                             Content="{main:Loc MainWindow_General_Generate}"
                             FontSize="14" Padding="15,5" HorizontalAlignment="Right"
-                            Command="{Binding ComplexMarkingViewModel.GenerateCommand, Source={StaticResource Locator}}"/>
+                            Command="{Binding ComplexMarkingViewModel.GenerateCommand, Source={StaticResource Locator}}"
+                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}"/>
                 </Grid>
 
             </Border>

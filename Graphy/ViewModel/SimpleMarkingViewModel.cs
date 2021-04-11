@@ -14,6 +14,7 @@ using Graphy.Enum;
 using Graphy.Model.CatiaObject;
 using Graphy.Model.CatiaObject.CatiaShape;
 
+
 namespace Graphy.ViewModel
 {
     public class SimpleMarkingViewModel : ViewModelBase
@@ -23,8 +24,10 @@ namespace Graphy.ViewModel
             FontFamilyCollection = new ObservableCollection<FontFamily>();
             MarkablePart = new MarkablePart
             {
-                MarkingData = MarkingData.Default()
+                MarkingData = MarkingData.NoMarkingData()
             };
+
+            MarkablePart.MarkingData.Text = MarkingData.Default().Text;
 
             // Fill the FontFamilyCollection with the installed fonts
             InstalledFontCollection installedFontCollection = new InstalledFontCollection();
@@ -157,7 +160,7 @@ namespace Graphy.ViewModel
 
             // DEFINE THE CATIA SELECTION FILTER BASED ON THE SHAPE TYPE
             object filterStr;
-            switch(shapeType)
+            switch (shapeType)
             {
                 case ShapeType.Point:
                     filterStr = new object[1] { "ZeroDim" };
@@ -193,7 +196,7 @@ namespace Graphy.ViewModel
             try
             {
                 string tempShapeName;
-                switch(shapeType)
+                switch (shapeType)
                 {
                     case ShapeType.AxisSystem:
                         tempShapeName = ((AxisSystem)selection.Item(1).Value).get_Name();

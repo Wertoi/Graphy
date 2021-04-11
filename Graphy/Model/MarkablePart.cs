@@ -15,37 +15,20 @@ namespace Graphy.Model
         {
             CatiaPart = new CatiaPart();
             MarkingData = new MarkingData();
-            //MarkingDataCollection.CollectionChanged += MarkingDataCollection_CollectionChanged;
         }
+
 
         public MarkablePart(CatiaPart part)
         {
             CatiaPart = part;
-            MarkingData = new MarkingData();
+            MarkingData = MarkingData.Default();
         }
-
-        /*private void MarkingDataCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems != null)
-                foreach (MarkingData markingData in e.NewItems)
-                    markingData.PropertyChanged += MarkingData_PropertyChanged;
-
-            if (e.OldItems != null)
-                foreach (MarkingData markingData in e.OldItems)
-                    markingData.PropertyChanged -= MarkingData_PropertyChanged;
-        }
-
-        private void MarkingData_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "IsOK")
-                CanGenerate = CheckIfCanGenerate();
-        }*/
 
         private string _partName;
         private CatiaPart _catiaPart;
         private MarkingData _markingData;
-        private bool _canGenerate = false;
         private bool _isSelected = false;
+        private bool _isSelectable = false;
         private bool _hasFile = false;
 
 
@@ -86,22 +69,16 @@ namespace Graphy.Model
             }
         }
 
-        public bool CanGenerate
-        {
-            get => _canGenerate;
-            set
-            {
-                Set(() => CanGenerate, ref _canGenerate, value);
-            }
-        }
-
 
         public bool IsSelected
         {
             get => _isSelected;
             set
             {
-                Set(() => IsSelected, ref _isSelected, value);
+                if (!IsSelectable)
+                    Set(() => IsSelected, ref _isSelected, false);
+                else
+                    Set(() => IsSelected, ref _isSelected, value);
             }
         }
 
@@ -111,6 +88,16 @@ namespace Graphy.Model
             set
             {
                 Set(() => HasFile, ref _hasFile, value);
+            }
+        }
+
+
+        public bool IsSelectable
+        {
+            get => _isSelectable;
+            set
+            {
+                Set(() => IsSelectable, ref _isSelectable, value);
             }
         }
     }

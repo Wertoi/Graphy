@@ -7,6 +7,9 @@ using MECMOD;
 using HybridShapeTypeLib;
 using GalaSoft.MvvmLight;
 using Graphy.Enum;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Collections;
 
 namespace Graphy.Model
 {
@@ -14,22 +17,12 @@ namespace Graphy.Model
     {
         public MarkingData()
         {
-            TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
-            ReferencePointName = DEFAULT_REFERENCE_POINT_NAME;
-            ProjectionSurfaceName = DEFAULT_PROJECTION_SURFACE_NAME;
-            AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME;
-        }
-
-        public MarkingData(string text, double charactereHeight, double extrusionHeight)
-        {
-            Text = text;
-            MarkingHeight = charactereHeight;
-            ExtrusionHeight = extrusionHeight;
+            Icon = new Icon();
 
             TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
             ReferencePointName = DEFAULT_REFERENCE_POINT_NAME;
             ProjectionSurfaceName = DEFAULT_PROJECTION_SURFACE_NAME;
-            AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME;
+            AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME; 
         }
 
         // DEFAULT VALUES
@@ -57,8 +50,8 @@ namespace Graphy.Model
         private bool _isUnderline;
         private HorizontalAlignment _horizontalAlignment;
         private VerticalAlignment _verticalAlignment;
-        private bool _isOK;
-        private string _comments;
+        private int _warningNumber;
+        private string _logs;
 
 
         public string Name
@@ -105,6 +98,7 @@ namespace Graphy.Model
                 Set(() => Icon, ref _icon, value);
             }
         }
+
 
         public double MarkingHeight
         {
@@ -214,21 +208,22 @@ namespace Graphy.Model
             }
         }
 
-        public bool IsOK
+
+        public int WarningNumber
         {
-            get => _isOK;
+            get => _warningNumber;
             set
             {
-                Set(() => IsOK, ref _isOK, value);
+                Set(() => WarningNumber, ref _warningNumber, value);
             }
         }
 
-        public string Comments
+        public string Logs
         {
-            get => _comments;
+            get => _logs;
             set
             {
-                Set(() => Comments, ref _comments, value);
+                Set(() => Logs, ref _logs, value);
             }
         }
 
@@ -236,10 +231,10 @@ namespace Graphy.Model
         public static MarkingData Default()
         {
             MarkingData defaultMarkingData = new MarkingData()
-            {   
+            {
                 Name = "DefaultMarking",
                 IsText = true,
-                Text = "Hello Wolrd !",
+                Text = "Hello World !",
                 IsBold = false,
                 IsItalic = false,
                 IsUnderline = false,
@@ -249,10 +244,39 @@ namespace Graphy.Model
                 MarkingHeight = 2d,
                 ExtrusionHeight = 0.1,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Bottom
+                VerticalAlignment = VerticalAlignment.Bottom,
+                ProjectionSurfaceName = "Surface.1",
+                TrackingCurveName = "Curve.1",
+                ReferencePointName = "Point.1",
+                AxisSystemName = "Axis System.1"
             };
 
             return defaultMarkingData;
         }
+
+
+        public static MarkingData NoMarkingData()
+        {
+            MarkingData noMarkingData = new MarkingData()
+            {
+                Name = "NoMarking",
+                IsText = true,
+                Text = "",
+                IsBold = false,
+                IsItalic = false,
+                IsUnderline = false,
+                IsStrikeThrough = false,
+                FontFamily = new FontFamily("Calibri"),
+                Icon = new Icon(),
+                MarkingHeight = 2d,
+                ExtrusionHeight = 0.1,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom
+            };
+
+            return noMarkingData;
+        }
+
+
     }
 }

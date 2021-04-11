@@ -24,7 +24,7 @@
                             </Canvas>
                         </Viewbox>
                     </Button>
-                    
+
                     <TextBlock FontSize="18" Foreground="{StaticResource PrimaryColorDark}" Margin="10,0,0,0">
                         <Run Text="{Binding Path=PartName}"/>
                         <Run Text=" - "/>
@@ -81,11 +81,14 @@
                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding MarkingData.IsText}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Texte" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MarkingData.Text}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MarkingData.Text}"
+                             Margin="0,5"/>
 
+                    
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Est gras" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MarkingData.IsBold}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
+                    
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="Est italique" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding MarkingData.IsItalic}" Style="{StaticResource ReadOnlyTextBox}" Margin="0,5"/>
 
@@ -129,7 +132,7 @@
 
                 <TextBlock Text="Logs" FontSize="16" Foreground="{StaticResource PrimaryColor}" VerticalAlignment="Center" Margin="0,20,0,0"/>
 
-                <TextBlock Text="{Binding Path=MarkingData.Comments}" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Path=MarkingData.Logs}" TextWrapping="Wrap"/>
 
             </StackPanel>
         </ScrollViewer>

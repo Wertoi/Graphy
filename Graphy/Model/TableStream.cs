@@ -36,17 +36,6 @@ namespace Graphy.Model
         private const int MARKING_REFERENCE_POINT_NAME_INDEX = 16;
         private const int MARKING_REFERENCE_AXIS_SYSTEME_NAME_INDEX = 17;
 
-        public static void GenerateTemplate()
-        {
-            CsvWriter writer = new CsvWriter();
-            writer.AddRow(new string[] { writer.Config.CommentMark + "PartName", "MarkingName", "MarkingType" , "Text", "IsBold", "IsItalic", "IsUnderligned", "IsStrikeThrought",  "Font", "IconPath",
-                "MarkingHeight", "ExtrusionHeight",
-                "SurfaceName", "CurveName", "StartPointName", "AxisSystemName" });
-            writer.AddRow(new string[] { "Part1", "Marking Test n°1", "1", "Hello World !", "0", "1", "0", "0", "Calibri", "N/A", (1.6).ToString(), "1", "Extraction.1", "Droite.1", "Point.1", "Système d'axes.1" });
-
-            string csvTemplate = writer.Write();
-            File.WriteAllText(Path.GetTempPath() + "Test.csv", csvTemplate);
-        }
 
         public static bool TryRead(string fullPath, ICollection<MarkablePart> markablePartList, CsvConfig csvConfig)
         {
@@ -63,189 +52,211 @@ namespace Graphy.Model
                     // If the row is not a comment row
                     if (row.First().Substring(0, 1) != reader.Config.CommentMark.ToString())
                     {
-                        bool errorFlag = false;
-
                         MarkablePart tempMarkablePart = new MarkablePart();
+                        MarkingData defaultMarkingData = MarkingData.Default();
 
                         // Assign PartName
                         string partNameValue = row[PART_NAME_INDEX];
-                        if(partNameValue != "")
-                            tempMarkablePart.PartName = row[PART_NAME_INDEX];
+                        if (partNameValue != "")
+                            tempMarkablePart.PartName = partNameValue;
+                        else
+                            tempMarkablePart.HasFile = false;
+
+
+                        // Assign Marking data Name
+                        string markingDataNameValue = row[MARKING_NAME_INDEX];
+                        if (markingDataNameValue != "")
+                            tempMarkablePart.MarkingData.Name = markingDataNameValue;
                         else
                         {
-                            tempMarkablePart.PartName = "Part1";
-                            errorFlag = true;
-                            // Ecrire un commentaire du style : "PartName" value non-assigned. Default value assigned.
-                            // Flag une erreur.
+                            tempMarkablePart.MarkingData.Name = defaultMarkingData.Name;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_NAME_INDEX], "Name", typeof(string));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
-                        tempMarkablePart.MarkingData.Name = row[MARKING_NAME_INDEX];
-                        tempMarkablePart.MarkingData.ProjectionSurfaceName = row[MARKING_PROJECTION_SURFACE_NAME_INDEX];
-                        tempMarkablePart.MarkingData.TrackingCurveName = row[MARKING_TRACKING_CURVE_NAME_INDEX];
-                        tempMarkablePart.MarkingData.ReferencePointName = row[MARKING_REFERENCE_POINT_NAME_INDEX];
-                        tempMarkablePart.MarkingData.AxisSystemName = row[MARKING_REFERENCE_AXIS_SYSTEME_NAME_INDEX];
-                        
+
                         // Assign IsText
-                        if (TryConvertToBoolean(row[MARKING_IS_TEXT_INDEX], out bool isTextValue))
+                        if (TryParseToBoolean(row[MARKING_IS_TEXT_INDEX], out bool isTextValue))
                             tempMarkablePart.MarkingData.IsText = isTextValue;
                         else
                         {
-                            tempMarkablePart.MarkingData.IsText = MarkingData.Default().IsText;
-
-                            if(tempMarkablePart.MarkingData.IsText)
-                            {
-                                tempMarkablePart.MarkingData.Comments += "Error: IsText value non-assigned or incoherent (" + isTextValue.ToString() + 
-                                    "). Default value assigned\r\n";
-                                errorFlag = true;
-                            }
-                            else
-                                tempMarkablePart.MarkingData.Comments += "Warning: IsText value non-assigned or incoherent (" + isTextValue.ToString() + "" +
-                                    "). Default value assigned\r\n";
+                            tempMarkablePart.MarkingData.IsText = defaultMarkingData.IsText;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_IS_TEXT_INDEX], "IsText", typeof(bool));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
+
+
+                        #region Text assignation area
 
                         // Assign Text
                         string textValue = row[MARKING_TEXT_INDEX];
                         if(textValue != "")
-                            tempMarkablePart.MarkingData.Text = row[MARKING_TEXT_INDEX];
-                        else
+                            tempMarkablePart.MarkingData.Text = textValue;
+                        else if(tempMarkablePart.MarkingData.IsText)
                         {
-                            if(tempMarkablePart.MarkingData.IsText)
-                            {
-                                tempMarkablePart.MarkingData.Text = MarkingData.Default().Text;
-                                tempMarkablePart.MarkingData.Comments += "Error: Text value empty. Default value assigned\r\n";
-                                errorFlag = true;
-                            }
-                            else
-                                tempMarkablePart.MarkingData.Comments += "Warning: Text value empty.\r\n";
+                            tempMarkablePart.MarkingData.Text = defaultMarkingData.Text;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_TEXT_INDEX], "Text", typeof(string));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
 
                         // Assign IsBold
-                        if (TryConvertToBoolean(row[MARKING_IS_BOLD_INDEX], out bool isBoldValue))
+                        if (TryParseToBoolean(row[MARKING_IS_BOLD_INDEX], out bool isBoldValue))
                             tempMarkablePart.MarkingData.IsBold = isBoldValue;
-                        else
+                        else if(tempMarkablePart.MarkingData.IsText)
                         {
-                            tempMarkablePart.MarkingData.IsBold = MarkingData.Default().IsBold;
-                            tempMarkablePart.MarkingData.Comments += "Warning: IsBold value non-assigned or incoherent (" + isBoldValue.ToString() +
-                                "). Default value assigned\r\n";
-                            //errorFlag = true;
+                            tempMarkablePart.MarkingData.IsBold = defaultMarkingData.IsBold;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_IS_BOLD_INDEX], "IsBold", typeof(bool));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
 
                         // Assign IsItalic
-                        if (TryConvertToBoolean(row[MARKING_IS_ITALIC_INDEX], out bool isItalicValue))
+                        if (TryParseToBoolean(row[MARKING_IS_ITALIC_INDEX], out bool isItalicValue))
                             tempMarkablePart.MarkingData.IsItalic = isItalicValue;
-                        else
+                        else if (tempMarkablePart.MarkingData.IsText)
                         {
-                            tempMarkablePart.MarkingData.IsItalic = MarkingData.Default().IsItalic;
-                            tempMarkablePart.MarkingData.Comments += "Warning: IsItalic value non-assigned or incoherent (" + isItalicValue.ToString() +
-                                "). Default value assigned\r\n";
-                            //errorFlag = true;
+                            tempMarkablePart.MarkingData.IsItalic = defaultMarkingData.IsItalic;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_IS_ITALIC_INDEX], "IsItalic", typeof(bool));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
 
                         // Assign IsUnderline
-                        if (TryConvertToBoolean(row[MARKING_IS_UNDERLINE_INDEX], out bool isUnderlineValue))
+                        if (TryParseToBoolean(row[MARKING_IS_UNDERLINE_INDEX], out bool isUnderlineValue))
                             tempMarkablePart.MarkingData.IsUnderline = isUnderlineValue;
-                        else
+                        else if (tempMarkablePart.MarkingData.IsText)
                         {
-                            tempMarkablePart.MarkingData.IsUnderline = MarkingData.Default().IsUnderline;
-                            tempMarkablePart.MarkingData.Comments += "Warning: IsUnderline value non-assigned or incoherent (" + isUnderlineValue.ToString() +
-                                "). Default value assigned\r\n";
-                            //errorFlag = true;
+                            tempMarkablePart.MarkingData.IsUnderline = defaultMarkingData.IsUnderline;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_IS_UNDERLINE_INDEX], "IsUnderline", typeof(bool));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
 
                         // Assign IsStrikeThrough
-                        if (TryConvertToBoolean(row[MARKING_IS_STRIKE_THROUGH_INDEX], out bool isStrikeThroughValue))
+                        if (TryParseToBoolean(row[MARKING_IS_STRIKE_THROUGH_INDEX], out bool isStrikeThroughValue))
                             tempMarkablePart.MarkingData.IsStrikeThrough = isStrikeThroughValue;
-                        else
+                        else if (tempMarkablePart.MarkingData.IsText)
                         {
-                            tempMarkablePart.MarkingData.IsStrikeThrough = MarkingData.Default().IsStrikeThrough;
-                            tempMarkablePart.MarkingData.Comments += "Warning: IsStrikeThrough value non-assigned or incoherent (" + isStrikeThroughValue.ToString() +
-                                "). Default value assigned\r\n";
-                            //errorFlag = true;
+                            tempMarkablePart.MarkingData.IsStrikeThrough = defaultMarkingData.IsStrikeThrough;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_IS_STRIKE_THROUGH_INDEX], "IsStrikeThrough", typeof(bool));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
 
                         // Assign FontFamily
-                        if (TryConvertToFontFamily(row[MARKING_FONT_FAMILY_INDEX], out FontFamily fontFamilyValue))
+                        if (TryParseToFontFamily(row[MARKING_FONT_FAMILY_INDEX], out FontFamily fontFamilyValue))
                             tempMarkablePart.MarkingData.FontFamily = fontFamilyValue;
-                        else
+                        else if (tempMarkablePart.MarkingData.IsText)
                         {
-                            if(tempMarkablePart.MarkingData.IsText)
-                            {
-                                tempMarkablePart.MarkingData.FontFamily = MarkingData.Default().FontFamily;
-                                tempMarkablePart.MarkingData.Comments += "Error: FontFamily value non-assigned or incoherent (" + fontFamilyValue.Source +
-                                    "). Default value assigned\r\n";
-                                errorFlag = true;
-                            }
-                            else
-                                tempMarkablePart.MarkingData.Comments += "Warning: FontFamily value non-assigned or incoherent (" + fontFamilyValue.Source +
-                                    "). Default value assigned\r\n";
+                            tempMarkablePart.MarkingData.FontFamily = defaultMarkingData.FontFamily;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_FONT_FAMILY_INDEX], "FontFamily", typeof(string));
+                            tempMarkablePart.MarkingData.WarningNumber++;
+                        }
+
+                        #endregion
+
+
+                        // Assign Icon
+                        if (TryParseToIcon(row[MARKING_ICON_PATH_DATA_INDEX], out Icon iconValue))
+                            tempMarkablePart.MarkingData.Icon.PathData = row[MARKING_ICON_PATH_DATA_INDEX];
+                        else if (!tempMarkablePart.MarkingData.IsText)
+                        {
+                            tempMarkablePart.MarkingData.Icon = defaultMarkingData.Icon;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_ICON_PATH_DATA_INDEX], "Icon", typeof(System.Windows.Media.Geometry));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
 
                         // Assign MarkingHeight
-                        if (TryConvertToDouble(row[MARKING_HEIGHT_INDEX], out double markingHeightValue))
-                        {
-                            if(markingHeightValue > 0)
-                                tempMarkablePart.MarkingData.MarkingHeight = markingHeightValue;
-                            else
-                            {
-                                tempMarkablePart.MarkingData.MarkingHeight = MarkingData.Default().MarkingHeight;
-                                tempMarkablePart.MarkingData.Comments += "Error: MarkingHeight must be > 0. Default value assigned\r\n";
-                                errorFlag = true;
-                            }
-                        }
+                        if (TryParseToDouble(row[MARKING_HEIGHT_INDEX], out double markingHeightValue))
+                            tempMarkablePart.MarkingData.MarkingHeight = markingHeightValue;
                         else
                         {
-                            tempMarkablePart.MarkingData.MarkingHeight = MarkingData.Default().MarkingHeight;
-                            tempMarkablePart.MarkingData.Comments += "Error: MarkingHeight value non-assigned or incoherent (" + markingHeightValue +
-                                "). Default value assigned\r\n";
-                            errorFlag = true;
+                            tempMarkablePart.MarkingData.MarkingHeight = defaultMarkingData.MarkingHeight;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_HEIGHT_INDEX], "MarkingHeight", typeof(double));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
 
                         // Assign ExtrusionHeight
-                        if (TryConvertToDouble(row[MARKING_EXTRUSION_HEIGHT_INDEX], out double extrusionHeightValue))
-                        {
-                            if(extrusionHeightValue != 0)
-                                tempMarkablePart.MarkingData.ExtrusionHeight = extrusionHeightValue;
-                            else
-                            {
-                                tempMarkablePart.MarkingData.ExtrusionHeight = MarkingData.Default().ExtrusionHeight;
-                                tempMarkablePart.MarkingData.Comments += "Warning: ExtrusionHeight must be different of 0. Default value assigned\r\n";
-                            }
-                        }
+                        if (TryParseToDouble(row[MARKING_EXTRUSION_HEIGHT_INDEX], out double extrusionHeightValue))
+                            tempMarkablePart.MarkingData.ExtrusionHeight = extrusionHeightValue;
                         else
                         {
-                            tempMarkablePart.MarkingData.ExtrusionHeight = MarkingData.Default().ExtrusionHeight;
-                            tempMarkablePart.MarkingData.Comments += "Warning: ExtrusionHeight value non-assigned or incoherent. Default value assigned\r\n";
+                            tempMarkablePart.MarkingData.ExtrusionHeight = defaultMarkingData.ExtrusionHeight;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_EXTRUSION_HEIGHT_INDEX], "ExtrusionHeight", typeof(double));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
 
-                        tempMarkablePart.MarkingData.HorizontalAlignment = (HorizontalAlignment)int.Parse(row[MARKING_HORIZONTAL_ALIGNMENT_INDEX]);
-
-                        tempMarkablePart.MarkingData.VerticalAlignment = (VerticalAlignment)int.Parse(row[MARKING_VERTICAL_ALIGNMENT_INDEX]);
-
-                        if (TryConvertToIcon(row[MARKING_ICON_PATH_DATA_INDEX], out Icon iconValue))
-                            tempMarkablePart.MarkingData.Icon = iconValue;
+                        // Assign Horizontal alignement
+                        if (TryParseToHorizontalAlignment(row[MARKING_HORIZONTAL_ALIGNMENT_INDEX], out HorizontalAlignment horizontalAlignmentValue))
+                            tempMarkablePart.MarkingData.HorizontalAlignment = horizontalAlignmentValue;
                         else
                         {
-                            if(tempMarkablePart.MarkingData.IsText)
-                            {
-                                tempMarkablePart.MarkingData.Comments += "Warning: IconPathData value non-assigned or incoherent. Default value assigned\r\n";
-                            }
-                            else
-                            {
-                                tempMarkablePart.MarkingData.Icon = MarkingData.Default().Icon;
-                                tempMarkablePart.MarkingData.Comments += "Error: IconPathData value non-assigned or incoherent. Default value assigned\r\n";
-                                errorFlag = true;
-                            }
+                            tempMarkablePart.MarkingData.HorizontalAlignment = defaultMarkingData.HorizontalAlignment;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_HORIZONTAL_ALIGNMENT_INDEX], "HorizontalAlignment", typeof(HorizontalAlignment));
+                            tempMarkablePart.MarkingData.WarningNumber++;
                         }
 
-                        tempMarkablePart.MarkingData.IsOK = !errorFlag;
+
+                        // Assign Vertical alignement
+                        if (TryParseToVerticalAlignment(row[MARKING_VERTICAL_ALIGNMENT_INDEX], out VerticalAlignment verticalAlignmentValue))
+                            tempMarkablePart.MarkingData.VerticalAlignment = verticalAlignmentValue;
+                        else
+                        {
+                            tempMarkablePart.MarkingData.VerticalAlignment = defaultMarkingData.VerticalAlignment;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_VERTICAL_ALIGNMENT_INDEX], "VerticalAlignment", typeof(VerticalAlignment));
+                            tempMarkablePart.MarkingData.WarningNumber++;
+                        }
+
+
+
+                        // Assign Projection surface name
+                        string projectionSurfaceNameValue = row[MARKING_PROJECTION_SURFACE_NAME_INDEX];
+                        if (projectionSurfaceNameValue != "")
+                            tempMarkablePart.MarkingData.ProjectionSurfaceName = projectionSurfaceNameValue;
+                        else
+                        {
+                            tempMarkablePart.MarkingData.ProjectionSurfaceName = MarkingData.NoMarkingData().ProjectionSurfaceName;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_PROJECTION_SURFACE_NAME_INDEX], "ProjectionSurfaceName", typeof(string));
+                            tempMarkablePart.MarkingData.WarningNumber++;
+                        }
+
+
+                        // Assign Tracking curve name
+                        string trackingCurveNameValue = row[MARKING_TRACKING_CURVE_NAME_INDEX];
+                        if (trackingCurveNameValue != "")
+                            tempMarkablePart.MarkingData.TrackingCurveName = trackingCurveNameValue;
+                        else
+                        {
+                            tempMarkablePart.MarkingData.TrackingCurveName = MarkingData.NoMarkingData().TrackingCurveName;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_TRACKING_CURVE_NAME_INDEX], "TrackingCurveName", typeof(string));
+                            tempMarkablePart.MarkingData.WarningNumber++;
+                        }
+
+                        // Assign Reference point name
+                        string referencePointNameValue = row[MARKING_REFERENCE_POINT_NAME_INDEX];
+                        if (referencePointNameValue != "")
+                            tempMarkablePart.MarkingData.ReferencePointName = referencePointNameValue;
+                        else
+                        {
+                            tempMarkablePart.MarkingData.ReferencePointName = MarkingData.NoMarkingData().ReferencePointName;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_REFERENCE_POINT_NAME_INDEX], "ReferencePointName", typeof(string));
+                            tempMarkablePart.MarkingData.WarningNumber++;
+                        }
+
+                        // Assign Axis system name
+                        string axisSystemNameValue = row[MARKING_REFERENCE_AXIS_SYSTEME_NAME_INDEX];
+                        if (axisSystemNameValue != "")
+                            tempMarkablePart.MarkingData.AxisSystemName = axisSystemNameValue;
+                        else
+                        {
+                            tempMarkablePart.MarkingData.AxisSystemName = MarkingData.NoMarkingData().AxisSystemName;
+                            tempMarkablePart.MarkingData.Logs += GetWarningLog(row[MARKING_REFERENCE_AXIS_SYSTEME_NAME_INDEX], "AxisSystemName", typeof(string));
+                            tempMarkablePart.MarkingData.WarningNumber++;
+                        }
 
                         markablePartList.Add(tempMarkablePart);
 
@@ -261,7 +272,7 @@ namespace Graphy.Model
         }
 
 
-        private static bool TryConvertToBoolean(string str, out bool result)
+        private static bool TryParseToBoolean(string str, out bool result)
         {
             result = false;
 
@@ -276,7 +287,7 @@ namespace Graphy.Model
             }
         }
 
-        private static bool TryConvertToFontFamily(string str, out FontFamily result)
+        private static bool TryParseToFontFamily(string str, out FontFamily result)
         {
             result = new FontFamily(str);
 
@@ -294,7 +305,7 @@ namespace Graphy.Model
         }
 
 
-        private static bool TryConvertToDouble(string str, out double result)
+        private static bool TryParseToDouble(string str, out double result)
         {
             result = 0d;
 
@@ -303,13 +314,13 @@ namespace Graphy.Model
                 result = double.Parse(str, System.Globalization.NumberStyles.Any, CultureInfo.CurrentCulture);
                 return true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
         }
 
-        private static bool TryConvertToIcon(string str, out Icon result)
+        private static bool TryParseToIcon(string str, out Icon result)
         {
             result = new Icon()
             {
@@ -321,11 +332,48 @@ namespace Graphy.Model
                 System.Windows.Media.Geometry.Parse(result.PathData);
                 return true;
             }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private static bool TryParseToHorizontalAlignment(string str, out HorizontalAlignment result)
+        {
+            result = HorizontalAlignment.Left;
+
+            try
+            {
+                result = (HorizontalAlignment)int.Parse(str);
+                return true;
+            }
             catch(Exception)
             {
                 return false;
             }
+        }
 
+        private static bool TryParseToVerticalAlignment(string str, out VerticalAlignment result)
+        {
+            result = VerticalAlignment.Bottom;
+
+            try
+            {
+                result = (VerticalAlignment)int.Parse(str);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static string GetWarningLog(string value, string field, Type targetType)
+        {
+            if (value == "")
+                return "Warning: " + field + " value is empty. Default value assigned.";
+            else
+                return "Warning: retrieved " + field + " value cannot be parsed to " + targetType.Name + ". Default value assigned";
         }
     }
 

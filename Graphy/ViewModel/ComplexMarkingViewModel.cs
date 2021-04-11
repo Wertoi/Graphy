@@ -43,7 +43,6 @@ namespace Graphy.ViewModel
         private string _tableFullPath;
         private string _partFolderPath;
         private ObservableCollection<MarkablePart> _markablePartCollection;
-        private bool _isMarkablePartCollectionEmpty = true;
         private MarkablePart _selectedMarkablePart;
 
         // PRIVATE ATTRIBUTS
@@ -89,14 +88,6 @@ namespace Graphy.ViewModel
             }
         }
 
-        public bool IsMarkablePartCollectionEmpty
-        {
-            get => _isMarkablePartCollectionEmpty;
-            set
-            {
-                Set(() => IsMarkablePartCollectionEmpty, ref _isMarkablePartCollectionEmpty, value);
-            }
-        }
 
 
         private RelayCommand _generateCommand;
@@ -230,11 +221,18 @@ namespace Graphy.ViewModel
                         {
                             markablePartFromCSV.CatiaPart = catiaPart;
                             hasCatiaPartFoundItsMarkingData = true;
+                            markablePartFromCSV.IsSelectable = true;
                         }
                     }
 
                     if (!hasCatiaPartFoundItsMarkingData)
-                        MarkablePartCollection.Add(new MarkablePart(catiaPart));
+                    {
+                        MarkablePartCollection.Add(new MarkablePart(catiaPart)
+                        {
+                            MarkingData = MarkingData.NoMarkingData(),
+                            IsSelectable = false
+                        });
+                    }
 
                 }  
             }
@@ -242,11 +240,13 @@ namespace Graphy.ViewModel
             {
                 foreach(CatiaPart catiaPart in catiaPartList)
                 {
-                    MarkablePartCollection.Add(new MarkablePart(catiaPart));
+                    MarkablePartCollection.Add(new MarkablePart(catiaPart)
+                    {
+                        MarkingData = MarkingData.NoMarkingData(),
+                        IsSelectable = false
+                    });
                 }
             }
-
-            IsMarkablePartCollectionEmpty = MarkablePartCollection.Count == 0;
         }
 
 
