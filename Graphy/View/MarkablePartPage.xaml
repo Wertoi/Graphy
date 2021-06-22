@@ -82,7 +82,7 @@
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Texte" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MarkingData.Text}"
-                             Margin="0,5"/>
+                             Margin="0,5" Style="{StaticResource ReadOnlyTextBox}"/>
 
                     
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Est gras" Style="{StaticResource LabelFormTextBlock}"/>

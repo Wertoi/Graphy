@@ -12,279 +12,272 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="20,25,20,10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-
-            <!-- PAGE TITLE -->
-            <TextBlock Grid.Row="0" Text="Marquage complexe"  FontSize="22" Foreground="{StaticResource PrimaryColorDark}"/>
-
-            <!-- PAGE CONTENT AREA -->
-            <ScrollViewer Grid.Row="1"
-                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,25,0,0">
-                <StackPanel Orientation="Vertical">
+        <TextBlock Grid.Row="0" Text="Marquage complexe" FontSize="22" Foreground="{StaticResource PrimaryColorDark}" Margin="15"/>
 
 
-                    <!-- INPUT DATA TITLE -->
-                    <TextBlock Text="{main:Loc DesignTable_InputData_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,15,0,5"/>
+        <!-- PAGE CONTENT AREA -->
+        <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="15">
+            <StackPanel Orientation="Vertical">
 
-                    <!-- INPUT DATA GRID -->
-                    <Grid Margin="0,5,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
 
-                        <!--#region TABLE SELECTION REGION-->
+                <!-- INPUT DATA TITLE -->
+                <TextBlock Text="Données d'entrée" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,15,0,5"/>
 
-                        <!-- TABLE SELECTION LABEL -->
-                        <TextBlock Text="{main:Loc DesignTable_InputData_DesignTableLabel}" Style="{StaticResource LabelFormTextBlock}" />
+                <!-- INPUT DATA GRID -->
+                <Grid Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                        <!-- TABLE SELECTION DATA -->
-                        <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
+                    <!--#region TABLE SELECTION REGION-->
+
+                    <!-- TABLE SELECTION LABEL -->
+                    <TextBlock Text="Fichier CSV des marquages" Style="{StaticResource LabelFormTextBlock}" />
+
+                    <!-- TABLE SELECTION DATA -->
+                    <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
                                  Text="{Binding Path=TableFullPath}" />
 
-                        <!-- TABLE SELECTION BUTTON -->
-                        <Button Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
+                    <!-- TABLE SELECTION BUTTON -->
+                    <Button Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
                                 Command="{Binding Path=SelectTableCommand}">
-                            <Viewbox Style="{StaticResource IconViewBox}">
-                                <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Document_Icon}"/>
-                                </Canvas>
-                            </Viewbox>
-                        </Button>
+                        <Viewbox Style="{StaticResource IconViewBox}">
+                            <Canvas Style="{StaticResource IconCanvas}">
+                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Document_Icon}"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
 
 
-                        <!--#endregion-->
+                    <!--#endregion-->
 
-                        <!--#region PART FOLDER SELECTION REGION -->
+                    <!--#region PART FOLDER SELECTION REGION -->
 
-                        <!-- PART FOLDER SELECTION LABEL -->
-                        <TextBlock Grid.Row="1" Text="{main:Loc DesignTable_InputData_PartCatalogDirectoryLabel}" Style="{StaticResource LabelFormTextBlock}" />
+                    <!-- PART FOLDER SELECTION LABEL -->
+                    <TextBlock Grid.Row="1" Text="Répertoire des CATParts" Style="{StaticResource LabelFormTextBlock}" />
 
-                        <!-- PART FOLDER SELECTION INPUT -->
-                        <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"
+                    <!-- PART FOLDER SELECTION INPUT -->
+                    <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"
                                  Text="{Binding Path=PartFolderPath}" />
 
-                        <!-- PART FOLDER SELECTION BUTTON -->
-                        <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource Generic_SquareButton}"
+                    <!-- PART FOLDER SELECTION BUTTON -->
+                    <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding Path=SelectPartFolderCommand}" Margin="0,5,0,0">
-                            <Viewbox Style="{StaticResource IconViewBox}">
-                                <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Folder_Icon}"/>
-                                </Canvas>
-                            </Viewbox>
-                        </Button>
+                        <Viewbox Style="{StaticResource IconViewBox}">
+                            <Canvas Style="{StaticResource IconCanvas}">
+                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Folder_Icon}"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
 
-                        <!--#endregion-->
+                    <!--#endregion-->
 
-                    </Grid>
+                </Grid>
 
-                    <!-- PART LIST TITLE -->
-                    <Grid Margin="0,20,0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                <!-- PART LIST TITLE -->
+                <Grid Margin="0,20,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Liste des pièces" FontSize="16" Foreground="{StaticResource PrimaryColor}"
+                    <TextBlock Grid.Column="0" Text="Liste des marquages" FontSize="16" Foreground="{StaticResource PrimaryColor}"
                                    VerticalAlignment="Center"/>
 
-                        <Button Grid.Column="1" Style="{StaticResource Generic_Button}" HorizontalAlignment="Right"
+                    <Button Grid.Column="1" Style="{StaticResource Generic_Button}" HorizontalAlignment="Right"
                                 Command="{Binding Path=LoadDataCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <Viewbox Style="{StaticResource IconViewBox}">
-                                    <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Refresh_Icon}"/>
-                                    </Canvas>
-                                </Viewbox>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Refresh_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
 
-                                <TextBlock Style="{StaticResource IconWithLabel_TextBlock}" Text="Refresh"/>
-                            </StackPanel>
-                        </Button>
-                    </Grid>
+                            <TextBlock Style="{StaticResource IconWithLabel_TextBlock}" Text="{main:Loc ComplexMarking_Inputs_Refresh}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
 
-                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0"
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0"
                                 Visibility="{Binding Path=MarkablePartCollection.Count, Converter={StaticResource HideOnEmptyConverter}}">
-                        <Button Style="{StaticResource Generic_Button}"
+                    <Button Style="{StaticResource Generic_Button}"
                                 Command="{Binding Path=SelectAllPartCommand}">
-                            <StackPanel Orientation="Horizontal">
-                                <Viewbox Style="{StaticResource IconViewBox}">
-                                    <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
-                                    </Canvas>
-                                </Viewbox>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
 
 
-                                <TextBlock Text="Select All" Style="{StaticResource IconWithLabel_TextBlock}"/>
-                            </StackPanel>
-                        </Button>
+                            <TextBlock Text="Select All" Style="{StaticResource IconWithLabel_TextBlock}"/>
+                        </StackPanel>
+                    </Button>
 
-                        <Button Style="{StaticResource Generic_Button}"
+                    <Button Style="{StaticResource Generic_Button}"
                                     Command="{Binding Path=UnselectAllPartCommand}" Margin="5,0,0,0">
-                            <StackPanel Orientation="Horizontal">
-                                <Viewbox Style="{StaticResource IconViewBox}">
-                                    <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
-                                    </Canvas>
-                                </Viewbox>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource SelectAll_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
 
 
-                                <TextBlock Text="Unselect All" Style="{StaticResource IconWithLabel_TextBlock}"/>
-                            </StackPanel>
-                        </Button>
+                            <TextBlock Text="Unselect All" Style="{StaticResource IconWithLabel_TextBlock}"/>
+                        </StackPanel>
+                    </Button>
 
-                    </StackPanel>
+                </StackPanel>
 
 
-                    <!-- PART LIST LISTVIEW -->
-                    <ListView x:Name="MarkablePartListView" ItemsSource="{Binding Path=MarkablePartCollection}"
+                <!-- PART LIST LISTVIEW -->
+                <ListView x:Name="MarkablePartListView" ItemsSource="{Binding Path=MarkablePartCollection}"
                               Margin="0,10,0,0" BorderBrush="Transparent"
                               HorizontalContentAlignment="Stretch"
                               SelectionMode="Multiple"
                               MouseMove="MarkablePartListView_MouseMove"
                               Visibility="{Binding Path=MarkablePartCollection.Count, Converter={StaticResource HideOnEmptyConverter}}">
 
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}">
-                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                            <Border Background="{TemplateBinding Background}">
-                                                <ContentPresenter/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource Gray242}"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource Gray242}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Style="{StaticResource NormalCheckBox}"/>
+                                <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Style="{StaticResource NormalCheckBox}"/>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding PartName}">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
-                                                        <Setter Property="IsEnabled" Value="False"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                <TextBlock Grid.Column="1" Text="{Binding PartName}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
-                                    <TextBlock Grid.Column="2" Text="{Binding MarkingData.Name}">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
-                                                        <Setter Property="IsEnabled" Value="False"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                <TextBlock Grid.Column="2" Text="{Binding MarkingData.Name}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
-                                    <TextBlock Grid.Column="3">
+                                <TextBlock Grid.Column="3">
                                         <Run Text="Warnings: "/>
                                         <Run Text="{Binding MarkingData.WarningNumber}"/>
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
-                                                        <Setter Property="IsEnabled" Value="False"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
-                                    <Button x:Name="MarkablePartViewButton" Grid.Column="4" Style="{StaticResource Generic_SquareButton}"
+                                <Button x:Name="MarkablePartViewButton" Grid.Column="4" Style="{StaticResource Generic_SquareButton}"
                                             Click="MarkablePartViewButton_Click"
                                             Command="{Binding Source={StaticResource Locator}, Path=ComplexMarkingViewModel.SelectMarkablePartCommand}"
                                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ComplexMarkingPage}, Path=MouseOverItemIndex}" Margin="0,2">
-                                        <Viewbox Style="{StaticResource IconViewBox}">
-                                            <Canvas Style="{StaticResource IconCanvas}">
-                                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Info_Icon}"/>
-                                            </Canvas>
-                                        </Viewbox>
-                                    </Button>
+                                    <Viewbox Style="{StaticResource IconViewBox}">
+                                        <Canvas Style="{StaticResource IconCanvas}">
+                                            <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Info_Icon}"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                </Button>
 
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        
-                    </ListView>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
 
 
-                    <!-- IF THE LIST IS EMPTY  -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                <!-- IF THE LIST IS EMPTY  -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                                 Visibility="{Binding Path=MarkablePartCollection.Count, Converter={StaticResource ShowOnEmptyConverter}}">
 
-                        <Viewbox Style="{StaticResource IconViewBox}">
-                            <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource NoDocument_Icon}"/>
-                            </Canvas>
-                        </Viewbox>
+                    <Viewbox Style="{StaticResource IconViewBox}">
+                        <Canvas Style="{StaticResource IconCanvas}">
+                            <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource NoDocument_Icon}"/>
+                        </Canvas>
+                    </Viewbox>
 
-                        <TextBlock Style="{StaticResource IconWithLabel_TextBlock}" Text="No data. Select a table, a folder and refresh."
+                    <TextBlock Style="{StaticResource IconWithLabel_TextBlock}" Text="No data. Select a table, a folder and refresh."
                                    Foreground="{StaticResource Gray166}"/>
 
-                    </StackPanel>
-
                 </StackPanel>
-            </ScrollViewer>
 
-        </Grid>
+            </StackPanel>
+        </ScrollViewer>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Margin="20,0,0,5">
-                    <Run Text="{main:Loc MainWindow_CatiaStatus_Title}"/>
+                    <Run Text="{main:Loc CatiaStatus_Title}"/>
                     <Run>
                         <Run.Style>
                             <Style TargetType="{x:Type Run}">
-                                <Setter Property="Text" Value="{main:Loc MainWindow_CatiaStatus_Disconnected}"/>
+                                <Setter Property="Text" Value="{main:Loc CatiaStatus_Disconnected}"/>
                                 <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
-                                        <Setter Property="Text" Value="{main:Loc MainWindow_CatiaStatus_Connected}"/>
+                                        <Setter Property="Text" Value="{main:Loc CatiaStatus_Connected}"/>
                                         <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -294,7 +287,7 @@
                     
                     <LineBreak/>
                     
-                    <Run Text="{main:Loc MainWindow_CatiaStatus_LastRefresh}" FontSize="10"/>
+                    <Run Text="{main:Loc CatiaStatus_LastRefresh}" FontSize="10"/>
                     <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.LastRefreshTime, StringFormat=u}" Foreground="{StaticResource Gray127}" FontSize="10"/>
                     
                     <LineBreak/>
@@ -323,13 +316,13 @@
                                 </Canvas>
                             </Viewbox>
 
-                            <TextBlock Text="Rafraichir" Style="{StaticResource IconWithLabel_TextBlock}"/>
+                            <TextBlock Text="{main:Loc Catia_Refresh}" Style="{StaticResource IconWithLabel_TextBlock}"/>
 
                         </StackPanel>
                     </Button>
 
                     <Button Grid.Column="1" Style="{StaticResource GenericHighligh_Button}"
-                            Content="{main:Loc MainWindow_General_Generate}"
+                            Content="{main:Loc Marking_GenerateText}"
                             FontSize="14" Padding="15,5" HorizontalAlignment="Right"
                             Command="{Binding ComplexMarkingViewModel.GenerateCommand, Source={StaticResource Locator}}"
                             IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}"/>

@@ -90,10 +90,7 @@ namespace Graphy.Model
 
             // Creates the marking set
             HybridBody markingSet = catiaPart.PartDocument.Part.HybridBodies.Add();
-            if (markingData.IsText)
-                markingSet.set_Name("MARKING SET: \"" + markingData.Text + "\"");
-            else
-                markingSet.set_Name("MARKING SET: \"" + markingData.Icon.Name + "\"");
+            markingSet.set_Name(markingData.Name);
 
             // Creates the origin axis system to the marking set
             CatiaAxisSystem originAxisSystem = CatiaAxisSystem.GetOriginAxisSystem(catiaPart.PartDocument, markingSet);

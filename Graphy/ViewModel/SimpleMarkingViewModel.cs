@@ -258,7 +258,10 @@ namespace Graphy.ViewModel
             await Task.Run(() =>
             {
                 MarkingGenerator markingGenerator = new MarkingGenerator();
-                markingGenerator.ProgressUpdated += MarkingGenerator_ProgressUpdated; ;
+                markingGenerator.ProgressUpdated += MarkingGenerator_ProgressUpdated;
+
+                // Marking name is not assigned by user.
+                MarkablePart.MarkingData.Name = MarkablePart.MarkingData.IsText ? MarkablePart.MarkingData.Text : MarkablePart.MarkingData.Icon.Name;
 
                 try
                 {

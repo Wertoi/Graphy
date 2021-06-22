@@ -8,7 +8,7 @@
         xmlns:view="clr-namespace:Graphy.View"
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Graphy.MainWindow"
         mc:Ignorable="d"
-        Title="Graphy" Height="790" Width="700" WindowStartupLocation="CenterScreen" Icon="Icon/Graphy_Icon.ico">
+        Title="Graphy" Height="800" Width="700" WindowStartupLocation="CenterScreen" Icon="Icon/Graphy_Icon.ico">
 
     <Grid UseLayoutRounding="True">
         <Grid.ColumnDefinitions>
@@ -92,6 +92,7 @@
                 </RadioButton>
 
             </StackPanel>
+            
 
             <!-- OPEN / CLOSE MENU TOGGLE BUTTON-->
             <ToggleButton x:Name="Menu_ToggleButton" Grid.Row="1" HorizontalAlignment="Right" Style="{StaticResource GenericDarker_ToggleButton}" BorderBrush="Transparent"

@@ -3,27 +3,29 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Graphy"
+      xmlns:local="clr-namespace:Graphy.View"
       xmlns:cc="clr-namespace:Graphy.CustomControl"
       xmlns:enum="clr-namespace:Graphy.Enum"
+      xmlns:main="clr-namespace:Graphy"
       mc:Ignorable="d"
       d:DesignHeight="800" d:DesignWidth="463"
       Title="SimpleMarkingPage">
 
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer Margin="20,25,20,10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <TextBlock Grid.Row="0" Text="Marquage simple" FontSize="22" Foreground="{StaticResource PrimaryColorDark}" Margin="15"/>
+
+        <ScrollViewer Grid.Row="1" Margin="15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
 
-                <TextBlock Text="Marquage simple" FontSize="22" Foreground="{StaticResource PrimaryColorDark}"/>
-
-                <TextBlock VerticalAlignment="Center" Margin="0,25,0,7">
+                <TextBlock VerticalAlignment="Center" Margin="0,0,0,7">
                         <Run Text=">" Foreground="{StaticResource SecondaryColor}" FontWeight="Bold" />
-                        <Run Text="{local:Loc MainWindow_SelectPart_Title}" />
+                        <Run Text="{main:Loc SelectPart_Title}" />
                 </TextBlock>
 
                 <StackPanel Orientation="Horizontal">
@@ -37,7 +39,7 @@
                             </Canvas>
                         </Viewbox>
 
-                        <TextBlock Text="{local:Loc MainWindow_SelectPart_NoPart}" Foreground="#FFA6A6A6" VerticalAlignment="Center"/>
+                        <TextBlock Text="{main:Loc SelectPart_NoPart}" Foreground="#FFA6A6A6" VerticalAlignment="Center"/>
 
                     </StackPanel>
 
@@ -71,7 +73,7 @@
                             DataContext="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel}">
                     <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">
                             <Run Text=">" Foreground="{StaticResource SecondaryColor}" FontWeight="Bold" />
-                            <Run Text="{local:Loc MainWindow_MarkingData_MarkingTypeLabel}"/>
+                            <Run Text="{main:Loc MarkingData_MarkingTypeLabel}"/>
                     </TextBlock>
 
                     <RadioButton x:Name="TextRadioButton" Style="{StaticResource GenericHighlight_ToggledRadioButton}"
@@ -84,7 +86,7 @@
                                 </Canvas>
                             </Viewbox>
 
-                            <TextBlock Text="{local:Loc MainWindow_MarkingData_MarkingTypeText}" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
+                            <TextBlock Text="{main:Loc MarkingData_MarkingTypeText}" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
                         </StackPanel>
                     </RadioButton>
 
@@ -97,13 +99,13 @@
                                     <Path Style="{StaticResource SimpleMarking_OptionIcon}" Data="{StaticResource Image_Icon}"/>
                                 </Canvas>
                             </Viewbox>
-                            <TextBlock Text="{local:Loc MainWindow_MarkingData_MarkingTypeIcon}" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
+                            <TextBlock Text="{main:Loc MarkingData_MarkingTypeIcon}" Style="{StaticResource ToggleButtonWithImageTextBlockStyle}"/>
                         </StackPanel>
                     </RadioButton>
 
                 </StackPanel>
 
-                <TextBlock Text="{local:Loc MainWindow_MarkingData_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" VerticalAlignment="Center" Margin="0,20,0,0"/>
+                <TextBlock Text="{main:Loc MarkingData_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" VerticalAlignment="Center" Margin="0,20,0,0"/>
 
                 <Grid Margin="0,5,0,0"
                       DataContext="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel}">
@@ -124,7 +126,7 @@
 
                     <!-- TEXTE INPUT -->
                     <!--#region -->
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_TextLabel}" Style="{StaticResource LabelFormTextBlock}"
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{main:Loc MarkingData_TextLabel}" Style="{StaticResource LabelFormTextBlock}"
                                    IsEnabled="{Binding ElementName=TextRadioButton, Path=IsChecked}"/>
 
                     <TextBox x:Name="InputTextTextBox" Grid.Row="0" Grid.Column="1"
@@ -171,7 +173,7 @@
                     <!-- TEXT OPTIONS -->
                     <!--#region TEXT OPTIONS-->
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Style du texte" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{main:Loc MarkingData_TextStyleLabel}" Style="{StaticResource LabelFormTextBlock}"/>
 
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,5">
 
@@ -220,7 +222,7 @@
 
                     <!-- Police d'écriture -->
                     <!--#region -->
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_FontLabel}" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{main:Loc MarkingData_FontLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
                     <ComboBox Grid.Row="2" Grid.Column="1"
                               Margin="0,3,10,3" Padding="5,8,10,8"
@@ -238,7 +240,7 @@
 
 
                     <!--ICON INPUT -->
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{local:Loc MainWindow_MarkingData_IconLabel}" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{main:Loc MainWindow_MarkingData_IconLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
                     <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyUnderlignedTextBox}"
                                  Text="{Binding Path=MarkablePart.MarkingData.Icon.Name}" />
@@ -255,7 +257,7 @@
                     </Button>
 
                     <!-- Hauteur de caractère -->
-                    <TextBlock Grid.Row="4" Text="{local:Loc MainWindow_MarkingData_CharacterHeightLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="4" Text="{main:Loc MarkingData_CharacterHeightLabel}" Style="{StaticResource LabelFormTextBlock}"/>
 
                     <cc:TextBoxWithUnit Grid.Row="4" Grid.Column="1"
                                         Unit="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.LengthUnitSymbol}"
@@ -263,7 +265,7 @@
 
 
                     <!-- Hauteur d'extrusion -->
-                    <TextBlock Grid.Row="5" Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightLabel}" Style="{StaticResource LabelFormTextBlock}"
+                    <TextBlock Grid.Row="5" Text="{main:Loc MarkingData_ExtrusionHeightLabel}" Style="{StaticResource LabelFormTextBlock}"
                                IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
 
                     <cc:TextBoxWithUnit Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center"
@@ -271,16 +273,16 @@
                                         Text="{Binding MarkablePart.MarkingData.ExtrusionHeight, Mode=TwoWay}"
                                         IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
 
-                    <Viewbox Grid.Row="4" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
+                    <Viewbox Grid.Row="5" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                         <Viewbox.ToolTip>
                             <TextBlock>
-                                    <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip1}"/>
+                                    <Run Text="{main:Loc MarkingData_ExtrusionHeightTooltip1}"/>
                                     <LineBreak/>
-                                    <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip2}"/>
+                                    <Run Text="{main:Loc MarkingData_ExtrusionHeightTooltip2}"/>
                                     <LineBreak/>
-                                    <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip3}"/>
+                                    <Run Text="{main:Loc MarkingData_ExtrusionHeightTooltip3}"/>
                                     <LineBreak/>
-                                    <Run Text="{local:Loc MainWindow_MarkingData_ExtrusionHeightTooltip4}"/>
+                                    <Run Text="{main:Loc MarkingData_ExtrusionHeightTooltip4}"/>
                             </TextBlock>
                         </Viewbox.ToolTip>
                         <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
@@ -289,7 +291,7 @@
                     </Viewbox>
 
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Alignements" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="{main:Loc MarkingData_AlignmentLabel}" Style="{StaticResource LabelFormTextBlock}"/>
 
                     <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="0,5">
 
@@ -378,7 +380,7 @@
                 </Grid>
 
                 <!-- POSITIONS -->
-                <TextBlock Grid.Row="5" Grid.ColumnSpan="4" Text="{local:Loc MainWindow_Position_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,20,0,0"/>
+                <TextBlock Grid.Row="5" Grid.ColumnSpan="4" Text="{main:Loc Position_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,20,0,0"/>
 
                 <Grid Margin="0,5,0,0"
                        DataContext="{Binding Source={StaticResource Locator}, Path=SimpleMarkingViewModel}">
@@ -396,7 +398,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- SURFACE POSITION -->
-                    <TextBlock Text="{local:Loc MainWindow_Position_SurfaceLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Text="{main:Loc Position_SurfaceLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
                              Text="{Binding MarkablePart.MarkingData.ProjectionSurfaceName}">
                     </TextBox>
@@ -414,10 +416,10 @@
                     <Viewbox Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                         <Viewbox.ToolTip>
                             <TextBlock>
-                                    <Run Text="{local:Loc MainWindow_Position_ProjectionSurfaceTooltip1}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_ProjectionSurfaceTooltip2}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_ProjectionSurfaceTooltip3}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_ProjectionSurfaceTooltip4}"/>
+                                    <Run Text="{main:Loc Position_ProjectionSurfaceTooltip1}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_ProjectionSurfaceTooltip2}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_ProjectionSurfaceTooltip3}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_ProjectionSurfaceTooltip4}"/>
                             </TextBlock>
                         </Viewbox.ToolTip>
                         <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
@@ -428,7 +430,7 @@
 
 
                     <!-- TRACKING CURVE POSITION -->
-                    <TextBlock Grid.Row="1" Text="{local:Loc MainWindow_Position_CurveLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="1" Text="{main:Loc Position_CurveLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"
                              Text="{Binding MarkablePart.MarkingData.TrackingCurveName}"/>
 
@@ -445,11 +447,11 @@
                     <Viewbox Grid.Row="1" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                         <Viewbox.ToolTip>
                             <TextBlock>
-                                    <Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip1}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip2}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip3}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip4}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_TrackingCurveTooltip5}"/>
+                                    <Run Text="{main:Loc Position_TrackingCurveTooltip1}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_TrackingCurveTooltip2}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_TrackingCurveTooltip3}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_TrackingCurveTooltip4}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_TrackingCurveTooltip5}"/>
                             </TextBlock>
                         </Viewbox.ToolTip>
                         <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
@@ -458,7 +460,7 @@
                     </Viewbox>
 
                     <!-- START POINT POSITION -->
-                    <TextBlock Grid.Row="2" Text="{local:Loc MainWindow_Position_StartPointLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="2" Text="{main:Loc Position_ReferencePointLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
                              Text="{Binding MarkablePart.MarkingData.ReferencePointName}"/>
 
@@ -475,10 +477,10 @@
                     <Viewbox Grid.Row="2" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                         <Viewbox.ToolTip>
                             <TextBlock>
-                                    <Run Text="{local:Loc MainWindow_Position_StartPointTooltip1}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_StartPointTooltip2}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_StartPointTooltip3}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_StartPointTooltip4}"/>
+                                    <Run Text="{main:Loc Position_ReferencePointTooltip1}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_ReferencePointTooltip2}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_ReferencePointTooltip3}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_ReferencePointTooltip4}"/>
                             </TextBlock>
                         </Viewbox.ToolTip>
                         <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
@@ -486,8 +488,8 @@
                         </Canvas>
                     </Viewbox>
 
-                    <!-- LOCAL AXIS POSITION -->
-                    <TextBlock Grid.Row="3" Text="{local:Loc MainWindow_Position_LocalAxisSystemLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                    <!-- main AXIS POSITION -->
+                    <TextBlock Grid.Row="3" Text="{main:Loc Position_LocalAxisSystemLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
                              Text="{Binding MarkablePart.MarkingData.AxisSystemName}"/>
 
@@ -503,12 +505,12 @@
 
                     <Viewbox Grid.Row="3" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
                         <Viewbox.ToolTip>
-                            <TextBlock><Run Text="{local:Loc MainWindow_Position_LocalAxisSystemTooltipLine1}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_LocalAxisSystemTooltipLine2}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_LocalAxisSystemTooltipLine3}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_LocalAxisSystemTooltipLine4}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_LocalAxisSystemTooltipLine5}"/>
-                                    <LineBreak/><Run Text="{local:Loc MainWindow_Position_LocalAxisSystemTooltipLine6}"/>
+                            <TextBlock><Run Text="{main:Loc Position_mainAxisSystemTooltipLine1}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine2}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine3}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine4}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine5}"/>
+                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine6}"/>
                             </TextBlock>
                         </Viewbox.ToolTip>
                         <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
@@ -522,22 +524,22 @@
 
         </ScrollViewer>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Margin="20,0,0,5">
-                    <Run Text="{local:Loc MainWindow_CatiaStatus_Title}"/>
+                    <Run Text="{main:Loc CatiaStatus_Title}"/>
                     <Run>
                         <Run.Style>
                             <Style TargetType="{x:Type Run}">
-                                <Setter Property="Text" Value="{local:Loc MainWindow_CatiaStatus_Disconnected}"/>
+                                <Setter Property="Text" Value="{main:Loc CatiaStatus_Disconnected}"/>
                                 <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
-                                        <Setter Property="Text" Value="{local:Loc MainWindow_CatiaStatus_Connected}"/>
+                                        <Setter Property="Text" Value="{main:Loc CatiaStatus_Connected}"/>
                                         <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -547,12 +549,12 @@
                     
                     <LineBreak/>
                     
-                    <Run Text="{local:Loc MainWindow_CatiaStatus_LastRefresh}" FontSize="10"/>
+                    <Run Text="{main:Loc CatiaStatus_LastRefresh}" FontSize="10"/>
                     <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.LastRefreshTime, StringFormat=u}" Foreground="{StaticResource Gray127}" FontSize="10"/>
                     
                     <LineBreak/>
                     
-                    <Run Text="{local:Loc MainWindow_CatiaStatus_Version}" FontSize="10"/>
+                    <Run Text="{main:Loc CatiaStatus_Version}" FontSize="10"/>
                     <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.FullVersion}" FontSize="10" Foreground="{StaticResource Gray127}"/>
 
             </TextBlock>
@@ -577,13 +579,13 @@
                                 </Canvas>
                             </Viewbox>
 
-                            <TextBlock Text="Rafraichir" Style="{StaticResource IconWithLabel_TextBlock}"/>
+                            <TextBlock Text="{main:Loc Catia_Refresh}" Style="{StaticResource IconWithLabel_TextBlock}"/>
 
                         </StackPanel>
                     </Button>
 
                     <Button Grid.Column="1" Style="{StaticResource GenericHighligh_Button}"
-                            Content="{local:Loc MainWindow_General_Generate}"
+                            Content="{main:Loc Marking_GenerateText}"
                             FontSize="14" Padding="15,5" HorizontalAlignment="Right"
                             Command="{Binding SimpleMarkingViewModel.GenerateCommand, Source={StaticResource Locator}}"
                             IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}">
