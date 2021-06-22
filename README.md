@@ -1,8 +1,8 @@
 # Graphy
 
 ## General Info
-Graphy allows you to write texts or vector images easily in Catia V5 on complex surfaces and directions.<br />
-Drawings obtained can be kept as a surface or in volume but cannot be modified directly in Catia.<br />
+Graphy allows you to write texts or draw vector images easily in Catia V5 on complex surfaces and directions.<br />
+Drawings obtained can be kept as a surface or in volume but cannot be modified after.<br />
 Graphy only uses Generative Shape Design module; it does not need other specific Catia V5 license.<br />
 ![Hello World](/Images/Hello_World.png)
 
@@ -18,11 +18,11 @@ Work fine if compiled with the associated reference Catia dlls:
 
 ## How to use
 Graphy just needs 4 basic shapes:
-- A surface where the projection is done.
+- A plane or a surface where the projection is done.
 - A line or a curve to follow. Should be constructed on the surface.
-- A starting point. Should be constructed on the surface and on the line.
+- A reference point to locate the marking. Should be constructed on the surface and on the line.
 - An axis system to orientate the drawing:
-  - The axis system origin must be the starting point.
+  - The axis system origin must be the reference point.
   - The X axis must be the tangent to the curve passing by its origin. Its direction points the marking direction.
   - The Y axis is the results of X and Z axis. Its direction points the characters direction.
   - The Z axis must be the normal to the surface passing by its origin. Its direction points the material adding direction.
