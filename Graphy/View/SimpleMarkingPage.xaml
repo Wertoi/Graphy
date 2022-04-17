@@ -494,11 +494,11 @@
                              Text="{Binding MarkablePart.MarkingData.AxisSystemName}"/>
 
                     <Button Grid.Row="3" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
-                            Command="{Binding SelectAxisSystemCommand}"
+                            Command="{Binding GenerateAxisSystemCommand}"
                             IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Margin="0,5,0,0">
                         <Viewbox Style="{StaticResource IconViewBox}">
                             <Canvas Style="{StaticResource IconCanvas}">
-                                <Path  Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Select_Icon}"/>
+                                <Path  Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Add_Icon}"/>
                             </Canvas>
                         </Viewbox>
                     </Button>

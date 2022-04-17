@@ -70,5 +70,17 @@ namespace Graphy.Model.CatiaObject.CatiaShape
 
             return new CatiaLine(PartDocument, this, tangentPlaneRef, point, 90, 0, 10, false);
         }
+
+
+        public static CatiaCurve GetCatiaCurve(PartDocument partDocument, string curveName, CatiaSurface supportSurface)
+        {
+            AnyObject tempCatiaObject = partDocument.Part.FindObjectByName(curveName);
+            CatiaCurve tempCatiaCurve = new CatiaCurve(partDocument, supportSurface)
+            {
+                Shape = (HybridShape)tempCatiaObject
+            };
+
+            return tempCatiaCurve;
+        }
     }
 }

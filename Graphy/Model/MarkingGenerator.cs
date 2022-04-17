@@ -105,30 +105,11 @@ namespace Graphy.Model
 
             // Creates the input data references
 
-            AnyObject tempSupportSurface = catiaPart.PartDocument.Part.FindObjectByName(markingData.ProjectionSurfaceName);
-            CatiaSurface supportSurface = new CatiaSurface(catiaPart.PartDocument)
-            {
-                Shape = (HybridShape)tempSupportSurface
-            };
+            CatiaSurface supportSurface = CatiaSurface.GetCatiaSurface(catiaPart.PartDocument, markingData.ProjectionSurfaceName);
+            CatiaCurve trackingCurve = CatiaCurve.GetCatiaCurve(catiaPart.PartDocument, markingData.TrackingCurveName, supportSurface);
+            CatiaPoint referencePoint = CatiaPoint.GetCatiaPoint(catiaPart.PartDocument, markingData.ReferencePointName);
+            CatiaAxisSystem referenceAxisSystem = CatiaAxisSystem.GetCatiaAxisSystem(catiaPart.PartDocument, markingData.AxisSystemName);
 
-            AnyObject tempTrackingCurve = catiaPart.PartDocument.Part.FindObjectByName(markingData.TrackingCurveName);
-            CatiaCurve trackingCurve = new CatiaCurve(catiaPart.PartDocument, supportSurface)
-            {
-                Shape = (HybridShape)tempTrackingCurve
-            };
-
-
-            AnyObject tempReferencePoint = catiaPart.PartDocument.Part.FindObjectByName(markingData.ReferencePointName);
-            CatiaPoint referencePoint = new CatiaPoint(catiaPart.PartDocument)
-            {
-                Shape = (HybridShape)tempReferencePoint
-            };
-
-            AxisSystem tempReferenceAxisSystem = (AxisSystem)catiaPart.PartDocument.Part.FindObjectByName(markingData.AxisSystemName);
-            CatiaAxisSystem referenceAxisSystem = new CatiaAxisSystem(catiaPart.PartDocument)
-            {
-                System = tempReferenceAxisSystem
-            };
 
             // Factories
             HybridShapeFactory hybridShapeFactory = (HybridShapeFactory)catiaPart.PartDocument.Part.HybridShapeFactory;
@@ -747,7 +728,6 @@ namespace Graphy.Model
 
             return isSameDirection;
         }
-
 
     }
 

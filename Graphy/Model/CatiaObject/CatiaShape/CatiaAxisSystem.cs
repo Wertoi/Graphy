@@ -17,7 +17,7 @@ namespace Graphy.Model.CatiaObject.CatiaShape
         }
 
         public CatiaAxisSystem(PartDocument partDocument, CatiaPoint point, CatiaCurve curve, CatiaSurface surface,
-            bool xDirection, bool yDirection, bool zDirection, HybridBody workingSet)
+            bool xDirection, bool yDirection, bool zDirection, HybridBody workingSet = null)
         {
             PartDocument = partDocument;
 
@@ -31,7 +31,9 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             CatiaLine naturalRadialLine = curve.GetNaturalRadialLine(point);
 
             // Create the axis system
-            partDocument.Part.InWorkObject = workingSet;
+            if(workingSet != null)
+                partDocument.Part.InWorkObject = workingSet;
+
             AxisSystem tempAxisSystem = partDocument.Part.AxisSystems.Add();
 
             // Assign the origin point
@@ -115,6 +117,17 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             };
 
             return originAxisSystem;
+        }
+
+        public static CatiaAxisSystem GetCatiaAxisSystem(PartDocument partDocument, string axisSystemName)
+        {
+            AxisSystem tempAxisSystem = (AxisSystem)partDocument.Part.FindObjectByName(axisSystemName);
+            CatiaAxisSystem tempCatiaAxisSystem = new CatiaAxisSystem(partDocument)
+            {
+                System = tempAxisSystem
+            };
+
+            return tempCatiaAxisSystem;
         }
     }
 }

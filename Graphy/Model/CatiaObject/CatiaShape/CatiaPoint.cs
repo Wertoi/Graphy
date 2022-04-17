@@ -81,6 +81,17 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             }
         }
 
+        public static CatiaPoint GetCatiaPoint(PartDocument partDocument, string pointName)
+        {
+            AnyObject tempCatiaObject = partDocument.Part.FindObjectByName(pointName);
+            CatiaPoint tempCatiaPoint = new CatiaPoint(partDocument)
+            {
+                Shape = (HybridShape)tempCatiaObject
+            };
+
+            return tempCatiaPoint;
+        }
+
 
         // EQUALS OVERRIDE
         public override bool Equals(object obj)

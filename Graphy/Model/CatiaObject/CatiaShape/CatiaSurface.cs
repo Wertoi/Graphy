@@ -154,6 +154,17 @@ namespace Graphy.Model.CatiaObject.CatiaShape
 
         }
 
+        public static CatiaSurface GetCatiaSurface(PartDocument partDocument, string surfaceName)
+        {
+            AnyObject tempCatiaObject = partDocument.Part.FindObjectByName(surfaceName);
+            CatiaSurface tempCatiaSurface = new CatiaSurface(partDocument)
+            {
+                Shape = (HybridShape)tempCatiaObject
+            };
+
+            return tempCatiaSurface;
+        }
+
 
         /// <summary>
         /// Check if the orientation of the split should be inverted by comparing split surface area and the character filled surface area.

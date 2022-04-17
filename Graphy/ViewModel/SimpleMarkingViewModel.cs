@@ -55,7 +55,7 @@ namespace Graphy.ViewModel
             SelectTrackingCurveCommand = new RelayCommand(SelectTrackingCurveCommandAction);
             SelectStartPointCommand = new RelayCommand(SelectStartPointCommandAction);
             SelectProjectionSurfaceCommand = new RelayCommand(SelectionProjectionSurfaceCommandAction);
-            SelectAxisSystemCommand = new RelayCommand(SelectAxisSystemCommandAction);
+            GenerateAxisSystemCommand = new RelayCommand(GenerateAxisSystemCommandAction);
 
             GenerateCommand = new RelayCommand(GenerateCommandAction);
         }
@@ -130,14 +130,37 @@ namespace Graphy.ViewModel
 
 
         #region Select Axis System Command
-        private RelayCommand _selectAxisSystemCommand;
-        public RelayCommand SelectAxisSystemCommand { get => _selectAxisSystemCommand; set => _selectAxisSystemCommand = value; }
+        private RelayCommand _generateAxisSystemCommand;
+        public RelayCommand GenerateAxisSystemCommand { get => _generateAxisSystemCommand; set => _generateAxisSystemCommand = value; }
 
-        private void SelectAxisSystemCommandAction()
+        private void GenerateAxisSystemCommandAction()
         {
-            bool selectionStatus = TrySelectShape(ShapeType.AxisSystem, out string shapeName);
-            if (selectionStatus)
-                MarkablePart.MarkingData.AxisSystemName = shapeName;
+            PartDocument partDocument = MarkablePart.CatiaPart.PartDocument;
+
+            CatiaSurface supportSurface = CatiaSurface.GetCatiaSurface(partDocument, MarkablePart.MarkingData.ProjectionSurfaceName);
+
+            CatiaAxisSystem catiaAxisSystem = new CatiaAxisSystem(partDocument,
+                CatiaPoint.GetCatiaPoint(partDocument, MarkablePart.MarkingData.ReferencePointName),
+                CatiaCurve.GetCatiaCurve(partDocument, MarkablePart.MarkingData.TrackingCurveName, supportSurface),
+                supportSurface,
+                true, true, true);
+
+            string axisSystemName = "Marking_Reference_AxisSystem";
+            string axisSystemNameCount = "";
+            Selection selection = MarkablePart.CatiaPart.PartDocument.Selection;
+            int count = 0;
+            do
+            {
+                count++;
+                axisSystemNameCount = axisSystemName + count;
+                selection.Clear();
+                selection.Search("Name=" + axisSystemNameCount + ",all");
+
+            } while (selection.Count != 0);
+
+            catiaAxisSystem.System.set_Name(axisSystemNameCount);
+            MarkablePart.MarkingData.AxisSystemName = axisSystemNameCount;
+
         }
         #endregion
 
