@@ -25,7 +25,7 @@
         <ScrollViewer Grid.Row="1" Margin="15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
 
-                <TextBlock Text="{main:Loc Settings_Marking_ToleranceFactorLabel}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,0,0,5"/>
+                <TextBlock Text="{main:Loc Settings_General_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,0,0,5"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -83,7 +83,7 @@
 
 
 
-                <TextBlock Text="CSV Reader"
+                <TextBlock Text="{main:Loc Settings_CSVReader_Title}"
                            FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,25,0,5"/>
 
                 <Grid>
@@ -96,18 +96,18 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Caractère délimiteur" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{main:Loc Settings_CSVReader_DelimiterLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=CsvConfig.Delimiter, Mode=TwoWay}"
                              Style="{StaticResource NormalTextBox}"/>
 
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Caractère pour commentaire" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{main:Loc Settings_CSVReader_CommentaryLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=CsvConfig.CommentMark, Mode=TwoWay}"
                              Style="{StaticResource NormalTextBox}"/>
 
                 </Grid>
 
-                <TextBlock Text="Collection d'images" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,25,0,5"/>
+                <TextBlock Text="{main:Loc Settings_Icons_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,25,0,5"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -120,7 +120,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Exporter" Style="{StaticResource LabelFormTextBlock}" Margin="0,0,20,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{main:Loc Settings_Icons_ExportLabel}" Style="{StaticResource LabelFormTextBlock}" Margin="0,0,20,0"/>
                     <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.ExportIconCollectionCommand}">
                         <Viewbox Style="{StaticResource IconViewBox}">
@@ -130,7 +130,7 @@
                         </Viewbox>
                     </Button>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Importer" Style="{StaticResource LabelFormTextBlock}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{main:Loc Settings_Icons_ImportLabel}" Style="{StaticResource LabelFormTextBlock}"/>
                     <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,3,10,3" Padding="5,8,10,8"
                               ItemsSource="{Binding Path=SelectedImportMode, Converter={StaticResource EnumToCollectionConverter}}"
                               SelectedItem="{Binding Path=SelectedImportMode}">

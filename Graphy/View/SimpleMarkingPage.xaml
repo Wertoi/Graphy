@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Marquage simple" FontSize="22" Foreground="{StaticResource PrimaryColorDark}" Margin="15"/>
+        <TextBlock Grid.Row="0" Text="{main:Loc SimpleMarking_Title}" FontSize="22" Foreground="{StaticResource PrimaryColorDark}" Margin="15"/>
 
         <ScrollViewer Grid.Row="1" Margin="15" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">

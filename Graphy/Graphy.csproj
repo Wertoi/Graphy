@@ -61,27 +61,27 @@
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Interop.HybridShapeTypeLib">
-      <HintPath>..\..\..\Programmation\Catia dll\Catia R19 dll\Interop.HybridShapeTypeLib.dll</HintPath>
+      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.HybridShapeTypeLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.INFITF">
-      <HintPath>..\..\..\Programmation\Catia dll\Catia R19 dll\Interop.INFITF.dll</HintPath>
+      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.INFITF.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.KnowledgewareTypeLib">
-      <HintPath>..\..\..\Programmation\Catia dll\Catia R19 dll\Interop.KnowledgewareTypeLib.dll</HintPath>
+      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.KnowledgewareTypeLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.MECMOD">
-      <HintPath>..\..\..\Programmation\Catia dll\Catia R19 dll\Interop.MECMOD.dll</HintPath>
+      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.MECMOD.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.PARTITF">
-      <HintPath>..\..\..\Programmation\Catia dll\Catia R19 dll\Interop.PARTITF.dll</HintPath>
+      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.PARTITF.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.SPATypeLib">
-      <HintPath>..\..\..\Programmation\Catia dll\Catia R19 dll\Interop.SPATypeLib.dll</HintPath>
+      <HintPath>..\..\..\Programmation\Catia dlls\Catia V5R19\Interop.SPATypeLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">

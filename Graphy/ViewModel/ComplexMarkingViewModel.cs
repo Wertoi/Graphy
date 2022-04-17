@@ -217,6 +217,7 @@ namespace Graphy.ViewModel
                     bool hasCatiaPartFoundItsMarkingData = false;
                     foreach(MarkablePart markablePartFromCSV in MarkablePartCollection)
                     {
+                        // If a match is found, assign the CATPart
                         if(markablePartFromCSV.PartName == catiaPart.Name)
                         {
                             markablePartFromCSV.CatiaPart = catiaPart;
@@ -225,6 +226,7 @@ namespace Graphy.ViewModel
                         }
                     }
 
+                    // If no match is found, assign no marking
                     if (!hasCatiaPartFoundItsMarkingData)
                     {
                         MarkablePartCollection.Add(new MarkablePart(catiaPart)

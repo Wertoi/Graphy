@@ -37,6 +37,54 @@ namespace Graphy.Model
         private const int MARKING_REFERENCE_AXIS_SYSTEME_NAME_INDEX = 17;
 
 
+        public static void GenerateTemplate(CsvConfig csvConfig, MarkablePart markablePart)
+        {
+            CsvWriter writer = new CsvWriter(csvConfig);
+            List<string> headerList = new List<string>()
+            { "PartName",
+                "MarkingName",
+                "IsText",
+                "Text",
+                "IsBold",
+                "IsItalic",
+                "IsUnderline",
+                "IsStrikeThrough",
+                "FontFamily",
+                "IconPathData",
+                "MarkingHeight",
+                "ExtrusionHeight",
+                "HorizontalAlignment",
+                "VerticalAlignment",
+                "Surface",
+                "Curve",
+                "Point",
+                "AxisSystem"};
+            writer.AddRow(headerList, true);
+
+            List<string> exampleList = new List<string>()
+            { markablePart.PartName,
+                markablePart.MarkingData.Name,
+                markablePart.MarkingData.IsText.ToString(),
+                markablePart.MarkingData.Text,
+                markablePart.MarkingData.IsBold.ToString(),
+                markablePart.MarkingData.IsItalic.ToString(),
+                markablePart.MarkingData.IsUnderline.ToString(),
+                markablePart.MarkingData.IsStrikeThrough.ToString(),
+                markablePart.MarkingData.FontFamily.Source,
+                markablePart.MarkingData.Icon.PathData,
+                markablePart.MarkingData.MarkingHeight.ToString(),
+                markablePart.MarkingData.ExtrusionHeight.ToString(),
+                markablePart.MarkingData.HorizontalAlignment.ToString(),
+                markablePart.MarkingData.VerticalAlignment.ToString(),
+                markablePart.MarkingData.ProjectionSurfaceName,
+                markablePart.MarkingData.TrackingCurveName,
+                markablePart.MarkingData.ReferencePointName,
+                markablePart.MarkingData.AxisSystemName };
+            writer.AddRow(exampleList);
+
+            //writer.Write();
+        }
+
         public static bool TryRead(string fullPath, ICollection<MarkablePart> markablePartList, CsvConfig csvConfig)
         {
             if (!File.Exists(fullPath))

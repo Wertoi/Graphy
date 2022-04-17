@@ -37,7 +37,7 @@
                             </Canvas>
                         </Viewbox>
 
-                        <TextBlock Text="Marquage simple" Style="{StaticResource Menu_TextBlock}"
+                        <TextBlock Text="{local:Loc Menu_SimpleMarking}" Style="{StaticResource Menu_TextBlock}"
                                Visibility="{Binding ElementName=Menu_ToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
                 </RadioButton>
@@ -52,7 +52,7 @@
                             </Canvas>
                         </Viewbox>
 
-                        <TextBlock Text="Marquage complexe" Style="{StaticResource Menu_TextBlock}"
+                        <TextBlock Text="{local:Loc Menu_ComplexMarking}" Style="{StaticResource Menu_TextBlock}"
                                Visibility="{Binding ElementName=Menu_ToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
                 </RadioButton>
@@ -68,7 +68,7 @@
                             </Canvas>
                         </Viewbox>
 
-                        <TextBlock Text="Bibliothèque d'images" Style="{StaticResource Menu_TextBlock}"
+                        <TextBlock Text="{local:Loc Menu_IconLibrary}" Style="{StaticResource Menu_TextBlock}"
                                Visibility="{Binding ElementName=Menu_ToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
                 </RadioButton>
@@ -86,7 +86,7 @@
                             </Canvas>
                         </Viewbox>
 
-                        <TextBlock Text="Paramètres" Style="{StaticResource Menu_TextBlock}"
+                        <TextBlock Text="{local:Loc Menu_Parameters}" Style="{StaticResource Menu_TextBlock}"
                                    Visibility="{Binding ElementName=Menu_ToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
                 </RadioButton>

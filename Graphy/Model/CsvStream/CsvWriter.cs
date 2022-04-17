@@ -23,8 +23,11 @@ namespace Graphy.CsvStream
             _csvContents = new StringBuilder();
         }
 
-        public void AddRow(IEnumerable<string> cells)
+        public void AddRow(IEnumerable<string> cells, bool isCommentRow = false)
         {
+            if (isCommentRow)
+                _csvContents.Append(Config.CommentMark);
+
             int i = 0;
             foreach (string cell in cells)
             {

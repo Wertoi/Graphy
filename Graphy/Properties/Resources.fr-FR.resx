@@ -324,13 +324,130 @@
   <data name="Catia_Refresh" xml:space="preserve">
     <value>Rafraichir</value>
   </data>
-  <data name="ComplexMarking_Inputs_Refresh" xml:space="preserve">
-    <value>Rafraichir</value>
+  <data name="ComplexMarking_Inputs_Import" xml:space="preserve">
+    <value>Importer</value>
   </data>
   <data name="MarkingData_AlignmentLabel" xml:space="preserve">
     <value>Alignements</value>
   </data>
   <data name="MarkingData_TextStyleLabel" xml:space="preserve">
     <value>Styles du texte</value>
+  </data>
+  <data name="Settings_CSVReader_CommentaryLabel" xml:space="preserve">
+    <value>Caractère pour commentaire</value>
+  </data>
+  <data name="Settings_CSVReader_DelimiterLabel" xml:space="preserve">
+    <value>Caractère délimiteur</value>
+  </data>
+  <data name="Settings_CSVReader_Title" xml:space="preserve">
+    <value>Lecteur CSV</value>
+  </data>
+  <data name="Settings_Icons_ExportLabel" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="Settings_Icons_ImportLabel" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="Settings_Icons_Title" xml:space="preserve">
+    <value>Collection d'images</value>
+  </data>
+  <data name="ComplexMarking_InputDatas_CATPartsFolder" xml:space="preserve">
+    <value>Répertoire des CATParts</value>
+  </data>
+  <data name="ComplexMarking_InputDatas_CSVFileLabel" xml:space="preserve">
+    <value>Fichier CSV</value>
+  </data>
+  <data name="ComplexMarking_InputDatas_Title" xml:space="preserve">
+    <value>Données d'entrée</value>
+  </data>
+  <data name="ComplexMarking_MarkingList_NoData" xml:space="preserve">
+    <value>Pas de données.</value>
+  </data>
+  <data name="ComplexMarking_MarkingList_SelectAll" xml:space="preserve">
+    <value>Tout sélectionner</value>
+  </data>
+  <data name="ComplexMarking_MarkingList_Title" xml:space="preserve">
+    <value>Liste des marquages</value>
+  </data>
+  <data name="ComplexMarking_MarkingList_UnselectAll" xml:space="preserve">
+    <value>Tout déselectionner</value>
+  </data>
+  <data name="ComplexMarking_Title" xml:space="preserve">
+    <value>Marquage Complèxe</value>
+  </data>
+  <data name="MarkablePart_CATPart_Found" xml:space="preserve">
+    <value>CATPart trouvée</value>
+  </data>
+  <data name="MarkablePart_CATPart_FullPath" xml:space="preserve">
+    <value>Chemin complet</value>
+  </data>
+  <data name="MarkablePart_CATPart_Title" xml:space="preserve">
+    <value>Données CATPart</value>
+  </data>
+  <data name="MarkablePart_Marking_AxisSystem" xml:space="preserve">
+    <value>Repère de référence</value>
+  </data>
+  <data name="MarkablePart_Marking_ExtrusionHeight" xml:space="preserve">
+    <value>Hauteur d'extrusion</value>
+  </data>
+  <data name="MarkablePart_Marking_Font" xml:space="preserve">
+    <value>Police d'écriture</value>
+  </data>
+  <data name="MarkablePart_Marking_HorizontalAlignment" xml:space="preserve">
+    <value>Alignement horizontal</value>
+  </data>
+  <data name="MarkablePart_Marking_Icon" xml:space="preserve">
+    <value>Définition de l'icône</value>
+  </data>
+  <data name="MarkablePart_Marking_IsBold" xml:space="preserve">
+    <value>Est gras</value>
+  </data>
+  <data name="MarkablePart_Marking_IsItalic" xml:space="preserve">
+    <value>Est italique</value>
+  </data>
+  <data name="MarkablePart_Marking_IsStrikeThrough" xml:space="preserve">
+    <value>Est barré</value>
+  </data>
+  <data name="MarkablePart_Marking_IsText" xml:space="preserve">
+    <value>Est du texte</value>
+  </data>
+  <data name="MarkablePart_Marking_IsUnderline" xml:space="preserve">
+    <value>Est souligné</value>
+  </data>
+  <data name="MarkablePart_Marking_MarkingHeight" xml:space="preserve">
+    <value>Hauteur de marquage</value>
+  </data>
+  <data name="MarkablePart_Marking_ProjectionSurface" xml:space="preserve">
+    <value>Surface de projection</value>
+  </data>
+  <data name="MarkablePart_Marking_ReferencePoint" xml:space="preserve">
+    <value>Point de référence</value>
+  </data>
+  <data name="MarkablePart_Marking_Text" xml:space="preserve">
+    <value>Texte</value>
+  </data>
+  <data name="MarkablePart_Marking_Title" xml:space="preserve">
+    <value>Données de marquage</value>
+  </data>
+  <data name="MarkablePart_Marking_TrackingCurve" xml:space="preserve">
+    <value>Courbe de suivi</value>
+  </data>
+  <data name="MarkablePart_Marking_VerticalAlignment" xml:space="preserve">
+    <value>Alignement vertical</value>
+  </data>
+  <data name="Menu_ComplexMarking" xml:space="preserve">
+    <value>Marquage complèxe</value>
+  </data>
+  <data name="Menu_IconLibrary" xml:space="preserve">
+    <value>Bibliothèque d'images</value>
+  </data>
+  <data name="Menu_Parameters" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Menu_SimpleMarking" xml:space="preserve">
+    <value>Marquage simple</value>
+  </data>
+  <data name="SimpleMarking_Title" xml:space="preserve">
+    <value>Marquage Simple</value>
   </data>
 </root>

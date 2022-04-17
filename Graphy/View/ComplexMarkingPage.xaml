@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Marquage complexe" FontSize="22" Foreground="{StaticResource PrimaryColorDark}" Margin="15"/>
+        <TextBlock Grid.Row="0" Text="{main:Loc ComplexMarking_Title}" FontSize="22" Foreground="{StaticResource PrimaryColorDark}" Margin="15"/>
 
 
         <!-- PAGE CONTENT AREA -->
@@ -27,7 +27,7 @@
 
 
                 <!-- INPUT DATA TITLE -->
-                <TextBlock Text="Données d'entrée" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,15,0,5"/>
+                <TextBlock Text="{main:Loc ComplexMarking_InputDatas_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,15,0,5"/>
 
                 <!-- INPUT DATA GRID -->
                 <Grid Margin="0,5,0,0">
@@ -44,7 +44,7 @@
                     <!--#region TABLE SELECTION REGION-->
 
                     <!-- TABLE SELECTION LABEL -->
-                    <TextBlock Text="Fichier CSV des marquages" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Text="{main:Loc ComplexMarking_InputDatas_CSVFileLabel}" Style="{StaticResource LabelFormTextBlock}" />
 
                     <!-- TABLE SELECTION DATA -->
                     <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}"
@@ -66,7 +66,7 @@
                     <!--#region PART FOLDER SELECTION REGION -->
 
                     <!-- PART FOLDER SELECTION LABEL -->
-                    <TextBlock Grid.Row="1" Text="Répertoire des CATParts" Style="{StaticResource LabelFormTextBlock}" />
+                    <TextBlock Grid.Row="1" Text="{main:Loc ComplexMarking_InputDatas_CATPartsFolder}" Style="{StaticResource LabelFormTextBlock}" />
 
                     <!-- PART FOLDER SELECTION INPUT -->
                     <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"
@@ -93,7 +93,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="Liste des marquages" FontSize="16" Foreground="{StaticResource PrimaryColor}"
+                    <TextBlock Grid.Column="0" Text="{main:Loc ComplexMarking_MarkingList_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}"
                                    VerticalAlignment="Center"/>
 
                     <Button Grid.Column="1" Style="{StaticResource Generic_Button}" HorizontalAlignment="Right"
@@ -101,11 +101,11 @@
                         <StackPanel Orientation="Horizontal">
                             <Viewbox Style="{StaticResource IconViewBox}">
                                 <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Refresh_Icon}"/>
+                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Import_Icon}"/>
                                 </Canvas>
                             </Viewbox>
 
-                            <TextBlock Style="{StaticResource IconWithLabel_TextBlock}" Text="{main:Loc ComplexMarking_Inputs_Refresh}"/>
+                            <TextBlock Style="{StaticResource IconWithLabel_TextBlock}" Text="{main:Loc ComplexMarking_Inputs_Import}"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -123,7 +123,7 @@
                             </Viewbox>
 
 
-                            <TextBlock Text="Select All" Style="{StaticResource IconWithLabel_TextBlock}"/>
+                            <TextBlock Text="{main:Loc ComplexMarking_MarkingList_SelectAll}" Style="{StaticResource IconWithLabel_TextBlock}"/>
                         </StackPanel>
                     </Button>
 
@@ -137,7 +137,7 @@
                             </Viewbox>
 
 
-                            <TextBlock Text="Unselect All" Style="{StaticResource IconWithLabel_TextBlock}"/>
+                            <TextBlock Text="{main:Loc ComplexMarking_MarkingList_UnselectAll}" Style="{StaticResource IconWithLabel_TextBlock}"/>
                         </StackPanel>
                     </Button>
 
@@ -177,8 +177,8 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
@@ -198,7 +198,7 @@
                                     </TextBlock.Style>
                                 </TextBlock>
 
-                                <TextBlock Grid.Column="2" Text="{Binding MarkingData.Name}">
+                                <TextBlock Grid.Column="2" Text="{Binding MarkingData.Name}" TextAlignment="Left">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
                                             <Setter Property="IsEnabled" Value="True"/>
@@ -229,7 +229,8 @@
                                 <Button x:Name="MarkablePartViewButton" Grid.Column="4" Style="{StaticResource Generic_SquareButton}"
                                             Click="MarkablePartViewButton_Click"
                                             Command="{Binding Source={StaticResource Locator}, Path=ComplexMarkingViewModel.SelectMarkablePartCommand}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ComplexMarkingPage}, Path=MouseOverItemIndex}" Margin="0,2">
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ComplexMarkingPage}, Path=MouseOverItemIndex}"
+                                        Margin="0,2">
                                     <Viewbox Style="{StaticResource IconViewBox}">
                                         <Canvas Style="{StaticResource IconCanvas}">
                                             <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Info_Icon}"/>
@@ -254,7 +255,7 @@
                         </Canvas>
                     </Viewbox>
 
-                    <TextBlock Style="{StaticResource IconWithLabel_TextBlock}" Text="No data. Select a table, a folder and refresh."
+                    <TextBlock Style="{StaticResource IconWithLabel_TextBlock}" Text="{main:Loc ComplexMarking_MarkingList_NoData}"
                                    Foreground="{StaticResource Gray166}"/>
 
                 </StackPanel>
