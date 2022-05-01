@@ -56,6 +56,8 @@ namespace Graphy.CustomControl
             _transformGroup.Children.Add(_translateTransform);
             _transformGroup.Children.Add(_scaleTransform);
 
+            
+
             UpdateScaleTransform();
         }
 
@@ -104,6 +106,35 @@ namespace Graphy.CustomControl
         // Using a DependencyProperty as the backing store for CanMove.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CanMoveProperty =
             DependencyProperty.Register("CanMove", typeof(bool), typeof(CartesianCanvas), new PropertyMetadata(true));
+
+
+
+
+
+
+        public bool MirrorXAxis
+        {
+            get { return (bool)GetValue(MirrorXAxisProperty); }
+            set { SetValue(MirrorXAxisProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MirrorXAxis.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MirrorXAxisProperty =
+            DependencyProperty.Register("MirrorXAxis", typeof(bool), typeof(CartesianCanvas), new PropertyMetadata(false));
+
+
+
+        public bool MirrorYAxis
+        {
+            get { return (bool)GetValue(MirrorYAxisProperty); }
+            set { SetValue(MirrorYAxisProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MirrorYAxis.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MirrorYAxisProperty =
+            DependencyProperty.Register("MirrorYAxis", typeof(bool), typeof(CartesianCanvas), new PropertyMetadata(false));
+
+
 
 
 
@@ -233,8 +264,8 @@ namespace Graphy.CustomControl
 
         private void UpdateScaleTransform()
         {
-            _scaleTransform.ScaleX = ScaleRatio;
-            _scaleTransform.ScaleY = ScaleRatio;
+            _scaleTransform.ScaleX = MirrorXAxis ? -ScaleRatio: ScaleRatio;
+            _scaleTransform.ScaleY = MirrorYAxis ? -ScaleRatio : ScaleRatio;
 
             foreach (UIElement child in Children)
             {

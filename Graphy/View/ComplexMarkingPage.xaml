@@ -264,65 +264,12 @@
         </ScrollViewer>
 
         <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Margin="20,0,0,5">
-                    <Run Text="{main:Loc CatiaStatus_Title}"/>
-                    <Run>
-                        <Run.Style>
-                            <Style TargetType="{x:Type Run}">
-                                <Setter Property="Text" Value="{main:Loc CatiaStatus_Disconnected}"/>
-                                <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
-                                        <Setter Property="Text" Value="{main:Loc CatiaStatus_Connected}"/>
-                                        <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Run.Style>
-                    </Run>
-                    
-                    <LineBreak/>
-                    
-                    <Run Text="{main:Loc CatiaStatus_LastRefresh}" FontSize="10"/>
-                    <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.LastRefreshTime, StringFormat=u}" Foreground="{StaticResource Gray127}" FontSize="10"/>
-                    
-                    <LineBreak/>
-                    
-                    <Run Text="{main:Loc MainWindow_CatiaStatus_Version}" FontSize="10"/>
-                    <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.FullVersion}" FontSize="10" Foreground="{StaticResource Gray127}"/>
-
-            </TextBlock>
-
-            <Border Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="{StaticResource Gray217}" Background="{StaticResource Gray242}">
+            
+            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource Gray217}" Background="{StaticResource Gray242}">
 
                 <Grid Margin="15,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0"
-                            Style="{StaticResource GenericDarker_Button}"
-                            Command="{Binding CatiaViewModel.RefreshCatiaApplicationCommand, Source={StaticResource Locator}}" Margin="5,0,0,0">
-                        <StackPanel Orientation="Horizontal">
-
-                            <Viewbox Style="{StaticResource IconViewBox}">
-                                <Canvas Style="{StaticResource IconCanvas}">
-                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Refresh_Icon}"/>
-                                </Canvas>
-                            </Viewbox>
-
-                            <TextBlock Text="{main:Loc Catia_Refresh}" Style="{StaticResource IconWithLabel_TextBlock}"/>
-
-                        </StackPanel>
-                    </Button>
-
-                    <Button Grid.Column="1" Style="{StaticResource GenericHighligh_Button}"
+                    
+                    <Button Style="{StaticResource GenericHighligh_Button}"
                             Content="{main:Loc Marking_GenerateText}"
                             FontSize="14" Padding="15,5" HorizontalAlignment="Right"
                             Command="{Binding ComplexMarkingViewModel.GenerateCommand, Source={StaticResource Locator}}"

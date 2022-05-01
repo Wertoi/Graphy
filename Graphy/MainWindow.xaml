@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Graphy"
         xmlns:cc="clr-namespace:Graphy.CustomControl"
         xmlns:view="clr-namespace:Graphy.View"
+        xmlns:custom="clr-namespace:Graphy.CustomControl"
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Graphy.MainWindow"
         mc:Ignorable="d"
         Title="Graphy" Height="800" Width="700" WindowStartupLocation="CenterScreen" Icon="Icon/Graphy_Icon.ico">
@@ -73,9 +74,6 @@
                     </StackPanel>
                 </RadioButton>
 
-                <!-- HORIZONTAL SEPARATOR -->
-                <Separator/>
-
                 <!-- SETTING RADIO BUTTON -->
                 <RadioButton x:Name="SettingRadioButton" Style="{StaticResource Menu_ToggledRadioButton}"
                              Checked="SettingRadioButton_Checked">
@@ -91,8 +89,109 @@
                     </StackPanel>
                 </RadioButton>
 
+
+                <!-- HORIZONTAL SEPARATOR -->
+                <Separator/>
+
+                <!-- CATIA STATUS -->
+                <StackPanel Orientation="Horizontal" Margin="7,10,2,10">
+                    <Viewbox Style="{StaticResource IconViewBox}" Margin="3,3,7,3">
+                        <custom:CartesianCanvas Style="{StaticResource IconCanvas}" MirrorXAxis="False" MirrorYAxis="True">
+
+                            <Path Data="{StaticResource CatiaLogoPart1_Icon}">
+                                <Path.Style>
+                                    <Style TargetType="Path" BasedOn="{StaticResource Generic_InactiveIcon}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
+                                                <Setter Property="Fill" Value="#FFFF1300"/>
+                                                <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+
+                            <Path Data="{StaticResource CatiaLogoPart2_Icon}" >
+                                <Path.Style>
+                                    <Style TargetType="Path" BasedOn="{StaticResource Generic_InactiveIcon}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
+                                                <Setter Property="Fill" Value="#FFFF7F00"/>
+                                                <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+
+                            <Path Data="{StaticResource CatiaLogoPart3_Icon}">
+                                <Path.Style>
+                                    <Style TargetType="Path" BasedOn="{StaticResource Generic_InactiveIcon}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
+                                                <Setter Property="Fill" Value="#FF120C80"/>
+                                                <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            
+                        </custom:CartesianCanvas>
+                    </Viewbox>
+
+                    <TextBlock Visibility="{Binding ElementName=Menu_ToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Run Text="{local:Loc CatiaStatus_Title}"/>
+                            <Run>
+                                <Run.Style>
+                                <Style TargetType="{x:Type Run}">
+                                    <Setter Property="Text" Value="{local:Loc CatiaStatus_Disconnected}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Value="True">
+                                            <Setter Property="Text" Value="{local:Loc CatiaStatus_Connected}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Run.Style>
+                        </Run>
+                    
+                        <LineBreak/>
+                    
+                        <Run Text="{local:Loc CatiaStatus_LastRefresh}" FontSize="10"/>
+                        <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.LastRefreshTime, StringFormat=HH:mm:ss}" Foreground="{StaticResource Gray127}" FontSize="10"/>
+                    
+                        <LineBreak/>
+                    
+                        <Run Text="{local:Loc CatiaStatus_Version}" FontSize="10"/>
+                        <Run Text="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.FullVersion}" FontSize="10" Foreground="{StaticResource Gray127}"/>
+
+                    </TextBlock>
+
+                </StackPanel>
+
+
+                <Button Grid.Column="0"
+                    Style="{StaticResource GenericDarker_Button}"
+                    Command="{Binding CatiaViewModel.RefreshCatiaApplicationCommand, Source={StaticResource Locator}}"
+                    Margin="2,0,0,0" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+
+                        <Viewbox Style="{StaticResource IconViewBox}">
+                            <Canvas Style="{StaticResource IconCanvas}">
+                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Refresh_Icon}"/>
+                            </Canvas>
+                        </Viewbox>
+
+                        <TextBlock Text="{local:Loc Catia_Refresh}" Style="{StaticResource IconWithLabel_TextBlock}"
+                                   Visibility="{Binding ElementName=Menu_ToggleButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    </StackPanel>
+                </Button>
+
             </StackPanel>
-            
+
 
             <!-- OPEN / CLOSE MENU TOGGLE BUTTON-->
             <ToggleButton x:Name="Menu_ToggleButton" Grid.Row="1" HorizontalAlignment="Right" Style="{StaticResource GenericDarker_ToggleButton}" BorderBrush="Transparent"
@@ -111,7 +210,7 @@
 
         <!-- FRAME AREA -->
         <Frame x:Name="MainFrame" Grid.Column="2" NavigationUIVisibility="Hidden"/>
-        
+
         <!-- PROCESS VIEW -->
         <view:ProcessView Grid.ColumnSpan="3"
                           Visibility="{Binding Source={StaticResource Locator}, Path=StatusViewModel.IsOneStateActivated, Converter={StaticResource BooleanToVisibilityConverter}}"/>
