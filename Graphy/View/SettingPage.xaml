@@ -158,7 +158,7 @@
 
         <Grid Grid.Row="2" Margin="15,0,15,10">
             <TextBlock HorizontalAlignment="Left" Foreground="{StaticResource Gray127}">
-                <Run Text="© Graphy, 2020"/>
+                <Run Text="© Graphy, 2022"/>
                 <LineBreak/>
                 <Run Text="v4.0"/>
             </TextBlock>
