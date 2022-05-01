@@ -21,11 +21,10 @@ Graphy just needs 4 basic shapes:
 - A surface where the projection is done.
 - A line or a curve to follow. Should be constructed on the surface.
 - A starting point. Should be constructed on the surface and on the line.
-- An axis system to orientate the drawing:
-  - The axis system origin must be the starting point.
-  - The X axis must be the tangent to the curve passing by its origin. Its direction points the marking direction.
-  - The Y axis is the results of X and Z axis. Its direction points the characters direction.
-  - The Z axis must be the normal to the surface passing by its origin. Its direction points the material adding direction.
+- An axis system to orientate the drawing. This system is generated automatically, you just need to invert or not the directions:
+  - The X axis direction points the marking direction.
+  - The Y axis direction points the characters direction.
+  - The Z axis direction points the material adding direction.
 
 
 
