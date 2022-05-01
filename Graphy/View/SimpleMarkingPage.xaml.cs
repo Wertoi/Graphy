@@ -16,21 +16,19 @@ using System.Windows.Shapes;
 namespace Graphy.View
 {
     /// <summary>
-    /// Logique d'interaction pour StateView.xaml
+    /// Logique d'interaction pour SimpleMarkingPage.xaml
     /// </summary>
-    public partial class ProcessView : UserControl
+    public partial class SimpleMarkingPage : Page
     {
-        public ProcessView()
+        public SimpleMarkingPage()
         {
             InitializeComponent();
         }
 
-        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void IconButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Visibility == Visibility.Visible)
-                ProgressBar.IsIndeterminate = true;
-            else
-                ProgressBar.IsIndeterminate = false;
+            this.NavigationService.Navigate(new IconPage());
         }
+
     }
 }

@@ -1,20 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using INFITF;
 using GalaSoft.MvvmLight.Command;
-using System.IO;
 using Graphy.Enum;
-using System.ComponentModel;
 using System.Globalization;
 using Graphy.Model;
-using Graphy.Model.Generator;
-using System.Collections.ObjectModel;
-using System.Windows.Media;
-using Graphy.Model.CatiaShape;
+using Graphy.CsvStream;
 
 namespace Graphy.ViewModel
 {
@@ -26,13 +17,13 @@ namespace Graphy.ViewModel
             ShowLicenceCommand = new RelayCommand(ShowLicenceCommandAction);
 
             // MESSENGER REGISTRATION
-            MessengerInstance.Register<List<SelectableFont>>(this, Enum.FontToken.FavoriteFontCollectionChanged, (collection) => SaveFavoriteFontCollection(collection));
             MessengerInstance.Register<List<Icon>>(this, Enum.IconToken.IconCollectionChanged, (collection) => SaveIconCollection(collection));
 
             // INITIALIZE SETTINGS
             InitializeLanguage();
             ReadUserPreference();
         }
+
 
 
         // PRIVATE CONST
@@ -46,7 +37,8 @@ namespace Graphy.ViewModel
         private double _toleranceFactor;
         private bool _keepHistoric;
         private bool _createVolume;
-        private VerticalAlignment _verticalAlignment;
+        private CsvConfig _csvConfig;
+        private ImportMode _selectedImportMode;
 
         public Language SelectedLanguage
         {
@@ -123,23 +115,44 @@ namespace Graphy.ViewModel
             }
         }
 
-        public VerticalAlignment VerticalAlignment
+        public CsvConfig CsvConfig
         {
-            get => _verticalAlignment;
+            get => _csvConfig;
             set
             {
-                Set(() => VerticalAlignment, ref _verticalAlignment, value);
-
-                if (!_isReadingUserPreferenceFlag)
-                {
-                    Properties.Settings.Default.VerticalAlignment = (int)VerticalAlignment;
-                    Properties.Settings.Default.Save();
-                }
-
-                MessengerInstance.Send(VerticalAlignment, Enum.SettingToken.VerticalAlignmentChanged);
+                Set(() => CsvConfig, ref _csvConfig, value);
             }
         }
 
+
+        private void CsvConfig_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (!_isReadingUserPreferenceFlag)
+            {
+                Properties.Settings.Default.CsvConfig = CsvConfig;
+                Properties.Settings.Default.Save();
+            }
+
+            MessengerInstance.Send(CsvConfig, Enum.SettingToken.CsvConfigChanged);
+        }
+
+
+        public ImportMode SelectedImportMode
+        {
+            get => _selectedImportMode;
+            set
+            {
+                Set(() => SelectedImportMode, ref _selectedImportMode, value);
+
+                if (!_isReadingUserPreferenceFlag)
+                {
+                    Properties.Settings.Default.ImportMode = (int)SelectedImportMode;
+                    Properties.Settings.Default.Save();
+                }
+
+                MessengerInstance.Send(SelectedImportMode, Enum.SettingToken.ImportModeChanged);
+            }
+        }
 
         // COMMANDS
 
@@ -184,25 +197,22 @@ namespace Graphy.ViewModel
             ToleranceFactor = Properties.Settings.Default.ToleranceFactor;
             KeepHistoric = Properties.Settings.Default.KeepHistoric;
             CreateVolume = Properties.Settings.Default.CreateVolume;
-            VerticalAlignment = (VerticalAlignment)Properties.Settings.Default.VerticalAlignment;
+            SelectedImportMode = (ImportMode)Properties.Settings.Default.ImportMode;
 
-            MessengerInstance.Send(Properties.Settings.Default.FavoriteFontCollection, Enum.SettingToken.FavoriteFontCollectionChanged);
+            if(Properties.Settings.Default.CsvConfig == null)
+            {
+                CsvConfig = CsvConfig.Default;
+                Properties.Settings.Default.CsvConfig = CsvConfig;
+                Properties.Settings.Default.Save();
+            }
+            else
+                CsvConfig = Properties.Settings.Default.CsvConfig;
+
+            CsvConfig.PropertyChanged += CsvConfig_PropertyChanged;
+
             MessengerInstance.Send(Properties.Settings.Default.IconCollection, Enum.SettingToken.IconCollectionChanged);
 
             _isReadingUserPreferenceFlag = false;
-        }
-
-
-        private void SaveFavoriteFontCollection(List<SelectableFont> favoriteFontCollection)
-        {
-            System.Collections.Specialized.StringCollection stringCollection = new System.Collections.Specialized.StringCollection();
-            foreach (SelectableFont font in favoriteFontCollection)
-            {
-                stringCollection.Add(font.FontFamily.Source);
-            }
-
-            Properties.Settings.Default.FavoriteFontCollection = stringCollection;
-            Properties.Settings.Default.Save();
         }
 
 

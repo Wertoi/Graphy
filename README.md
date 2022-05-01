@@ -1,8 +1,9 @@
 # Graphy
 
 ## General Info
-Graphy allows you to write texts or vector images easily in Catia V5 on complex surfaces and directions.<br />
-Drawings obtained can be kept as a surface or in volume but cannot be modified directly in Catia.<br />
+Graphy allows you to write texts or draw vector images easily in Catia V5 on complex surfaces and directions.<br />
+Genrate drawings directly from the interface or with a csv file for batch applications then kept them as a surface or transform them in volume.<br />
+Unfortunatly drawings generated cannot be modified after.<br />
 Graphy only uses Generative Shape Design module; it does not need other specific Catia V5 license.<br />
 ![Hello World](/Images/Hello_World.png)
 
@@ -18,7 +19,7 @@ Work fine if compiled with the associated reference Catia dlls:
 
 ## How to use
 Graphy just needs 4 basic shapes:
-- A surface where the projection is done.
+- A plane or a surface where the projection is done.
 - A line or a curve to follow. Should be constructed on the surface.
 - A starting point. Should be constructed on the surface and on the line.
 - An axis system to orientate the drawing. This system is generated automatically, you just need to invert or not the directions:

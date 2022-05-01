@@ -6,53 +6,62 @@ using System.Threading.Tasks;
 using MECMOD;
 using HybridShapeTypeLib;
 using GalaSoft.MvvmLight;
+using Graphy.Enum;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Collections;
 
 namespace Graphy.Model
 {
     public class MarkingData : ObservableObject
     {
-        public MarkingData(string textValue, double charactereHeightValue, double extrusionHeightValue)
+        public MarkingData()
         {
-            Font = new SelectableFont(new System.Windows.Media.FontFamily("Arial"));
-            Text = new LinkableData<string>()
-            {
-                Value = textValue
-            };
-
-            CharacterHeight = new LinkableData<double>()
-            {
-                Value = charactereHeightValue
-            };
-
-            ExtrusionHeight = new LinkableData<double>()
-            {
-                Value = extrusionHeightValue
-            };
+            Icon = new Icon();
 
             TrackingCurveName = DEFAULT_TRACKING_CURVE_NAME;
-            StartPointName = DEFAULT_START_POINT_NAME;
+            ReferencePointName = DEFAULT_REFERENCE_POINT_NAME;
             ProjectionSurfaceName = DEFAULT_PROJECTION_SURFACE_NAME;
-            AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME;
+            AxisSystemName = DEFAULT_AXIS_SYSTEM_NAME; 
         }
 
+        // DEFAULT VALUES
         public const string DEFAULT_TRACKING_CURVE_NAME = "No curve selected";
-        public const string DEFAULT_START_POINT_NAME = "No point selected";
+        public const string DEFAULT_REFERENCE_POINT_NAME = "No point selected";
         public const string DEFAULT_PROJECTION_SURFACE_NAME = "No surface selected";
         public const string DEFAULT_AXIS_SYSTEM_NAME = "No axis system selected";
 
-        private bool _isText = true; // true for text and false for icon.
-        private LinkableData<string> _text;
-        private SelectableFont _font;
+
+        // ATTRIBUTS
+        private string _name;
+        private bool _isText; // true for text and false for icon.
+        private string _text;
+        private FontFamily _fontFamily;
         private Icon _icon;
-        private LinkableData<double> _characterHeight;
-        private LinkableData<double> _extrusionHeight;
+        private double _markingHeight;
+        private double _extrusionHeight;
         private string _trackingCurveName;
-        private string _startPointName;
+        private string _referencePointName;
         private string _projectionSurfaceName;
         private string _axisSystemName;
         private bool _isBold;
         private bool _isItalic;
+        private bool _isStrikeThrough;
+        private bool _isUnderline;
+        private HorizontalAlignment _horizontalAlignment;
+        private VerticalAlignment _verticalAlignment;
+        private int _warningNumber;
+        private string _logs;
 
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                Set(() => Name, ref _name, value);
+            }
+        }
 
         public bool IsText
         {
@@ -63,7 +72,7 @@ namespace Graphy.Model
             }
         }
 
-        public LinkableData<string> Text
+        public string Text
         {
             get => _text;
             set
@@ -72,12 +81,12 @@ namespace Graphy.Model
             }
         }
 
-        public SelectableFont Font
+        public FontFamily FontFamily
         {
-            get => _font;
+            get => _fontFamily;
             set
             {
-                Set(() => Font, ref _font, value);
+                Set(() => FontFamily, ref _fontFamily, value);
             }
         }
 
@@ -90,16 +99,17 @@ namespace Graphy.Model
             }
         }
 
-        public LinkableData<double> CharacterHeight
+
+        public double MarkingHeight
         {
-            get => _characterHeight;
+            get => _markingHeight;
             set
             {
-                Set(() => CharacterHeight, ref _characterHeight, value);
+                Set(() => MarkingHeight, ref _markingHeight, value);
             }
         }
 
-        public LinkableData<double> ExtrusionHeight
+        public double ExtrusionHeight
         {
             get => _extrusionHeight;
             set
@@ -117,12 +127,12 @@ namespace Graphy.Model
             }
         }
 
-        public string StartPointName
+        public string ReferencePointName
         {
-            get => _startPointName;
+            get => _referencePointName;
             set
             {
-                Set(() => StartPointName, ref _startPointName, value);
+                Set(() => ReferencePointName, ref _referencePointName, value);
             }
         }
 
@@ -161,6 +171,112 @@ namespace Graphy.Model
                 Set(() => IsItalic, ref _isItalic, value);
             }
         }
+
+        public bool IsStrikeThrough
+        {
+            get => _isStrikeThrough;
+            set
+            {
+                Set(() => IsStrikeThrough, ref _isStrikeThrough, value);
+            }
+        }
+
+        public bool IsUnderline
+        {
+            get => _isUnderline;
+            set
+            {
+                Set(() => IsUnderline, ref _isUnderline, value);
+            }
+        }
+
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get => _horizontalAlignment;
+            set
+            {
+                Set(() => HorizontalAlignment, ref _horizontalAlignment, value);
+            } 
+        }
+
+        public VerticalAlignment VerticalAlignment
+        {
+            get => _verticalAlignment;
+            set
+            {
+                Set(() => VerticalAlignment, ref _verticalAlignment, value);
+            }
+        }
+
+
+        public int WarningNumber
+        {
+            get => _warningNumber;
+            set
+            {
+                Set(() => WarningNumber, ref _warningNumber, value);
+            }
+        }
+
+        public string Logs
+        {
+            get => _logs;
+            set
+            {
+                Set(() => Logs, ref _logs, value);
+            }
+        }
+
+
+        public static MarkingData Default()
+        {
+            MarkingData defaultMarkingData = new MarkingData()
+            {
+                Name = "DefaultMarking",
+                IsText = true,
+                Text = "Hello World !",
+                IsBold = false,
+                IsItalic = false,
+                IsUnderline = false,
+                IsStrikeThrough = false,
+                FontFamily = new FontFamily("Calibri"),
+                Icon = Icon.Default(),
+                MarkingHeight = 2d,
+                ExtrusionHeight = 0.1,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                ProjectionSurfaceName = "Surface.1",
+                TrackingCurveName = "Curve.1",
+                ReferencePointName = "Point.1",
+                AxisSystemName = "Axis System.1"
+            };
+
+            return defaultMarkingData;
+        }
+
+
+        public static MarkingData NoMarkingData()
+        {
+            MarkingData noMarkingData = new MarkingData()
+            {
+                Name = "NoMarking",
+                IsText = true,
+                Text = "",
+                IsBold = false,
+                IsItalic = false,
+                IsUnderline = false,
+                IsStrikeThrough = false,
+                FontFamily = new FontFamily("Calibri"),
+                Icon = new Icon(),
+                MarkingHeight = 2d,
+                ExtrusionHeight = 0.1,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom
+            };
+
+            return noMarkingData;
+        }
+
 
     }
 }

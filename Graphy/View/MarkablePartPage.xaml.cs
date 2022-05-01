@@ -16,21 +16,18 @@ using System.Windows.Shapes;
 namespace Graphy.View
 {
     /// <summary>
-    /// Logique d'interaction pour StateView.xaml
+    /// Logique d'interaction pour MarkablePartPage.xaml
     /// </summary>
-    public partial class ProcessView : UserControl
+    public partial class MarkablePartPage : Page
     {
-        public ProcessView()
+        public MarkablePartPage()
         {
             InitializeComponent();
         }
 
-        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Visibility == Visibility.Visible)
-                ProgressBar.IsIndeterminate = true;
-            else
-                ProgressBar.IsIndeterminate = false;
+            this.NavigationService.Navigate(new ComplexMarkingPage());
         }
     }
 }

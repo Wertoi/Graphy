@@ -22,10 +22,10 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<(double progressRate, int currentStep)>(this, Enum.ProcessToken.Refresh,
                 (progressInfo) => ProcessRefresh(progressInfo.progressRate, progressInfo.currentStep));
 
-            MessengerInstance.Register<object>(this, Enum.ProcessToken.SimpleStarted, (x) => ProcessSimpleStarted());
+            MessengerInstance.Register<object>(this, Enum.ProcessToken.SimpleStarted, (_) => ProcessSimpleStarted());
             MessengerInstance.Register<int>(this, Enum.ProcessToken.ComplexStarted, (maximumStep) => ProcessComplexStarted(maximumStep));
 
-            MessengerInstance.Register<object>(this, Enum.ProcessToken.Finished, (x) => ProcessFinished());
+            MessengerInstance.Register<object>(this, Enum.ProcessToken.Finished, (_) => ProcessFinished());
 
             // SETTING TOKEN
             MessengerInstance.Register<string>(this, Enum.SettingToken.LicenceFileReadingFailed, (msg) => LicenceFileReadingFailed(msg));

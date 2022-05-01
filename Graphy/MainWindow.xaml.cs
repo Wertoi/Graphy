@@ -24,73 +24,61 @@ namespace Graphy
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.NavigationService.Navigated += NavigationService_Navigated;
+
+            SimpleMarkingRadioButton.IsChecked = true;
         }
 
-        private void SelectionButton_Click(object sender, RoutedEventArgs e)
+        private void NavigationService_Navigated(object sender, NavigationEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            if (MainFrame.NavigationService.Content.GetType() == typeof(View.SimpleMarkingPage))
+            {
+                SimpleMarkingRadioButton.IsChecked = true;
+                return;
+            }
+
+            if (MainFrame.NavigationService.Content.GetType() == typeof(View.ComplexMarkingPage))
+            {
+                ComplexMarkingRadioButton.IsChecked = true;
+                return;
+            }
+
+            if (MainFrame.NavigationService.Content.GetType() == typeof(View.IconPage))
+            {
+                IconRadioButton.IsChecked = true;
+                return;
+            }
+
+            if (MainFrame.NavigationService.Content.GetType() == typeof(View.SettingPage))
+            {
+                SettingRadioButton.IsChecked = true;
+                return;
+            }
+        }
+
+        private void SimpleMarkingRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if(MainFrame != null)
+                MainFrame.Navigate(new View.SimpleMarkingPage());
+        }
+
+        private void ComplexMarkingRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (MainFrame != null)
+                MainFrame.Navigate(new View.ComplexMarkingPage());
         }
 
 
-
-        // ***** SETTING VIEW MANAGEMENT *****
-
-        private void SettingView_BackButtonClicked(object sender, EventArgs e)
+        private void IconRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            SettingView.Visibility = Visibility.Collapsed;
+            if (MainFrame != null)
+                MainFrame.Navigate(new View.IconPage());
         }
 
-        private void SettingButton_Click(object sender, RoutedEventArgs e)
+        private void SettingRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            SettingView.Visibility = Visibility.Visible;
-        }
-
-        // ***** END OF SETTING VIEW MANAGEMENT *****
-
-
-
-
-        // ***** DESIGN TABLE VIEW MANAGEMENT *****
-
-        private void DesignTableView_BackButtonClicked(object sender, EventArgs e)
-        {
-            DesignTableView.Visibility = Visibility.Collapsed;
-        }
-
-        private void DesignTableButton_Click(object sender, RoutedEventArgs e)
-        {
-            DesignTableView.Visibility = Visibility.Visible;
-        }
-
-        // ***** END OF DESIGN TABLE VIEW MANAGEMENT *****
-
-
-
-
-        // ***** FONT VIEW MANAGEMENT *****
-
-        private void FontView_BackButtonClicked(object sender, EventArgs e)
-        {
-            FontView.Visibility = Visibility.Collapsed;
-        }
-
-        private void FontButton_Click(object sender, RoutedEventArgs e)
-        {
-            FontView.Visibility = Visibility.Visible;
-        }
-
-        // ***** END OF FONT VIEW MANAGEMENT *****
-
-
-
-        private void IconButton_Click(object sender, RoutedEventArgs e)
-        {
-            IconView.Visibility = Visibility.Visible;
-        }
-
-        private void IconView_BackButtonClicked(object sender, EventArgs e)
-        {
-            IconView.Visibility = Visibility.Collapsed;
+            if (MainFrame != null)
+                MainFrame.Navigate(new View.SettingPage());
         }
     }
 }

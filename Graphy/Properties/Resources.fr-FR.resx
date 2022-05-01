@@ -123,182 +123,110 @@
   <data name="CheckBox_Yes" xml:space="preserve">
     <value>Oui</value>
   </data>
-  <data name="DesignTable_General_Title" xml:space="preserve">
-    <value>Table de paramétrage</value>
-  </data>
-  <data name="DesignTable_InputData_DesignTableLabel" xml:space="preserve">
-    <value>Table de paramétrage</value>
-  </data>
-  <data name="DesignTable_InputData_PartCatalogDirectoryLabel" xml:space="preserve">
-    <value>Dossier des pièces de la table</value>
-  </data>
-  <data name="DesignTable_InputData_Title" xml:space="preserve">
-    <value>Données d'entrée</value>
-  </data>
-  <data name="DesignTable_Link_NoDesignTable" xml:space="preserve">
-    <value>Aucune table sélectionnée</value>
-  </data>
-  <data name="DesignTable_Link_Title" xml:space="preserve">
-    <value>Liens</value>
-  </data>
-  <data name="DesignTable_PartSelection_NoDirectory" xml:space="preserve">
-    <value>Aucun dossier sélectionné</value>
-  </data>
-  <data name="DesignTable_PartSelection_Title" xml:space="preserve">
-    <value>Pièces à traiter</value>
-  </data>
-  <data name="Font_selectedFontSupportedCharacters" xml:space="preserve">
-    <value>Liste des caractères supportés :</value>
-  </data>
-  <data name="Font_SortAscending" xml:space="preserve">
-    <value>Ordre alphabétique</value>
-  </data>
-  <data name="Font_SortButton" xml:space="preserve">
-    <value>Trier</value>
-  </data>
-  <data name="Font_SortDescending" xml:space="preserve">
-    <value>Ordre alphabétique inverse</value>
-  </data>
-  <data name="Font_SortFavorite" xml:space="preserve">
-    <value>Favoris</value>
-  </data>
-  <data name="Font_Title" xml:space="preserve">
-    <value>Gestion des polices</value>
-  </data>
   <data name="Language_English" xml:space="preserve">
     <value>English</value>
   </data>
   <data name="Language_French" xml:space="preserve">
     <value>Français</value>
   </data>
-  <data name="MainWindow_CatalogPart_Title" xml:space="preserve">
-    <value>Appliquer le marquage sur un catalogue de pièces ?</value>
-  </data>
-  <data name="MainWindow_General_Generate" xml:space="preserve">
+  <data name="Marking_GenerateText" xml:space="preserve">
     <value>Générer</value>
   </data>
-  <data name="MainWindow_General_Title" xml:space="preserve">
-    <value>Création d'un nouveau marquage 3D !</value>
-  </data>
-  <data name="MainWindow_MarkingData_CharacterHeightLabel" xml:space="preserve">
+  <data name="MarkingData_CharacterHeightLabel" xml:space="preserve">
     <value>Hauteur de caractères</value>
   </data>
-  <data name="MainWindow_MarkingData_ExtrusionHeightLabel" xml:space="preserve">
+  <data name="MarkingData_ExtrusionHeightLabel" xml:space="preserve">
     <value>Hauteur d'extrusion</value>
   </data>
-  <data name="MainWindow_MarkingData_FontLabel" xml:space="preserve">
+  <data name="MarkingData_FontLabel" xml:space="preserve">
     <value>Police</value>
   </data>
-  <data name="MainWindow_MarkingData_NoFont" xml:space="preserve">
-    <value>Aucune police</value>
-  </data>
-  <data name="MainWindow_MarkingData_ParameterLinked" xml:space="preserve">
-    <value>Paramètre lié</value>
-  </data>
-  <data name="MainWindow_MarkingData_TextLabel" xml:space="preserve">
+  <data name="MarkingData_TextLabel" xml:space="preserve">
     <value>Texte</value>
   </data>
-  <data name="MainWindow_MarkingData_Title" xml:space="preserve">
+  <data name="MarkingData_Title" xml:space="preserve">
     <value>Données de marquage</value>
   </data>
-  <data name="MainWindow_Position_CurveLabel" xml:space="preserve">
+  <data name="Position_CurveLabel" xml:space="preserve">
     <value>Courbe de suivi</value>
   </data>
-  <data name="MainWindow_Position_LocalAxisSystemLabel" xml:space="preserve">
+  <data name="Position_LocalAxisSystemLabel" xml:space="preserve">
     <value>Repère local</value>
   </data>
-  <data name="MainWindow_Position_LocalAxisSystemTooltipLine1" xml:space="preserve">
+  <data name="Position_LocalAxisSystemTooltipLine1" xml:space="preserve">
     <value>Repère indiquant les directions du marquage.</value>
   </data>
-  <data name="MainWindow_Position_LocalAxisSystemTooltipLine2" xml:space="preserve">
+  <data name="Position_LocalAxisSystemTooltipLine2" xml:space="preserve">
     <value>"Repère local" doit avoir un nom unique.</value>
   </data>
-  <data name="MainWindow_Position_LocalAxisSystemTooltipLine3" xml:space="preserve">
-    <value>L'origine du repère est le "Point de départ".</value>
+  <data name="Position_LocalAxisSystemTooltipLine3" xml:space="preserve">
+    <value>L'origine du repère est le "Point de référence".</value>
   </data>
-  <data name="MainWindow_Position_LocalAxisSystemTooltipLine4" xml:space="preserve">
+  <data name="Position_LocalAxisSystemTooltipLine4" xml:space="preserve">
     <value>- L'axe X doit être la tangente à la "Courbe de suivi" passant par son origine. Son sens indique le sens du marquage.</value>
   </data>
-  <data name="MainWindow_Position_LocalAxisSystemTooltipLine5" xml:space="preserve">
+  <data name="Position_LocalAxisSystemTooltipLine5" xml:space="preserve">
     <value>- L'axe Y est la résultante des axes X et Z. Son sens indique l'orientation des caractères.</value>
   </data>
-  <data name="MainWindow_Position_LocalAxisSystemTooltipLine6" xml:space="preserve">
+  <data name="Position_LocalAxisSystemTooltipLine6" xml:space="preserve">
     <value>- L'axe Z doit être la normale à la "Surface de projection" passant par son origine. Son sens indique le sens d'ajout de matière.</value>
   </data>
-  <data name="MainWindow_Position_ProjectionSurfaceTooltip1" xml:space="preserve">
+  <data name="Position_ProjectionSurfaceTooltip1" xml:space="preserve">
     <value>Surface de projection du marquage.</value>
   </data>
-  <data name="MainWindow_Position_ProjectionSurfaceTooltip2" xml:space="preserve">
+  <data name="Position_ProjectionSurfaceTooltip2" xml:space="preserve">
     <value>"Surface de projection" doit avoir un nom unique.</value>
   </data>
-  <data name="MainWindow_Position_ProjectionSurfaceTooltip3" xml:space="preserve">
+  <data name="Position_ProjectionSurfaceTooltip3" xml:space="preserve">
     <value>/!\ Selection depuis un volume non prise en charge.</value>
   </data>
-  <data name="MainWindow_Position_ProjectionSurfaceTooltip4" xml:space="preserve">
+  <data name="Position_ProjectionSurfaceTooltip4" xml:space="preserve">
     <value>/!\ Toutes les surfaces formant la "Surface de projection" doivent avoir la même normale naturelle.</value>
   </data>
-  <data name="MainWindow_Position_StartPointLabel" xml:space="preserve">
-    <value>Point de départ</value>
+  <data name="Position_ReferencePointLabel" xml:space="preserve">
+    <value>Point de référence</value>
   </data>
-  <data name="MainWindow_Position_StartPointTooltip1" xml:space="preserve">
-    <value>Point de départ du marquage.</value>
+  <data name="Position_ReferencePointTooltip1" xml:space="preserve">
+    <value>Point de référence du marquage.</value>
   </data>
-  <data name="MainWindow_Position_StartPointTooltip2" xml:space="preserve">
+  <data name="Position_ReferencePointTooltip2" xml:space="preserve">
     <value>"Point de départ" doit avoir un nom unique.</value>
   </data>
-  <data name="MainWindow_Position_StartPointTooltip3" xml:space="preserve">
+  <data name="Position_ReferencePointTooltip3" xml:space="preserve">
     <value>Le point doit se trouver sur la "Courbe de suivi" et sur la "Surface de projection".</value>
   </data>
-  <data name="MainWindow_Position_StartPointTooltip4" xml:space="preserve">
+  <data name="Position_ReferencePointTooltip4" xml:space="preserve">
     <value>/!\ Selection depuis un volume non prise en charge.</value>
   </data>
-  <data name="MainWindow_Position_SurfaceLabel" xml:space="preserve">
+  <data name="Position_SurfaceLabel" xml:space="preserve">
     <value>Surface de projection</value>
   </data>
-  <data name="MainWindow_Position_Title" xml:space="preserve">
+  <data name="Position_Title" xml:space="preserve">
     <value>Position</value>
   </data>
-  <data name="MainWindow_Position_TrackingCurveTooltip1" xml:space="preserve">
+  <data name="Position_TrackingCurveTooltip1" xml:space="preserve">
     <value>Courbe de suivi du marquage.</value>
   </data>
-  <data name="MainWindow_Position_TrackingCurveTooltip2" xml:space="preserve">
+  <data name="Position_TrackingCurveTooltip2" xml:space="preserve">
     <value>"Courbe de suivi" doit avoir un nom unique.</value>
   </data>
-  <data name="MainWindow_Position_TrackingCurveTooltip3" xml:space="preserve">
+  <data name="Position_TrackingCurveTooltip3" xml:space="preserve">
     <value>La courbe doit se trouver sur la "Surface de projection".</value>
   </data>
-  <data name="MainWindow_Position_TrackingCurveTooltip4" xml:space="preserve">
+  <data name="Position_TrackingCurveTooltip4" xml:space="preserve">
     <value>/!\ Selection depuis un volume non prise en charge.</value>
   </data>
-  <data name="MainWindow_Position_TrackingCurveTooltip5" xml:space="preserve">
+  <data name="Position_TrackingCurveTooltip5" xml:space="preserve">
     <value>/!\ Tous les segments formant la "Courbe de suivi" doivent avoir la même direction naturelle.</value>
   </data>
-  <data name="MainWindow_SelectPart_NoPart" xml:space="preserve">
+  <data name="SelectPart_NoPart" xml:space="preserve">
     <value>Aucune .CATPart</value>
   </data>
-  <data name="MainWindow_SelectPart_Title" xml:space="preserve">
+  <data name="SelectPart_Title" xml:space="preserve">
     <value>Sélectionner le document de travail</value>
-  </data>
-  <data name="NewFont_CharacterList_FontNonComputed" xml:space="preserve">
-    <value>Police non calculée</value>
-  </data>
-  <data name="NewFont_CharacterList_Title" xml:space="preserve">
-    <value>Liste des caractères disponibles</value>
-  </data>
-  <data name="ParameterCategory_NoType" xml:space="preserve">
-    <value>-</value>
-  </data>
-  <data name="ParameterCategory_Number" xml:space="preserve">
-    <value>Nombre</value>
-  </data>
-  <data name="ParameterCategory_Text" xml:space="preserve">
-    <value>Texte</value>
   </data>
   <data name="Settings_About_Licenses" xml:space="preserve">
     <value>Licences</value>
-  </data>
-  <data name="Settings_About_Title" xml:space="preserve">
-    <value>A propos</value>
   </data>
   <data name="Settings_General_LanguageLabel" xml:space="preserve">
     <value>Langue</value>
@@ -309,46 +237,37 @@
   <data name="Settings_Title" xml:space="preserve">
     <value>Paramètres</value>
   </data>
-  <data name="Status_Finised_Title" xml:space="preserve">
-    <value>Terminé !</value>
-  </data>
-  <data name="Status_Finished_ContinueButton" xml:space="preserve">
-    <value>Continuer</value>
-  </data>
-  <data name="Status_Finished_QuitButton" xml:space="preserve">
-    <value>Quitter</value>
-  </data>
-  <data name="Status_GeneralException_Title" xml:space="preserve">
+  <data name="Exception_Title" xml:space="preserve">
     <value>On dirait qu'un problème est survenu.</value>
   </data>
-  <data name="Status_InProgress_Title" xml:space="preserve">
+  <data name="InProgress_Title" xml:space="preserve">
     <value>Processus en cours !</value>
   </data>
-  <data name="MainWindow_CatiaStatus_Connected" xml:space="preserve">
+  <data name="CatiaStatus_Connected" xml:space="preserve">
     <value>Connecté</value>
   </data>
-  <data name="MainWindow_CatiaStatus_Disconnected" xml:space="preserve">
+  <data name="CatiaStatus_Disconnected" xml:space="preserve">
     <value>Déconnecté</value>
   </data>
-  <data name="MainWindow_CatiaStatus_LastRefresh" xml:space="preserve">
+  <data name="CatiaStatus_LastRefresh" xml:space="preserve">
     <value>Dernier rafraichissement : </value>
   </data>
-  <data name="MainWindow_CatiaStatus_Title" xml:space="preserve">
+  <data name="CatiaStatus_Title" xml:space="preserve">
     <value>Statut Catia : </value>
   </data>
-  <data name="MainWindow_CatiaStatus_Version" xml:space="preserve">
+  <data name="CatiaStatus_Version" xml:space="preserve">
     <value>Version : </value>
   </data>
-  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip1" xml:space="preserve">
+  <data name="MarkingData_ExtrusionHeightTooltip1" xml:space="preserve">
     <value>L'option "Créer un volume de marquage" doit être activée.</value>
   </data>
-  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip2" xml:space="preserve">
+  <data name="MarkingData_ExtrusionHeightTooltip2" xml:space="preserve">
     <value>"+" pour ajouter le résultat au corps principal.</value>
   </data>
-  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip3" xml:space="preserve">
+  <data name="MarkingData_ExtrusionHeightTooltip3" xml:space="preserve">
     <value>"-" pour retirer le résultat au corps principal.</value>
   </data>
-  <data name="MainWindow_MarkingData_ExtrusionHeightTooltip4" xml:space="preserve">
+  <data name="MarkingData_ExtrusionHeightTooltip4" xml:space="preserve">
     <value>/!\ Le sens d'extrusion se fait par rapport au sens de l'axe Z du "Repère local".</value>
   </data>
   <data name="Settings_Marking_CreateVolumeLabel" xml:space="preserve">
@@ -362,21 +281,6 @@
   </data>
   <data name="Settings_Marking_ToleranceFactorLabel" xml:space="preserve">
     <value>Facteur de tolérance</value>
-  </data>
-  <data name="DesignTable_Link_CharacterHeightLabel" xml:space="preserve">
-    <value>Hauteur de caractères</value>
-  </data>
-  <data name="DesignTable_Link_ExtrusionHeightLabel" xml:space="preserve">
-    <value>Hauteur d'extrusion</value>
-  </data>
-  <data name="DesignTable_Link_TextLabel" xml:space="preserve">
-    <value>Texte</value>
-  </data>
-  <data name="DesignTable_PartSelection_SelectAll" xml:space="preserve">
-    <value>Tout sélectionner</value>
-  </data>
-  <data name="DesignTable_PartSelection_UnselectAll" xml:space="preserve">
-    <value>Tout dé-selectionner</value>
   </data>
   <data name="Icon_Add" xml:space="preserve">
     <value>Ajouter une image</value>
@@ -399,16 +303,151 @@
   <data name="Icon_Title" xml:space="preserve">
     <value>Gestion des images</value>
   </data>
-  <data name="MainWindow_MarkingData_IconLabel" xml:space="preserve">
+  <data name="MarkingData_IconLabel" xml:space="preserve">
     <value>Image</value>
   </data>
-  <data name="MainWindow_MarkingData_MarkingTypeIcon" xml:space="preserve">
+  <data name="MarkingData_MarkingTypeIcon" xml:space="preserve">
     <value>Image</value>
   </data>
-  <data name="MainWindow_MarkingData_MarkingTypeLabel" xml:space="preserve">
+  <data name="MarkingData_MarkingTypeLabel" xml:space="preserve">
     <value>Type de marquage :</value>
   </data>
-  <data name="MainWindow_MarkingData_MarkingTypeText" xml:space="preserve">
+  <data name="MarkingData_MarkingTypeText" xml:space="preserve">
     <value>Texte</value>
+  </data>
+  <data name="ImportMode_Add" xml:space="preserve">
+    <value>Importer et ajouter</value>
+  </data>
+  <data name="ImportMode_Replace" xml:space="preserve">
+    <value>Importer et remplacer</value>
+  </data>
+  <data name="Catia_Refresh" xml:space="preserve">
+    <value>Rafraichir</value>
+  </data>
+  <data name="ComplexMarking_Inputs_Import" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="MarkingData_AlignmentLabel" xml:space="preserve">
+    <value>Alignements</value>
+  </data>
+  <data name="MarkingData_TextStyleLabel" xml:space="preserve">
+    <value>Styles du texte</value>
+  </data>
+  <data name="Settings_CSVReader_CommentaryLabel" xml:space="preserve">
+    <value>Caractère pour commentaire</value>
+  </data>
+  <data name="Settings_CSVReader_DelimiterLabel" xml:space="preserve">
+    <value>Caractère délimiteur</value>
+  </data>
+  <data name="Settings_CSVReader_Title" xml:space="preserve">
+    <value>Lecteur CSV</value>
+  </data>
+  <data name="Settings_Icons_ExportLabel" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="Settings_Icons_ImportLabel" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="Settings_Icons_Title" xml:space="preserve">
+    <value>Collection d'images</value>
+  </data>
+  <data name="ComplexMarking_InputDatas_CATPartsFolder" xml:space="preserve">
+    <value>Répertoire des CATParts</value>
+  </data>
+  <data name="ComplexMarking_InputDatas_CSVFileLabel" xml:space="preserve">
+    <value>Fichier CSV</value>
+  </data>
+  <data name="ComplexMarking_InputDatas_Title" xml:space="preserve">
+    <value>Données d'entrée</value>
+  </data>
+  <data name="ComplexMarking_MarkingList_NoData" xml:space="preserve">
+    <value>Pas de données.</value>
+  </data>
+  <data name="ComplexMarking_MarkingList_SelectAll" xml:space="preserve">
+    <value>Tout sélectionner</value>
+  </data>
+  <data name="ComplexMarking_MarkingList_Title" xml:space="preserve">
+    <value>Liste des marquages</value>
+  </data>
+  <data name="ComplexMarking_MarkingList_UnselectAll" xml:space="preserve">
+    <value>Tout déselectionner</value>
+  </data>
+  <data name="ComplexMarking_Title" xml:space="preserve">
+    <value>Marquage Complèxe</value>
+  </data>
+  <data name="MarkablePart_CATPart_Found" xml:space="preserve">
+    <value>CATPart trouvée</value>
+  </data>
+  <data name="MarkablePart_CATPart_FullPath" xml:space="preserve">
+    <value>Chemin complet</value>
+  </data>
+  <data name="MarkablePart_CATPart_Title" xml:space="preserve">
+    <value>Données CATPart</value>
+  </data>
+  <data name="MarkablePart_Marking_AxisSystem" xml:space="preserve">
+    <value>Repère de référence</value>
+  </data>
+  <data name="MarkablePart_Marking_ExtrusionHeight" xml:space="preserve">
+    <value>Hauteur d'extrusion</value>
+  </data>
+  <data name="MarkablePart_Marking_Font" xml:space="preserve">
+    <value>Police d'écriture</value>
+  </data>
+  <data name="MarkablePart_Marking_HorizontalAlignment" xml:space="preserve">
+    <value>Alignement horizontal</value>
+  </data>
+  <data name="MarkablePart_Marking_Icon" xml:space="preserve">
+    <value>Définition de l'icône</value>
+  </data>
+  <data name="MarkablePart_Marking_IsBold" xml:space="preserve">
+    <value>Est gras</value>
+  </data>
+  <data name="MarkablePart_Marking_IsItalic" xml:space="preserve">
+    <value>Est italique</value>
+  </data>
+  <data name="MarkablePart_Marking_IsStrikeThrough" xml:space="preserve">
+    <value>Est barré</value>
+  </data>
+  <data name="MarkablePart_Marking_IsText" xml:space="preserve">
+    <value>Est du texte</value>
+  </data>
+  <data name="MarkablePart_Marking_IsUnderline" xml:space="preserve">
+    <value>Est souligné</value>
+  </data>
+  <data name="MarkablePart_Marking_MarkingHeight" xml:space="preserve">
+    <value>Hauteur de marquage</value>
+  </data>
+  <data name="MarkablePart_Marking_ProjectionSurface" xml:space="preserve">
+    <value>Surface de projection</value>
+  </data>
+  <data name="MarkablePart_Marking_ReferencePoint" xml:space="preserve">
+    <value>Point de référence</value>
+  </data>
+  <data name="MarkablePart_Marking_Text" xml:space="preserve">
+    <value>Texte</value>
+  </data>
+  <data name="MarkablePart_Marking_Title" xml:space="preserve">
+    <value>Données de marquage</value>
+  </data>
+  <data name="MarkablePart_Marking_TrackingCurve" xml:space="preserve">
+    <value>Courbe de suivi</value>
+  </data>
+  <data name="MarkablePart_Marking_VerticalAlignment" xml:space="preserve">
+    <value>Alignement vertical</value>
+  </data>
+  <data name="Menu_ComplexMarking" xml:space="preserve">
+    <value>Marquage complèxe</value>
+  </data>
+  <data name="Menu_IconLibrary" xml:space="preserve">
+    <value>Bibliothèque d'images</value>
+  </data>
+  <data name="Menu_Parameters" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Menu_SimpleMarking" xml:space="preserve">
+    <value>Marquage simple</value>
+  </data>
+  <data name="SimpleMarking_Title" xml:space="preserve">
+    <value>Marquage Simple</value>
   </data>
 </root>

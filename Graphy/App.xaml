@@ -10,7 +10,6 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
-
         <!-- LOCATOR -->
         <vm:ViewModelLocator x:Key="Locator"/>
 
@@ -18,6 +17,9 @@
         <conv:BooleanToVisibilityConverter True="Visible" False="Collapsed" x:Key="BooleanToVisibilityConverter"/>
         <conv:BooleanToVisibilityConverter True="Collapsed" False="Visible" x:Key="InvertBooleanToVisibilityConverter"/>
         <conv:BooleanToBooleanConverter x:Key="InvertBooleanConverter" True="False" False="True"/>
+
+        <conv:CollectionCountToVisibiltyConverter x:Key="ShowOnEmptyConverter" EmptyValue="Visible" NonEmptyValue="Collapsed"/>
+        <conv:CollectionCountToVisibiltyConverter x:Key="HideOnEmptyConverter" EmptyValue="Collapsed" NonEmptyValue="Visible"/>
 
         <conv:EnumToCollectionConverter x:Key="EnumToCollectionConverter"/>
         <conv:LocalizedEnumToStringConverter x:Key="LocalizedEnumToStringConverter"/>
@@ -49,6 +51,20 @@
         <SolidColorBrush x:Key="SecondaryColorLight" Color="#FFFFA270"/>
         <SolidColorBrush x:Key="SecondaryColorDark" Color="#FFC63F17"/>
 
+        <!-- BUTTON BACKGROUND COLORS -->
+        <!-- GRAY 242 -->
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFF2F2F2"/>
+        <!-- GRAY 217 -->
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFD9D9D9"/>
+        <!-- GRAY 191 -->
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFBFBFBF"/>
+        <!-- GRAY 248 -->
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF8F8F8"/>
+
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+
+        <!-- RADIO BUTTON COLORS -->
+
 
         <!-- ***** ICONS ***** -->
 
@@ -70,320 +86,226 @@
             <Setter Property="Height" Value="24"/>
         </Style>
 
-        <!-- *** ICON FOR BUTTON *** -->
+        <!--#region ICONS -->
 
-        <!-- BASE BUTTON ICON STYLE -->
-        <Style x:Key="BaseButtonIconStyle" TargetType="{x:Type Path}">
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- ADD ICON -->
+        <Geometry x:Key="Add_Icon">
+            M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+        </Geometry>
 
-        <!-- LINK ICON PATH STYLE -->
-        <Style x:Key="Link_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,
-                    7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"/>
-        </Style>
+        <!-- BACK ICON -->
+        <Geometry x:Key="Back_Icon">
+            M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z
+        </Geometry>
 
-        <!-- ADD ICON PATH STYLE -->
-        <Style x:Key="Add_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
-        </Style>
+        <!-- COPY ICON -->
+        <Geometry x:Key="Copy_Icon">
+            M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z
+        </Geometry>
 
-        <!-- COPY ICON PATH STYLE -->
-        <Style x:Key="Copy_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
-        </Style>
+        <!-- DELETE ICON -->
+        <Geometry x:Key="Delete_Icon">
+            M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z
+        </Geometry>
 
-        <!-- DELETE ICON PATH STYLE -->
-        <Style x:Key="Delete_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z"/>
-        </Style>
+        <!-- REFRESH ICON -->
+        <Geometry x:Key="Refresh_Icon">
+            M19,8L15,12H18A6,6 0 0,1 12,18C11,18 10.03,17.75 9.2,17.3L7.74,18.76C8.97,19.54 10.43,20 12,20A8,8 0 0,0 20,12H23M6,12A6,6 0 0,1 
+            12,6C13,6 13.97,6.25 14.8,6.7L16.26,5.24C15.03,4.46 13.57,4 12,4A8,8 0 0,0 4,12H1L5,16L9,12
+        </Geometry>
 
-        <!-- REFRESH ICON PATH STYLE -->
-        <Style x:Key="Refresh_ButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M19,8L15,12H18A6,6 0 0,1 12,18C11,18 10.03,17.75 9.2,17.3L7.74,18.76C8.97,19.54 10.43,20 12,20A8,8 0 0,0 20,12H23M6,12A6,6 0 0,1 
-                    12,6C13,6 13.97,6.25 14.8,6.7L16.26,5.24C15.03,4.46 13.57,4 12,4A8,8 0 0,0 4,12H1L5,16L9,12"/>
-        </Style>
+        <!-- FONT ICON -->
+        <Geometry x:Key="Font_Icon">
+            M20.06,18C20,17.83 19.91,17.54 19.86,17.11C19.19,17.81 18.38,18.16 17.45,18.16C16.62,18.16 15.93,17.92 15.4,17.45C14.87,17 14.6,16.39 14.6,
+            15.66C14.6,14.78 14.93,14.1 15.6,13.61C16.27,13.12 17.21,12.88 18.43,12.88H19.83V12.24C19.83,11.75 19.68,11.36 19.38,11.07C19.08,10.78 18.63,10.64 18.05,10.64C17.53,
+            10.64 17.1,10.76 16.75,11C16.4,11.25 16.23,11.54 16.23,11.89H14.77C14.77,11.46 14.92,11.05 15.22,10.65C15.5,10.25 15.93,9.94 16.44,9.71C16.95,9.5 17.5,9.36 
+            18.13,9.36C19.11,9.36 19.87,9.6 20.42,10.09C20.97,10.58 21.26,11.25 21.28,12.11V16C21.28,16.8 21.38,17.42 21.58,17.88V18H20.06M17.66,16.88C18.11,16.88 18.54,16.77
+            18.95,16.56C19.35,16.35 19.65,16.07 19.83,15.73V14.16H18.7C16.93,14.16 16.04,14.63 16.04,15.57C16.04,16 16.19,16.3 16.5,16.53C16.8,16.76 17.18,16.88 17.66,
+            16.88M5.46,13.71H9.53L7.5,8.29L5.46,13.71M6.64,6H8.36L13.07,18H11.14L10.17,15.43H4.82L3.86,18H1.93L6.64,6Z
+        </Geometry>
 
-        <!-- CLEAR ICON PATH STYLE -->
-        <Style x:Key="ClearIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
-        </Style>
+        <!-- PARAMETER ICON -->
+        <Geometry x:Key="Parameter_Icon">
+            M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 
+            19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,
+            5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,
+            8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,
+            19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,
+            18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z
+        </Geometry>
 
-        <!-- FONT ICON PATH STYLE -->
-        <Style x:Key="FontIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M20.06,18C20,17.83 19.91,17.54 19.86,17.11C19.19,17.81 18.38,18.16 17.45,18.16C16.62,18.16 15.93,17.92 15.4,17.45C14.87,17 14.6,16.39 14.6,
-                    15.66C14.6,14.78 14.93,14.1 15.6,13.61C16.27,13.12 17.21,12.88 18.43,12.88H19.83V12.24C19.83,11.75 19.68,11.36 19.38,11.07C19.08,10.78 18.63,10.64 18.05,10.64C17.53,
-                    10.64 17.1,10.76 16.75,11C16.4,11.25 16.23,11.54 16.23,11.89H14.77C14.77,11.46 14.92,11.05 15.22,10.65C15.5,10.25 15.93,9.94 16.44,9.71C16.95,9.5 17.5,9.36 
-                    18.13,9.36C19.11,9.36 19.87,9.6 20.42,10.09C20.97,10.58 21.26,11.25 21.28,12.11V16C21.28,16.8 21.38,17.42 21.58,17.88V18H20.06M17.66,16.88C18.11,16.88 18.54,16.77
-                    18.95,16.56C19.35,16.35 19.65,16.07 19.83,15.73V14.16H18.7C16.93,14.16 16.04,14.63 16.04,15.57C16.04,16 16.19,16.3 16.5,16.53C16.8,16.76 17.18,16.88 17.66,
-                    16.88M5.46,13.71H9.53L7.5,8.29L5.46,13.71M6.64,6H8.36L13.07,18H11.14L10.17,15.43H4.82L3.86,18H1.93L6.64,6Z"/>
-        </Style>
+        <!-- SELECT ICON -->
+        <Geometry x:Key="Select_Icon">
+            M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,
+            7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z
+        </Geometry>
 
+        <!-- SELECT ALL ICON -->
+        <Geometry x:Key="SelectAll_Icon">
+            M9,9H15V15H9M7,17H17V7H7M15,5H17V3H15M15,21H17V19H15M19,17H21V15H19M19,9H21V7H19M19,21A2,2 0 0,0 21,19H19M19,13H21V11H19M11,
+            21H13V19H11M9,3H7V5H9M3,17H5V15H3M5,21V19H3A2,2 0 0,0 5,21M19,3V5H21A2,2 0 0,0 19,3M13,3H11V5H13M3,9H5V7H3M7,21H9V19H7M3,13H5V11H3M3,5H5V3A2,2 0 0,0 3,5Z
+        </Geometry>
 
-        <!-- PARAMETERS ICON PATH STYLE -->
-        <Style x:Key="ParameterIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5
-                    ,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,
-                    5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,
-                    8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,
-                    19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,
-                    18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
-        </Style>
+        <!-- CLEAR ICON -->
+        <Geometry x:Key="Clear_Icon">
+            M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z
+        </Geometry>
 
-        <!-- SELECT ICON PATH STYLE -->
-        <Style x:Key="SelectIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,
-                    7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z"/>
-        </Style>
+        <!-- FOLDER ICON -->
+        <Geometry x:Key="Folder_Icon">
+            M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z
+        </Geometry>
 
-        <!-- UPDATE ICON -->
-        <Style x:Key="UpdateButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M21,10.12H14.22L16.96,7.3C14.23,4.6 9.81,4.5 7.08,7.2C4.35,9.91 4.35,14.28 7.08,17C9.81,19.7 14.23,19.7 16.96,17C18.32,15.65 
-                    19,14.08 19,12.1H21C21,14.08 20.12,16.65 18.36,18.39C14.85,21.87 9.15,21.87 5.64,18.39C2.14,14.92 2.11,9.28 5.62,5.81C9.13,2.34 14.76,2.34 18.27,5.81L21,
-                    3V10.12M12.5,8V12.25L16,14.33L15.28,15.54L11,13V8H12.5Z"/>
-        </Style>
+        <!-- DOCUMENT ICON -->
+        <Geometry x:Key="Document_Icon">
+            M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z
+        </Geometry>
 
-        <!-- SELECT ALL BUTTON ICON PATH STYLE -->
-        <Style x:Key="SelectAllIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M9,9H15V15H9M7,17H17V7H7M15,5H17V3H15M15,21H17V19H15M19,17H21V15H19M19,9H21V7H19M19,21A2,2 0 0,0 21,19H19M19,13H21V11H19M11,
-                    21H13V19H11M9,3H7V5H9M3,17H5V15H3M5,21V19H3A2,2 0 0,0 5,21M19,3V5H21A2,2 0 0,0 19,3M13,3H11V5H13M3,9H5V7H3M7,21H9V19H7M3,13H5V11H3M3,5H5V3A2,2 0 0,0 3,5Z"/>
-        </Style>
+        <!-- NO DOCUMENT ICON -->
+        <Geometry x:Key="NoDocument_Icon">
+            M19,5A2,2 0 0,0 17,3H10L7.66,5.34L19,16.68V5M3.65,3.88L2.38,5.15L5,7.77V19A2,2 0 0,0 7,21H17C17.36,21 17.68,20.9 17.97,20.74L19.85,22.62L21.12,21.35L3.65,3.88Z
+        </Geometry>
 
-        <!-- BACK ICON PATH STYLE -->
-        <Style x:Key="BackIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
-        </Style>
+        <!-- IMAGE ICON -->
+        <Geometry x:Key="Image_Icon">
+            M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z
+        </Geometry>
 
-        <!-- OPEN DOCUMENT PATH STYLE -->
-        <Style x:Key="OpenDocumentIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z"/>
-        </Style>
+        <!-- SEARCH IMAGE ICON -->
+        <Geometry x:Key="SearchImage_Icon">
+            M15.5,9C16.2,9 16.79,8.76 17.27,8.27C17.76,7.79 18,7.2 18,6.5C18,5.83 17.76,5.23 17.27,4.73C16.79,4.23 16.2,4 
+            15.5,4C14.83,4 14.23,4.23 13.73,4.73C13.23,5.23 13,5.83 13,6.5C13,7.2 13.23,7.79 13.73,8.27C14.23,8.76 14.83,9 15.5,9M19.31,8.91L22.41,12L21,
+            13.41L17.86,10.31C17.08,10.78 16.28,11 15.47,11C14.22,11 13.16,10.58 12.3,9.7C11.45,8.83 11,7.77 11,6.5C11,5.27 11.45,4.2 12.33,3.33C13.2,2.45 
+            14.27,2 15.5,2C16.77,2 17.83,2.45 18.7,3.33C19.58,4.2 20,5.27 20,6.5C20,7.33 19.78,8.13 19.31,8.91M16.5,18H5.5L8.25,14.5L10.22,16.83L12.94,
+            13.31L16.5,18M18,13L20,15V20C20,20.55 19.81,21 19.41,21.4C19,21.79 18.53,22 18,22H4C3.45,22 3,21.79 2.6,21.4C2.21,21 2,20.55 2,20V6C2,5.47 
+            2.21,5 2.6,4.59C3,4.19 3.45,4 4,4H9.5C9.2,4.64 9.03,5.31 9,6H4V20H18V13Z
+        </Geometry>
 
-        <!-- OPEN FOLDER ICON PATH STYLE -->
-        <Style x:Key="OpenFolderIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z"/>
-        </Style>
+        <!-- IMAGE COLLECTION ICON -->
+        <Geometry x:Key="ImageCollection_Icon">
+            M20 4v12H8V4h12m0-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 9.67l1.69 2.26 2.48-3.1L19 15H9zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z
+        </Geometry>
 
-        <!-- SEARCH IMAGE ICON PATH STYLE -->
-        <Style x:Key="SearchImageIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseButtonIconStyle}">
-            <Setter Property="Data" Value="M15.5,9C16.2,9 16.79,8.76 17.27,8.27C17.76,7.79 18,7.2 18,6.5C18,5.83 17.76,5.23 17.27,4.73C16.79,4.23 16.2,4 
-                    15.5,4C14.83,4 14.23,4.23 13.73,4.73C13.23,5.23 13,5.83 13,6.5C13,7.2 13.23,7.79 13.73,8.27C14.23,8.76 14.83,9 15.5,9M19.31,8.91L22.41,12L21,
-                    13.41L17.86,10.31C17.08,10.78 16.28,11 15.47,11C14.22,11 13.16,10.58 12.3,9.7C11.45,8.83 11,7.77 11,6.5C11,5.27 11.45,4.2 12.33,3.33C13.2,2.45 
-                    14.27,2 15.5,2C16.77,2 17.83,2.45 18.7,3.33C19.58,4.2 20,5.27 20,6.5C20,7.33 19.78,8.13 19.31,8.91M16.5,18H5.5L8.25,14.5L10.22,16.83L12.94,
-                    13.31L16.5,18M18,13L20,15V20C20,20.55 19.81,21 19.41,21.4C19,21.79 18.53,22 18,22H4C3.45,22 3,21.79 2.6,21.4C2.21,21 2,20.55 2,20V6C2,5.47 
-                    2.21,5 2.6,4.59C3,4.19 3.45,4 4,4H9.5C9.2,4.64 9.03,5.31 9,6H4V20H18V13Z"/>
-        </Style>
+        <!-- BOLD ICON -->
+        <Geometry x:Key="Bold_Icon">
+            M13.5,15.5H10V12.5H13.5A1.5,1.5 0 0,1 15,14A1.5,1.5 0 0,1 13.5,15.5M10,6.5H13A1.5,1.5 0 0,1 14.5,8A1.5,1.5 0 0,1 
+            13,9.5H10M15.6,10.79C16.57,10.11 17.25,9 17.25,8C17.25,5.74 15.5,4 13.25,4H7V18H14.04C16.14,18 17.75,16.3 17.75,14.21C17.75,12.69 16.89,11.39 15.6,10.79Z
+        </Geometry>
 
+        <!-- ITALIC ICON -->
+        <Geometry x:Key="Italic_Icon">
+            M10,4V7H12.21L8.79,15H6V18H14V15H11.79L15.21,7H18V4H10Z
+        </Geometry>
 
-        <!-- *** ICON FOR TOGGLE BUTTON *** -->
+        <!-- UNDERLINE ICON -->
+        <Geometry x:Key="Underline_Icon">
+            M5,21H19V19H5V21M12,17A6,6 0 0,0 18,11V3H15.5V11A3.5,3.5 0 0,1 12,14.5A3.5,3.5 0 0,1 8.5,11V3H6V11A6,6 0 0,0 12,17Z
+        </Geometry>
 
-        <!-- BASE TOGGLE BUTTON ICON STYLE -->
-        <Style x:Key="BaseToggleButtonIconStyle" TargetType="{x:Type Path}">
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </DataTrigger>
-                <!--<DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>-->
-            </Style.Triggers>
-        </Style>
+        <!-- STRIKE THROUGH ICON -->
+        <Geometry x:Key="StrikeThrough_Icon">
+            M3,14H21V12H3M5,4V7H10V10H14V7H19V4M10,19H14V16H10V19Z
+        </Geometry>
 
-        <!-- SORT ICON PATH STYLE -->
-        <Style x:Key="SortIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M3,13H15V11H3M3,6V8H21V6M3,18H9V16H3V18Z"/>
-        </Style>
+        <!-- MORE VERTICAL ICON -->
+        <Geometry x:Key="MoreVertical_Icon">
+            M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1
+            10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z
+        </Geometry>
 
-        <!-- FAVORITE TOGGLE BUTTON ICON -->
-        <Style x:Key="FavoriteToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/>
-            <Setter Property="Fill" Value="Transparent"/>
-            <Setter Property="Stroke" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- ALIGN VERTICAL BOTTOM ICON -->
+        <Geometry x:Key="AlignVerticalBottom_Icon">
+            M22,22H2v-2h20V22z M10,2H7v16h3V2z M17,8h-3v10h3V8z
+        </Geometry>
 
-        <!-- SORT BY ASCENDING ORDER TOGGLE BUTTON ICON -->
-        <Style x:Key="SortByAscendingIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M9.25 5L12.5 1.75L15.75 5H9.25M8.89 14.3H6L5.28 17H2.91L6 7H9L12.13 17H9.67L8.89 14.3M6.33 12.68H8.56L7.93 10.56L7.67 
-                    9.59L7.42 8.63H7.39L7.17 9.6L6.93 10.58L6.33 12.68M13.05 17V15.74L17.8 8.97V8.91H13.5V7H20.73V8.34L16.09 15V15.08H20.8V17H13.05Z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- ALIGN VERTICAL MIDDLE ICON -->
+        <Geometry x:Key="AlignVerticalMiddle_Icon">
+            F1 M 22,9 v2 H2 v2 H22 Z M 7,21 h3 V3 H7 V21 z M 14,21 h3 V10 h-3 V21 z
+        </Geometry>
 
-        <!-- SORT BY DESCENDING ORDER TOGGLE BUTTON ICON -->
-        <Style x:Key="SortByDescendingIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M15.75 19L12.5 22.25L9.25 19H15.75M8.89 14.3H6L5.28 17H2.91L6 7H9L12.13 17H9.67L8.89 14.3M6.33 12.68H8.56L7.93 10.56L7.67 
-                    9.59L7.42 8.63H7.39L7.17 9.6L6.93 10.58L6.33 12.68M13.05 17V15.74L17.8 8.97V8.91H13.5V7H20.73V8.34L16.09 15V15.08H20.8V17H13.05Z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- ALIGN VERTICAL TOP ICON -->
+        <Geometry x:Key="AlignVerticalTop_Icon">
+            M22,2v2H2V2H22z M7,22h3V6H7V22z M14,22h3V12h-3V22z
+        </Geometry>
 
-        <!-- BOLD TOGGLE BUTTON ICON -->
-        <Style x:Key="BoldToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M13.5,15.5H10V12.5H13.5A1.5,1.5 0 0,1 15,14A1.5,1.5 0 0,1 13.5,15.5M10,6.5H13A1.5,1.5 0 0,1 14.5,8A1.5,1.5 0 0,1 
-                    13,9.5H10M15.6,10.79C16.57,10.11 17.25,9 17.25,8C17.25,5.74 15.5,4 13.25,4H7V18H14.04C16.14,18 17.75,16.3 17.75,14.21C17.75,12.69 16.89,11.39 15.6,10.79Z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- ALIGN HORIZONTAL LEFT ICON -->
+        <Geometry x:Key="AlignHorizontalLeft_Icon">
+            M3,3H21V5H3V3M3,7H15V9H3V7M3,11H21V13H3V11M3,15H15V17H3V15M3,19H21V21H3V19Z
+        </Geometry>
 
-        <!-- ITALIC TOGGLE BUTTON ICON -->
-        <Style x:Key="ItalicToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M10,4V7H12.21L8.79,15H6V18H14V15H11.79L15.21,7H18V4H10Z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- ALIGN HORIZONTAL CENTER ICON -->
+        <Geometry x:Key="AlignHorizontalCenter_Icon">
+            M3,3H21V5H3V3M7,7H17V9H7V7M3,11H21V13H3V11M7,15H17V17H7V15M3,19H21V21H3V19Z
+        </Geometry>
 
-        <!-- UNDERLINE TOGGLE BUTTON ICON -->
-        <Style x:Key="UnderlineToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M5,21H19V19H5V21M12,17A6,6 0 0,0 18,11V3H15.5V11A3.5,3.5 0 0,1 12,14.5A3.5,3.5 0 0,1 8.5,11V3H6V11A6,6 0 0,0 12,17Z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- ALIGN HORIZONTAL RIGHT ICON -->
+        <Geometry x:Key="AlignHorizontalRight_Icon">
+            M3,3H21V5H3V3M9,7H21V9H9V7M3,11H21V13H3V11M9,15H21V17H9V15M3,19H21V21H3V19Z
+        </Geometry>
 
-        <!-- MORE TOGGLE BUTTON ICON -->
-        <Style x:Key="MoreToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1
-                    10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- TEXT ICON -->
+        <Geometry x:Key="Text_Icon">
+            M2.5,4v3h5v12h3V7h5V4H2.5z M21.5,9h-9v3h3v7h3v-7h3V9z
+        </Geometry>
 
-        <!-- ALIGN VERTICAL BOTTOM TOGGLE BUTTON ICON -->
-        <Style x:Key="AlignVerticalBottomToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M22,22H2v-2h20V22z M10,2H7v16h3V2z M17,8h-3v10h3V8z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- TEXT SHORT ICON -->
+        <Geometry x:Key="TextShort_Icon">
+            M4,9H20V11H4V9M4,13H14V15H4V13Z
+        </Geometry>
 
-        <!-- ALIGN VERTICAL MIDDLE TOGGLE BUTTON ICON -->
-        <Style x:Key="AlignVerticalMiddleToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="F1 M 22,9 v2 H2 v2 H22 Z M 7,21 h3 V3 H7 V21 z M 14,21 h3 V10 h-3 V21 z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- TEXT LONG ICON -->
+        <Geometry x:Key="TextLong_Icon">
+            M4,5H20V7H4V5M4,9H20V11H4V9M4,13H20V15H4V13M4,17H14V19H4V17Z
+        </Geometry>
 
-        <!-- ALIGN VERTICAL TOP TOGGLE BUTTON ICON -->
-        <Style x:Key="AlignVerticalTopToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M22,2v2H2V2H22z M7,22h3V6H7V22z M14,22h3V12h-3V22z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- INFO ICON -->
+        <Geometry x:Key="Info_Icon">
+            M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z
+        </Geometry>
 
+        <!-- CHEVRON LEFT ICON -->
+        <Geometry x:Key="ChevronLeft_Icon">
+            M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z
+        </Geometry>
 
-        <!-- ICON OPTION TOGGLE BUTTON ICON -->
-        <Style x:Key="IconOptionToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                    <Setter Property="Fill" Value="White"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- CHEVRON RIGHT ICON -->
+        <Geometry x:Key="ChevronRight_Icon">
+            M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
+        </Geometry>
 
-        <!-- TEXT OPTION TOGGLE BUTTON ICON -->
-        <Style x:Key="TextOptionToggleButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseToggleButtonIconStyle}">
-            <Setter Property="Data" Value="M2.5,4v3h5v12h3V7h5V4H2.5z M21.5,9h-9v3h3v7h3v-7h3V9z"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
-                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
-                    <Setter Property="Fill" Value="White"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+        <!-- IMPORT/EXPORT ICON -->
+        <Geometry x:Key="ImportExport_Icon">
+            M9,3L5,7H8V14H10V7H13M16,17V10H14V17H11L15,21L19,17H16Z
+        </Geometry>
 
+        <!-- IMPORT ICON -->
+        <Geometry x:Key="Import_Icon">
+            M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
+        </Geometry>
 
-        <!-- *** ICON ONLY *** -->
+        <!-- EXPORT ICON -->
+        <Geometry x:Key="Export_Icon">
+            M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z
+        </Geometry>
+        
+        <!-- CATIA LOGO ICON -->
+        <Geometry x:Key="CatiaLogoPart1_Icon">
+            M1580 2224 c-132 -16 -225 -52 -191 -73 7 -5 74 -11 149 -14 131 -6 212 -20 260 -46 83 -44 -18 -193 -255 -374 -87 -67 -113 -93 -113 -113 0 -2 12 -4 28 -4 69 0 
+            284 133 398 245 86 84 127 159 128 229 0 43 -4 52 -36 82 -20 18 -60 40 -90 49 -53 16 -213 27 -278 19z
+        </Geometry>
 
-        <!-- BASE ICON STYLE -->
-        <Style x:Key="BaseIconStyle" TargetType="{x:Type Path}">
-            <Setter Property="Fill" Value="Black"/>
-            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <Geometry x:Key="CatiaLogoPart2_Icon">
+            M1982 1729 c-67 -11 -122 -39 -157 -81 -57 -68 -19 -156 155 -358 197 -229 184 -255 -147 -271 -205 -10 -247 -18 -237 -43 7 -18 69 -32 215 -47 212 -21 370 3 433 
+            66 82 81 58 146 -131 368 -110 128 -120 143 -132 185 -19 65 41 91 212 93 124 1 181 10 185 30 4 22 -37 38 -147 54 -106 16 -169 17 -249 4z
+        </Geometry>
 
-        <!-- NO DOCUMENTATION ICON PATH STYLE -->
-        <Style x:Key="NoDocumentIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
-            <Setter Property="Data" Value="M19,5A2,2 0 0,0 17,3H10L7.66,5.34L19,16.68V5M3.65,3.88L2.38,5.15L5,7.77V19A2,2 0 0,0 7,21H17C17.36,21 17.68,20.9 17.97,20.74L19.85,22.62L21.12,21.35L3.65,3.88Z"/>
-            <Setter Property="IsEnabled" Value="False"/>
-        </Style>
+        <Geometry x:Key="CatiaLogoPart3_Icon">
+            M1178 1515 c-82 -17 -123 -35 -123 -55 0 -12 29 -16 167 -22 244 -9 328 -39 328 -115 0 -47 -33 -107 -93 -170 -120 -127 -334 -248 -362 -204 -9 16 30 105 104 235 
+            75 131 86 166 50 166 -30 0 -65 -41 -173 -203 -112 -169 -196 -323 -196 -361 0 -28 1 -28 48 -21 122 17 351 117 502 218 162 108 290 278 290 385 0 39 -5 50 -38 81
+            -59 56 -130 75 -297 78 -89 1 -164 -3 -207 -12z
+        </Geometry>
 
-        <!-- IN PROGRESS ICON PATH STYLE -->
-        <Style x:Key="InProgressIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
-            <Setter Property="Data" Value="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.24,7.76C15.07,6.58 13.53,6 12,6V12L7.76,16.24C10.1,18.58 13.9,18.58 16.24,16.24C18.59,13.9 18.59,10.1 16.24,7.76Z"/>
-        </Style>
-
-        <!-- CHECK OK ICON PATH STYLE -->
-        <Style x:Key="CheckIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
-            <Setter Property="Data" Value="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
-        </Style>
-
-        <!-- INFO ICON PATH STYLE -->
-        <Style x:Key="InfoIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
-            <Setter Property="Data" Value="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
-        </Style>
-
-        <!-- SEARCH ICON PATH STYLE -->
-        <Style x:Key="SearchIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource BaseIconStyle}">
-            <Setter Property="Data" Value="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,
-                    16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
-        </Style>
-
-        <!-- ***** END OF ICONS ***** -->
-
+        <!--#endregion-->
 
 
 
@@ -400,6 +322,11 @@
                     <Setter Property="Opacity" Value="0.56"/>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <!-- TEXTBLOCK WITH ICON STYLE -->
+        <Style x:Key="IconWithLabel_TextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource LabelFormTextBlock}">
+            <Setter Property="Margin" Value="2,0,7,0"/>
         </Style>
 
 
@@ -545,37 +472,109 @@
         </Style>
 
 
-        <!-- NORMAL BUTTON STYLE -->
-        <Style x:Key="NormalButton" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="{StaticResource Gray242}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
+
+
+        <!--#region ICON GENERIC STYLES -->
+
+        <!-- GENERIC FOR INACTIVE ICON STYLE -->
+        <Style x:Key="Generic_InactiveIcon" TargetType="{x:Type Path}">
+            <Setter Property="Fill" Value="Black"/>
+            <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
+        </Style>
+
+        <!-- GENERIC FOR BUTTON ICON STYLE -->
+        <Style x:Key="Generic_ButtonIcon" TargetType="{x:Type Path}">
+            <Setter Property="Fill" Value="Black"/>
+            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="False">
+                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType={x:Type Button}, Mode=FindAncestor}}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- GENERIC FOR TOGGLE BUTTON ICON STYLE -->
+        <Style x:Key="Generic_ToggleButtonIcon" TargetType="{x:Type Path}">
+            <Setter Property="Fill" Value="Black"/>
+            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="False">
+                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- GENERIC FOR RADIO BUTTON ICON STYLE -->
+        <Style x:Key="Generic_RadioButtonIcon" TargetType="{x:Type Path}">
+            <Setter Property="Fill" Value="Black"/>
+            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}, Mode=FindAncestor}}" Value="False">
+                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}, Mode=FindAncestor}}" Value="True">
+                    <Setter Property="Opacity" Value="{StaticResource FocusIconOpacity}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- GENERIC FOR HIGHLIGHT RADIO BUTTON ICON STYLE -->
+        <Style x:Key="Generic_HighlightRadioButtonIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource Generic_RadioButtonIcon}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}, Mode=FindAncestor}}" Value="True">
+                    <Setter Property="Fill" Value="{StaticResource SecondaryColor}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--#endregion-->
+
+
+        <!--#region BUTTON STYLES -->
+
+        <!-- GENERIC BUTTON STYLE -->
+        <Style x:Key="Generic_Button" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Padding" Value="1"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="True" CornerRadius="8">
+                        <Border x:Name="border"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true"
+                                CornerRadius="6">
 
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}"
-                                              RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Focusable="False"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
                         </Border>
-
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Button.MouseOver.Background}"/>
                             </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource Gray217}" />
-                                <Setter Property="BorderBrush" Value="{StaticResource Gray191}" />
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Button.Pressed.Background}"/>
                             </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{StaticResource Gray191}" />
-                                <Setter Property="BorderBrush" Value="{StaticResource Gray166}" />
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Button.Disabled.Foreground}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -583,70 +582,75 @@
             </Setter>
         </Style>
 
-
-        <!-- NORMAL BUTTON DARKER STYLE -->
-        <Style x:Key="NormalButtonDarker" TargetType="{x:Type Button}" BasedOn="{StaticResource NormalButton}">
-            <Setter Property="Background" Value="{StaticResource Gray217}"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Gray191}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Gray166}" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Gray166}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Gray127}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- HIGHLIGHT BUTTON STYLE -->
-        <Style x:Key="HighlightButton" TargetType="{x:Type Button}" BasedOn="{StaticResource NormalButton}">
+        <!-- GENERIC HIGHLIGHT BUTTON STYLE -->
+        <Style x:Key="GenericHighligh_Button" TargetType="{x:Type Button}" BasedOn="{StaticResource Generic_Button}">
             <Setter Property="Background" Value="{StaticResource SecondaryColorLight}"/>
             <Setter Property="Foreground" Value="White"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource SecondaryColor}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource SecondaryColorDark}" />
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{StaticResource SecondaryColorDark}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource SecondaryColorDark}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
+        <!-- GENERIC DARKER BUTTON STYLE -->
+        <Style x:Key="GenericDarker_Button" TargetType="{x:Type Button}" BasedOn="{StaticResource Generic_Button}">
+            <Setter Property="Background" Value="{StaticResource Gray217}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Gray191}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Gray166}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-        <!-- NORMAL TOGGLE BUTTON STYLE -->
-        <Style x:Key="NormalToggleButton" TargetType="{x:Type ToggleButton}">
-            <Setter Property="Background" Value="{StaticResource Gray242}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
+        <!-- GENERIC SQUARE BUTTON STYLE -->
+        <Style x:Key="Generic_SquareButton" TargetType="{x:Type Button}" BasedOn="{StaticResource Generic_Button}">
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}"/>
+        </Style>
+
+        <!-- GENERIC TOGGLE BUTTON STYLE -->
+        <Style x:Key="Generic_ToggleButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Padding" Value="1"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="True" CornerRadius="8">
+                        <Border x:Name="border"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true"
+                                CornerRadius="6">
 
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}"
-                                              RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Focusable="False"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
                         </Border>
-
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Button.MouseOver.Background}"/>
                             </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource Gray217}" />
-                                <Setter Property="BorderBrush" Value="{StaticResource Gray191}" />
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Button.Pressed.Background}"/>
                             </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{StaticResource Gray191}" />
-                                <Setter Property="BorderBrush" Value="{StaticResource Gray166}" />
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Button.Disabled.Foreground}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -654,39 +658,179 @@
             </Setter>
         </Style>
 
-        <!-- TRANSPARENT TOGGLE BUTTON STYLE -->
-        <Style x:Key="TransparentToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource NormalToggleButton}">
-            <Setter Property="Background" Value="Transparent"/>
+        <!-- GENERIC DARKER TOGGLE BUTTON STYLE -->
+        <Style x:Key="GenericDarker_ToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource Generic_ToggleButton}">
+            <Setter Property="Background" Value="{StaticResource Gray217}"/>
             <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Gray191}" />
+                </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="Background" Value="{StaticResource Gray166}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
+        <!-- GENERIC SQUARE TOGGLE BUTTON STYLE -->
+        <Style x:Key="Generic_SquareToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource Generic_ToggleButton}">
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}"/>
+        </Style>
 
-        <!-- TRANSPARENT TOGGLED RADIO BUTTON STYLE -->
-        <Style x:Key="TransparentToggledRadioButtonStyle" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource NormalToggleButton}">
-            <Setter Property="Background" Value="Transparent" />
+        <!-- GENERIC TOGGLED RADIO BUTTON STYLE -->
+        <Style x:Key="Generic_ToggledRadioButton" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource Generic_ToggleButton}">
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
 
-        <!-- NORMAL TOGGLED RADIO BUTTON STYLE -->
-        <Style x:Key="NormalToggledRadioButtonStyle" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource NormalToggleButton}">
-            <Setter Property="Background" Value="{StaticResource Gray242}" />
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <!-- GENERIC HIGHLIGHT TOGGLE BUTTON STYLE -->
+        <Style x:Key="GenericHighlight_ToggledRadioButton" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource Generic_ToggledRadioButton}">
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Background" Value="{StaticResource SecondaryColorLight}"/>
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsChecked" Value="True"/>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                    </MultiTrigger.Conditions>
+
+                    <Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
+                </MultiTrigger>
             </Style.Triggers>
         </Style>
 
+        <!--#endregion-->
+
+
+        <!--#region MENU STYLES -->
+
+        <!-- MENU TOGGLED RADIO BUTTON STYLE -->
+        <Style x:Key="Menu_ToggledRadioButton" TargetType="{x:Type RadioButton}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Padding" Value="2,10"/>
+            <Setter Property="TextElement.FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+
+                        <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Rectangle x:Name="SelectionRectangle" Grid.Column="0" Width="5" Fill="Transparent" Margin="0,10"/>
+
+                            <ContentPresenter Grid.Column="1"
+                                              Focusable="False"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Gray217}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Gray191}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SelectionRectangle" Property="Fill" Value="{StaticResource SecondaryColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- MENU TEXTBLOCK STYLE -->
+        <Style x:Key="Menu_TextBlock" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,0,50,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <!-- MENU OPEN CLOSE TOGGLE BUTTON ICON STYLE -->
+        <Style x:Key="Menu_OpenCloseToggleButtonIcon" TargetType="{x:Type Path}">
+            <Setter Property="Fill" Value="Black"/>
+            <Setter Property="Data" Value="{StaticResource ChevronLeft_Icon}"/>
+            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}, Mode=FindAncestor}}" Value="False">
+                    <Setter Property="Opacity" Value="{StaticResource InactiveIconOpacity}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton}, Path=IsChecked}" Value="False">
+                    <Setter Property="Data" Value="{StaticResource ChevronRight_Icon}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <!--#endregion-->
+
+
+        <!--#region SIMPLE MARKING -->
+
+        <!-- OPTION FOR TOGGLED RADIO BUTTON ICON STYLE -->
+        <Style x:Key="SimpleMarking_OptionIcon" TargetType="{x:Type Path}" BasedOn="{StaticResource Generic_RadioButtonIcon}">
+            <Setter Property="Fill" Value="Black"/>
+            <Setter Property="Opacity" Value="{StaticResource NormalIconOpacity}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}, Mode=FindAncestor}}" Value="True">
+                    <Setter Property="Fill" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+        <!--#endregion-->
+
+
+        <!--#region  POPUP STYLES -->
+
+        <!-- POPUP MENU BUTTON STYLE -->
+        <Style x:Key="PopupMenu_Button" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Padding" Value="2,10"/>
+            <Setter Property="TextElement.FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+
+                            <ContentPresenter Grid.Column="1"
+                                              Focusable="False"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Gray217}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Gray191}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <!-- NORMAL POPUP CONTENT STYLE -->
         <Style x:Key="NormalPopupContentStyle" TargetType="{x:Type ContentControl}">
@@ -707,7 +851,7 @@
                                         BorderThickness="0.5"/>
 
                                 <!-- Content -->
-                                <ContentPresenter Margin="10" Content="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Path=Content}">
+                                <ContentPresenter Content="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Path=Content}">
                                     <ContentPresenter.OpacityMask>
                                         <VisualBrush Visual="{Binding ElementName=MaskBorder}"/>
                                     </ContentPresenter.OpacityMask>
@@ -719,6 +863,7 @@
             </Setter>
         </Style>
 
+        <!--#endregion-->
 
         <!--  CHECKBOX STYLE -->
         <Style TargetType="{x:Type CheckBox}" x:Key="NormalCheckBox">
@@ -759,6 +904,7 @@
             </Setter>
         </Style>
 
+
         <!-- YES NO CHECKBOX STYLE -->
         <Style x:Key="YesNoCheckBox" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource NormalCheckBox}">
             <Setter Property="Content" Value="{local:Loc CheckBox_No}"/>
@@ -770,6 +916,8 @@
             </Style.Triggers>
         </Style>
 
+
+        <!-- LIST VIEW ITEM BASE STYLE -->
         <Style x:Key="ListViewItemBaseStyle" TargetType="{x:Type ListViewItem}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -830,7 +978,7 @@
                        Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
 
                     <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
-                        <Border x:Name="dropDownBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Background="{TemplateBinding Background}">
+                        <Border x:Name="dropDownBorder" BorderBrush="{StaticResource Gray217}" BorderThickness="1" Background="{TemplateBinding Background}">
                             <ScrollViewer x:Name="DropDownScrollViewer">
                                 <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
                                     <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
@@ -876,6 +1024,7 @@
 
         <!-- Default ListboxItem Style -->
         <Style x:Key="ComboBoxItem" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBoxItem}">
@@ -894,14 +1043,14 @@
 
         <!-- ComboBox Style -->
         <Style x:Key="FlatComboBoxStyle" TargetType="{x:Type ComboBox}">
-            <Setter Property="Padding" Value="0,0,15,5"/>
-            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="Margin" Value="0,3,10,3"/>
+            <Setter Property="Padding" Value="0,5,0,5"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItem}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
-            <Setter Property="MaxWidth" Value="200"/>
+            <!--<Setter Property="MaxWidth" Value="200"/>-->
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="BorderBrush" Value="{Binding Source={StaticResource SecondaryColor}}"/>
@@ -909,6 +1058,7 @@
             </Style.Triggers>
         </Style>
 
+        
 
     </Application.Resources>
 </Application>

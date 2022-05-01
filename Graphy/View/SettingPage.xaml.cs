@@ -16,21 +16,13 @@ using System.Windows.Shapes;
 namespace Graphy.View
 {
     /// <summary>
-    /// Logique d'interaction pour StateView.xaml
+    /// Logique d'interaction pour SettingPage.xaml
     /// </summary>
-    public partial class ProcessView : UserControl
+    public partial class SettingPage : Page
     {
-        public ProcessView()
+        public SettingPage()
         {
             InitializeComponent();
-        }
-
-        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (this.Visibility == Visibility.Visible)
-                ProgressBar.IsIndeterminate = true;
-            else
-                ProgressBar.IsIndeterminate = false;
         }
     }
 }
