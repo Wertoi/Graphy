@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h1>Graphy complex marking documentation</h1>
+
+    <p>
+        The import csv file must respect the following table.
+        <br />
+        If a field is not correct, a default value will be assigned.
+    </p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>PartName</th>
+                <th>MarkingName</th>
+                <th>IsText</th>
+                <th>Text</th>
+                <th>IsBold</th>
+                <th>IsItalic</th>
+                <th>IsUnderline</th>
+                <th>IsStrikeThrough</th>
+                <th>FontFamily</th>
+                <th>IconPathData</th>
+                <th>MarkingHeight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Part1</td>
+                <td>ExampleMarking</td>
+                <td>1</td>
+                <td>Hello World !</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Calibri</td>
+                <td>null</td>
+                <td>2</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br/>
+
+    <p>(Table continuation)</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ExtrusionHeight</th>
+                <th>HorizontalAlignment</th>
+                <th>VerticalAlignment</th>
+                <th>ProjectionSurfaceName</th>
+                <th>TrackingCurveName</th>
+                <th>ReferencePointName</th>
+                <th>AxisSystemName</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0.1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>Surface.1</td>
+                <td>Curve.1</td>
+                <td>Point.1</td>
+                <td>AxisSystem.1</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Part Name</h2>
+    <p>
+        String value which defines the name of the part in windows explorer without extension.
+        <br />
+        Example: C:\...\Part1.CATPart. Write "Part1".
+    </p>
+
+    <h2>Marking Name</h2>
+    <p>String value which defines the name of the marking.</p>
+
+    <h2>Is text</h2>
+    <p>
+        Boolean value which defines if the marking is a text or an icon/image.
+        <br />
+        - 0: for text.
+        <br />
+        - 1: for icon/image.
+    </p>
+
+    <h2>Text</h2>
+    <p>
+        String value which defines the text to write.
+        <br />
+        Can be null if IsText = 1.
+    </p>
+
+    <h2>Is bold, Is italic, Is underline, Is strike through</h2>
+    <p>
+        Boolean value which defines boldness, italic and text line decorations for text marking.
+        <br />
+        - 0: for false.
+        <br />
+        - 1: for true.
+        <br />
+        Can be null if IsText = 1.
+    </p>
+
+    <h2>Font family</h2>
+    <p>
+        String value which defines the name of the font family for text marking.
+        <br />
+        The font family must be installed in windows.
+        <br />
+        Can be null is IsText = 1.
+    </p>
+
+    <h2>Icon path data</h2>
+    <p>
+        String value which defines the icon/image to draw in xaml format.
+        <br />
+        Can be null is IsText = 0.
+    </p>
+
+    <h2>Marking height</h2>
+    <p>
+        Number which defines the height of the marking in the current Catia length unit.
+        <br />
+        Value must be strictly superior to 0.
+    </p>
+
+    <h2>Extrusion height</h2>
+    <p>
+        Number which defines the height of the extrusion in the current Catia length unit.
+        <br />
+        - Negative value for substracting the marking body of the main body in the +Z direction of the reference axis system.
+        <br />
+        - Positive value for adding the marking body to the main body in the -Z direction of the reference axis system.
+    </p>
+
+    <h2>Horizontal alignment</h2>
+    <p>
+        Integer value which defines the horizontal alignment of the marking compared to the reference point and the X axis direction.
+        <br />
+        - 0: for left alignment.
+        <br />
+        - 1: for center alignment.
+        <br />
+        - 2: for right alignment.
+    </p>
+
+    <h2>Vertical alignment</h2>
+    <p>
+        Integer value which defines the vertical alignment of the marking compared to the tracking curve.
+        <br />
+        - 0: for top alignment. Marking is below tracking curve.
+        <br />
+        - 1: for center alignment. Marking is centered on the tracking curve.
+        <br />
+        - 2: for bottom alignment. Marking is above tracking curve.
+    </p>
+
+    <h2>Projection surface name</h2>
+    <p>
+        String value which defines the name of the surface in Catia used to project the marking.
+        <br />
+        - If the projection surface is composed by different sub-surfaces, all sub-surfaces must have the same natural normal.
+    </p>
+
+    <h2>Tracking curve name</h2>
+    <p>
+        String value which defines the name of the tracking curve in Catia used to guide the marking.
+        <br />
+        - The tracking curve must be on the projection surface.
+        <br />
+        - If the tracking curve is composed by different sub-curves, all sub-curves must have the same natural direction.
+    </p>
+
+    <h2>Reference point name</h2>
+    <p>
+        String value which defines the name of the reference point in Catia used to define the starting of the marking.
+        <br />
+        - The reference point must be on the tracking curve.
+    </p>
+
+    <h2>Axis system name</h2>
+    <p>
+        String value which defines the name of the axis system in Catia used to define the directions of the marking.
+        <br />
+        - The axis system origin must be the reference point.
+        <br />
+        - The X axis must be the tangent to the tracking curve passing by the reference point. Its direction points the marking direction (left to right for example).
+        <br />
+        - The Y axis is the result of X and Z axis. Its direction defines the top and the bottom.
+        <br />
+        - The Z axis must be the normal of the projection surface passing by the reference point. Its direction points the matter adding direction.
+    </p>
+
+</body>
+</html>

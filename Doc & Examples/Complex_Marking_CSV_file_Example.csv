@@ -1,0 +1,3 @@
+#PartName;MarkingName;IsText;Text;IsBold;IsItalic;IsUnderline;IsStrikeThrough;FontFamily;IconPathData;MarkingHeight;ExtrusionHeight;HorizontalAlignment;VerticalAlignment;Surface;Curve;Point;AxisSystem
+Part1;Marking1;0;;;;;;;M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16;10;0,1;1;1;Marking surface;TRACKING CURVE;START POINT;Marking_AxisSystem
+Part1;Marking2;1;Icy le petit Ourson !;1;0;0;1;Calibri;null;1,5;0,1;0;0;Marking surface;TRACKING CURVE;Point.2983;Marking_AxisSystem2
