@@ -438,7 +438,7 @@ namespace Graphy.Model
                 iconSet.set_Name("Icon");
 
                 // Compute the y offset depending on the vertical alignment
-                double yOffset = CatiaDrawableShape.GetYOffset(markingData.VerticalAlignment, iconShape.PathGeometry) * scaleRatio;
+                double yOffset = CatiaDrawableShape.GetYOffset(markingData.VerticalAlignment, iconShape.PathGeometry);
 
                 Compute(catiaPart, iconShape, scaleRatio, keepHistoric, createVolume, iconSet, markingData, markingBody, yOffset,
                     originPoint, originAxisSystem, localAxisSystem, supportSurface, startPoint);
