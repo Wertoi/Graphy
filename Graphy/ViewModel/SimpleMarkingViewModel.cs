@@ -54,7 +54,8 @@ namespace Graphy.ViewModel
             // COMMANDS INITIALIZATION
             SelectTrackingCurveCommand = new RelayCommand(SelectTrackingCurveCommandAction);
             SelectStartPointCommand = new RelayCommand(SelectStartPointCommandAction);
-            SelectProjectionSurfaceCommand = new RelayCommand(SelectionProjectionSurfaceCommandAction);
+            SelectProjectionSurfaceCommand = new RelayCommand(SelectProjectionSurfaceCommandAction);
+            SelectAxisSystemCommand = new RelayCommand(SelectAxisSystemCommandAction);
             GenerateAxisSystemCommand = new RelayCommand(GenerateAxisSystemCommandAction);
 
             GenerateCommand = new RelayCommand(GenerateCommandAction);
@@ -119,7 +120,7 @@ namespace Graphy.ViewModel
         private RelayCommand _selectProjectionSurfaceCommand;
         public RelayCommand SelectProjectionSurfaceCommand { get => _selectProjectionSurfaceCommand; set => _selectProjectionSurfaceCommand = value; }
 
-        private void SelectionProjectionSurfaceCommandAction()
+        private void SelectProjectionSurfaceCommandAction()
         {
 
             bool selectionStatus = TrySelectShape(ShapeType.Surface, out string shapeName);
@@ -130,6 +131,16 @@ namespace Graphy.ViewModel
 
 
         #region Select Axis System Command
+        private RelayCommand _selectAxisSystemCommand;
+        public RelayCommand SelectAxisSystemCommand { get => _selectAxisSystemCommand; set => _selectAxisSystemCommand = value; }
+
+        private void SelectAxisSystemCommandAction()
+        {
+            bool selectionStatus = TrySelectShape(ShapeType.AxisSystem, out string axisName);
+            if (selectionStatus)
+                MarkablePart.MarkingData.AxisSystemName = axisName;
+        }
+
         private RelayCommand _generateAxisSystemCommand;
         public RelayCommand GenerateAxisSystemCommand { get => _generateAxisSystemCommand; set => _generateAxisSystemCommand = value; }
 

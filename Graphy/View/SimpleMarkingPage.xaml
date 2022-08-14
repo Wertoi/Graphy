@@ -121,7 +121,6 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
                         <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="LastColumnGroup"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- TEXTE INPUT -->
@@ -273,23 +272,6 @@
                                         Text="{Binding MarkablePart.MarkingData.ExtrusionHeight, Mode=TwoWay}"
                                         IsEnabled="{Binding Source={StaticResource Locator}, Path=SettingViewModel.CreateVolume}"/>
 
-                    <Viewbox Grid.Row="5" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
-                        <Viewbox.ToolTip>
-                            <TextBlock>
-                                    <Run Text="{main:Loc MarkingData_ExtrusionHeightTooltip1}"/>
-                                    <LineBreak/>
-                                    <Run Text="{main:Loc MarkingData_ExtrusionHeightTooltip2}"/>
-                                    <LineBreak/>
-                                    <Run Text="{main:Loc MarkingData_ExtrusionHeightTooltip3}"/>
-                                    <LineBreak/>
-                                    <Run Text="{main:Loc MarkingData_ExtrusionHeightTooltip4}"/>
-                            </TextBlock>
-                        </Viewbox.ToolTip>
-                        <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
-                            <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource Info_Icon}"/>
-                        </Canvas>
-                    </Viewbox>
-
 
                     <TextBlock Grid.Row="6" Grid.Column="0" Text="{main:Loc MarkingData_AlignmentLabel}" Style="{StaticResource LabelFormTextBlock}"/>
 
@@ -394,7 +376,7 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="LastColumnGroup"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- SURFACE POSITION -->
@@ -413,21 +395,6 @@
                         </Viewbox>
                     </Button>
 
-                    <Viewbox Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
-                        <Viewbox.ToolTip>
-                            <TextBlock>
-                                    <Run Text="{main:Loc Position_ProjectionSurfaceTooltip1}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_ProjectionSurfaceTooltip2}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_ProjectionSurfaceTooltip3}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_ProjectionSurfaceTooltip4}"/>
-                            </TextBlock>
-                        </Viewbox.ToolTip>
-                        <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
-                            <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource Info_Icon}"/>
-                        </Canvas>
-                    </Viewbox>
-
-
 
                     <!-- TRACKING CURVE POSITION -->
                     <TextBlock Grid.Row="1" Text="{main:Loc Position_CurveLabel}" Style="{StaticResource LabelFormTextBlock}"/>
@@ -444,20 +411,6 @@
                         </Viewbox>
                     </Button>
 
-                    <Viewbox Grid.Row="1" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
-                        <Viewbox.ToolTip>
-                            <TextBlock>
-                                    <Run Text="{main:Loc Position_TrackingCurveTooltip1}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_TrackingCurveTooltip2}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_TrackingCurveTooltip3}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_TrackingCurveTooltip4}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_TrackingCurveTooltip5}"/>
-                            </TextBlock>
-                        </Viewbox.ToolTip>
-                        <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
-                            <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource Info_Icon}"/>
-                        </Canvas>
-                    </Viewbox>
 
                     <!-- START POINT POSITION -->
                     <TextBlock Grid.Row="2" Text="{main:Loc Position_ReferencePointLabel}" Style="{StaticResource LabelFormTextBlock}"/>
@@ -474,19 +427,6 @@
                         </Viewbox>
                     </Button>
 
-                    <Viewbox Grid.Row="2" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
-                        <Viewbox.ToolTip>
-                            <TextBlock>
-                                    <Run Text="{main:Loc Position_ReferencePointTooltip1}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_ReferencePointTooltip2}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_ReferencePointTooltip3}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_ReferencePointTooltip4}"/>
-                            </TextBlock>
-                        </Viewbox.ToolTip>
-                        <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
-                            <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource Info_Icon}"/>
-                        </Canvas>
-                    </Viewbox>
 
                     <!-- main AXIS POSITION -->
                     <TextBlock Grid.Row="3" Text="{main:Loc Position_LocalAxisSystemLabel}" Style="{StaticResource LabelFormTextBlock}"/>
@@ -494,29 +434,25 @@
                              Text="{Binding MarkablePart.MarkingData.AxisSystemName}"/>
 
                     <Button Grid.Row="3" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
+                            Command="{Binding SelectAxisSystemCommand}"
+                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}"
+                            Margin="0,5,0,0">
+                        <Viewbox Style="{StaticResource IconViewBox}">
+                            <Canvas Style="{StaticResource IconCanvas}">
+                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Select_Icon}"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+
+                    <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding GenerateAxisSystemCommand}"
-                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Margin="0,5,0,0">
+                            IsEnabled="{Binding Source={StaticResource Locator}, Path=CatiaViewModel.CatiaEnv.IsApplicationOpen}" Margin="5,5,0,0">
                         <Viewbox Style="{StaticResource IconViewBox}">
                             <Canvas Style="{StaticResource IconCanvas}">
                                 <Path  Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Add_Icon}"/>
                             </Canvas>
                         </Viewbox>
                     </Button>
-
-                    <Viewbox Grid.Row="3" Grid.Column="3" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
-                        <Viewbox.ToolTip>
-                            <TextBlock><Run Text="{main:Loc Position_mainAxisSystemTooltipLine1}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine2}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine3}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine4}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine5}"/>
-                                    <LineBreak/><Run Text="{main:Loc Position_LocalAxisSystemTooltipLine6}"/>
-                            </TextBlock>
-                        </Viewbox.ToolTip>
-                        <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
-                            <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource Info_Icon}"/>
-                        </Canvas>
-                    </Viewbox>
 
                 </Grid>
 
