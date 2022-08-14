@@ -144,10 +144,6 @@ namespace Graphy.ViewModel
                     }
                 }
             }
-            else
-            {
-                MessengerInstance.Send<string>(CatiaEnv.ErrorLog, Enum.ProcessToken.Failed);
-            }
         }
 
 
