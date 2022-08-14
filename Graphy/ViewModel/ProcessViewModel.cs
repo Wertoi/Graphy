@@ -215,6 +215,7 @@ namespace Graphy.ViewModel
         private void ProcessFinished(string msg)
         {
             IsInformationRaised = true;
+            IsInProgress = false;
             InformationMessage = msg;
 
             ManageStates();
