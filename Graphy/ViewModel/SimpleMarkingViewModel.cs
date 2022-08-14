@@ -248,7 +248,7 @@ namespace Graphy.ViewModel
                 // If the name is non-unique, return false
                 if (selection.Count != 1)
                 {
-                    MessengerInstance.Send("", Enum.InputDataToken.SelectionIncorrect);
+                    MessengerInstance.Send<string>("Selection must have an unique name (avoid spaces and special characters).\r\nSelection from volumes are forbidden.", Enum.ProcessToken.Failed);
                     return false;
                 }
                 else
@@ -259,7 +259,7 @@ namespace Graphy.ViewModel
             }
             catch (Exception)
             {
-                MessengerInstance.Send("", Enum.InputDataToken.SelectionIncorrect);
+                MessengerInstance.Send<string>("Selection must have an unique name (avoid spaces and special characters).\r\nSelection from volumes are forbidden.", Enum.ProcessToken.Failed);
                 return false;
             }
 

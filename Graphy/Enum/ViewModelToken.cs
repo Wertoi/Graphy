@@ -13,11 +13,6 @@ namespace Graphy.Enum
         Refresh
     };
 
-    public enum InputDataToken
-    {
-        SelectionIncorrect
-    };
-
     public enum ProcessToken
     {
         SimpleStarted,

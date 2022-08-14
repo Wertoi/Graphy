@@ -13,9 +13,6 @@ namespace Graphy.ViewModel
         {
             // MESSENGER REGISTRATION
 
-            // INPUT DATA TOKEN
-            MessengerInstance.Register<string>(this, Enum.InputDataToken.SelectionIncorrect, (_) => SelectionIncorrect());
-
             // PROCESS TOKEN
             MessengerInstance.Register<string>(this, Enum.ProcessToken.Failed, (msg) => ProcessFailed(msg));
 
@@ -48,7 +45,9 @@ namespace Graphy.ViewModel
         private int _maximumStep;
 
         private bool _isInformationRaised = false;
+        private bool _isExceptionRaised = false;
         private string _informationMessage = "";
+        private string _exceptionMessage = "";
 
 
         public bool IsOneStateActivated
@@ -78,6 +77,15 @@ namespace Graphy.ViewModel
             }
         }
 
+        public bool IsExceptionRaised
+        {
+            get => _isExceptionRaised;
+            set
+            {
+                Set(() => IsExceptionRaised, ref _isExceptionRaised, value);
+            }
+        }
+
 
         public string InformationMessage
         {
@@ -85,6 +93,15 @@ namespace Graphy.ViewModel
             set
             {
                 Set(() => InformationMessage, ref _informationMessage, value);
+            }
+        }
+
+        public string ExceptionMessage
+        {
+            get => _exceptionMessage;
+            set
+            {
+                Set(() => ExceptionMessage, ref _exceptionMessage, value);
             }
         }
 
@@ -134,7 +151,9 @@ namespace Graphy.ViewModel
         private void ResetExceptionCommandAction()
         {
             IsInformationRaised = false;
+            IsExceptionRaised = false;
             InformationMessage = "";
+            ExceptionMessage = "";
 
             if (IsInProgress)
                 IsInProgress = false;
@@ -155,24 +174,17 @@ namespace Graphy.ViewModel
                 IsOneStateActivated = false;
             else
             {
-                if (IsInformationRaised)
+                if (IsExceptionRaised)
                 {
                     IsInProgress = false;
+                    IsInformationRaised = false;
                 }
 
-                if (IsInformationRaised || IsInProgress)
+                if (IsInformationRaised || IsExceptionRaised || IsInProgress)
                     IsOneStateActivated = true;
                 else
                     IsOneStateActivated = false;
             }
-        }
-
-        private void SelectionIncorrect()
-        {
-            IsInformationRaised = true;
-            InformationMessage = "Incorrect selection.\r\nSelection must have an unique name (avoid spaces and special characters).\r\nSelection from volumes are forbidden.";
-
-            ManageStates();
         }
 
         private void ProcessSimpleStarted()
@@ -210,16 +222,16 @@ namespace Graphy.ViewModel
 
         private void ProcessFailed(string msg)
         {
-            IsInformationRaised = true;
-            InformationMessage = "Process error. Input datas must be reviewed.\r\n\r\nError report: \r\n" + msg;
+            IsExceptionRaised = true;
+            ExceptionMessage = msg;
 
             ManageStates();
         }
 
         private void LicenceFileReadingFailed(string msg)
         {
-            IsInformationRaised = true;
-            InformationMessage = "An error occured during licenses file opening.\r\n\r\nError report: \r\n" + msg;
+            IsExceptionRaised = true;
+            ExceptionMessage = "An error occured during licenses file opening.\r\n\r\nError report: \r\n" + msg;
 
             ManageStates();
         }

@@ -84,14 +84,23 @@ namespace Graphy.Model.CatiaObject
             catch (Exception ex)
             {
                 // We don't really care about exceptions, we just store the message
-                ErrorLog = ex.Message;
+                IsApplicationOpen = false;
+                ErrorLog = "No Catia application has been found.";
             }
 
             if (Application != null)
             {
-                IsApplicationOpen = true;
-                LengthUnitSymbol = GetLengthUnitSymbol();
-                FullVersion = "V" + Application.SystemConfiguration.Version + "R" + Application.SystemConfiguration.Release;
+                try
+                {
+                    IsApplicationOpen = true;
+                    LengthUnitSymbol = GetLengthUnitSymbol();
+                    FullVersion = "V" + Application.SystemConfiguration.Version + "R" + Application.SystemConfiguration.Release;
+                }
+                catch(Exception)
+                {
+                    IsApplicationOpen = false;
+                    ErrorLog = "Impossible to retrieve Catia properties. Check Catia version.";
+                }
             }
             else
             {
