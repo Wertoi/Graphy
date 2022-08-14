@@ -302,7 +302,7 @@ namespace Graphy.ViewModel
                     markingGenerator.Run(MarkablePart.CatiaPart, MarkablePart.MarkingData, new List<CatiaCharacter>(),
                         _toleranceFactor, _keepHistoric, _createVolume);
 
-                    MessengerInstance.Send<string>("Simple drawing process completed !", Enum.ProcessToken.Finished);
+                    MessengerInstance.Send<string>("Simple drawing process complete !", Enum.ProcessToken.Finished);
                 }
                 catch (Exception ex)
                 {

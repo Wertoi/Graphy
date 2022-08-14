@@ -115,7 +115,7 @@ namespace Graphy.ViewModel
                 {
                     markingGenerator.RunForCollection(_catiaEnv, selectedMarkablePartList, _toleranceFactor, _keepHistoric, _createVolume);
 
-                    MessengerInstance.Send<string>("Complex drawing process completed !", Enum.ProcessToken.Finished);
+                    MessengerInstance.Send<string>("Complex drawing process complete !", Enum.ProcessToken.Finished);
                 }
                 catch (Exception ex)
                 {
@@ -192,6 +192,12 @@ namespace Graphy.ViewModel
                 {
                     MarkablePartCollection.Add(markablePartFromCSV);
                 }
+
+                MessengerInstance.Send<string>("Loading complete.\r\n" + markablePartListFromCSV.Count + " markings have been found.", Enum.ProcessToken.Finished);
+            }
+            else
+            {
+                MessengerInstance.Send<string>("An unexpected error occured during CSV table reading.\r\nReview table.", Enum.ProcessToken.Failed);
             }
         }
 

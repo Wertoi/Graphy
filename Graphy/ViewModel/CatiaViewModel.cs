@@ -174,7 +174,7 @@ namespace Graphy.ViewModel
                             SelectedPart = newPart;
 
                         // Finish the process
-                        MessengerInstance.Send<string>("CATPart " + newPart + "opening completed !", Enum.ProcessToken.Finished);
+                        MessengerInstance.Send<string>("CATPart " + newPart + "opening complete !", Enum.ProcessToken.Finished);
                     }
                     catch (Exception ex)
                     {

@@ -176,7 +176,7 @@ namespace Graphy.ViewModel
                         serializer.Serialize(exportStream, IconCollection.ToList());
                     }
 
-                    MessengerInstance.Send("Icon collection export completed !", Enum.ProcessToken.Finished);
+                    MessengerInstance.Send("Icon collection export complete !", Enum.ProcessToken.Finished);
                 }
                 catch (Exception)
                 {
@@ -222,7 +222,7 @@ namespace Graphy.ViewModel
                             SelectedIcon = IconCollection.First();
                     }
 
-                    MessengerInstance.Send<string>("Icon collection import completed !", Enum.ProcessToken.Finished);
+                    MessengerInstance.Send<string>("Icon collection import complete !", Enum.ProcessToken.Finished);
                 }
                 catch (Exception)
                 {
