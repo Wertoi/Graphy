@@ -17,7 +17,7 @@ namespace Graphy.Model
 
         }
 
-        private const int PART_NAME_INDEX = 0;
+        private const int PART_FULL_PATH_INDEX = 0;
         private const int MARKING_NAME_INDEX = 1;
         private const int MARKING_IS_TEXT_INDEX = 2;
         private const int MARKING_TEXT_INDEX = 3;
@@ -37,11 +37,11 @@ namespace Graphy.Model
         private const int MARKING_REFERENCE_AXIS_SYSTEME_NAME_INDEX = 17;
 
 
-        public static void GenerateTemplate(CsvConfig csvConfig, MarkablePart markablePart)
+        public static void GenerateTemplate(CsvConfig csvConfig, MarkablePart markablePart, string outPath)
         {
             CsvWriter writer = new CsvWriter(csvConfig);
             List<string> headerList = new List<string>()
-            { "PartName",
+            { "PartFullPath",
                 "MarkingName",
                 "IsText",
                 "Text",
@@ -62,27 +62,38 @@ namespace Graphy.Model
             writer.AddRow(headerList, true);
 
             List<string> exampleList = new List<string>()
-            { markablePart.PartName,
+            {   "C:\\...\\Part1.CATPart",
                 markablePart.MarkingData.Name,
-                markablePart.MarkingData.IsText.ToString(),
+                Convert.ToInt32(markablePart.MarkingData.IsText).ToString(),
                 markablePart.MarkingData.Text,
-                markablePart.MarkingData.IsBold.ToString(),
-                markablePart.MarkingData.IsItalic.ToString(),
-                markablePart.MarkingData.IsUnderline.ToString(),
-                markablePart.MarkingData.IsStrikeThrough.ToString(),
+                Convert.ToInt32(markablePart.MarkingData.IsBold).ToString(),
+                Convert.ToInt32(markablePart.MarkingData.IsItalic).ToString(),
+                Convert.ToInt32(markablePart.MarkingData.IsUnderline).ToString(),
+                Convert.ToInt32(markablePart.MarkingData.IsStrikeThrough).ToString(),
                 markablePart.MarkingData.FontFamily.Source,
                 markablePart.MarkingData.Icon.PathData,
-                markablePart.MarkingData.MarkingHeight.ToString(),
-                markablePart.MarkingData.ExtrusionHeight.ToString(),
-                markablePart.MarkingData.HorizontalAlignment.ToString(),
-                markablePart.MarkingData.VerticalAlignment.ToString(),
+                Convert.ToInt32(markablePart.MarkingData.MarkingHeight).ToString(),
+                Convert.ToInt32(markablePart.MarkingData.ExtrusionHeight).ToString(),
+                Convert.ToInt32(markablePart.MarkingData.HorizontalAlignment).ToString(),
+                Convert.ToInt32(markablePart.MarkingData.VerticalAlignment).ToString(),
                 markablePart.MarkingData.ProjectionSurfaceName,
                 markablePart.MarkingData.TrackingCurveName,
                 markablePart.MarkingData.ReferencePointName,
                 markablePart.MarkingData.AxisSystemName };
             writer.AddRow(exampleList);
 
-            //writer.Write();
+            try
+            {
+                
+                using(StreamWriter streamWriter = new StreamWriter(outPath, false))
+                {
+                    streamWriter.Write(writer.Write());
+                }
+            }
+            catch(Exception)
+            {
+
+            }
         }
 
         public static bool TryRead(string fullPath, ICollection<MarkablePart> markablePartList, CsvConfig csvConfig)
@@ -104,9 +115,12 @@ namespace Graphy.Model
                         MarkingData defaultMarkingData = MarkingData.Default();
 
                         // Assign PartName
-                        string partNameValue = row[PART_NAME_INDEX];
-                        if (partNameValue != "")
-                            tempMarkablePart.PartName = partNameValue;
+                        string partFullPath = row[PART_FULL_PATH_INDEX];
+                        if (partFullPath != "")
+                        {
+                            CatiaObject.CatiaPart tempCatiaPart = new CatiaObject.CatiaPart(partFullPath);
+                            tempMarkablePart.CatiaPart = tempCatiaPart;
+                        }
                         else
                             tempMarkablePart.HasFile = false;
 
@@ -419,9 +433,9 @@ namespace Graphy.Model
         public static string GetWarningLog(string value, string field, Type targetType)
         {
             if (value == "")
-                return "Warning: " + field + " value is empty. Default value assigned.";
+                return "Warning: " + field + " value is empty. Default value assigned.\r\n";
             else
-                return "Warning: retrieved " + field + " value cannot be parsed to " + targetType.Name + ". Default value assigned";
+                return "Warning: retrieved " + field + " value cannot be parsed to " + targetType.Name + ". Default value assigned\r\n";
         }
     }
 

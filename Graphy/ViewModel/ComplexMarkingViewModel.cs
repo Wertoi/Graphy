@@ -20,7 +20,7 @@ namespace Graphy.ViewModel
 
             GenerateCommand = new RelayCommand(GenerateCommandAction);
             SelectTableCommand = new RelayCommand(SelectTableCommandAction);
-            SelectPartFolderCommand = new RelayCommand(SelectPartFolderCommandAction);
+            GenerateTableTemplateCommand = new RelayCommand(GenerateTableTemplateCommandAction);
             SelectMarkablePartCommand = new RelayCommand<int>((index) => SelectMarkablePartCommandAction(index));
             SelectAllPartCommand = new RelayCommand(SelectAllPartCommandAction);
             UnselectAllPartCommand = new RelayCommand(UnselectAllPartCommandAction);
@@ -153,12 +153,14 @@ namespace Graphy.ViewModel
         }
 
 
+        private RelayCommand _generateTableTemplateCommand;
+        public RelayCommand GenerateTableTemplateCommand { get => _generateTableTemplateCommand; set => _generateTableTemplateCommand = value; }
 
-        private RelayCommand _selectPartFolderCommand;
-        public RelayCommand SelectPartFolderCommand { get => _selectPartFolderCommand; set => _selectPartFolderCommand = value; }
-
-        private void SelectPartFolderCommandAction()
+        private void GenerateTableTemplateCommandAction()
         {
+            MarkablePart tempMarkablePart = new MarkablePart();
+            tempMarkablePart.MarkingData = MarkingData.Default();
+
             // Call a dialog box to select the folder
             System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 
@@ -166,22 +168,10 @@ namespace Graphy.ViewModel
             if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 // Store the part folder path
-                PartFolderPath = folderBrowserDialog.SelectedPath;
+                TableStream.GenerateTemplate(_csvConfig, tempMarkablePart, folderBrowserDialog.SelectedPath + System.IO.Path.PathSeparator + "Graphy_Complex_Marking_Template.csv");
             }
         }
 
-        private void LoadCatiaFileCollection(string folderPath, List<CatiaPart> catiaPartList)
-        {
-            // For each file in the part directory
-            foreach (string fileFullPath in System.IO.Directory.GetFiles(folderPath))
-            {
-                if (CatiaPart.IsFormatOK(fileFullPath))
-                {
-                    CatiaPart tempCatiaPart = new CatiaPart(fileFullPath);
-                    catiaPartList.Add(tempCatiaPart);
-                }
-            }
-        }
 
         private RelayCommand _loadDataCommand;
         public RelayCommand LoadDataCommand { get => _loadDataCommand; set => _loadDataCommand = value; }
@@ -190,14 +180,6 @@ namespace Graphy.ViewModel
         {
             // Clear the markable part collection
             MarkablePartCollection.Clear();
-
-
-            List<CatiaPart> catiaPartList = new List<CatiaPart>();
-
-            // If Part folder exists, get all the parts in it.
-            if (System.IO.Directory.Exists(PartFolderPath))
-                LoadCatiaFileCollection(PartFolderPath, catiaPartList);
-                
 
             // Try to read the marking datas in the table.
             List<MarkablePart> markablePartListFromCSV = new List<MarkablePart>();
@@ -209,44 +191,6 @@ namespace Graphy.ViewModel
                 foreach(MarkablePart markablePartFromCSV in markablePartListFromCSV)
                 {
                     MarkablePartCollection.Add(markablePartFromCSV);
-                }
-
-                // Try to assign a catia part at each markable part from CSV in MarkablePartCollection
-                foreach(CatiaPart catiaPart in catiaPartList)
-                {
-                    bool hasCatiaPartFoundItsMarkingData = false;
-                    foreach(MarkablePart markablePartFromCSV in MarkablePartCollection)
-                    {
-                        // If a match is found, assign the CATPart
-                        if(markablePartFromCSV.PartName == catiaPart.Name)
-                        {
-                            markablePartFromCSV.CatiaPart = catiaPart;
-                            hasCatiaPartFoundItsMarkingData = true;
-                            markablePartFromCSV.IsSelectable = true;
-                        }
-                    }
-
-                    // If no match is found, assign no marking
-                    if (!hasCatiaPartFoundItsMarkingData)
-                    {
-                        MarkablePartCollection.Add(new MarkablePart(catiaPart)
-                        {
-                            MarkingData = MarkingData.NoMarkingData(),
-                            IsSelectable = false
-                        });
-                    }
-
-                }  
-            }
-            else
-            {
-                foreach(CatiaPart catiaPart in catiaPartList)
-                {
-                    MarkablePartCollection.Add(new MarkablePart(catiaPart)
-                    {
-                        MarkingData = MarkingData.NoMarkingData(),
-                        IsSelectable = false
-                    });
                 }
             }
         }

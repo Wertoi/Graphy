@@ -24,22 +24,12 @@ namespace Graphy.Model
             MarkingData = MarkingData.Default();
         }
 
-        private string _partName;
         private CatiaPart _catiaPart;
         private MarkingData _markingData;
         private bool _isSelected = false;
         private bool _isSelectable = false;
         private bool _hasFile = false;
 
-
-        public string PartName
-        {
-            get => _partName;
-            set
-            {
-                Set(() => PartName, ref _partName, value);
-            }
-        }
 
         public CatiaPart CatiaPart
         {
@@ -49,10 +39,7 @@ namespace Graphy.Model
                 Set(() => CatiaPart, ref _catiaPart, value);
 
                 if (CatiaPart != null && System.IO.File.Exists(CatiaPart.FileFullPath))
-                {
-                    PartName = CatiaPart.Name;
                     HasFile = true;
-                }
                 else
                     HasFile = false;
 

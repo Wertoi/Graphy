@@ -35,9 +35,9 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
@@ -60,29 +60,19 @@
                         </Viewbox>
                     </Button>
 
-
-                    <!--#endregion-->
-
-                    <!--#region PART FOLDER SELECTION REGION -->
-
-                    <!-- PART FOLDER SELECTION LABEL -->
-                    <TextBlock Grid.Row="1" Text="{main:Loc ComplexMarking_InputDatas_CATPartsFolder}" Style="{StaticResource LabelFormTextBlock}" />
-
-                    <!-- PART FOLDER SELECTION INPUT -->
-                    <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"
-                                 Text="{Binding Path=PartFolderPath}" />
-
-                    <!-- PART FOLDER SELECTION BUTTON -->
-                    <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource Generic_SquareButton}"
-                            Command="{Binding Path=SelectPartFolderCommand}" Margin="0,5,0,0">
+                    <Button Grid.Column="3" Style="{StaticResource Generic_SquareButton}"
+                                Command="{Binding Path=GenerateTableTemplateCommand}" Margin="5,0,0,0">
                         <Viewbox Style="{StaticResource IconViewBox}">
                             <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Folder_Icon}"/>
+                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Add_Icon}"/>
                             </Canvas>
                         </Viewbox>
                     </Button>
 
+
                     <!--#endregion-->
+
+                    
 
                 </Grid>
 
@@ -185,7 +175,7 @@
 
                                 <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Style="{StaticResource NormalCheckBox}"/>
 
-                                <TextBlock Grid.Column="1" Text="{Binding PartName}">
+                                <TextBlock Grid.Column="1" Text="{Binding CatiaPart.Name}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock" BasedOn="{StaticResource LabelFormTextBlock}">
                                             <Setter Property="IsEnabled" Value="True"/>
