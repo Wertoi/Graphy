@@ -14,7 +14,8 @@
         <Border Background="Black" Opacity="0.3"/>
 
         <!-- IN PROGRESS STATE -->
-        <Border Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="10" BorderThickness="1" BorderBrush="#FF262626">
+        <Border Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="10" BorderThickness="1" BorderBrush="#FF262626"
+                Visibility="{Binding Source={StaticResource Locator}, Path=StatusViewModel.IsInProgress, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel Orientation="Vertical" Margin="20,10,20,25">
 
                 <TextBlock HorizontalAlignment="Left" Margin="0,0,0,15" FontSize="16" Foreground="{StaticResource PrimaryColor}" MinWidth="150"
@@ -39,18 +40,17 @@
 
         <!-- GENERAL EXCEPTION STATE -->
         <Border Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="10" BorderThickness="1" BorderBrush="#FF262626" MaxWidth="400"
-                Visibility="{Binding Source={StaticResource Locator}, Path=StatusViewModel.IsGeneralExceptionRaised, Converter={StaticResource BooleanToVisibilityConverter}}">
+                Visibility="{Binding Source={StaticResource Locator}, Path=StatusViewModel.IsInformationRaised, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="20,15" HorizontalAlignment="Left" TextWrapping="Wrap">
-                    <Run Text="Oups !" FontSize="16" Foreground="{StaticResource PrimaryColor}"/>
+                    <Run Text="Process finished !" FontSize="16" Foreground="{StaticResource PrimaryColor}"/>
                     <LineBreak/>
-                    <Run Text="{main:Loc Status_GeneralException_Title}"  FontSize="14" Foreground="#FF262626"/>
-                    <LineBreak/>
-                    <Run Text="{Binding Source={StaticResource Locator}, Path=StatusViewModel.ExceptionMessage}" Foreground="#FFA6A6A6" FontSize="14"/>
+                    <Run Text="{Binding Source={StaticResource Locator}, Path=StatusViewModel.InformationMessage}" Foreground="#FFA6A6A6" FontSize="14"/>
                 </TextBlock>
 
-                <Button Margin="2,10,2,15" Style="{StaticResource Generic_Button}"
-                        Command="{Binding Source={StaticResource Locator}, Path=StatusViewModel.ResetExceptionCommand}" Content="OK" Padding="15,5" />
+                <Button Margin="5,10,5,15" Style="{StaticResource Generic_Button}"
+                        Command="{Binding Source={StaticResource Locator}, Path=StatusViewModel.ResetExceptionCommand}"
+                        Content="OK" Padding="15,5" HorizontalAlignment="Center" />
 
             </StackPanel>
         </Border>

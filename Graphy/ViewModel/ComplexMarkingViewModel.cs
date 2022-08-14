@@ -115,7 +115,7 @@ namespace Graphy.ViewModel
                 {
                     markingGenerator.RunForCollection(_catiaEnv, selectedMarkablePartList, _toleranceFactor, _keepHistoric, _createVolume);
 
-                    MessengerInstance.Send<object>(null, Enum.ProcessToken.Finished);
+                    MessengerInstance.Send<string>("Complex drawing process completed !", Enum.ProcessToken.Finished);
                 }
                 catch (Exception ex)
                 {

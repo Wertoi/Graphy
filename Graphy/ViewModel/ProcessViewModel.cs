@@ -25,7 +25,7 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<object>(this, Enum.ProcessToken.SimpleStarted, (_) => ProcessSimpleStarted());
             MessengerInstance.Register<int>(this, Enum.ProcessToken.ComplexStarted, (maximumStep) => ProcessComplexStarted(maximumStep));
 
-            MessengerInstance.Register<object>(this, Enum.ProcessToken.Finished, (_) => ProcessFinished());
+            MessengerInstance.Register<string>(this, Enum.ProcessToken.Finished, (msg) => ProcessFinished(msg));
 
             // SETTING TOKEN
             MessengerInstance.Register<string>(this, Enum.SettingToken.LicenceFileReadingFailed, (msg) => LicenceFileReadingFailed(msg));
@@ -47,8 +47,8 @@ namespace Graphy.ViewModel
         private int _currentStep;
         private int _maximumStep;
 
-        private bool _isGeneralExceptionRaised = false;
-        private string _exceptionMessage = "";
+        private bool _isInformationRaised = false;
+        private string _informationMessage = "";
 
 
         public bool IsOneStateActivated
@@ -69,22 +69,22 @@ namespace Graphy.ViewModel
             }
         }
 
-        public bool IsGeneralExceptionRaised
+        public bool IsInformationRaised
         {
-            get => _isGeneralExceptionRaised;
+            get => _isInformationRaised;
             set
             {
-                Set(() => IsGeneralExceptionRaised, ref _isGeneralExceptionRaised, value);
+                Set(() => IsInformationRaised, ref _isInformationRaised, value);
             }
         }
 
 
-        public string ExceptionMessage
+        public string InformationMessage
         {
-            get => _exceptionMessage;
+            get => _informationMessage;
             set
             {
-                Set(() => ExceptionMessage, ref _exceptionMessage, value);
+                Set(() => InformationMessage, ref _informationMessage, value);
             }
         }
 
@@ -133,8 +133,8 @@ namespace Graphy.ViewModel
 
         private void ResetExceptionCommandAction()
         {
-            IsGeneralExceptionRaised = false;
-            ExceptionMessage = "";
+            IsInformationRaised = false;
+            InformationMessage = "";
 
             if (IsInProgress)
                 IsInProgress = false;
@@ -155,12 +155,12 @@ namespace Graphy.ViewModel
                 IsOneStateActivated = false;
             else
             {
-                if (IsGeneralExceptionRaised)
+                if (IsInformationRaised)
                 {
                     IsInProgress = false;
                 }
 
-                if (IsGeneralExceptionRaised || IsInProgress)
+                if (IsInformationRaised || IsInProgress)
                     IsOneStateActivated = true;
                 else
                     IsOneStateActivated = false;
@@ -169,8 +169,8 @@ namespace Graphy.ViewModel
 
         private void SelectionIncorrect()
         {
-            IsGeneralExceptionRaised = true;
-            ExceptionMessage = "Incorrect selection.\r\nSelection must have an unique name (avoid spaces and special characters).\r\nSelection from volumes are forbidden.";
+            IsInformationRaised = true;
+            InformationMessage = "Incorrect selection.\r\nSelection must have an unique name (avoid spaces and special characters).\r\nSelection from volumes are forbidden.";
 
             ManageStates();
         }
@@ -200,27 +200,29 @@ namespace Graphy.ViewModel
             CurrentStep = currentStep;
         }
 
-        private void ProcessFinished()
+        private void ProcessFinished(string msg)
         {
-            IsInProgress = false;
+            IsInformationRaised = true;
+            InformationMessage = msg;
 
             ManageStates();
         }
 
         private void ProcessFailed(string msg)
         {
-            IsGeneralExceptionRaised = true;
-            ExceptionMessage = "Process error. Input datas must be reviewed.\r\n\r\nError report: \r\n" + msg;
+            IsInformationRaised = true;
+            InformationMessage = "Process error. Input datas must be reviewed.\r\n\r\nError report: \r\n" + msg;
 
             ManageStates();
         }
 
         private void LicenceFileReadingFailed(string msg)
         {
-            IsGeneralExceptionRaised = true;
-            ExceptionMessage = "An error occured during licenses file opening.\r\n\r\nError report: \r\n" + msg;
+            IsInformationRaised = true;
+            InformationMessage = "An error occured during licenses file opening.\r\n\r\nError report: \r\n" + msg;
 
             ManageStates();
         }
+
     }
 }
