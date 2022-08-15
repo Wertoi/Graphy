@@ -168,7 +168,7 @@ namespace Graphy.ViewModel
             if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 // Store the part folder path
-                TableStream.GenerateTemplate(_csvConfig, tempMarkablePart, folderBrowserDialog.SelectedPath + System.IO.Path.PathSeparator + "Graphy_Complex_Marking_Template.csv");
+                TableStream.GenerateTemplate(_csvConfig, tempMarkablePart, folderBrowserDialog.SelectedPath + System.IO.Path.DirectorySeparatorChar + "Graphy_Complex_Marking_Template.csv");
             }
         }
 
