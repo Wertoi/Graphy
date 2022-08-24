@@ -32,6 +32,7 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<bool>(this, Enum.SettingToken.KeepHistoricChanged, (keepHistoric) => { _keepHistoric = keepHistoric; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
             MessengerInstance.Register<CsvStream.CsvConfig>(this, Enum.SettingToken.CsvConfigChanged, (csvConfig) => { _csvConfig = csvConfig; });
+            MessengerInstance.Register<Enum.HorizontalAxisSystemPosition>(this, Enum.SettingToken.HorizontalAxisSystemPositionChanged, (horizontalAxisSystemPosition) => { _horizontalAxisSystemPosition = horizontalAxisSystemPosition; });
 
             // From Catia
             MessengerInstance.Register<CatiaEnv>(this, Enum.CatiaToken.CatieEnvChanged, (catiaEnv) => { _catiaEnv = catiaEnv; });
@@ -49,6 +50,7 @@ namespace Graphy.ViewModel
         private double _toleranceFactor;
         private bool _keepHistoric;
         private bool _createVolume;
+        private Enum.HorizontalAxisSystemPosition _horizontalAxisSystemPosition;
         CatiaEnv _catiaEnv;
         private CsvStream.CsvConfig _csvConfig;
 
@@ -113,7 +115,7 @@ namespace Graphy.ViewModel
 
                 try
                 {
-                    markingGenerator.RunForCollection(_catiaEnv, selectedMarkablePartList, _toleranceFactor, _keepHistoric, _createVolume);
+                    markingGenerator.RunForCollection(_catiaEnv, selectedMarkablePartList, _toleranceFactor, _keepHistoric, _createVolume, _horizontalAxisSystemPosition);
 
                     MessengerInstance.Send<string>("Complex drawing process complete !", Enum.ProcessToken.Finished);
                 }
@@ -191,6 +193,8 @@ namespace Graphy.ViewModel
                 foreach(MarkablePart markablePartFromCSV in markablePartListFromCSV)
                 {
                     MarkablePartCollection.Add(markablePartFromCSV);
+                    if (markablePartFromCSV.HasFile && System.IO.File.Exists(markablePartFromCSV.CatiaPart.FileFullPath))
+                        markablePartFromCSV.IsSelectable = true;
                 }
 
                 MessengerInstance.Send<string>("Loading complete.\r\n" + markablePartListFromCSV.Count + " markings have been found.", Enum.ProcessToken.Finished);

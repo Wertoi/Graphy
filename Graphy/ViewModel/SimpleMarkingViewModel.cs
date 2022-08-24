@@ -46,6 +46,7 @@ namespace Graphy.ViewModel
             MessengerInstance.Register<double>(this, Enum.SettingToken.ToleranceFactorChanged, (toleranceFactor) => { _toleranceFactor = toleranceFactor; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.KeepHistoricChanged, (keepHistoric) => { _keepHistoric = keepHistoric; });
             MessengerInstance.Register<bool>(this, Enum.SettingToken.CreateVolumeChanged, (createVolume) => { _createVolume = createVolume; });
+            MessengerInstance.Register<HorizontalAxisSystemPosition>(this, SettingToken.HorizontalAxisSystemPositionChanged, (horizontalAxisSystemPosition) => { _horizontalAxisSystemPosition = horizontalAxisSystemPosition; });
 
             // From Icon
             MessengerInstance.Register<Icon>(this, Enum.IconToken.SelectedIconChanged, (icon) => { MarkablePart.MarkingData.Icon = icon; });
@@ -69,6 +70,7 @@ namespace Graphy.ViewModel
         private double _toleranceFactor;
         private bool _keepHistoric;
         private bool _createVolume;
+        private Enum.HorizontalAxisSystemPosition _horizontalAxisSystemPosition;
 
         public ObservableCollection<FontFamily> FontFamilyCollection
         {
@@ -300,7 +302,7 @@ namespace Graphy.ViewModel
                 try
                 {
                     markingGenerator.Run(MarkablePart.CatiaPart, MarkablePart.MarkingData, new List<CatiaCharacter>(),
-                        _toleranceFactor, _keepHistoric, _createVolume);
+                        _toleranceFactor, _keepHistoric, _createVolume, _horizontalAxisSystemPosition);
 
                     MessengerInstance.Send<string>("Simple drawing process complete !", Enum.ProcessToken.Finished);
                 }

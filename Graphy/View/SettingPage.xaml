@@ -57,6 +57,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}"
@@ -79,6 +80,69 @@
                               IsChecked="{Binding Path=CreateVolume, Mode=TwoWay}"/>
 
 
+                    <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelFormTextBlock}"
+                               Text="{main:Loc Settings_Marking_HorizontalAxisSystemPosition_Label}"/>
+
+
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,5,0,0">
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}"
+                                         IsChecked="{Binding Path=HorizontalAxisSystemPosition, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:HorizontalAxisSystemPosition.Left}}">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource AlignHorizontalLeft_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Margin="5,0,0,0"
+                                         IsChecked="{Binding Path=HorizontalAxisSystemPosition, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:HorizontalAxisSystemPosition.Center}}">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource AlignHorizontalCenter_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                            <RadioButton Style="{StaticResource Generic_ToggledRadioButton}" Margin="5,0,0,0"
+                                         IsChecked="{Binding Path=HorizontalAxisSystemPosition, Mode=TwoWay,
+                            Converter={StaticResource EnumToBooleanConverter},
+                            ConverterParameter={x:Static enum:HorizontalAxisSystemPosition.Right}}">
+
+                                <Viewbox Style="{StaticResource IconViewBox}">
+                                    <Canvas Style="{StaticResource IconCanvas}">
+                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource AlignHorizontalRight_Icon}"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </RadioButton>
+
+                        </StackPanel>
+
+                        <Viewbox Grid.Column="1" Style="{StaticResource IconViewBox}" ToolTipService.ShowDuration="32000">
+                            <Viewbox.ToolTip>
+                                <TextBlock>
+                                    <Run Text="{main:Loc Settings_Marking_HorizontalAxisSystemPosition_Tooltip}"/>
+                                </TextBlock>
+                            </Viewbox.ToolTip>
+                            <Canvas Style="{StaticResource IconCanvas}" Background="Transparent">
+                                <Path Style="{StaticResource Generic_InactiveIcon}" Data="{StaticResource Info_Icon}"/>
+                            </Canvas>
+                        </Viewbox>
+
+                    </Grid>
+
                 </Grid>
 
 
@@ -86,71 +150,71 @@
                 <TextBlock Text="{main:Loc Settings_CSVReader_Title}"
                            FontSize="16" Foreground="{StaticResource PrimaryColor}" Grid.ColumnSpan="3" Margin="0,25,0,5"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{main:Loc Settings_CSVReader_DelimiterLabel}" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=CsvConfig.Delimiter, Mode=TwoWay}"
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{main:Loc Settings_CSVReader_DelimiterLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=CsvConfig.Delimiter, Mode=TwoWay}"
                              Style="{StaticResource NormalTextBox}"/>
 
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{main:Loc Settings_CSVReader_CommentaryLabel}" Style="{StaticResource LabelFormTextBlock}"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=CsvConfig.CommentMark, Mode=TwoWay}"
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{main:Loc Settings_CSVReader_CommentaryLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=CsvConfig.CommentMark, Mode=TwoWay}"
                              Style="{StaticResource NormalTextBox}"/>
 
-                </Grid>
+                    </Grid>
 
-                <TextBlock Text="{main:Loc Settings_Icons_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,25,0,5"/>
+                    <TextBlock Text="{main:Loc Settings_Icons_Title}" FontSize="16" Foreground="{StaticResource PrimaryColor}" Margin="0,25,0,5"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumnGroup"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{main:Loc Settings_Icons_ExportLabel}" Style="{StaticResource LabelFormTextBlock}" Margin="0,0,20,0"/>
-                    <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{main:Loc Settings_Icons_ExportLabel}" Style="{StaticResource LabelFormTextBlock}" Margin="0,0,20,0"/>
+                        <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
                             Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.ExportIconCollectionCommand}">
-                        <Viewbox Style="{StaticResource IconViewBox}">
-                            <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Export_Icon}"/>
-                            </Canvas>
-                        </Viewbox>
-                    </Button>
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Export_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{main:Loc Settings_Icons_ImportLabel}" Style="{StaticResource LabelFormTextBlock}"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,3,10,3" Padding="5,8,10,8"
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{main:Loc Settings_Icons_ImportLabel}" Style="{StaticResource LabelFormTextBlock}"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,3,10,3" Padding="5,8,10,8"
                               ItemsSource="{Binding Path=SelectedImportMode, Converter={StaticResource EnumToCollectionConverter}}"
                               SelectedItem="{Binding Path=SelectedImportMode}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource LocalizedEnumToStringConverter}}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource LocalizedEnumToStringConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource Generic_SquareButton}"
                             VerticalAlignment="Center"
                             Command="{Binding Source={StaticResource Locator}, Path=IconViewModel.ImportIconCollectionCommand}">
-                        <Viewbox Style="{StaticResource IconViewBox}">
-                            <Canvas Style="{StaticResource IconCanvas}">
-                                <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Import_Icon}"/>
-                            </Canvas>
-                        </Viewbox>
-                    </Button>
+                            <Viewbox Style="{StaticResource IconViewBox}">
+                                <Canvas Style="{StaticResource IconCanvas}">
+                                    <Path Style="{StaticResource Generic_ButtonIcon}" Data="{StaticResource Import_Icon}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
 
-                </Grid>
+                    </Grid>
 
 
             </StackPanel>
@@ -160,7 +224,7 @@
             <TextBlock HorizontalAlignment="Left" Foreground="{StaticResource Gray127}">
                 <Run Text="© Graphy, 2022"/>
                 <LineBreak/>
-                <Run Text="v4.0"/>
+                <Run Text="v4.1"/>
             </TextBlock>
             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <Hyperlink Command="{Binding Source={StaticResource Locator}, Path=SettingViewModel.ShowLicenceCommand}">

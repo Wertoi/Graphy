@@ -52,12 +52,12 @@ namespace Graphy.Model
 
 
         public void RunForCollection(CatiaEnv catiaEnv, ICollection<MarkablePart> markablePartCollection,
-            double toleranceFactor, bool keepHistoric, bool createVolume)
+            double toleranceFactor, bool keepHistoric, bool createVolume, Enum.HorizontalAxisSystemPosition horizontalAxisSystemPosition)
         {
             Step = 1;
 
             IEnumerable<IGrouping<CatiaPart, MarkablePart>> groupedMarkablePartList = markablePartCollection.GroupBy(markablePart => markablePart.CatiaPart);
-            foreach(IGrouping<CatiaPart, MarkablePart> groupedMarkablePart in groupedMarkablePartList)
+            foreach (IGrouping<CatiaPart, MarkablePart> groupedMarkablePart in groupedMarkablePartList)
             {
                 CatiaPart catiaPart = groupedMarkablePart.Key;
                 if (catiaPart.TryOpenDocument(catiaEnv, catiaPart.FileFullPath))
@@ -67,7 +67,7 @@ namespace Graphy.Model
 
                     foreach (MarkablePart markablePart in partMarkablePartList)
                     {
-                        Run(catiaPart, markablePart.MarkingData, drawnCharacterList, toleranceFactor, keepHistoric, createVolume);
+                        Run(catiaPart, markablePart.MarkingData, drawnCharacterList, toleranceFactor, keepHistoric, createVolume, horizontalAxisSystemPosition);
                         Step++;
                     }
 
@@ -77,7 +77,7 @@ namespace Graphy.Model
         }
 
         public void Run(CatiaPart catiaPart, MarkingData markingData, List<CatiaCharacter> characterList,
-            double toleranceFactor, bool keepHistoric, bool createVolume)
+            double toleranceFactor, bool keepHistoric, bool createVolume, Enum.HorizontalAxisSystemPosition horizontalAxisSystemPosition)
         {
             ProgressRate = 0;
 
@@ -171,7 +171,6 @@ namespace Graphy.Model
 
                 // Create a list to store points references in order to create underline and strike through if necessary
                 List<CatiaPoint> constructionPointList = new List<CatiaPoint>();
-                //List<Reference> localPointRefList = new List<Reference>();
 
                 // Create a list to store local axis system references in order to delete them if keep historic option is uncheck.
                 List<CatiaAxisSystem> constructionAxisSystemList = new List<CatiaAxisSystem>();
@@ -196,50 +195,31 @@ namespace Graphy.Model
                 // ... So start at 1.
                 for (int i = 1; i < markingData.Text.Count(); i++)
                 {
-                    // Get the kerning value between the previous character and the current one.
-                    double kerningValue = markingData.FontFamily.GetKerningValue(markingData.Text[i - 1], markingData.Text[i]);
-
-
-                    // Compute the previous character right side bearing
-                    // Depending on its sign, the stack-up changes
-                    double previousCharacterRightSideBearing = markingData.FontFamily.GetRightSideBearing(markingData.Text[i - 1], markingData.MarkingHeight,
-                        markingData.IsBold, markingData.IsItalic);
-
-                    // See for stack-up
-                    // https://docs.microsoft.com/fr-fr/dotnet/api/system.windows.media.glyphtypeface?view=net-5.0
-                    double characterRelativePosition;
-                    if (previousCharacterRightSideBearing > 0)
-                    {
-                        characterRelativePosition = markingData.FontFamily.GetAdvanceWidth(markingData.Text[i - 1], markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic)
-                            - markingData.FontFamily.GetLeftSideBearing(markingData.Text[i - 1], markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic)
-                            + markingData.FontFamily.GetLeftSideBearing(markingData.Text[i], markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic)
-                            + markingData.MarkingHeight * kerningValue;
-                    }
-                    else
-                    {
-                        characterRelativePosition = markingData.FontFamily.GetAdvanceWidth(markingData.Text[i - 1], markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic)
-                            - markingData.FontFamily.GetLeftSideBearing(markingData.Text[i - 1], markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic)
-                            - previousCharacterRightSideBearing
-                            + markingData.FontFamily.GetLeftSideBearing(markingData.Text[i], markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic)
-                            + markingData.MarkingHeight * kerningValue;
-                    }
-
                     // Positions are absolute; it represents the distance from the starting point
-                    absoluteCharacterPositionList.Add(absoluteCharacterPositionList[i - 1] + characterRelativePosition);
+                    absoluteCharacterPositionList.Add(absoluteCharacterPositionList[i - 1] + GetCharacterRelativePosition(markingData.Text[i - 1], markingData.Text[i], markingData, horizontalAxisSystemPosition));
                 }
 
                 // Compute the total width
                 // CharacterWidth = AdvanceWidth - LeftSideBearing - RightSideBearing
-                double totalWidth = absoluteCharacterPositionList.Last()
-                    + markingData.FontFamily.GetAdvanceWidth(markingData.Text.Last(), markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic)
-                    - markingData.FontFamily.GetLeftSideBearing(markingData.Text.Last(), markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic)
-                    - markingData.FontFamily.GetRightSideBearing(markingData.Text.Last(), markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
+                double totalWidth = GetTotalWidth(absoluteCharacterPositionList.Last(), markingData, markingData.Text.First(), markingData.Text.Last(), horizontalAxisSystemPosition);
 
                 #endregion
                 // ***** END OF POSITIONS COMPUTATION ***** //
 
                 // Get the start point
                 CatiaPoint startPoint = GetStartPoint(catiaPart, totalWidth, markingData, trackingCurve, referencePoint, isXSameDirection);
+
+                // Create the line first point if the horizontal position is different of "Left"
+                // If the horizontal axis system position is left, there is no need for a correction of the start point.
+                // Otherwise we have a superposition of the first local point with the first line point which generates a crash of Catia.
+                if (horizontalAxisSystemPosition != HorizontalAxisSystemPosition.Left)
+                {
+                    CatiaPoint lineStartPoint = new CatiaPoint(catiaPart.PartDocument, trackingCurve, startPoint,
+                        GetStartPointCorrectif(markingData, markingData.Text.First(), horizontalAxisSystemPosition),
+                        isXSameDirection);
+                    pointSet.AppendHybridShape(lineStartPoint.Shape);
+                    constructionPointList.Add(lineStartPoint);
+                }
 
                 #endregion
                 // ***** END OF PREPARATION ***** //
@@ -249,7 +229,7 @@ namespace Graphy.Model
                 foreach (char character in markingData.Text)
                 {
                     // Get the associatedCatiaCharacter
-                    CatiaCharacter catiaCharacter = GetCatiaCharacter(catiaPart.PartDocument, markingData, character, characterList, toleranceFactor);
+                    CatiaCharacter catiaCharacter = GetCatiaCharacter(catiaPart.PartDocument, markingData, character, characterList, toleranceFactor, horizontalAxisSystemPosition);
 
                     // *** NOTE ***
                     // The local point is constructed even if the character is a space character.
@@ -282,7 +262,7 @@ namespace Graphy.Model
                         // If we do not keep the construction historic
                         if (!keepHistoric)
                         {
-                            Compute(catiaPart, catiaCharacter, scaleRatio, keepHistoric, createVolume, writingSet, markingData, markingBody,
+                            ComputeDrawing(catiaPart, catiaCharacter, scaleRatio, keepHistoric, createVolume, writingSet, markingData, markingBody,
                                 yOffset, originPoint, originAxisSystem, localAxisSystem, supportSurface, localPoint);
                         }
                         else
@@ -291,7 +271,7 @@ namespace Graphy.Model
                             HybridBody characterSet = writingSet.HybridBodies.Add();
                             characterSet.set_Name(character.ToString() + "." + characterIndex);
 
-                            Compute(catiaPart, catiaCharacter, scaleRatio, keepHistoric, createVolume, characterSet, markingData, markingBody,
+                            ComputeDrawing(catiaPart, catiaCharacter, scaleRatio, keepHistoric, createVolume, characterSet, markingData, markingBody,
                                 yOffset, originPoint, originAxisSystem, localAxisSystem, supportSurface, localPoint);
                         }
 
@@ -307,12 +287,17 @@ namespace Graphy.Model
                 {
                     #region PREPARATION OF DRAW LINE
 
-                    // Create the final point
-                    CatiaPoint finalPoint = new CatiaPoint(catiaPart.PartDocument, trackingCurve, startPoint, totalWidth, !isXSameDirection);
-                    pointSet.AppendHybridShape(finalPoint.Shape);
+                    // Create the final point if the horizontal axis system position is different of "Right"
+                    // If the horizontal axis system position is Right, there is no need to generate the last point.
+                    // Otherwise we have a superposition of the last local point with the final line point which generates a crash of Catia.
+                    if (horizontalAxisSystemPosition != HorizontalAxisSystemPosition.Right)
+                    {
+                        CatiaPoint finalPoint = new CatiaPoint(catiaPart.PartDocument, trackingCurve, startPoint, totalWidth, !isXSameDirection);
+                        pointSet.AppendHybridShape(finalPoint.Shape);
 
-                    // Store the point in the list in order to create the baseline
-                    constructionPointList.Add(finalPoint);
+                        // Store the point in the list in order to create the baseline
+                        constructionPointList.Add(finalPoint);
+                    }
 
                     // Create a curve passing by all the points in the local point list
                     CatiaCurve baseline = new CatiaCurve(catiaPart.PartDocument, constructionPointList, supportSurface);
@@ -420,7 +405,8 @@ namespace Graphy.Model
                 iconShape.FillSurfaceList();
 
                 // Draw the icon
-                iconShape.Draw();
+                // For icon drawing, the setting Horizontal Axis System Position is disabled; it does the same thing as for Horizontal Alignment.
+                iconShape.Draw(Enum.HorizontalAxisSystemPosition.Left);
 
                 // Compute the scale ratio between the target height and the drawing height
                 double scaleRatio = markingData.MarkingHeight / iconShape.PathGeometry.Bounds.Height;
@@ -440,7 +426,7 @@ namespace Graphy.Model
                 // Compute the y offset depending on the vertical alignment
                 double yOffset = CatiaDrawableShape.GetYOffset(markingData.VerticalAlignment, iconShape.PathGeometry);
 
-                Compute(catiaPart, iconShape, scaleRatio, keepHistoric, createVolume, iconSet, markingData, markingBody, yOffset,
+                ComputeDrawing(catiaPart, iconShape, scaleRatio, keepHistoric, createVolume, iconSet, markingData, markingBody, yOffset,
                     originPoint, originAxisSystem, localAxisSystem, supportSurface, startPoint);
                 /*Compute(iconShape, scaleRatio, keepHistoric, createVolume, iconSet, hybridShapeFactory, shapeFactory, markingData, markingBody, originPointRef, originAxisSystemRef,
                     localAxisSystem.System, localAxisSystem.SystemReference, projectionSurfaceRef, referencePointRef);*/
@@ -491,7 +477,7 @@ namespace Graphy.Model
 
 
 
-        private void Compute(CatiaPart catiaPart, CatiaDrawableShape drawableShape, double scaleRatio, bool keepHistoric, bool createVolume, HybridBody set,
+        private void ComputeDrawing(CatiaPart catiaPart, CatiaDrawableShape drawableShape, double scaleRatio, bool keepHistoric, bool createVolume, HybridBody set,
             MarkingData markingData, Body markingBody, double yOffset,
             CatiaPoint originPoint, CatiaAxisSystem originAxisSystem, CatiaAxisSystem localAxisSystem, CatiaSurface projectionSurface, CatiaPoint localPoint)
         {
@@ -564,7 +550,7 @@ namespace Graphy.Model
         /// <param name="toleranceFactor">Define the precision of the drawing.</param>
         /// <returns></returns>
         private CatiaCharacter GetCatiaCharacter(PartDocument partDocument, MarkingData markingData, char character,
-            List<CatiaCharacter> characterList, double toleranceFactor)
+            List<CatiaCharacter> characterList, double toleranceFactor, Enum.HorizontalAxisSystemPosition horizontalAxisSystemPosition)
         {
             // Create a new catia character
             CatiaCharacter catiaCharacter = new CatiaCharacter(partDocument, character, markingData.FontFamily, markingData.IsBold, markingData.IsItalic);
@@ -574,19 +560,19 @@ namespace Graphy.Model
             else
             {
                 // If the list does not contain this character
-                if(!characterList.Contains(catiaCharacter))
+                if (!characterList.Contains(catiaCharacter))
                 {
                     // Add the character to the list
                     characterList.Add(catiaCharacter);
 
                     // Retrieve the geometry of the character
                     catiaCharacter.ComputeGeometry(markingData.FontFamily, toleranceFactor);
-                    
+
                     // Compute surfaces of the geometry
                     catiaCharacter.FillSurfaceList();
 
                     // Draw the character
-                    catiaCharacter.Draw();
+                    catiaCharacter.Draw(horizontalAxisSystemPosition);
                 }
 
                 // Return a clone to preserve character in the list from future modifications
@@ -594,6 +580,94 @@ namespace Graphy.Model
             }
         }
 
+        /// <summary>
+        /// See for stack-up
+        /// https://docs.microsoft.com/fr-fr/dotnet/api/system.windows.media.glyphtypeface?view=net-5.0
+        /// </summary>
+        /// <param name="previousCharacter"></param>
+        /// <param name="currentCharacter"></param>
+        /// <param name="markingData"></param>
+        /// <param name="horizontalAxisSystemPosition"></param>
+        /// <returns></returns>
+        private double GetCharacterRelativePosition(char previousCharacter, char currentCharacter, MarkingData markingData,
+            Enum.HorizontalAxisSystemPosition horizontalAxisSystemPosition)
+        {
+            // Get the kerning value between the previous character and the current one.
+            double kerningValue = markingData.FontFamily.GetKerningValue(previousCharacter, currentCharacter) * markingData.MarkingHeight;
+
+            // Retrieve the previous character right side bearing
+            // If previous character right side bearing is negative, it is not considered.
+            double previousCharacterRightSideBearing = markingData.FontFamily.GetRightSideBearing(previousCharacter, markingData.MarkingHeight,
+                        markingData.IsBold, markingData.IsItalic);
+            previousCharacterRightSideBearing = previousCharacterRightSideBearing < 0 ? 0 : previousCharacterRightSideBearing;
+
+            // Retrieve the current character left side bearing
+            // If current character left side bearing is negative, it is not considered.
+            double currentCharacterLeftSideBearing = markingData.FontFamily.GetLeftSideBearing(currentCharacter, markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
+            currentCharacterLeftSideBearing = currentCharacterLeftSideBearing < 0 ? 0 : currentCharacterLeftSideBearing;
+
+            // Compute the previous charactere real width
+            double previousCharacterWidth = markingData.FontFamily.GetRealWidth(previousCharacter, markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
+
+            // Compute the current character real width
+            double currentCharacterWidth = markingData.FontFamily.GetRealWidth(currentCharacter, markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
+
+
+            switch (horizontalAxisSystemPosition)
+            {
+                case Enum.HorizontalAxisSystemPosition.Left:
+                    return previousCharacterWidth + previousCharacterRightSideBearing + currentCharacterLeftSideBearing + kerningValue;
+
+                case HorizontalAxisSystemPosition.Center:
+                    return previousCharacterWidth / 2 + previousCharacterRightSideBearing + currentCharacterLeftSideBearing + currentCharacterWidth / 2 + kerningValue;
+
+                case HorizontalAxisSystemPosition.Right:
+                    return previousCharacterRightSideBearing + currentCharacterWidth + currentCharacterLeftSideBearing + kerningValue;
+
+                default:
+                    return 0d;
+            }
+        }
+
+        private double GetTotalWidth(double lastRelativePosition, MarkingData markingData, char firstCharacter, char lastCharacter,
+            Enum.HorizontalAxisSystemPosition horizontalAxisSystemPosition)
+        {
+            switch (horizontalAxisSystemPosition)
+            {
+                case HorizontalAxisSystemPosition.Left:
+                    return lastRelativePosition
+                        + markingData.FontFamily.GetRealWidth(lastCharacter, markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
+
+                case HorizontalAxisSystemPosition.Center:
+                    return lastRelativePosition
+                        + markingData.FontFamily.GetRealWidth(lastCharacter, markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic) / 2;
+
+                case HorizontalAxisSystemPosition.Right:
+                    return lastRelativePosition;
+
+                default:
+                    return lastRelativePosition
+                        + markingData.FontFamily.GetRealWidth(lastCharacter, markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
+            }
+        }
+
+        private double GetStartPointCorrectif(MarkingData markingData, char firstCharacter, Enum.HorizontalAxisSystemPosition horizontalAxisSystemPosition)
+        {
+            switch (horizontalAxisSystemPosition)
+            {
+                case HorizontalAxisSystemPosition.Left:
+                    return 0;
+
+                case HorizontalAxisSystemPosition.Center:
+                    return markingData.FontFamily.GetRealWidth(firstCharacter, markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic) / 2;
+
+                case HorizontalAxisSystemPosition.Right:
+                    return markingData.FontFamily.GetRealWidth(firstCharacter, markingData.MarkingHeight, markingData.IsBold, markingData.IsItalic);
+
+                default:
+                    return 0;
+            }
+        }
 
 
         private enum LineType

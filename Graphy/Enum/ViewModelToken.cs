@@ -31,7 +31,8 @@ namespace Graphy.Enum
         CreateVolumeChanged,
         CsvConfigChanged,
         ImportModeChanged,
-        ImportRealized
+        ImportRealized,
+        HorizontalAxisSystemPositionChanged
     }
 
     public enum IconToken

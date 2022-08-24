@@ -126,6 +126,13 @@ namespace Graphy.Model
                 return 0;
         }
 
+        public double GetRealWidth(char c, double refHeight, bool isBold, bool isItalic)
+        {
+            return GetAdvanceWidth(c, refHeight, isBold, isItalic)
+                - GetLeftSideBearing(c, refHeight, isBold, isItalic)
+                - GetRightSideBearing(c, refHeight, isBold, isItalic);
+        }
+
         public (double position, double thickness) GetUnderline(double refHeight, bool isBold, bool isItalic)
         {
             Typeface selectedTypeFace = GetTypeface(isBold, isItalic);

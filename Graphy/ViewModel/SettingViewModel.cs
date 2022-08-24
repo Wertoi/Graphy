@@ -39,6 +39,7 @@ namespace Graphy.ViewModel
         private bool _createVolume;
         private CsvConfig _csvConfig;
         private ImportMode _selectedImportMode;
+        private HorizontalAxisSystemPosition _horizontalAxisSystemPosition;
 
         public Language SelectedLanguage
         {
@@ -154,6 +155,24 @@ namespace Graphy.ViewModel
             }
         }
 
+
+        public HorizontalAxisSystemPosition HorizontalAxisSystemPosition
+        {
+            get => _horizontalAxisSystemPosition;
+            set
+            {
+                Set(() => HorizontalAxisSystemPosition, ref _horizontalAxisSystemPosition, value);
+
+                if(!_isReadingUserPreferenceFlag)
+                {
+                    Properties.Settings.Default.HorizontalAxisSystemPosition = (int)HorizontalAxisSystemPosition;
+                    Properties.Settings.Default.Save();
+                }
+
+                MessengerInstance.Send<HorizontalAxisSystemPosition>(HorizontalAxisSystemPosition, Enum.SettingToken.HorizontalAxisSystemPositionChanged);
+            }
+        }
+
         // COMMANDS
 
         private RelayCommand _showLicenceCommand;
@@ -198,6 +217,7 @@ namespace Graphy.ViewModel
             KeepHistoric = Properties.Settings.Default.KeepHistoric;
             CreateVolume = Properties.Settings.Default.CreateVolume;
             SelectedImportMode = (ImportMode)Properties.Settings.Default.ImportMode;
+            HorizontalAxisSystemPosition = (HorizontalAxisSystemPosition)Properties.Settings.Default.HorizontalAxisSystemPosition;
 
             if(Properties.Settings.Default.CsvConfig == null)
             {

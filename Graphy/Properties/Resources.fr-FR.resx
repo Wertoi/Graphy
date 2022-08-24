@@ -450,4 +450,10 @@
   <data name="SimpleMarking_Title" xml:space="preserve">
     <value>Marquage Simple</value>
   </data>
+  <data name="Settings_Marking_HorizontalAxisSystemPosition_Label" xml:space="preserve">
+    <value>Position horizontale du repère local</value>
+  </data>
+  <data name="Settings_Marking_HorizontalAxisSystemPosition_Tooltip" xml:space="preserve">
+    <value>Option disponible uniquement pour l'écriture de texte.</value>
+  </data>
 </root>

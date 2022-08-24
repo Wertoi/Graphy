@@ -112,9 +112,30 @@ namespace Graphy.Model.CatiaObject.CatiaShape
             }
         }
 
-        public void Draw()
+        public void Draw(Enum.HorizontalAxisSystemPosition horizontalAxisSytemPosition)
         {
-            double xCorrectif = PathGeometry.Bounds.Left;
+            double xCorrectif;
+
+            switch (horizontalAxisSytemPosition)
+            {
+                case HorizontalAxisSystemPosition.Left:
+                    xCorrectif = PathGeometry.Bounds.Left;
+                    break;
+
+                case HorizontalAxisSystemPosition.Center:
+                    xCorrectif = PathGeometry.Bounds.Left + (PathGeometry.Bounds.Width / 2);
+                    break;
+
+                case HorizontalAxisSystemPosition.Right:
+                    xCorrectif = PathGeometry.Bounds.Left + PathGeometry.Bounds.Width;
+                    break;
+
+                default:
+                    xCorrectif = PathGeometry.Bounds.Left;
+                    break;
+            }
+
+            //double xCorrectif = PathGeometry.Bounds.Left;
 
             for (int i = 0; i < SurfaceList.Count; i++)
             {
