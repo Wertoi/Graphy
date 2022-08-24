@@ -99,7 +99,7 @@
 
                                 <Viewbox Style="{StaticResource IconViewBox}">
                                     <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource AlignHorizontalLeft_Icon}"/>
+                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource HorizontalPositionLeft_Icon}"/>
                                     </Canvas>
                                 </Viewbox>
                             </RadioButton>
@@ -111,7 +111,7 @@
 
                                 <Viewbox Style="{StaticResource IconViewBox}">
                                     <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource AlignHorizontalCenter_Icon}"/>
+                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource HorizontalPositionCenter_Icon}"/>
                                     </Canvas>
                                 </Viewbox>
                             </RadioButton>
@@ -123,7 +123,7 @@
 
                                 <Viewbox Style="{StaticResource IconViewBox}">
                                     <Canvas Style="{StaticResource IconCanvas}">
-                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource AlignHorizontalRight_Icon}"/>
+                                        <Path Style="{StaticResource Generic_HighlightRadioButtonIcon}" Data="{StaticResource HorizontalPositionRight_Icon}"/>
                                     </Canvas>
                                 </Viewbox>
                             </RadioButton>
